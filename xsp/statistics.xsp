@@ -51,8 +51,10 @@ mannwhitneyutest(x, y)
     
     double bothtails = 0, lefttail = 0, righttail = 0;
     alglib::mannwhitneyutest(xary, xvec.size(), yary, yvec.size(), bothtails, lefttail, righttail);
-    printf("%f %f %f\n", bothtails, lefttail, righttail);
-
+    EXTEND(SP, 3);
+    mPUSHn(bothtails);
+    mPUSHn(lefttail);
+    mPUSHn(righttail);
 
 %}
   
