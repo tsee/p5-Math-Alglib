@@ -7,6 +7,8 @@
 ,v$
 \B\.svn\b
 \B\.cvsignore$
+\b\.git
+\b\.gitignore
 
 # Avoid Makemaker generated and utility files.
 \bMakefile$
@@ -19,6 +21,7 @@
 \bBuild$
 \bBuild.bat$
 \b_build
+\bbuildtmp\b
 
 # Avoid Devel::Cover generated files
 \bcover_db
@@ -33,6 +36,10 @@
 \.rej$
 \.swp$
 \.swo$
+
+
+
+\.o$
 
 # Avoid OS-specific files/dirs
 #   Mac OSX metadata
