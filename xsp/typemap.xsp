@@ -1,0 +1,3 @@
+
+%typemap{real_1d_array};
+
