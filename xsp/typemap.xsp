@@ -1,3 +1,6 @@
 
+%typemap{ae_int_t};
+%typemap{const ae_int_t};
 %typemap{real_1d_array};
+%typemap{const real_1d_array};
 
