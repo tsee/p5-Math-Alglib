@@ -1,5 +1,5 @@
 Build
-MYMETA.yml
+MYMETA.*
 _build/
 blib/
 buildtmp/
@@ -8,3 +8,5 @@ src/interpolation.o
 *.swp
 *.swo
 ~
+MANIFEST
+META.*
