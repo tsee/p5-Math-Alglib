@@ -1,6 +1,27 @@
 ae_int_t	IV
+alglib::real_1d_array AL_NV_ARRAY
 
 INPUT
+
+AL_NV_ARRAY
+  	if (SvROK($arg) && SvTYPE(SvRV($arg))==SVt_PVAV) {
+	  AV* av = (AV*)SvRV($arg);
+	  const unsigned int len = av_len(av)+1;
+	  $var = alglib::real_1d_array();
+          $var.setlength(len);
+	  SV** elem;
+	  for (unsigned int i = 0; i < len; i++) {
+	    elem = av_fetch(av, i, 0);
+	    if (elem != NULL)
+	      ${var}[i] = SvNV(*elem);
+	    else
+	      ${var}[i] = 0.;
+	  }
+	}
+	else
+	  Perl_croak(aTHX_ \"%s: %s is not an array reference\",
+	             ${$ALIAS?\q[GvNAME(CvGV(cv))]:\qq[\"$pname\"]},
+	             \"$var\");
 
 OUTPUT
 

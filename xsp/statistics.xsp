@@ -9,53 +9,30 @@
 %{
 void
 mannwhitneyutest(x, y)
-    SV* x
-    SV* y
+    alglib::real_1d_array x
+    alglib::real_1d_array y
   PPCODE:
-    std::vector<double> xvec, yvec;
-    if (SvROK(x) && SvTYPE(SvRV(x))==SVt_PVAV) {
-      AV* av = (AV*)SvRV(x);
-      const unsigned int len = av_len(av)+1;
-      xvec = std::vector<double>(len);
-      SV** elem;
-      for (unsigned int i = 0; i < len; i++) {
-        elem = av_fetch(av, i, 0);
-        if (elem != NULL)
-          xvec[i] = SvNV(*elem);
-        else
-          xvec[i] = 0.;
-      }
-    }
-    else
-      croak("Usage: mannwhitneyutest(\\@x, \\@y)");
-
-    if (SvROK(y) && SvTYPE(SvRV(y))==SVt_PVAV) {
-      AV* av = (AV*)SvRV(y);
-      const unsigned int len = av_len(av)+1;
-      yvec = std::vector<double>(len);
-      SV** elem;
-      for (unsigned int i = 0; i < len; i++) {
-        elem = av_fetch(av, i, 0);
-        if (elem != NULL)
-          yvec[i] = SvNV(*elem);
-        else
-          yvec[i] = 0.;
-      }
-    }
-    else
-      croak("Usage: mannwhitneyutest(\\@x, \\@y)");
-
-    alglib::real_1d_array xary, yary;
-    xary.setcontent(xvec.size(), &xvec.front());
-    yary.setcontent(yvec.size(), &yvec.front());
-    
     double bothtails = 0, lefttail = 0, righttail = 0;
-    alglib::mannwhitneyutest(xary, xvec.size(), yary, yvec.size(), bothtails, lefttail, righttail);
+    alglib::mannwhitneyutest(x, x.length(), y, y.length(), bothtails, lefttail, righttail);
     EXTEND(SP, 3);
     mPUSHn(bothtails);
     mPUSHn(lefttail);
     mPUSHn(righttail);
-
 %}
   
+%{
+void
+samplemoments(sample)
+    alglib::real_1d_array sample
+  PPCODE:
+    double mean = 0, variance = 0, skewness = 0, kurtosis = 0;
+    alglib::samplemoments(sample, mean, variance, skewness, kurtosis);
+    EXTEND(SP, 4);
+    mPUSHn(mean);
+    mPUSHn(variance);
+    mPUSHn(skewness);
+    mPUSHn(kurtosis);
+%}
+  
+
 
