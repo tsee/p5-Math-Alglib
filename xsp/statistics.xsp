@@ -80,3 +80,52 @@ double jarqueberatest(alglib::real_1d_array sample)
     }
   %};
 
+std::vector<double>
+onesamplesigntest(alglib::real_1d_array x, const double median)
+  %code{%
+    RETVAL.resize(3);
+    alglib::onesamplesigntest(x, x.length(), median, RETVAL[0], RETVAL[1], RETVAL[2]);
+  %};
+
+std::vector<double>
+studentttest1(alglib::real_1d_array x, const double mean)
+  %code{%
+    RETVAL.resize(3);
+    alglib::studentttest1(x, x.length(), mean, RETVAL[0], RETVAL[1], RETVAL[2]);
+  %};
+
+std::vector<double>
+studentttest2(alglib::real_1d_array x, alglib::real_1d_array y)
+  %code{%
+    RETVAL.resize(3);
+    alglib::studentttest2(x, x.length(), y, y.length(), RETVAL[0], RETVAL[1], RETVAL[2]);
+  %};
+
+std::vector<double>
+unequalvariancettest(alglib::real_1d_array x, alglib::real_1d_array y)
+  %code{%
+    RETVAL.resize(3);
+    alglib::unequalvariancettest(x, x.length(), y, y.length(), RETVAL[0], RETVAL[1], RETVAL[2]);
+  %};
+
+std::vector<double>
+ftest(alglib::real_1d_array x, alglib::real_1d_array y)
+  %code{%
+    RETVAL.resize(3);
+    alglib::ftest(x, x.length(), y, y.length(), RETVAL[0], RETVAL[1], RETVAL[2]);
+  %};
+
+std::vector<double>
+onesamplevariancetest(alglib::real_1d_array x, const double variance)
+  %code{%
+    RETVAL.resize(3);
+    alglib::onesamplevariancetest(x, x.length(), variance, RETVAL[0], RETVAL[1], RETVAL[2]);
+  %};
+
+std::vector<double>
+wilcoxonsignedranktest(alglib::real_1d_array x, const double median)
+  %code{%
+    RETVAL.resize(3);
+    alglib::wilcoxonsignedranktest(x, x.length(), median, RETVAL[0], RETVAL[1], RETVAL[2]);
+  %};
+

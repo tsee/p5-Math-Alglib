@@ -85,6 +85,13 @@ TODO: {
     pearsoncorrelationsignificance
     spearmanrankcorrelationsignificance
     jarqueberatest
+    onesamplesigntest
+    studentttest1
+    studentttest2
+    unequalvariancettest
+    ftest
+    onesamplevariancetest
+    wilcoxonsignedranktest
   );
 }
 
