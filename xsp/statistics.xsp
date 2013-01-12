@@ -3,36 +3,23 @@
 #include <ap.h>
 
 %module{Math::Alglib};
-
 %package{Math::Alglib::Statistics};
 
-%{
-void
-mannwhitneyutest(x, y)
-    alglib::real_1d_array x
-    alglib::real_1d_array y
-  PPCODE:
-    double bothtails = 0, lefttail = 0, righttail = 0;
-    alglib::mannwhitneyutest(x, x.length(), y, y.length(), bothtails, lefttail, righttail);
-    EXTEND(SP, 3);
-    mPUSHn(bothtails);
-    mPUSHn(lefttail);
-    mPUSHn(righttail);
-%}
-  
-%{
-void
-samplemoments(sample)
-    alglib::real_1d_array sample
-  PPCODE:
-    double mean = 0, variance = 0, skewness = 0, kurtosis = 0;
-    alglib::samplemoments(sample, mean, variance, skewness, kurtosis);
-    EXTEND(SP, 4);
-    mPUSHn(mean);
-    mPUSHn(variance);
-    mPUSHn(skewness);
-    mPUSHn(kurtosis);
-%}
-  
+double
+samplemedian(alglib::real_1d_array sample)
+  %code{% alglib::samplemedian(sample, RETVAL); %};
+ 
+std::vector<double>
+samplemoments(alglib::real_1d_array sample)
+  %code{%
+    RETVAL.resize(4);
+    alglib::samplemoments(sample, RETVAL[0], RETVAL[1], RETVAL[2], RETVAL[3]);
+  %};
 
+std::vector<double>
+mannwhitneyutest(alglib::real_1d_array x, alglib::real_1d_array y)
+  %code{%
+    RETVAL.resize(3);
+    alglib::mannwhitneyutest(x, x.length(), y, y.length(), RETVAL[0], RETVAL[1], RETVAL[2]);
+  %};
 

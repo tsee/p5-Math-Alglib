@@ -1,6 +1,15 @@
 
 %typemap{ae_int_t};
 %typemap{const ae_int_t};
-%typemap{real_1d_array};
-%typemap{const real_1d_array};
 
+%typemap{real_1d_array};
+%typemap{alglib::real_1d_array};
+%typemap{const real_1d_array};
+%typemap{const alglib::real_1d_array};
+
+%typemap{const double};
+%typemap{double};
+
+%typemap{double_ref};
+
+%typemap{std::vector<double>};

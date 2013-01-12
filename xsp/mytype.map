@@ -1,5 +1,5 @@
-ae_int_t	IV
-alglib::real_1d_array AL_NV_ARRAY
+ae_int_t			IV
+alglib::real_1d_array		AL_NV_ARRAY
 
 INPUT
 
@@ -24,4 +24,3 @@ AL_NV_ARRAY
 	             \"$var\");
 
 OUTPUT
-
