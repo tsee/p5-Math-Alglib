@@ -100,6 +100,11 @@ TODO: {
     ftest
     onesamplevariancetest
     wilcoxonsignedranktest
+    pearsoncorrm
+    spearmancorrm
+    covm2
+    pearsoncorrm2
+    spearmancorrm2
   );
 }
 

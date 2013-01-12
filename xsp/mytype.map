@@ -92,7 +92,7 @@ AL_NV_2DARRAY
           AV *iav = newAV();
           double *row = ${var}[i];
           av_extend(iav, cols-1);
-          av_store(av, i, newRV_noinc((AV *)iav));
+          av_store(av, i, newRV_noinc((SV *)iav));
           for (unsigned int j = 0; j < cols; j++) {
             av_store(iav, j, newSVnv(row[j]));
           }

@@ -40,16 +40,23 @@ double pearsoncorr2(alglib::real_1d_array x, alglib::real_1d_array y)
 double spearmancorr2(alglib::real_1d_array x, alglib::real_1d_array y)
   %catch{ApError};
 
-// TODO: Matrices IN/OUT:
-// TODO: void covm(const real_2d_array &x, real_2d_array &c);
-// TODO: void pearsoncorrm(const real_2d_array &x, real_2d_array &c);
-// TODO: void spearmancorrm(const real_2d_array &x, real_2d_array &c);
-// TODO: void covm2(const real_2d_array &x, const real_2d_array &y, real_2d_array &c);
-// TODO: void pearsoncorrm2(const real_2d_array &x, const real_2d_array &y, real_2d_array &c);
-// TODO: void spearmancorrm2(const real_2d_array &x, const real_2d_array &y, real_2d_array &c);
-
 alglib::real_2d_array covm(alglib::real_2d_array x)
   %code{% alglib::covm(x, RETVAL); %};
+
+alglib::real_2d_array pearsoncorrm(alglib::real_2d_array x)
+  %code{% alglib::pearsoncorrm(x, RETVAL); %};
+
+alglib::real_2d_array spearmancorrm(alglib::real_2d_array x)
+  %code{% alglib::spearmancorrm(x, RETVAL); %};
+
+alglib::real_2d_array covm2(alglib::real_2d_array x, alglib::real_2d_array y)
+  %code{% alglib::covm2(x, y, RETVAL); %};
+
+alglib::real_2d_array pearsoncorrm2(alglib::real_2d_array x, alglib::real_2d_array y)
+  %code{% alglib::pearsoncorrm2(x, y, RETVAL); %};
+
+alglib::real_2d_array spearmancorrm2(alglib::real_2d_array x, alglib::real_2d_array y)
+  %code{% alglib::spearmancorrm2(x, y, RETVAL); %};
 
 std::vector<double>
 pearsoncorrelationsignificance(const double r, const ptrdiff_t n)
