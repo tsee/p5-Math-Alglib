@@ -28,6 +28,10 @@ samplepercentile(alglib::real_1d_array sample, double p)
   %};
 
 
+double cov2(alglib::real_1d_array x, alglib::real_1d_array y)
+  %catch{ApError};
+
+
 std::vector<double>
 mannwhitneyutest(alglib::real_1d_array x, alglib::real_1d_array y)
   %code{%

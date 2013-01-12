@@ -13,3 +13,8 @@
 %typemap{double_ref};
 
 %typemap{std::vector<double>};
+
+%exception{ApError}{alglib::ap_error}{code}{%
+  croak("%s", e.msg.c_str());
+%};
+

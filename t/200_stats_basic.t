@@ -32,6 +32,18 @@ SCOPE: {
 }
 
 SCOPE: {
+  note("cov2");
+  my $ret;
+  $ret = Math::Alglib::Statistics::cov2([],  []);
+  is($ret, 0);
+
+  my $ok = eval {$ret = Math::Alglib::Statistics::cov2([1..100],  [100..200]); 1};
+  my $err = $@;
+  ok(!$ok);
+  ok($err =~ /Error while calling 'cov2'/);
+}
+
+SCOPE: {
   note("mannwhitneyutest");
   my @ret;
   @ret = Math::Alglib::Statistics::mannwhitneyutest([],  []);
