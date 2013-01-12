@@ -10,3 +10,4 @@ src/interpolation.o
 ~
 MANIFEST
 META.*
+pod2html*.tmp
