@@ -1,0 +1,140 @@
+#include <vector>
+#include <specialfunctions.h>
+#include <ap.h>
+
+#include <perl_myinit.h>
+
+%module{Math::Alglib};
+%package{Math::Alglib::SpecialFunctions};
+
+
+double gammafunction(const double x);
+
+// TODO
+//double lngamma(const double x, double &sgngam);
+
+double errorfunction(const double x);
+double errorfunctionc(const double x);
+double normaldistribution(const double x);
+double inverf(const double e);
+double invnormaldistribution(const double y0);
+double incompletegamma(const double a, const double x);
+double incompletegammac(const double a, const double x);
+double invincompletegammac(const double a, const double y0);
+
+std::vector<double>
+airy(const double x)
+  %code{%
+    RETVAL.resize(4);
+    alglib::airy(x, RETVAL[0], RETVAL[1], RETVAL[2], RETVAL[3]);
+  %};
+
+double besselj0(const double x);
+double besselj1(const double x);
+double besseljn(const ptrdiff_t n, const double x);
+double bessely0(const double x);
+double bessely1(const double x);
+double besselyn(const ptrdiff_t n, const double x);
+double besseli0(const double x);
+double besseli1(const double x);
+double besselk0(const double x);
+double besselk1(const double x);
+double besselkn(const ptrdiff_t nn, const double x);
+double beta(const double a, const double b);
+double incompletebeta(const double a, const double b, const double x);
+double invincompletebeta(const double a, const double b, const double y);
+double binomialdistribution(const ptrdiff_t k, const ptrdiff_t n, const double p);
+double binomialcdistribution(const ptrdiff_t k, const ptrdiff_t n, const double p);
+double invbinomialdistribution(const ptrdiff_t k, const ptrdiff_t n, const double y);
+double chebyshevcalculate(const ptrdiff_t r, const ptrdiff_t n, const double x);
+double chebyshevsum(alglib::real_1d_array c, const ptrdiff_t r, const ptrdiff_t n, const double x);
+
+alglib::real_1d_array
+chebyshevcoefficients(const ptrdiff_t n)
+  %code{%
+    alglib::chebyshevcoefficients(n, RETVAL);
+  %};
+
+alglib::real_1d_array
+fromchebyshev(alglib::real_1d_array a, const ptrdiff_t n)
+  %code{%
+    alglib::fromchebyshev(a, n, RETVAL);
+  %};
+
+double chisquaredistribution(const double v, const double x);
+double chisquarecdistribution(const double v, const double x);
+double invchisquaredistribution(const double v, const double y);
+double dawsonintegral(const double x);
+double ellipticintegralk(const double m);
+double ellipticintegralkhighprecision(const double m1);
+double incompleteellipticintegralk(const double phi, const double m);
+double ellipticintegrale(const double m);
+double incompleteellipticintegrale(const double phi, const double m);
+double exponentialintegralei(const double x);
+double exponentialintegralen(const double x, const ptrdiff_t n);
+double fdistribution(const ptrdiff_t a, const ptrdiff_t b, const double x);
+double fcdistribution(const ptrdiff_t a, const ptrdiff_t b, const double x);
+double invfdistribution(const ptrdiff_t a, const ptrdiff_t b, const double y);
+
+std::vector<double>
+fresnelintegral(const double x)
+  %code{%
+    RETVAL.resize(2);
+    alglib::fresnelintegral(x, RETVAL[0], RETVAL[1]);
+  %};
+
+double hermitecalculate(const ptrdiff_t n, const double x);
+double hermitesum(alglib::real_1d_array c, const ptrdiff_t n, const double x);
+
+alglib::real_1d_array
+hermitecoefficients(const ptrdiff_t n)
+  %code{%
+    alglib::hermitecoefficients(n, RETVAL);
+  %};
+
+std::vector<double>
+jacobianellipticfunctions(const double u, const double m)
+  %code{%
+    RETVAL.resize(4);
+    alglib::jacobianellipticfunctions(u, m, RETVAL[0], RETVAL[1], RETVAL[2], RETVAL[3]);
+  %};
+
+double laguerrecalculate(const ptrdiff_t n, const double x);
+double laguerresum(alglib::real_1d_array c, const ptrdiff_t n, const double x);
+
+alglib::real_1d_array
+laguerrecoefficients(const ptrdiff_t n)
+  %code{%
+    alglib::laguerrecoefficients(n, RETVAL);
+  %};
+
+double legendrecalculate(const ptrdiff_t n, const double x);
+double legendresum(alglib::real_1d_array c, const ptrdiff_t n, const double x);
+
+alglib::real_1d_array
+legendrecoefficients(const ptrdiff_t n)
+  %code{%
+    alglib::legendrecoefficients(n, RETVAL);
+  %};
+
+double poissondistribution(const ptrdiff_t k, const double m);
+double poissoncdistribution(const ptrdiff_t k, const double m);
+double invpoissondistribution(const ptrdiff_t k, const double y);
+double psi(const double x);
+double studenttdistribution(const ptrdiff_t k, const double t);
+double invstudenttdistribution(const ptrdiff_t k, const double p);
+
+std::vector<double>
+sinecosineintegrals(const double x)
+  %code{%
+    RETVAL.resize(2);
+    alglib::sinecosineintegrals(x, RETVAL[0], RETVAL[1]);
+  %};
+
+std::vector<double>
+hyperbolicsinecosineintegrals(const double x)
+  %code{%
+    RETVAL.resize(2);
+    alglib::hyperbolicsinecosineintegrals(x, RETVAL[0], RETVAL[1]);
+  %};
+
