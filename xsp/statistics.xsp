@@ -32,7 +32,7 @@ samplepercentile(alglib::real_1d_array sample, double p)
   %};
 
 double cov2(alglib::real_1d_array x, alglib::real_1d_array y)
-  %catch{ApError};
+  %catch{ApError}; // FIXME leak on exception?
 
 double pearsoncorr2(alglib::real_1d_array x, alglib::real_1d_array y)
   %catch{ApError};
@@ -84,7 +84,10 @@ double jarqueberatest(alglib::real_1d_array sample)
     try {
       alglib::jarqueberatest(sample, sample.length(), RETVAL);
     }
-    catch (alglib::ap_error& e) { croak("%s", e.msg.c_str()); }
+    catch (alglib::ap_error& e) {
+      // FIXME leak?
+      croak("%s", e.msg.c_str());
+    }
     catch (...) {
       croak("Caught C++ exception of unknown type");
     }
