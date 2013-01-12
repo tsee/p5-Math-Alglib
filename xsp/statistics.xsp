@@ -5,16 +5,28 @@
 %module{Math::Alglib};
 %package{Math::Alglib::Statistics};
 
+
 double
 samplemedian(alglib::real_1d_array sample)
   %code{% alglib::samplemedian(sample, RETVAL); %};
- 
+
+
 std::vector<double>
 samplemoments(alglib::real_1d_array sample)
   %code{%
     RETVAL.resize(4);
     alglib::samplemoments(sample, RETVAL[0], RETVAL[1], RETVAL[2], RETVAL[3]);
   %};
+
+
+double
+samplepercentile(alglib::real_1d_array sample, double p)
+  %code{%
+    if (sample.length() == 0)
+      croak("Need non-zero sample size");
+    alglib::samplepercentile(sample, p, RETVAL);
+  %};
+
 
 std::vector<double>
 mannwhitneyutest(alglib::real_1d_array x, alglib::real_1d_array y)

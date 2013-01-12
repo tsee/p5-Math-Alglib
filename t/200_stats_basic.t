@@ -16,10 +16,19 @@ SCOPE: {
   is_deeply(\@ret, [[1, 0, 0 ,0]]);
 
   note('samplemedian');
-  my $median = Math::Alglib::Statistics::samplemedian([]);
+  my $median;
+  $median = Math::Alglib::Statistics::samplemedian([]);
   is($median, 0);
   $median = Math::Alglib::Statistics::samplemedian([1,2,3]);
   is($median, 2);
+
+  note('samplepercentile');
+  $median = Math::Alglib::Statistics::samplepercentile([1,2,3], 0.5);
+  is($median, 2);
+  my $perc = Math::Alglib::Statistics::samplepercentile([1,2,3], 0.9);
+  ok($perc > 2);
+  $perc = Math::Alglib::Statistics::samplepercentile([1,2,3], 1);
+  is($perc, 3);
 }
 
 SCOPE: {
