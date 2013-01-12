@@ -3,17 +3,19 @@ const ae_int_t			T_IV
 ptrdiff_t			T_IV
 const ptrdiff_t			T_IV
 alglib::real_1d_array		AL_NV_ARRAY
+alglib::real_2d_array		AL_NV_2DARRAY
 
 INPUT
 
 AL_NV_ARRAY
   	if (SvROK($arg) && SvTYPE(SvRV($arg))==SVt_PVAV) {
-	  AV* av = (AV*)SvRV($arg);
+	  AV *av = (AV*)SvRV($arg);
 	  const unsigned int len = av_len(av)+1;
+          unsigned int i;
+          SV **elem;
 	  $var = alglib::real_1d_array();
           $var.setlength(len);
-	  SV** elem;
-	  for (unsigned int i = 0; i < len; i++) {
+	  for (i = 0; i < len; i++) {
 	    elem = av_fetch(av, i, 0);
 	    if (elem != NULL)
 	      ${var}[i] = SvNV(*elem);
@@ -26,4 +28,72 @@ AL_NV_ARRAY
 	             ${$ALIAS?\q[GvNAME(CvGV(cv))]:\qq[\"$pname\"]},
 	             \"$var\");
 
+AL_NV_2DARRAY
+        $var = alglib::real_2d_array();
+  	if (SvROK($arg) && SvTYPE(SvRV($arg))==SVt_PVAV) {
+	  AV *outer_av = (AV*)SvRV($arg);
+          AV *inner_av;
+	  const unsigned int rows = av_len(outer_av)+1;
+          unsigned int cols;
+          unsigned int i, j;
+
+          if (rows == 0) {
+            ${var}.setlength(0, 0);
+          }
+          else {
+            SV **elem;
+            SV **ielem;
+            elem = av_fetch(outer_av, i, 0);
+            if (SvROK(*elem) && SvTYPE(SvRV(*elem))==SVt_PVAV)
+              cols = av_len((AV *)SvRV(*elem))+1;
+            else
+              Perl_croak(aTHX_ \"Not a nested Perl array (a matrix)\");
+            ${var}.setlength(rows, cols);
+
+            for (i = 0; i < rows; i++) {
+              elem = av_fetch(outer_av, i, 0);
+              if (!elem || !SvROK(*elem) || SvTYPE(SvRV(*elem))!=SVt_PVAV)
+                Perl_croak(aTHX_ \"Not a nested Perl array (a matrix)\");
+              inner_av = (AV *)SvRV(*elem);
+              if (av_len(inner_av)+1 != cols)
+                Perl_croak(aTHX_ \"Number of columns doesn't match up across matrix\");
+              for (j = 0; j < cols; ++j) {
+                ielem = av_fetch(inner_av, j, 0);
+                if (ielem != NULL)
+                  ${var}[i][j] = SvNV(*ielem);
+                else
+                  ${var}[i][j] = 0.;
+              }
+            }
+          }
+	}
+	else
+	  Perl_croak(aTHX_ \"%s: %s is not an array reference\",
+	             ${$ALIAS?\q[GvNAME(CvGV(cv))]:\qq[\"$pname\"]},
+	             \"$var\");
+
 OUTPUT
+AL_NV_ARRAY
+	AV* av = newAV();
+	const unsigned int len = $var.length();
+	$arg = newRV_noinc((SV*)av);
+	av_extend(av, len-1);
+	for (unsigned int i = 0; i < len; i++) {
+	  av_store(av, i, newSVnv(${var}[i]));
+	}
+
+AL_NV_2DARRAY
+	AV* av = newAV();
+	const unsigned int rows = $var.rows();
+        const unsigned int cols = $var.cols();
+	$arg = newRV_noinc((SV*)av);
+	av_extend(av, rows-1);
+	for (unsigned int i = 0; i < rows; i++) {
+          AV *iav = newAV();
+          double *row = ${var}[i];
+          av_extend(iav, cols-1);
+          av_store(av, i, newRV_noinc((AV *)iav));
+          for (unsigned int j = 0; j < cols; j++) {
+            av_store(iav, j, newSVnv(row[j]));
+          }
+	}

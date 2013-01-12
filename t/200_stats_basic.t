@@ -71,10 +71,18 @@ SCOPE: {
 
   @ret = Math::Alglib::Statistics::mannwhitneyutest([1..100],  [100..200]);
   is(scalar(@ret), 1);
-  is_aryref($ret[0], 3, "mannwhitneyutest returns array ref with 3 elemes");
+  is_aryref($ret[0], 3, "mannwhitneyutest returns array ref with 3 elements");
   my $r = $ret[0];
   ok($_ >= 0) for @$r[0..2];
   ok($_ <= 1) for @$r[0..2];
+}
+
+SCOPE: {
+  my $m;
+  $m = Math::Alglib::Statistics::covm([[1..3], [reverse(1..3)], [2..4]]);
+  is_aryref($m, 3, "covm returns matrix with 3 rows");
+  is_aryref($_, 3, "covm returns matrix with 3 cols") for @$m;
+
 }
 
 TODO: {

@@ -9,6 +9,11 @@
 %typemap{const real_1d_array};
 %typemap{const alglib::real_1d_array};
 
+%typemap{real_2d_array};
+%typemap{alglib::real_2d_array};
+%typemap{const real_2d_array};
+%typemap{const alglib::real_2d_array};
+
 %typemap{const double};
 %typemap{double};
 
