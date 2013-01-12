@@ -7,6 +7,25 @@ use lib 't/lib';
 use Math::Alglib::Test;
 
 SCOPE: {
+  note('samplemean');
+  my $r;
+  $r = Math::Alglib::Statistics::samplemean([1..5]);
+  is($r, 3);
+
+  note('samplevariance');
+  $r = Math::Alglib::Statistics::samplevariance([1..5]);
+  ok($r > 0);
+
+  note('sampleskewness');
+  $r = Math::Alglib::Statistics::sampleskewness([1..5]);
+  ok(defined($r));
+
+  note('samplekurtosis');
+  $r = Math::Alglib::Statistics::sampleskewness([1..5]);
+  ok(defined($r));
+}
+
+SCOPE: {
   note('samplemoments');
   my @ret;
   @ret = Math::Alglib::Statistics::samplemoments([]);
@@ -60,9 +79,13 @@ SCOPE: {
 
 TODO: {
   local $TODO = "Functions requiring test coverage";
-  fail("pearsoncorr2");
-  fail("spearmancorr2");
-  fail("pearsoncorrelationsignificance");
+  fail($_) for qw(
+    pearsoncorr2
+    spearmancorr2
+    pearsoncorrelationsignificance
+    spearmanrankcorrelationsignificance
+    jarqueberatest
+  );
 }
 
 done_testing();

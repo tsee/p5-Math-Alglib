@@ -6,10 +6,6 @@
 %package{Math::Alglib::Statistics};
 
 
-double
-samplemedian(alglib::real_1d_array sample)
-  %code{% alglib::samplemedian(sample, RETVAL); %};
-
 
 std::vector<double>
 samplemoments(alglib::real_1d_array sample)
@@ -18,6 +14,14 @@ samplemoments(alglib::real_1d_array sample)
     alglib::samplemoments(sample, RETVAL[0], RETVAL[1], RETVAL[2], RETVAL[3]);
   %};
 
+double samplemean(alglib::real_1d_array x);
+double samplevariance(alglib::real_1d_array x);
+double sampleskewness(alglib::real_1d_array x);
+double samplekurtosis(alglib::real_1d_array x);
+
+double
+samplemedian(alglib::real_1d_array sample)
+  %code{% alglib::samplemedian(sample, RETVAL); %};
 
 double
 samplepercentile(alglib::real_1d_array sample, double p)
@@ -26,7 +30,6 @@ samplepercentile(alglib::real_1d_array sample, double p)
       croak("Need non-zero sample size");
     alglib::samplepercentile(sample, p, RETVAL);
   %};
-
 
 double cov2(alglib::real_1d_array x, alglib::real_1d_array y)
   %catch{ApError};
@@ -53,9 +56,27 @@ pearsoncorrelationsignificance(const double r, const ptrdiff_t n)
   %};
 
 std::vector<double>
+spearmanrankcorrelationsignificance(const double r, const ptrdiff_t n)
+  %code{%
+    RETVAL.resize(3);
+    alglib::spearmanrankcorrelationsignificance(r, n, RETVAL[0], RETVAL[1], RETVAL[2]);
+  %};
+
+std::vector<double>
 mannwhitneyutest(alglib::real_1d_array x, alglib::real_1d_array y)
   %code{%
     RETVAL.resize(3);
     alglib::mannwhitneyutest(x, x.length(), y, y.length(), RETVAL[0], RETVAL[1], RETVAL[2]);
+  %};
+
+double jarqueberatest(alglib::real_1d_array sample)
+  %code{%
+    try {
+      alglib::jarqueberatest(sample, sample.length(), RETVAL);
+    }
+    catch (alglib::ap_error& e) { croak("%s", e.msg.c_str()); }
+    catch (...) {
+      croak("Caught C++ exception of unknown type");
+    }
   %};
 
