@@ -31,6 +31,26 @@ samplepercentile(alglib::real_1d_array sample, double p)
 double cov2(alglib::real_1d_array x, alglib::real_1d_array y)
   %catch{ApError};
 
+double pearsoncorr2(alglib::real_1d_array x, alglib::real_1d_array y)
+  %catch{ApError};
+
+double spearmancorr2(alglib::real_1d_array x, alglib::real_1d_array y)
+  %catch{ApError};
+
+// TODO: Matrices IN/OUT:
+// TODO: void covm(const real_2d_array &x, real_2d_array &c);
+// TODO: void pearsoncorrm(const real_2d_array &x, real_2d_array &c);
+// TODO: void spearmancorrm(const real_2d_array &x, real_2d_array &c);
+// TODO: void covm2(const real_2d_array &x, const real_2d_array &y, real_2d_array &c);
+// TODO: void pearsoncorrm2(const real_2d_array &x, const real_2d_array &y, real_2d_array &c);
+// TODO: void spearmancorrm2(const real_2d_array &x, const real_2d_array &y, real_2d_array &c);
+
+std::vector<double>
+pearsoncorrelationsignificance(const double r, const ptrdiff_t n)
+  %code{%
+    RETVAL.resize(3);
+    alglib::pearsoncorrelationsignificance(r, n, RETVAL[0], RETVAL[1], RETVAL[2]);
+  %};
 
 std::vector<double>
 mannwhitneyutest(alglib::real_1d_array x, alglib::real_1d_array y)

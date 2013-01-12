@@ -1,4 +1,6 @@
 
+%typemap{ptrdiff_t};
+%typemap{const ptrdiff_t};
 %typemap{ae_int_t};
 %typemap{const ae_int_t};
 

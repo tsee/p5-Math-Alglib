@@ -8,7 +8,7 @@ my $build = Module::Build::WithXSpp->new(
   requires        => {},
   # Provides extra C typemaps for opaque objects:
   extra_typemap_modules => {
-    'ExtUtils::Typemaps::STL::Vector' => '0.01',
+    'ExtUtils::Typemaps::Default' => '0.01',
   },
 );
 

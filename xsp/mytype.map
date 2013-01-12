@@ -1,4 +1,7 @@
-ae_int_t			IV
+ae_int_t			T_IV
+const ae_int_t			T_IV
+ptrdiff_t			T_IV
+const ptrdiff_t			T_IV
 alglib::real_1d_array		AL_NV_ARRAY
 
 INPUT

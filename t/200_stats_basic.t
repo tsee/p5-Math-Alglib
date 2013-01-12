@@ -41,6 +41,7 @@ SCOPE: {
   my $err = $@;
   ok(!$ok);
   ok($err =~ /Error while calling 'cov2'/);
+
 }
 
 SCOPE: {
@@ -55,6 +56,13 @@ SCOPE: {
   my $r = $ret[0];
   ok($_ >= 0) for @$r[0..2];
   ok($_ <= 1) for @$r[0..2];
+}
+
+TODO: {
+  local $TODO = "Functions requiring test coverage";
+  fail("pearsoncorr2");
+  fail("spearmancorr2");
+  fail("pearsoncorrelationsignificance");
 }
 
 done_testing();
