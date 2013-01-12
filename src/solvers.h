@@ -44,6 +44,108 @@ typedef struct
 } densesolverlsreport;
 typedef struct
 {
+    normestimatorstate nes;
+    ae_vector rx;
+    ae_vector b;
+    ae_int_t n;
+    ae_int_t m;
+    ae_vector ui;
+    ae_vector uip1;
+    ae_vector vi;
+    ae_vector vip1;
+    ae_vector omegai;
+    ae_vector omegaip1;
+    double alphai;
+    double alphaip1;
+    double betai;
+    double betaip1;
+    double phibari;
+    double phibarip1;
+    double phii;
+    double rhobari;
+    double rhobarip1;
+    double rhoi;
+    double ci;
+    double si;
+    double theta;
+    double lambdai;
+    ae_vector d;
+    double anorm;
+    double bnorm2;
+    double dnorm;
+    double r2;
+    ae_vector x;
+    ae_vector mv;
+    ae_vector mtv;
+    double epsa;
+    double epsb;
+    double epsc;
+    ae_int_t maxits;
+    ae_bool xrep;
+    ae_bool xupdated;
+    ae_bool needmv;
+    ae_bool needmtv;
+    ae_bool needmv2;
+    ae_bool needvmv;
+    ae_bool needprec;
+    ae_int_t repiterationscount;
+    ae_int_t repnmv;
+    ae_int_t repterminationtype;
+    ae_bool running;
+    rcommstate rstate;
+} linlsqrstate;
+typedef struct
+{
+    ae_int_t iterationscount;
+    ae_int_t nmv;
+    ae_int_t terminationtype;
+} linlsqrreport;
+typedef struct
+{
+    ae_vector rx;
+    ae_vector b;
+    ae_int_t n;
+    ae_vector cx;
+    ae_vector cr;
+    ae_vector cz;
+    ae_vector p;
+    ae_vector r;
+    ae_vector z;
+    double alpha;
+    double beta;
+    double r2;
+    double meritfunction;
+    ae_vector x;
+    ae_vector mv;
+    ae_vector pv;
+    double vmv;
+    ae_vector startx;
+    double epsf;
+    ae_int_t maxits;
+    ae_int_t itsbeforerestart;
+    ae_int_t itsbeforerupdate;
+    ae_bool xrep;
+    ae_bool xupdated;
+    ae_bool needmv;
+    ae_bool needmtv;
+    ae_bool needmv2;
+    ae_bool needvmv;
+    ae_bool needprec;
+    ae_int_t repiterationscount;
+    ae_int_t repnmv;
+    ae_int_t repterminationtype;
+    ae_bool running;
+    rcommstate rstate;
+} lincgstate;
+typedef struct
+{
+    ae_int_t iterationscount;
+    ae_int_t nmv;
+    ae_int_t terminationtype;
+    double r2;
+} lincgreport;
+typedef struct
+{
     ae_int_t n;
     ae_int_t m;
     double epsf;
@@ -141,6 +243,120 @@ public:
     real_2d_array cx;
     ae_int_t &n;
     ae_int_t &k;
+
+};
+
+/*************************************************************************
+This object stores state of the LinLSQR method.
+
+You should use ALGLIB functions to work with this object.
+*************************************************************************/
+class _linlsqrstate_owner
+{
+public:
+    _linlsqrstate_owner();
+    _linlsqrstate_owner(const _linlsqrstate_owner &rhs);
+    _linlsqrstate_owner& operator=(const _linlsqrstate_owner &rhs);
+    virtual ~_linlsqrstate_owner();
+    alglib_impl::linlsqrstate* c_ptr();
+    alglib_impl::linlsqrstate* c_ptr() const;
+protected:
+    alglib_impl::linlsqrstate *p_struct;
+};
+class linlsqrstate : public _linlsqrstate_owner
+{
+public:
+    linlsqrstate();
+    linlsqrstate(const linlsqrstate &rhs);
+    linlsqrstate& operator=(const linlsqrstate &rhs);
+    virtual ~linlsqrstate();
+
+};
+
+
+/*************************************************************************
+
+*************************************************************************/
+class _linlsqrreport_owner
+{
+public:
+    _linlsqrreport_owner();
+    _linlsqrreport_owner(const _linlsqrreport_owner &rhs);
+    _linlsqrreport_owner& operator=(const _linlsqrreport_owner &rhs);
+    virtual ~_linlsqrreport_owner();
+    alglib_impl::linlsqrreport* c_ptr();
+    alglib_impl::linlsqrreport* c_ptr() const;
+protected:
+    alglib_impl::linlsqrreport *p_struct;
+};
+class linlsqrreport : public _linlsqrreport_owner
+{
+public:
+    linlsqrreport();
+    linlsqrreport(const linlsqrreport &rhs);
+    linlsqrreport& operator=(const linlsqrreport &rhs);
+    virtual ~linlsqrreport();
+    ae_int_t &iterationscount;
+    ae_int_t &nmv;
+    ae_int_t &terminationtype;
+
+};
+
+/*************************************************************************
+This object stores state of the linear CG method.
+
+You should use ALGLIB functions to work with this object.
+Never try to access its fields directly!
+*************************************************************************/
+class _lincgstate_owner
+{
+public:
+    _lincgstate_owner();
+    _lincgstate_owner(const _lincgstate_owner &rhs);
+    _lincgstate_owner& operator=(const _lincgstate_owner &rhs);
+    virtual ~_lincgstate_owner();
+    alglib_impl::lincgstate* c_ptr();
+    alglib_impl::lincgstate* c_ptr() const;
+protected:
+    alglib_impl::lincgstate *p_struct;
+};
+class lincgstate : public _lincgstate_owner
+{
+public:
+    lincgstate();
+    lincgstate(const lincgstate &rhs);
+    lincgstate& operator=(const lincgstate &rhs);
+    virtual ~lincgstate();
+
+};
+
+
+/*************************************************************************
+
+*************************************************************************/
+class _lincgreport_owner
+{
+public:
+    _lincgreport_owner();
+    _lincgreport_owner(const _lincgreport_owner &rhs);
+    _lincgreport_owner& operator=(const _lincgreport_owner &rhs);
+    virtual ~_lincgreport_owner();
+    alglib_impl::lincgreport* c_ptr();
+    alglib_impl::lincgreport* c_ptr() const;
+protected:
+    alglib_impl::lincgreport *p_struct;
+};
+class lincgreport : public _lincgreport_owner
+{
+public:
+    lincgreport();
+    lincgreport(const lincgreport &rhs);
+    lincgreport& operator=(const lincgreport &rhs);
+    virtual ~lincgreport();
+    ae_int_t &iterationscount;
+    ae_int_t &nmv;
+    ae_int_t &terminationtype;
+    double &r2;
 
 };
 
@@ -897,6 +1113,299 @@ Subroutine sets following fields of the Rep structure:
 void rmatrixsolvels(const real_2d_array &a, const ae_int_t nrows, const ae_int_t ncols, const real_1d_array &b, const double threshold, ae_int_t &info, densesolverlsreport &rep, real_1d_array &x);
 
 /*************************************************************************
+This function initializes linear LSQR Solver. This solver is used to solve
+non-symmetric (and, possibly, non-square) problems. Least squares solution
+is returned for non-compatible systems.
+
+USAGE:
+1. User initializes algorithm state with LinLSQRCreate() call
+2. User tunes solver parameters with  LinLSQRSetCond() and other functions
+3. User  calls  LinLSQRSolveSparse()  function which takes algorithm state
+   and SparseMatrix object.
+4. User calls LinLSQRResults() to get solution
+5. Optionally, user may call LinLSQRSolveSparse() again to  solve  another
+   problem  with different matrix and/or right part without reinitializing
+   LinLSQRState structure.
+
+INPUT PARAMETERS:
+    M       -   number of rows in A
+    N       -   number of variables, N>0
+
+OUTPUT PARAMETERS:
+    State   -   structure which stores algorithm state
+
+  -- ALGLIB --
+     Copyright 30.11.2011 by Bochkanov Sergey
+*************************************************************************/
+void linlsqrcreate(const ae_int_t m, const ae_int_t n, linlsqrstate &state);
+
+
+/*************************************************************************
+This function sets optional Tikhonov regularization coefficient.
+It is zero by default.
+
+INPUT PARAMETERS:
+    LambdaI -   regularization factor, LambdaI>=0
+
+OUTPUT PARAMETERS:
+    State   -   structure which stores algorithm state
+
+  -- ALGLIB --
+     Copyright 30.11.2011 by Bochkanov Sergey
+*************************************************************************/
+void linlsqrsetlambdai(const linlsqrstate &state, const double lambdai);
+
+
+/*************************************************************************
+Procedure for solution of A*x=b with sparse A.
+
+INPUT PARAMETERS:
+    State   -   algorithm state
+    A       -   sparse M*N matrix in the CRS format (you MUST contvert  it
+                to CRS format  by  calling  SparseConvertToCRS()  function
+                BEFORE you pass it to this function).
+    B       -   right part, array[M]
+
+RESULT:
+    This function returns no result.
+    You can get solution by calling LinCGResults()
+
+  -- ALGLIB --
+     Copyright 30.11.2011 by Bochkanov Sergey
+*************************************************************************/
+void linlsqrsolvesparse(const linlsqrstate &state, const sparsematrix &a, const real_1d_array &b);
+
+
+/*************************************************************************
+This function sets stopping criteria.
+
+INPUT PARAMETERS:
+    EpsA    -   algorithm will be stopped if ||A^T*Rk||/(||A||*||Rk||)<=EpsA.
+    EpsB    -   algorithm will be stopped if ||Rk||<=EpsB*||B||
+    MaxIts  -   algorithm will be stopped if number of iterations
+                more than MaxIts.
+
+OUTPUT PARAMETERS:
+    State   -   structure which stores algorithm state
+
+NOTE: if EpsA,EpsB,EpsC and MaxIts are zero then these variables will
+be setted as default values.
+
+  -- ALGLIB --
+     Copyright 30.11.2011 by Bochkanov Sergey
+*************************************************************************/
+void linlsqrsetcond(const linlsqrstate &state, const double epsa, const double epsb, const ae_int_t maxits);
+
+
+/*************************************************************************
+LSQR solver: results.
+
+This function must be called after LinLSQRSolve
+
+INPUT PARAMETERS:
+    State   -   algorithm state
+
+OUTPUT PARAMETERS:
+    X       -   array[N], solution
+    Rep     -   optimization report:
+                * Rep.TerminationType completetion code:
+                    *  1    ||Rk||<=EpsB*||B||
+                    *  4    ||A^T*Rk||/(||A||*||Rk||)<=EpsA
+                    *  5    MaxIts steps was taken
+                    *  7    rounding errors prevent further progress,
+                            X contains best point found so far.
+                            (sometimes returned on singular systems)
+                * Rep.IterationsCount contains iterations count
+                * NMV countains number of matrix-vector calculations
+
+  -- ALGLIB --
+     Copyright 30.11.2011 by Bochkanov Sergey
+*************************************************************************/
+void linlsqrresults(const linlsqrstate &state, real_1d_array &x, linlsqrreport &rep);
+
+
+/*************************************************************************
+This function turns on/off reporting.
+
+INPUT PARAMETERS:
+    State   -   structure which stores algorithm state
+    NeedXRep-   whether iteration reports are needed or not
+
+If NeedXRep is True, algorithm will call rep() callback function if  it is
+provided to MinCGOptimize().
+
+  -- ALGLIB --
+     Copyright 30.11.2011 by Bochkanov Sergey
+*************************************************************************/
+void linlsqrsetxrep(const linlsqrstate &state, const bool needxrep);
+
+/*************************************************************************
+This function initializes linear CG Solver. This solver is used  to  solve
+symmetric positive definite problems. If you want  to  solve  nonsymmetric
+(or non-positive definite) problem you may use LinLSQR solver provided  by
+ALGLIB.
+
+USAGE:
+1. User initializes algorithm state with LinCGCreate() call
+2. User tunes solver parameters with  LinCGSetCond() and other functions
+3. Optionally, user sets starting point with LinCGSetStartingPoint()
+4. User  calls LinCGSolveSparse() function which takes algorithm state and
+   SparseMatrix object.
+5. User calls LinCGResults() to get solution
+6. Optionally, user may call LinCGSolveSparse()  again  to  solve  another
+   problem  with different matrix and/or right part without reinitializing
+   LinCGState structure.
+
+INPUT PARAMETERS:
+    N       -   problem dimension, N>0
+
+OUTPUT PARAMETERS:
+    State   -   structure which stores algorithm state
+
+  -- ALGLIB --
+     Copyright 14.11.2011 by Bochkanov Sergey
+*************************************************************************/
+void lincgcreate(const ae_int_t n, lincgstate &state);
+
+
+/*************************************************************************
+This function sets starting point.
+By default, zero starting point is used.
+
+INPUT PARAMETERS:
+    X       -   starting point, array[N]
+
+OUTPUT PARAMETERS:
+    State   -   structure which stores algorithm state
+
+  -- ALGLIB --
+     Copyright 14.11.2011 by Bochkanov Sergey
+*************************************************************************/
+void lincgsetstartingpoint(const lincgstate &state, const real_1d_array &x);
+
+
+/*************************************************************************
+This function sets stopping criteria.
+
+INPUT PARAMETERS:
+    EpsF    -   algorithm will be stopped if norm of residual is less than
+                EpsF*||b||.
+    MaxIts  -   algorithm will be stopped if number of iterations is  more
+                than MaxIts.
+
+OUTPUT PARAMETERS:
+    State   -   structure which stores algorithm state
+
+NOTES:
+If  both  EpsF  and  MaxIts  are  zero then small EpsF will be set to small
+value.
+
+  -- ALGLIB --
+     Copyright 14.11.2011 by Bochkanov Sergey
+*************************************************************************/
+void lincgsetcond(const lincgstate &state, const double epsf, const ae_int_t maxits);
+
+
+/*************************************************************************
+Procedure for solution of A*x=b with sparse A.
+
+INPUT PARAMETERS:
+    State   -   algorithm state
+    A       -   sparse matrix in the CRS format (you MUST contvert  it  to
+                CRS format by calling SparseConvertToCRS() function).
+    IsUpper -   whether upper or lower triangle of A is used:
+                * IsUpper=True  => only upper triangle is used and lower
+                                   triangle is not referenced at all
+                * IsUpper=False => only lower triangle is used and upper
+                                   triangle is not referenced at all
+    B       -   right part, array[N]
+
+RESULT:
+    This function returns no result.
+    You can get solution by calling LinCGResults()
+
+  -- ALGLIB --
+     Copyright 14.11.2011 by Bochkanov Sergey
+*************************************************************************/
+void lincgsolvesparse(const lincgstate &state, const sparsematrix &a, const bool isupper, const real_1d_array &b);
+
+
+/*************************************************************************
+CG-solver: results.
+
+This function must be called after LinCGSolve
+
+INPUT PARAMETERS:
+    State   -   algorithm state
+
+OUTPUT PARAMETERS:
+    X       -   array[N], solution
+    Rep     -   optimization report:
+                * Rep.TerminationType completetion code:
+                    * -5    input matrix is either not positive definite,
+                            too large or too small
+                    * -4    overflow/underflow during solution
+                            (ill conditioned problem)
+                    *  1    ||residual||<=EpsF*||b||
+                    *  5    MaxIts steps was taken
+                    *  7    rounding errors prevent further progress,
+                            best point found is returned
+                * Rep.IterationsCount contains iterations count
+                * NMV countains number of matrix-vector calculations
+
+  -- ALGLIB --
+     Copyright 14.11.2011 by Bochkanov Sergey
+*************************************************************************/
+void lincgresults(const lincgstate &state, real_1d_array &x, lincgreport &rep);
+
+
+/*************************************************************************
+This function sets restart frequency. By default, algorithm  is  restarted
+after N subsequent iterations.
+
+  -- ALGLIB --
+     Copyright 14.11.2011 by Bochkanov Sergey
+*************************************************************************/
+void lincgsetrestartfreq(const lincgstate &state, const ae_int_t srf);
+
+
+/*************************************************************************
+This function sets frequency of residual recalculations.
+
+Algorithm updates residual r_k using iterative formula,  but  recalculates
+it from scratch after each 10 iterations. It is done to avoid accumulation
+of numerical errors and to stop algorithm when r_k starts to grow.
+
+Such low update frequence (1/10) gives very  little  overhead,  but  makes
+algorithm a bit more robust against numerical errors. However, you may
+change it
+
+INPUT PARAMETERS:
+    Freq    -   desired update frequency, Freq>=0.
+                Zero value means that no updates will be done.
+
+  -- ALGLIB --
+     Copyright 14.11.2011 by Bochkanov Sergey
+*************************************************************************/
+void lincgsetrupdatefreq(const lincgstate &state, const ae_int_t freq);
+
+
+/*************************************************************************
+This function turns on/off reporting.
+
+INPUT PARAMETERS:
+    State   -   structure which stores algorithm state
+    NeedXRep-   whether iteration reports are needed or not
+
+If NeedXRep is True, algorithm will call rep() callback function if  it is
+provided to MinCGOptimize().
+
+  -- ALGLIB --
+     Copyright 14.11.2011 by Bochkanov Sergey
+*************************************************************************/
+void lincgsetxrep(const lincgstate &state, const bool needxrep);
+
+/*************************************************************************
                 LEVENBERG-MARQUARDT-LIKE NONLINEAR SOLVER
 
 DESCRIPTION:
@@ -1318,6 +1827,75 @@ void _densesolverreport_clear(densesolverreport* p);
 ae_bool _densesolverlsreport_init(densesolverlsreport* p, ae_state *_state, ae_bool make_automatic);
 ae_bool _densesolverlsreport_init_copy(densesolverlsreport* dst, densesolverlsreport* src, ae_state *_state, ae_bool make_automatic);
 void _densesolverlsreport_clear(densesolverlsreport* p);
+void linlsqrcreate(ae_int_t m,
+     ae_int_t n,
+     linlsqrstate* state,
+     ae_state *_state);
+void linlsqrsetb(linlsqrstate* state,
+     /* Real    */ ae_vector* b,
+     ae_state *_state);
+void linlsqrsetlambdai(linlsqrstate* state,
+     double lambdai,
+     ae_state *_state);
+ae_bool linlsqriteration(linlsqrstate* state, ae_state *_state);
+void linlsqrsolvesparse(linlsqrstate* state,
+     sparsematrix* a,
+     /* Real    */ ae_vector* b,
+     ae_state *_state);
+void linlsqrsetcond(linlsqrstate* state,
+     double epsa,
+     double epsb,
+     ae_int_t maxits,
+     ae_state *_state);
+void linlsqrresults(linlsqrstate* state,
+     /* Real    */ ae_vector* x,
+     linlsqrreport* rep,
+     ae_state *_state);
+void linlsqrsetxrep(linlsqrstate* state,
+     ae_bool needxrep,
+     ae_state *_state);
+void linlsqrrestart(linlsqrstate* state, ae_state *_state);
+ae_bool _linlsqrstate_init(linlsqrstate* p, ae_state *_state, ae_bool make_automatic);
+ae_bool _linlsqrstate_init_copy(linlsqrstate* dst, linlsqrstate* src, ae_state *_state, ae_bool make_automatic);
+void _linlsqrstate_clear(linlsqrstate* p);
+ae_bool _linlsqrreport_init(linlsqrreport* p, ae_state *_state, ae_bool make_automatic);
+ae_bool _linlsqrreport_init_copy(linlsqrreport* dst, linlsqrreport* src, ae_state *_state, ae_bool make_automatic);
+void _linlsqrreport_clear(linlsqrreport* p);
+void lincgcreate(ae_int_t n, lincgstate* state, ae_state *_state);
+void lincgsetstartingpoint(lincgstate* state,
+     /* Real    */ ae_vector* x,
+     ae_state *_state);
+void lincgsetb(lincgstate* state,
+     /* Real    */ ae_vector* b,
+     ae_state *_state);
+void lincgsetcond(lincgstate* state,
+     double epsf,
+     ae_int_t maxits,
+     ae_state *_state);
+ae_bool lincgiteration(lincgstate* state, ae_state *_state);
+void lincgsolvesparse(lincgstate* state,
+     sparsematrix* a,
+     ae_bool isupper,
+     /* Real    */ ae_vector* b,
+     ae_state *_state);
+void lincgresults(lincgstate* state,
+     /* Real    */ ae_vector* x,
+     lincgreport* rep,
+     ae_state *_state);
+void lincgsetrestartfreq(lincgstate* state,
+     ae_int_t srf,
+     ae_state *_state);
+void lincgsetrupdatefreq(lincgstate* state,
+     ae_int_t freq,
+     ae_state *_state);
+void lincgsetxrep(lincgstate* state, ae_bool needxrep, ae_state *_state);
+void lincgrestart(lincgstate* state, ae_state *_state);
+ae_bool _lincgstate_init(lincgstate* p, ae_state *_state, ae_bool make_automatic);
+ae_bool _lincgstate_init_copy(lincgstate* dst, lincgstate* src, ae_state *_state, ae_bool make_automatic);
+void _lincgstate_clear(lincgstate* p);
+ae_bool _lincgreport_init(lincgreport* p, ae_state *_state, ae_bool make_automatic);
+ae_bool _lincgreport_init_copy(lincgreport* dst, lincgreport* src, ae_state *_state, ae_bool make_automatic);
+void _lincgreport_clear(lincgreport* p);
 void nleqcreatelm(ae_int_t n,
      ae_int_t m,
      /* Real    */ ae_vector* x,

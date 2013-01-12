@@ -66,6 +66,94 @@ void samplemoments(const real_1d_array &x, double &mean, double &variance, doubl
 
 
 /*************************************************************************
+Calculation of the mean.
+
+INPUT PARAMETERS:
+    X       -   sample
+    N       -   N>=0, sample size:
+                * if given, only leading N elements of X are processed
+                * if not given, automatically determined from size of X
+
+NOTE:
+
+This function return result  which calculated by 'SampleMoments' function
+and stored at 'Mean' variable.
+
+
+  -- ALGLIB --
+     Copyright 06.09.2006 by Bochkanov Sergey
+*************************************************************************/
+double samplemean(const real_1d_array &x, const ae_int_t n);
+double samplemean(const real_1d_array &x);
+
+
+/*************************************************************************
+Calculation of the variance.
+
+INPUT PARAMETERS:
+    X       -   sample
+    N       -   N>=0, sample size:
+                * if given, only leading N elements of X are processed
+                * if not given, automatically determined from size of X
+
+NOTE:
+
+This function return result  which calculated by 'SampleMoments' function
+and stored at 'Variance' variable.
+
+
+  -- ALGLIB --
+     Copyright 06.09.2006 by Bochkanov Sergey
+*************************************************************************/
+double samplevariance(const real_1d_array &x, const ae_int_t n);
+double samplevariance(const real_1d_array &x);
+
+
+/*************************************************************************
+Calculation of the skewness.
+
+INPUT PARAMETERS:
+    X       -   sample
+    N       -   N>=0, sample size:
+                * if given, only leading N elements of X are processed
+                * if not given, automatically determined from size of X
+
+NOTE:
+
+This function return result  which calculated by 'SampleMoments' function
+and stored at 'Skewness' variable.
+
+
+  -- ALGLIB --
+     Copyright 06.09.2006 by Bochkanov Sergey
+*************************************************************************/
+double sampleskewness(const real_1d_array &x, const ae_int_t n);
+double sampleskewness(const real_1d_array &x);
+
+
+/*************************************************************************
+Calculation of the kurtosis.
+
+INPUT PARAMETERS:
+    X       -   sample
+    N       -   N>=0, sample size:
+                * if given, only leading N elements of X are processed
+                * if not given, automatically determined from size of X
+
+NOTE:
+
+This function return result  which calculated by 'SampleMoments' function
+and stored at 'Kurtosis' variable.
+
+
+  -- ALGLIB --
+     Copyright 06.09.2006 by Bochkanov Sergey
+*************************************************************************/
+double samplekurtosis(const real_1d_array &x, const ae_int_t n);
+double samplekurtosis(const real_1d_array &x);
+
+
+/*************************************************************************
 ADev
 
 Input parameters:
@@ -846,6 +934,18 @@ void samplemoments(/* Real    */ ae_vector* x,
      double* variance,
      double* skewness,
      double* kurtosis,
+     ae_state *_state);
+double samplemean(/* Real    */ ae_vector* x,
+     ae_int_t n,
+     ae_state *_state);
+double samplevariance(/* Real    */ ae_vector* x,
+     ae_int_t n,
+     ae_state *_state);
+double sampleskewness(/* Real    */ ae_vector* x,
+     ae_int_t n,
+     ae_state *_state);
+double samplekurtosis(/* Real    */ ae_vector* x,
+     ae_int_t n,
      ae_state *_state);
 void sampleadev(/* Real    */ ae_vector* x,
      ae_int_t n,

@@ -22,8 +22,8 @@ http://www.fsf.org/licensing/licenses
 #include "alglibinternal.h"
 #include "linalg.h"
 #include "statistics.h"
-#include "alglibmisc.h"
 #include "specialfunctions.h"
+#include "alglibmisc.h"
 #include "solvers.h"
 #include "optimization.h"
 
@@ -96,6 +96,11 @@ typedef struct
 } lrreport;
 typedef struct
 {
+    ae_int_t hlnetworktype;
+    ae_int_t hlnormtype;
+    ae_vector hllayersizes;
+    ae_vector hlconnections;
+    ae_vector hlneurons;
     ae_vector structinfo;
     ae_vector weights;
     ae_vector columnmeans;
@@ -107,6 +112,7 @@ typedef struct
     ae_vector y;
     ae_matrix chunks;
     ae_vector nwbuf;
+    ae_vector integerbuf;
 } multilayerperceptron;
 typedef struct
 {
@@ -147,6 +153,43 @@ typedef struct
 } mnlreport;
 typedef struct
 {
+    ae_int_t n;
+    ae_vector states;
+    ae_int_t npairs;
+    ae_matrix data;
+    ae_matrix ec;
+    ae_matrix bndl;
+    ae_matrix bndu;
+    ae_matrix c;
+    ae_vector ct;
+    ae_int_t ccnt;
+    ae_vector pw;
+    ae_matrix priorp;
+    double regterm;
+    minbleicstate bs;
+    ae_int_t repinneriterationscount;
+    ae_int_t repouteriterationscount;
+    ae_int_t repnfev;
+    ae_int_t repterminationtype;
+    minbleicreport br;
+    ae_vector tmpp;
+    ae_vector effectivew;
+    ae_vector effectivebndl;
+    ae_vector effectivebndu;
+    ae_matrix effectivec;
+    ae_vector effectivect;
+    ae_vector h;
+    ae_matrix p;
+} mcpdstate;
+typedef struct
+{
+    ae_int_t inneriterationscount;
+    ae_int_t outeriterationscount;
+    ae_int_t nfev;
+    ae_int_t terminationtype;
+} mcpdreport;
+typedef struct
+{
     ae_int_t ngrad;
     ae_int_t nhess;
     ae_int_t ncholesky;
@@ -161,23 +204,11 @@ typedef struct
 } mlpcvreport;
 typedef struct
 {
-    ae_vector structinfo;
     ae_int_t ensemblesize;
-    ae_int_t nin;
-    ae_int_t nout;
-    ae_int_t wcount;
-    ae_bool issoftmax;
-    ae_bool postprocessing;
     ae_vector weights;
     ae_vector columnmeans;
     ae_vector columnsigmas;
-    ae_int_t serializedlen;
-    ae_vector serializedmlp;
-    ae_vector tmpweights;
-    ae_vector tmpmeans;
-    ae_vector tmpsigmas;
-    ae_vector neurons;
-    ae_vector dfdnet;
+    multilayerperceptron network;
     ae_vector y;
 } mlpensemble;
 
@@ -254,10 +285,6 @@ public:
 
 };
 
-
-
-
-
 /*************************************************************************
 
 *************************************************************************/
@@ -331,6 +358,12 @@ public:
     integer_1d_array cvdefects;
 
 };
+
+
+
+
+
+
 
 /*************************************************************************
 
@@ -409,6 +442,78 @@ public:
     virtual ~mnlreport();
     ae_int_t &ngrad;
     ae_int_t &nhess;
+
+};
+
+/*************************************************************************
+This structure is a MCPD (Markov Chains for Population Data) solver.
+
+You should use ALGLIB functions in order to work with this object.
+
+  -- ALGLIB --
+     Copyright 23.05.2010 by Bochkanov Sergey
+*************************************************************************/
+class _mcpdstate_owner
+{
+public:
+    _mcpdstate_owner();
+    _mcpdstate_owner(const _mcpdstate_owner &rhs);
+    _mcpdstate_owner& operator=(const _mcpdstate_owner &rhs);
+    virtual ~_mcpdstate_owner();
+    alglib_impl::mcpdstate* c_ptr();
+    alglib_impl::mcpdstate* c_ptr() const;
+protected:
+    alglib_impl::mcpdstate *p_struct;
+};
+class mcpdstate : public _mcpdstate_owner
+{
+public:
+    mcpdstate();
+    mcpdstate(const mcpdstate &rhs);
+    mcpdstate& operator=(const mcpdstate &rhs);
+    virtual ~mcpdstate();
+
+};
+
+
+/*************************************************************************
+This structure is a MCPD training report:
+    InnerIterationsCount    -   number of inner iterations of the
+                                underlying optimization algorithm
+    OuterIterationsCount    -   number of outer iterations of the
+                                underlying optimization algorithm
+    NFEV                    -   number of merit function evaluations
+    TerminationType         -   termination type
+                                (same as for MinBLEIC optimizer, positive
+                                values denote success, negative ones -
+                                failure)
+
+  -- ALGLIB --
+     Copyright 23.05.2010 by Bochkanov Sergey
+*************************************************************************/
+class _mcpdreport_owner
+{
+public:
+    _mcpdreport_owner();
+    _mcpdreport_owner(const _mcpdreport_owner &rhs);
+    _mcpdreport_owner& operator=(const _mcpdreport_owner &rhs);
+    virtual ~_mcpdreport_owner();
+    alglib_impl::mcpdreport* c_ptr();
+    alglib_impl::mcpdreport* c_ptr() const;
+protected:
+    alglib_impl::mcpdreport *p_struct;
+};
+class mcpdreport : public _mcpdreport_owner
+{
+public:
+    mcpdreport();
+    mcpdreport(const mcpdreport &rhs);
+    mcpdreport& operator=(const mcpdreport &rhs);
+    virtual ~mcpdreport();
+    ae_int_t &inneriterationscount;
+    ae_int_t &outeriterationscount;
+    ae_int_t &nfev;
+    ae_int_t &terminationtype;
 
 };
 
@@ -556,6 +661,35 @@ Note:
 void dsoptimalsplit2fast(real_1d_array &a, integer_1d_array &c, integer_1d_array &tiesbuf, integer_1d_array &cntbuf, real_1d_array &bufr, integer_1d_array &bufi, const ae_int_t n, const ae_int_t nc, const double alpha, ae_int_t &info, double &threshold, double &rms, double &cvrms);
 
 /*************************************************************************
+This function serializes data structure to string.
+
+Important properties of s_out:
+* it contains alphanumeric characters, dots, underscores, minus signs
+* these symbols are grouped into words, which are separated by spaces
+  and Windows-style (CR+LF) newlines
+* although  serializer  uses  spaces and CR+LF as separators, you can 
+  replace any separator character by arbitrary combination of spaces,
+  tabs, Windows or Unix newlines. It allows flexible reformatting  of
+  the  string  in  case you want to include it into text or XML file. 
+  But you should not insert separators into the middle of the "words"
+  nor you should change case of letters.
+* s_out can be freely moved between 32-bit and 64-bit systems, little
+  and big endian machines, and so on. You can serialize structure  on
+  32-bit machine and unserialize it on 64-bit one (or vice versa), or
+  serialize  it  on  SPARC  and  unserialize  on  x86.  You  can also 
+  serialize  it  in  C++ version of ALGLIB and unserialize in C# one, 
+  and vice versa.
+*************************************************************************/
+void dfserialize(decisionforest &obj, std::string &s_out);
+
+
+/*************************************************************************
+This function unserializes data structure from string.
+*************************************************************************/
+void dfunserialize(std::string &s_in, decisionforest &obj);
+
+
+/*************************************************************************
 This subroutine builds random decision forest.
 
 INPUT PARAMETERS:
@@ -589,6 +723,45 @@ OUTPUT PARAMETERS:
      Copyright 19.02.2009 by Bochkanov Sergey
 *************************************************************************/
 void dfbuildrandomdecisionforest(const real_2d_array &xy, const ae_int_t npoints, const ae_int_t nvars, const ae_int_t nclasses, const ae_int_t ntrees, const double r, ae_int_t &info, decisionforest &df, dfreport &rep);
+
+
+/*************************************************************************
+This subroutine builds random decision forest.
+This function gives ability to tune number of variables used when choosing
+best split.
+
+INPUT PARAMETERS:
+    XY          -   training set
+    NPoints     -   training set size, NPoints>=1
+    NVars       -   number of independent variables, NVars>=1
+    NClasses    -   task type:
+                    * NClasses=1 - regression task with one
+                                   dependent variable
+                    * NClasses>1 - classification task with
+                                   NClasses classes.
+    NTrees      -   number of trees in a forest, NTrees>=1.
+                    recommended values: 50-100.
+    NRndVars    -   number of variables used when choosing best split
+    R           -   percent of a training set used to build
+                    individual trees. 0<R<=1.
+                    recommended values: 0.1 <= R <= 0.66.
+
+OUTPUT PARAMETERS:
+    Info        -   return code:
+                    * -2, if there is a point with class number
+                          outside of [0..NClasses-1].
+                    * -1, if incorrect parameters was passed
+                          (NPoints<1, NVars<1, NClasses<1, NTrees<1, R<=0
+                          or R>1).
+                    *  1, if task has been solved
+    DF          -   model built
+    Rep         -   training report, contains error on a training set
+                    and out-of-bag estimates of generalization error.
+
+  -- ALGLIB --
+     Copyright 19.02.2009 by Bochkanov Sergey
+*************************************************************************/
+void dfbuildrandomdecisionforestx1(const real_2d_array &xy, const ae_int_t npoints, const ae_int_t nvars, const ae_int_t nclasses, const ae_int_t ntrees, const ae_int_t nrndvars, const double r, ae_int_t &info, decisionforest &df, dfreport &rep);
 
 
 /*************************************************************************
@@ -716,104 +889,6 @@ RESULT:
      Copyright 16.02.2009 by Bochkanov Sergey
 *************************************************************************/
 double dfavgrelerror(const decisionforest &df, const real_2d_array &xy, const ae_int_t npoints);
-
-/*************************************************************************
-k-means++ clusterization
-
-INPUT PARAMETERS:
-    XY          -   dataset, array [0..NPoints-1,0..NVars-1].
-    NPoints     -   dataset size, NPoints>=K
-    NVars       -   number of variables, NVars>=1
-    K           -   desired number of clusters, K>=1
-    Restarts    -   number of restarts, Restarts>=1
-
-OUTPUT PARAMETERS:
-    Info        -   return code:
-                    * -3, if task is degenerate (number of distinct points is
-                          less than K)
-                    * -1, if incorrect NPoints/NFeatures/K/Restarts was passed
-                    *  1, if subroutine finished successfully
-    C           -   array[0..NVars-1,0..K-1].matrix whose columns store
-                    cluster's centers
-    XYC         -   array which contains number of clusters dataset points
-                    belong to.
-
-  -- ALGLIB --
-     Copyright 21.03.2009 by Bochkanov Sergey
-*************************************************************************/
-void kmeansgenerate(const real_2d_array &xy, const ae_int_t npoints, const ae_int_t nvars, const ae_int_t k, const ae_int_t restarts, ae_int_t &info, real_2d_array &c, integer_1d_array &xyc);
-
-/*************************************************************************
-Multiclass Fisher LDA
-
-Subroutine finds coefficients of linear combination which optimally separates
-training set on classes.
-
-INPUT PARAMETERS:
-    XY          -   training set, array[0..NPoints-1,0..NVars].
-                    First NVars columns store values of independent
-                    variables, next column stores number of class (from 0
-                    to NClasses-1) which dataset element belongs to. Fractional
-                    values are rounded to nearest integer.
-    NPoints     -   training set size, NPoints>=0
-    NVars       -   number of independent variables, NVars>=1
-    NClasses    -   number of classes, NClasses>=2
-
-
-OUTPUT PARAMETERS:
-    Info        -   return code:
-                    * -4, if internal EVD subroutine hasn't converged
-                    * -2, if there is a point with class number
-                          outside of [0..NClasses-1].
-                    * -1, if incorrect parameters was passed (NPoints<0,
-                          NVars<1, NClasses<2)
-                    *  1, if task has been solved
-                    *  2, if there was a multicollinearity in training set,
-                          but task has been solved.
-    W           -   linear combination coefficients, array[0..NVars-1]
-
-  -- ALGLIB --
-     Copyright 31.05.2008 by Bochkanov Sergey
-*************************************************************************/
-void fisherlda(const real_2d_array &xy, const ae_int_t npoints, const ae_int_t nvars, const ae_int_t nclasses, ae_int_t &info, real_1d_array &w);
-
-
-/*************************************************************************
-N-dimensional multiclass Fisher LDA
-
-Subroutine finds coefficients of linear combinations which optimally separates
-training set on classes. It returns N-dimensional basis whose vector are sorted
-by quality of training set separation (in descending order).
-
-INPUT PARAMETERS:
-    XY          -   training set, array[0..NPoints-1,0..NVars].
-                    First NVars columns store values of independent
-                    variables, next column stores number of class (from 0
-                    to NClasses-1) which dataset element belongs to. Fractional
-                    values are rounded to nearest integer.
-    NPoints     -   training set size, NPoints>=0
-    NVars       -   number of independent variables, NVars>=1
-    NClasses    -   number of classes, NClasses>=2
-
-
-OUTPUT PARAMETERS:
-    Info        -   return code:
-                    * -4, if internal EVD subroutine hasn't converged
-                    * -2, if there is a point with class number
-                          outside of [0..NClasses-1].
-                    * -1, if incorrect parameters was passed (NPoints<0,
-                          NVars<1, NClasses<2)
-                    *  1, if task has been solved
-                    *  2, if there was a multicollinearity in training set,
-                          but task has been solved.
-    W           -   basis, array[0..NVars-1,0..NVars-1]
-                    columns of matrix stores basis vectors, sorted by
-                    quality of training set separation (in descending order)
-
-  -- ALGLIB --
-     Copyright 31.05.2008 by Bochkanov Sergey
-*************************************************************************/
-void fisherldan(const real_2d_array &xy, const ae_int_t npoints, const ae_int_t nvars, const ae_int_t nclasses, ae_int_t &info, real_2d_array &w);
 
 /*************************************************************************
 Linear regression
@@ -1015,6 +1090,249 @@ RESULT:
 double lravgrelerror(const linearmodel &lm, const real_2d_array &xy, const ae_int_t npoints);
 
 /*************************************************************************
+Filters: simple moving averages (unsymmetric).
+
+This filter replaces array by results of SMA(K) filter. SMA(K) is defined
+as filter which averages at most K previous points (previous - not points
+AROUND central point) - or less, in case of the first K-1 points.
+
+INPUT PARAMETERS:
+    X           -   array[N], array to process. It can be larger than N,
+                    in this case only first N points are processed.
+    N           -   points count, N>=0
+    K           -   K>=1 (K can be larger than N ,  such  cases  will  be
+                    correctly handled). Window width. K=1 corresponds  to
+                    identity transformation (nothing changes).
+
+OUTPUT PARAMETERS:
+    X           -   array, whose first N elements were processed with SMA(K)
+
+NOTE 1: this function uses efficient in-place  algorithm  which  does not
+        allocate temporary arrays.
+
+NOTE 2: this algorithm makes only one pass through array and uses running
+        sum  to speed-up calculation of the averages. Additional measures
+        are taken to ensure that running sum on a long sequence  of  zero
+        elements will be correctly reset to zero even in the presence  of
+        round-off error.
+
+NOTE 3: this  is  unsymmetric version of the algorithm,  which  does  NOT
+        averages points after the current one. Only X[i], X[i-1], ... are
+        used when calculating new value of X[i]. We should also note that
+        this algorithm uses BOTH previous points and  current  one,  i.e.
+        new value of X[i] depends on BOTH previous point and X[i] itself.
+
+  -- ALGLIB --
+     Copyright 25.10.2011 by Bochkanov Sergey
+*************************************************************************/
+void filtersma(real_1d_array &x, const ae_int_t n, const ae_int_t k);
+void filtersma(real_1d_array &x, const ae_int_t k);
+
+
+/*************************************************************************
+Filters: exponential moving averages.
+
+This filter replaces array by results of EMA(alpha) filter. EMA(alpha) is
+defined as filter which replaces X[] by S[]:
+    S[0] = X[0]
+    S[t] = alpha*X[t] + (1-alpha)*S[t-1]
+
+INPUT PARAMETERS:
+    X           -   array[N], array to process. It can be larger than N,
+                    in this case only first N points are processed.
+    N           -   points count, N>=0
+    alpha       -   0<alpha<=1, smoothing parameter.
+
+OUTPUT PARAMETERS:
+    X           -   array, whose first N elements were processed
+                    with EMA(alpha)
+
+NOTE 1: this function uses efficient in-place  algorithm  which  does not
+        allocate temporary arrays.
+
+NOTE 2: this algorithm uses BOTH previous points and  current  one,  i.e.
+        new value of X[i] depends on BOTH previous point and X[i] itself.
+
+NOTE 3: technical analytis users quite often work  with  EMA  coefficient
+        expressed in DAYS instead of fractions. If you want to  calculate
+        EMA(N), where N is a number of days, you can use alpha=2/(N+1).
+
+  -- ALGLIB --
+     Copyright 25.10.2011 by Bochkanov Sergey
+*************************************************************************/
+void filterema(real_1d_array &x, const ae_int_t n, const double alpha);
+void filterema(real_1d_array &x, const double alpha);
+
+
+/*************************************************************************
+Filters: linear regression moving averages.
+
+This filter replaces array by results of LRMA(K) filter.
+
+LRMA(K) is defined as filter which, for each data  point,  builds  linear
+regression  model  using  K  prevous  points (point itself is included in
+these K points) and calculates value of this linear model at the point in
+question.
+
+INPUT PARAMETERS:
+    X           -   array[N], array to process. It can be larger than N,
+                    in this case only first N points are processed.
+    N           -   points count, N>=0
+    K           -   K>=1 (K can be larger than N ,  such  cases  will  be
+                    correctly handled). Window width. K=1 corresponds  to
+                    identity transformation (nothing changes).
+
+OUTPUT PARAMETERS:
+    X           -   array, whose first N elements were processed with SMA(K)
+
+NOTE 1: this function uses efficient in-place  algorithm  which  does not
+        allocate temporary arrays.
+
+NOTE 2: this algorithm makes only one pass through array and uses running
+        sum  to speed-up calculation of the averages. Additional measures
+        are taken to ensure that running sum on a long sequence  of  zero
+        elements will be correctly reset to zero even in the presence  of
+        round-off error.
+
+NOTE 3: this  is  unsymmetric version of the algorithm,  which  does  NOT
+        averages points after the current one. Only X[i], X[i-1], ... are
+        used when calculating new value of X[i]. We should also note that
+        this algorithm uses BOTH previous points and  current  one,  i.e.
+        new value of X[i] depends on BOTH previous point and X[i] itself.
+
+  -- ALGLIB --
+     Copyright 25.10.2011 by Bochkanov Sergey
+*************************************************************************/
+void filterlrma(real_1d_array &x, const ae_int_t n, const ae_int_t k);
+void filterlrma(real_1d_array &x, const ae_int_t k);
+
+/*************************************************************************
+k-means++ clusterization
+
+INPUT PARAMETERS:
+    XY          -   dataset, array [0..NPoints-1,0..NVars-1].
+    NPoints     -   dataset size, NPoints>=K
+    NVars       -   number of variables, NVars>=1
+    K           -   desired number of clusters, K>=1
+    Restarts    -   number of restarts, Restarts>=1
+
+OUTPUT PARAMETERS:
+    Info        -   return code:
+                    * -3, if task is degenerate (number of distinct points is
+                          less than K)
+                    * -1, if incorrect NPoints/NFeatures/K/Restarts was passed
+                    *  1, if subroutine finished successfully
+    C           -   array[0..NVars-1,0..K-1].matrix whose columns store
+                    cluster's centers
+    XYC         -   array[NPoints], which contains cluster indexes
+
+  -- ALGLIB --
+     Copyright 21.03.2009 by Bochkanov Sergey
+*************************************************************************/
+void kmeansgenerate(const real_2d_array &xy, const ae_int_t npoints, const ae_int_t nvars, const ae_int_t k, const ae_int_t restarts, ae_int_t &info, real_2d_array &c, integer_1d_array &xyc);
+
+/*************************************************************************
+Multiclass Fisher LDA
+
+Subroutine finds coefficients of linear combination which optimally separates
+training set on classes.
+
+INPUT PARAMETERS:
+    XY          -   training set, array[0..NPoints-1,0..NVars].
+                    First NVars columns store values of independent
+                    variables, next column stores number of class (from 0
+                    to NClasses-1) which dataset element belongs to. Fractional
+                    values are rounded to nearest integer.
+    NPoints     -   training set size, NPoints>=0
+    NVars       -   number of independent variables, NVars>=1
+    NClasses    -   number of classes, NClasses>=2
+
+
+OUTPUT PARAMETERS:
+    Info        -   return code:
+                    * -4, if internal EVD subroutine hasn't converged
+                    * -2, if there is a point with class number
+                          outside of [0..NClasses-1].
+                    * -1, if incorrect parameters was passed (NPoints<0,
+                          NVars<1, NClasses<2)
+                    *  1, if task has been solved
+                    *  2, if there was a multicollinearity in training set,
+                          but task has been solved.
+    W           -   linear combination coefficients, array[0..NVars-1]
+
+  -- ALGLIB --
+     Copyright 31.05.2008 by Bochkanov Sergey
+*************************************************************************/
+void fisherlda(const real_2d_array &xy, const ae_int_t npoints, const ae_int_t nvars, const ae_int_t nclasses, ae_int_t &info, real_1d_array &w);
+
+
+/*************************************************************************
+N-dimensional multiclass Fisher LDA
+
+Subroutine finds coefficients of linear combinations which optimally separates
+training set on classes. It returns N-dimensional basis whose vector are sorted
+by quality of training set separation (in descending order).
+
+INPUT PARAMETERS:
+    XY          -   training set, array[0..NPoints-1,0..NVars].
+                    First NVars columns store values of independent
+                    variables, next column stores number of class (from 0
+                    to NClasses-1) which dataset element belongs to. Fractional
+                    values are rounded to nearest integer.
+    NPoints     -   training set size, NPoints>=0
+    NVars       -   number of independent variables, NVars>=1
+    NClasses    -   number of classes, NClasses>=2
+
+
+OUTPUT PARAMETERS:
+    Info        -   return code:
+                    * -4, if internal EVD subroutine hasn't converged
+                    * -2, if there is a point with class number
+                          outside of [0..NClasses-1].
+                    * -1, if incorrect parameters was passed (NPoints<0,
+                          NVars<1, NClasses<2)
+                    *  1, if task has been solved
+                    *  2, if there was a multicollinearity in training set,
+                          but task has been solved.
+    W           -   basis, array[0..NVars-1,0..NVars-1]
+                    columns of matrix stores basis vectors, sorted by
+                    quality of training set separation (in descending order)
+
+  -- ALGLIB --
+     Copyright 31.05.2008 by Bochkanov Sergey
+*************************************************************************/
+void fisherldan(const real_2d_array &xy, const ae_int_t npoints, const ae_int_t nvars, const ae_int_t nclasses, ae_int_t &info, real_2d_array &w);
+
+/*************************************************************************
+This function serializes data structure to string.
+
+Important properties of s_out:
+* it contains alphanumeric characters, dots, underscores, minus signs
+* these symbols are grouped into words, which are separated by spaces
+  and Windows-style (CR+LF) newlines
+* although  serializer  uses  spaces and CR+LF as separators, you can 
+  replace any separator character by arbitrary combination of spaces,
+  tabs, Windows or Unix newlines. It allows flexible reformatting  of
+  the  string  in  case you want to include it into text or XML file. 
+  But you should not insert separators into the middle of the "words"
+  nor you should change case of letters.
+* s_out can be freely moved between 32-bit and 64-bit systems, little
+  and big endian machines, and so on. You can serialize structure  on
+  32-bit machine and unserialize it on 64-bit one (or vice versa), or
+  serialize  it  on  SPARC  and  unserialize  on  x86.  You  can also 
+  serialize  it  in  C++ version of ALGLIB and unserialize in C# one, 
+  and vice versa.
+*************************************************************************/
+void mlpserialize(multilayerperceptron &obj, std::string &s_out);
+
+
+/*************************************************************************
+This function unserializes data structure from string.
+*************************************************************************/
+void mlpunserialize(std::string &s_in, multilayerperceptron &obj);
+
+
+/*************************************************************************
 Creates  neural  network  with  NIn  inputs,  NOut outputs, without hidden
 layers, with linear output layer. Network weights are  filled  with  small
 random values.
@@ -1172,12 +1490,271 @@ void mlpproperties(const multilayerperceptron &network, ae_int_t &nin, ae_int_t 
 
 
 /*************************************************************************
+Returns number of inputs.
+
+  -- ALGLIB --
+     Copyright 19.10.2011 by Bochkanov Sergey
+*************************************************************************/
+ae_int_t mlpgetinputscount(const multilayerperceptron &network);
+
+
+/*************************************************************************
+Returns number of outputs.
+
+  -- ALGLIB --
+     Copyright 19.10.2011 by Bochkanov Sergey
+*************************************************************************/
+ae_int_t mlpgetoutputscount(const multilayerperceptron &network);
+
+
+/*************************************************************************
+Returns number of weights.
+
+  -- ALGLIB --
+     Copyright 19.10.2011 by Bochkanov Sergey
+*************************************************************************/
+ae_int_t mlpgetweightscount(const multilayerperceptron &network);
+
+
+/*************************************************************************
 Tells whether network is SOFTMAX-normalized (i.e. classifier) or not.
 
   -- ALGLIB --
      Copyright 04.11.2007 by Bochkanov Sergey
 *************************************************************************/
 bool mlpissoftmax(const multilayerperceptron &network);
+
+
+/*************************************************************************
+This function returns total number of layers (including input, hidden and
+output layers).
+
+  -- ALGLIB --
+     Copyright 25.03.2011 by Bochkanov Sergey
+*************************************************************************/
+ae_int_t mlpgetlayerscount(const multilayerperceptron &network);
+
+
+/*************************************************************************
+This function returns size of K-th layer.
+
+K=0 corresponds to input layer, K=CNT-1 corresponds to output layer.
+
+Size of the output layer is always equal to the number of outputs, although
+when we have softmax-normalized network, last neuron doesn't have any
+connections - it is just zero.
+
+  -- ALGLIB --
+     Copyright 25.03.2011 by Bochkanov Sergey
+*************************************************************************/
+ae_int_t mlpgetlayersize(const multilayerperceptron &network, const ae_int_t k);
+
+
+/*************************************************************************
+This function returns offset/scaling coefficients for I-th input of the
+network.
+
+INPUT PARAMETERS:
+    Network     -   network
+    I           -   input index
+
+OUTPUT PARAMETERS:
+    Mean        -   mean term
+    Sigma       -   sigma term, guaranteed to be nonzero.
+
+I-th input is passed through linear transformation
+    IN[i] = (IN[i]-Mean)/Sigma
+before feeding to the network
+
+  -- ALGLIB --
+     Copyright 25.03.2011 by Bochkanov Sergey
+*************************************************************************/
+void mlpgetinputscaling(const multilayerperceptron &network, const ae_int_t i, double &mean, double &sigma);
+
+
+/*************************************************************************
+This function returns offset/scaling coefficients for I-th output of the
+network.
+
+INPUT PARAMETERS:
+    Network     -   network
+    I           -   input index
+
+OUTPUT PARAMETERS:
+    Mean        -   mean term
+    Sigma       -   sigma term, guaranteed to be nonzero.
+
+I-th output is passed through linear transformation
+    OUT[i] = OUT[i]*Sigma+Mean
+before returning it to user. In case we have SOFTMAX-normalized network,
+we return (Mean,Sigma)=(0.0,1.0).
+
+  -- ALGLIB --
+     Copyright 25.03.2011 by Bochkanov Sergey
+*************************************************************************/
+void mlpgetoutputscaling(const multilayerperceptron &network, const ae_int_t i, double &mean, double &sigma);
+
+
+/*************************************************************************
+This function returns information about Ith neuron of Kth layer
+
+INPUT PARAMETERS:
+    Network     -   network
+    K           -   layer index
+    I           -   neuron index (within layer)
+
+OUTPUT PARAMETERS:
+    FKind       -   activation function type (used by MLPActivationFunction())
+                    this value is zero for input or linear neurons
+    Threshold   -   also called offset, bias
+                    zero for input neurons
+
+NOTE: this function throws exception if layer or neuron with  given  index
+do not exists.
+
+  -- ALGLIB --
+     Copyright 25.03.2011 by Bochkanov Sergey
+*************************************************************************/
+void mlpgetneuroninfo(const multilayerperceptron &network, const ae_int_t k, const ae_int_t i, ae_int_t &fkind, double &threshold);
+
+
+/*************************************************************************
+This function returns information about connection from I0-th neuron of
+K0-th layer to I1-th neuron of K1-th layer.
+
+INPUT PARAMETERS:
+    Network     -   network
+    K0          -   layer index
+    I0          -   neuron index (within layer)
+    K1          -   layer index
+    I1          -   neuron index (within layer)
+
+RESULT:
+    connection weight (zero for non-existent connections)
+
+This function:
+1. throws exception if layer or neuron with given index do not exists.
+2. returns zero if neurons exist, but there is no connection between them
+
+  -- ALGLIB --
+     Copyright 25.03.2011 by Bochkanov Sergey
+*************************************************************************/
+double mlpgetweight(const multilayerperceptron &network, const ae_int_t k0, const ae_int_t i0, const ae_int_t k1, const ae_int_t i1);
+
+
+/*************************************************************************
+This function sets offset/scaling coefficients for I-th input of the
+network.
+
+INPUT PARAMETERS:
+    Network     -   network
+    I           -   input index
+    Mean        -   mean term
+    Sigma       -   sigma term (if zero, will be replaced by 1.0)
+
+NTE: I-th input is passed through linear transformation
+    IN[i] = (IN[i]-Mean)/Sigma
+before feeding to the network. This function sets Mean and Sigma.
+
+  -- ALGLIB --
+     Copyright 25.03.2011 by Bochkanov Sergey
+*************************************************************************/
+void mlpsetinputscaling(const multilayerperceptron &network, const ae_int_t i, const double mean, const double sigma);
+
+
+/*************************************************************************
+This function sets offset/scaling coefficients for I-th output of the
+network.
+
+INPUT PARAMETERS:
+    Network     -   network
+    I           -   input index
+    Mean        -   mean term
+    Sigma       -   sigma term (if zero, will be replaced by 1.0)
+
+OUTPUT PARAMETERS:
+
+NOTE: I-th output is passed through linear transformation
+    OUT[i] = OUT[i]*Sigma+Mean
+before returning it to user. This function sets Sigma/Mean. In case we
+have SOFTMAX-normalized network, you can not set (Sigma,Mean) to anything
+other than(0.0,1.0) - this function will throw exception.
+
+  -- ALGLIB --
+     Copyright 25.03.2011 by Bochkanov Sergey
+*************************************************************************/
+void mlpsetoutputscaling(const multilayerperceptron &network, const ae_int_t i, const double mean, const double sigma);
+
+
+/*************************************************************************
+This function modifies information about Ith neuron of Kth layer
+
+INPUT PARAMETERS:
+    Network     -   network
+    K           -   layer index
+    I           -   neuron index (within layer)
+    FKind       -   activation function type (used by MLPActivationFunction())
+                    this value must be zero for input neurons
+                    (you can not set activation function for input neurons)
+    Threshold   -   also called offset, bias
+                    this value must be zero for input neurons
+                    (you can not set threshold for input neurons)
+
+NOTES:
+1. this function throws exception if layer or neuron with given index do
+   not exists.
+2. this function also throws exception when you try to set non-linear
+   activation function for input neurons (any kind of network) or for output
+   neurons of classifier network.
+3. this function throws exception when you try to set non-zero threshold for
+   input neurons (any kind of network).
+
+  -- ALGLIB --
+     Copyright 25.03.2011 by Bochkanov Sergey
+*************************************************************************/
+void mlpsetneuroninfo(const multilayerperceptron &network, const ae_int_t k, const ae_int_t i, const ae_int_t fkind, const double threshold);
+
+
+/*************************************************************************
+This function modifies information about connection from I0-th neuron of
+K0-th layer to I1-th neuron of K1-th layer.
+
+INPUT PARAMETERS:
+    Network     -   network
+    K0          -   layer index
+    I0          -   neuron index (within layer)
+    K1          -   layer index
+    I1          -   neuron index (within layer)
+    W           -   connection weight (must be zero for non-existent
+                    connections)
+
+This function:
+1. throws exception if layer or neuron with given index do not exists.
+2. throws exception if you try to set non-zero weight for non-existent
+   connection
+
+  -- ALGLIB --
+     Copyright 25.03.2011 by Bochkanov Sergey
+*************************************************************************/
+void mlpsetweight(const multilayerperceptron &network, const ae_int_t k0, const ae_int_t i0, const ae_int_t k1, const ae_int_t i1, const double w);
+
+
+/*************************************************************************
+Neural network activation function
+
+INPUT PARAMETERS:
+    NET         -   neuron input
+    K           -   function index (zero for linear function)
+
+OUTPUT PARAMETERS:
+    F           -   function
+    DF          -   its derivative
+    D2F         -   its second derivative
+
+  -- ALGLIB --
+     Copyright 04.11.2007 by Bochkanov Sergey
+*************************************************************************/
+void mlpactivationfunction(const double net, const ae_int_t k, double &f, double &df, double &d2f);
 
 
 /*************************************************************************
@@ -1659,6 +2236,629 @@ Classification error on test set = MNLRelClsError*NPoints
 ae_int_t mnlclserror(const logitmodel &lm, const real_2d_array &xy, const ae_int_t npoints);
 
 /*************************************************************************
+DESCRIPTION:
+
+This function creates MCPD (Markov Chains for Population Data) solver.
+
+This  solver  can  be  used  to find transition matrix P for N-dimensional
+prediction  problem  where transition from X[i] to X[i+1] is  modelled  as
+    X[i+1] = P*X[i]
+where X[i] and X[i+1] are N-dimensional population vectors (components  of
+each X are non-negative), and P is a N*N transition matrix (elements of  P
+are non-negative, each column sums to 1.0).
+
+Such models arise when when:
+* there is some population of individuals
+* individuals can have different states
+* individuals can transit from one state to another
+* population size is constant, i.e. there is no new individuals and no one
+  leaves population
+* you want to model transitions of individuals from one state into another
+
+USAGE:
+
+Here we give very brief outline of the MCPD. We strongly recommend you  to
+read examples in the ALGLIB Reference Manual and to read ALGLIB User Guide
+on data analysis which is available at http://www.alglib.net/dataanalysis/
+
+1. User initializes algorithm state with MCPDCreate() call
+
+2. User  adds  one  or  more  tracks -  sequences of states which describe
+   evolution of a system being modelled from different starting conditions
+
+3. User may add optional boundary, equality  and/or  linear constraints on
+   the coefficients of P by calling one of the following functions:
+   * MCPDSetEC() to set equality constraints
+   * MCPDSetBC() to set bound constraints
+   * MCPDSetLC() to set linear constraints
+
+4. Optionally,  user  may  set  custom  weights  for prediction errors (by
+   default, algorithm assigns non-equal, automatically chosen weights  for
+   errors in the prediction of different components of X). It can be  done
+   with a call of MCPDSetPredictionWeights() function.
+
+5. User calls MCPDSolve() function which takes algorithm  state and
+   pointer (delegate, etc.) to callback function which calculates F/G.
+
+6. User calls MCPDResults() to get solution
+
+INPUT PARAMETERS:
+    N       -   problem dimension, N>=1
+
+OUTPUT PARAMETERS:
+    State   -   structure stores algorithm state
+
+  -- ALGLIB --
+     Copyright 23.05.2010 by Bochkanov Sergey
+*************************************************************************/
+void mcpdcreate(const ae_int_t n, mcpdstate &s);
+
+
+/*************************************************************************
+DESCRIPTION:
+
+This function is a specialized version of MCPDCreate()  function,  and  we
+recommend  you  to read comments for this function for general information
+about MCPD solver.
+
+This  function  creates  MCPD (Markov Chains for Population  Data)  solver
+for "Entry-state" model,  i.e. model  where transition from X[i] to X[i+1]
+is modelled as
+    X[i+1] = P*X[i]
+where
+    X[i] and X[i+1] are N-dimensional state vectors
+    P is a N*N transition matrix
+and  one  selected component of X[] is called "entry" state and is treated
+in a special way:
+    system state always transits from "entry" state to some another state
+    system state can not transit from any state into "entry" state
+Such conditions basically mean that row of P which corresponds to  "entry"
+state is zero.
+
+Such models arise when:
+* there is some population of individuals
+* individuals can have different states
+* individuals can transit from one state to another
+* population size is NOT constant -  at every moment of time there is some
+  (unpredictable) amount of "new" individuals, which can transit into  one
+  of the states at the next turn, but still no one leaves population
+* you want to model transitions of individuals from one state into another
+* but you do NOT want to predict amount of "new"  individuals  because  it
+  does not depends on individuals already present (hence  system  can  not
+  transit INTO entry state - it can only transit FROM it).
+
+This model is discussed  in  more  details  in  the ALGLIB User Guide (see
+http://www.alglib.net/dataanalysis/ for more data).
+
+INPUT PARAMETERS:
+    N       -   problem dimension, N>=2
+    EntryState- index of entry state, in 0..N-1
+
+OUTPUT PARAMETERS:
+    State   -   structure stores algorithm state
+
+  -- ALGLIB --
+     Copyright 23.05.2010 by Bochkanov Sergey
+*************************************************************************/
+void mcpdcreateentry(const ae_int_t n, const ae_int_t entrystate, mcpdstate &s);
+
+
+/*************************************************************************
+DESCRIPTION:
+
+This function is a specialized version of MCPDCreate()  function,  and  we
+recommend  you  to read comments for this function for general information
+about MCPD solver.
+
+This  function  creates  MCPD (Markov Chains for Population  Data)  solver
+for "Exit-state" model,  i.e. model  where  transition from X[i] to X[i+1]
+is modelled as
+    X[i+1] = P*X[i]
+where
+    X[i] and X[i+1] are N-dimensional state vectors
+    P is a N*N transition matrix
+and  one  selected component of X[] is called "exit"  state and is treated
+in a special way:
+    system state can transit from any state into "exit" state
+    system state can not transit from "exit" state into any other state
+    transition operator discards "exit" state (makes it zero at each turn)
+Such  conditions  basically  mean  that  column  of P which corresponds to
+"exit" state is zero. Multiplication by such P may decrease sum of  vector
+components.
+
+Such models arise when:
+* there is some population of individuals
+* individuals can have different states
+* individuals can transit from one state to another
+* population size is NOT constant - individuals can move into "exit" state
+  and leave population at the next turn, but there are no new individuals
+* amount of individuals which leave population can be predicted
+* you want to model transitions of individuals from one state into another
+  (including transitions into the "exit" state)
+
+This model is discussed  in  more  details  in  the ALGLIB User Guide (see
+http://www.alglib.net/dataanalysis/ for more data).
+
+INPUT PARAMETERS:
+    N       -   problem dimension, N>=2
+    ExitState-  index of exit state, in 0..N-1
+
+OUTPUT PARAMETERS:
+    State   -   structure stores algorithm state
+
+  -- ALGLIB --
+     Copyright 23.05.2010 by Bochkanov Sergey
+*************************************************************************/
+void mcpdcreateexit(const ae_int_t n, const ae_int_t exitstate, mcpdstate &s);
+
+
+/*************************************************************************
+DESCRIPTION:
+
+This function is a specialized version of MCPDCreate()  function,  and  we
+recommend  you  to read comments for this function for general information
+about MCPD solver.
+
+This  function  creates  MCPD (Markov Chains for Population  Data)  solver
+for "Entry-Exit-states" model, i.e. model where  transition  from  X[i] to
+X[i+1] is modelled as
+    X[i+1] = P*X[i]
+where
+    X[i] and X[i+1] are N-dimensional state vectors
+    P is a N*N transition matrix
+one selected component of X[] is called "entry" state and is treated in  a
+special way:
+    system state always transits from "entry" state to some another state
+    system state can not transit from any state into "entry" state
+and another one component of X[] is called "exit" state and is treated  in
+a special way too:
+    system state can transit from any state into "exit" state
+    system state can not transit from "exit" state into any other state
+    transition operator discards "exit" state (makes it zero at each turn)
+Such conditions basically mean that:
+    row of P which corresponds to "entry" state is zero
+    column of P which corresponds to "exit" state is zero
+Multiplication by such P may decrease sum of vector components.
+
+Such models arise when:
+* there is some population of individuals
+* individuals can have different states
+* individuals can transit from one state to another
+* population size is NOT constant
+* at every moment of time there is some (unpredictable)  amount  of  "new"
+  individuals, which can transit into one of the states at the next turn
+* some  individuals  can  move  (predictably)  into "exit" state and leave
+  population at the next turn
+* you want to model transitions of individuals from one state into another,
+  including transitions from the "entry" state and into the "exit" state.
+* but you do NOT want to predict amount of "new"  individuals  because  it
+  does not depends on individuals already present (hence  system  can  not
+  transit INTO entry state - it can only transit FROM it).
+
+This model is discussed  in  more  details  in  the ALGLIB User Guide (see
+http://www.alglib.net/dataanalysis/ for more data).
+
+INPUT PARAMETERS:
+    N       -   problem dimension, N>=2
+    EntryState- index of entry state, in 0..N-1
+    ExitState-  index of exit state, in 0..N-1
+
+OUTPUT PARAMETERS:
+    State   -   structure stores algorithm state
+
+  -- ALGLIB --
+     Copyright 23.05.2010 by Bochkanov Sergey
+*************************************************************************/
+void mcpdcreateentryexit(const ae_int_t n, const ae_int_t entrystate, const ae_int_t exitstate, mcpdstate &s);
+
+
+/*************************************************************************
+This  function  is  used to add a track - sequence of system states at the
+different moments of its evolution.
+
+You  may  add  one  or several tracks to the MCPD solver. In case you have
+several tracks, they won't overwrite each other. For example,  if you pass
+two tracks, A1-A2-A3 (system at t=A+1, t=A+2 and t=A+3) and B1-B2-B3, then
+solver will try to model transitions from t=A+1 to t=A+2, t=A+2 to  t=A+3,
+t=B+1 to t=B+2, t=B+2 to t=B+3. But it WONT mix these two tracks - i.e. it
+wont try to model transition from t=A+3 to t=B+1.
+
+INPUT PARAMETERS:
+    S       -   solver
+    XY      -   track, array[K,N]:
+                * I-th row is a state at t=I
+                * elements of XY must be non-negative (exception will be
+                  thrown on negative elements)
+    K       -   number of points in a track
+                * if given, only leading K rows of XY are used
+                * if not given, automatically determined from size of XY
+
+NOTES:
+
+1. Track may contain either proportional or population data:
+   * with proportional data all rows of XY must sum to 1.0, i.e. we have
+     proportions instead of absolute population values
+   * with population data rows of XY contain population counts and generally
+     do not sum to 1.0 (although they still must be non-negative)
+
+  -- ALGLIB --
+     Copyright 23.05.2010 by Bochkanov Sergey
+*************************************************************************/
+void mcpdaddtrack(const mcpdstate &s, const real_2d_array &xy, const ae_int_t k);
+void mcpdaddtrack(const mcpdstate &s, const real_2d_array &xy);
+
+
+/*************************************************************************
+This function is used to add equality constraints on the elements  of  the
+transition matrix P.
+
+MCPD solver has four types of constraints which can be placed on P:
+* user-specified equality constraints (optional)
+* user-specified bound constraints (optional)
+* user-specified general linear constraints (optional)
+* basic constraints (always present):
+  * non-negativity: P[i,j]>=0
+  * consistency: every column of P sums to 1.0
+
+Final  constraints  which  are  passed  to  the  underlying  optimizer are
+calculated  as  intersection  of all present constraints. For example, you
+may specify boundary constraint on P[0,0] and equality one:
+    0.1<=P[0,0]<=0.9
+    P[0,0]=0.5
+Such  combination  of  constraints  will  be  silently  reduced  to  their
+intersection, which is P[0,0]=0.5.
+
+This  function  can  be  used  to  place equality constraints on arbitrary
+subset of elements of P. Set of constraints is specified by EC, which  may
+contain either NAN's or finite numbers from [0,1]. NAN denotes absence  of
+constraint, finite number denotes equality constraint on specific  element
+of P.
+
+You can also  use  MCPDAddEC()  function  which  allows  to  ADD  equality
+constraint  for  one  element  of P without changing constraints for other
+elements.
+
+These functions (MCPDSetEC and MCPDAddEC) interact as follows:
+* there is internal matrix of equality constraints which is stored in  the
+  MCPD solver
+* MCPDSetEC() replaces this matrix by another one (SET)
+* MCPDAddEC() modifies one element of this matrix and  leaves  other  ones
+  unchanged (ADD)
+* thus  MCPDAddEC()  call  preserves  all  modifications  done by previous
+  calls,  while  MCPDSetEC()  completely discards all changes  done to the
+  equality constraints.
+
+INPUT PARAMETERS:
+    S       -   solver
+    EC      -   equality constraints, array[N,N]. Elements of  EC  can  be
+                either NAN's or finite  numbers from  [0,1].  NAN  denotes
+                absence  of  constraints,  while  finite  value    denotes
+                equality constraint on the corresponding element of P.
+
+NOTES:
+
+1. infinite values of EC will lead to exception being thrown. Values  less
+than 0.0 or greater than 1.0 will lead to error code being returned  after
+call to MCPDSolve().
+
+  -- ALGLIB --
+     Copyright 23.05.2010 by Bochkanov Sergey
+*************************************************************************/
+void mcpdsetec(const mcpdstate &s, const real_2d_array &ec);
+
+
+/*************************************************************************
+This function is used to add equality constraints on the elements  of  the
+transition matrix P.
+
+MCPD solver has four types of constraints which can be placed on P:
+* user-specified equality constraints (optional)
+* user-specified bound constraints (optional)
+* user-specified general linear constraints (optional)
+* basic constraints (always present):
+  * non-negativity: P[i,j]>=0
+  * consistency: every column of P sums to 1.0
+
+Final  constraints  which  are  passed  to  the  underlying  optimizer are
+calculated  as  intersection  of all present constraints. For example, you
+may specify boundary constraint on P[0,0] and equality one:
+    0.1<=P[0,0]<=0.9
+    P[0,0]=0.5
+Such  combination  of  constraints  will  be  silently  reduced  to  their
+intersection, which is P[0,0]=0.5.
+
+This function can be used to ADD equality constraint for one element of  P
+without changing constraints for other elements.
+
+You  can  also  use  MCPDSetEC()  function  which  allows  you  to specify
+arbitrary set of equality constraints in one call.
+
+These functions (MCPDSetEC and MCPDAddEC) interact as follows:
+* there is internal matrix of equality constraints which is stored in the
+  MCPD solver
+* MCPDSetEC() replaces this matrix by another one (SET)
+* MCPDAddEC() modifies one element of this matrix and leaves  other  ones
+  unchanged (ADD)
+* thus  MCPDAddEC()  call  preserves  all  modifications done by previous
+  calls,  while  MCPDSetEC()  completely discards all changes done to the
+  equality constraints.
+
+INPUT PARAMETERS:
+    S       -   solver
+    I       -   row index of element being constrained
+    J       -   column index of element being constrained
+    C       -   value (constraint for P[I,J]).  Can  be  either  NAN  (no
+                constraint) or finite value from [0,1].
+
+NOTES:
+
+1. infinite values of C  will lead to exception being thrown. Values  less
+than 0.0 or greater than 1.0 will lead to error code being returned  after
+call to MCPDSolve().
+
+  -- ALGLIB --
+     Copyright 23.05.2010 by Bochkanov Sergey
+*************************************************************************/
+void mcpdaddec(const mcpdstate &s, const ae_int_t i, const ae_int_t j, const double c);
+
+
+/*************************************************************************
+This function is used to add bound constraints  on  the  elements  of  the
+transition matrix P.
+
+MCPD solver has four types of constraints which can be placed on P:
+* user-specified equality constraints (optional)
+* user-specified bound constraints (optional)
+* user-specified general linear constraints (optional)
+* basic constraints (always present):
+  * non-negativity: P[i,j]>=0
+  * consistency: every column of P sums to 1.0
+
+Final  constraints  which  are  passed  to  the  underlying  optimizer are
+calculated  as  intersection  of all present constraints. For example, you
+may specify boundary constraint on P[0,0] and equality one:
+    0.1<=P[0,0]<=0.9
+    P[0,0]=0.5
+Such  combination  of  constraints  will  be  silently  reduced  to  their
+intersection, which is P[0,0]=0.5.
+
+This  function  can  be  used  to  place bound   constraints  on arbitrary
+subset  of  elements  of  P.  Set of constraints is specified by BndL/BndU
+matrices, which may contain arbitrary combination  of  finite  numbers  or
+infinities (like -INF<x<=0.5 or 0.1<=x<+INF).
+
+You can also use MCPDAddBC() function which allows to ADD bound constraint
+for one element of P without changing constraints for other elements.
+
+These functions (MCPDSetBC and MCPDAddBC) interact as follows:
+* there is internal matrix of bound constraints which is stored in the
+  MCPD solver
+* MCPDSetBC() replaces this matrix by another one (SET)
+* MCPDAddBC() modifies one element of this matrix and  leaves  other  ones
+  unchanged (ADD)
+* thus  MCPDAddBC()  call  preserves  all  modifications  done by previous
+  calls,  while  MCPDSetBC()  completely discards all changes  done to the
+  equality constraints.
+
+INPUT PARAMETERS:
+    S       -   solver
+    BndL    -   lower bounds constraints, array[N,N]. Elements of BndL can
+                be finite numbers or -INF.
+    BndU    -   upper bounds constraints, array[N,N]. Elements of BndU can
+                be finite numbers or +INF.
+
+  -- ALGLIB --
+     Copyright 23.05.2010 by Bochkanov Sergey
+*************************************************************************/
+void mcpdsetbc(const mcpdstate &s, const real_2d_array &bndl, const real_2d_array &bndu);
+
+
+/*************************************************************************
+This function is used to add bound constraints  on  the  elements  of  the
+transition matrix P.
+
+MCPD solver has four types of constraints which can be placed on P:
+* user-specified equality constraints (optional)
+* user-specified bound constraints (optional)
+* user-specified general linear constraints (optional)
+* basic constraints (always present):
+  * non-negativity: P[i,j]>=0
+  * consistency: every column of P sums to 1.0
+
+Final  constraints  which  are  passed  to  the  underlying  optimizer are
+calculated  as  intersection  of all present constraints. For example, you
+may specify boundary constraint on P[0,0] and equality one:
+    0.1<=P[0,0]<=0.9
+    P[0,0]=0.5
+Such  combination  of  constraints  will  be  silently  reduced  to  their
+intersection, which is P[0,0]=0.5.
+
+This  function  can  be  used to ADD bound constraint for one element of P
+without changing constraints for other elements.
+
+You  can  also  use  MCPDSetBC()  function  which  allows to  place  bound
+constraints  on arbitrary subset of elements of P.   Set of constraints is
+specified  by  BndL/BndU matrices, which may contain arbitrary combination
+of finite numbers or infinities (like -INF<x<=0.5 or 0.1<=x<+INF).
+
+These functions (MCPDSetBC and MCPDAddBC) interact as follows:
+* there is internal matrix of bound constraints which is stored in the
+  MCPD solver
+* MCPDSetBC() replaces this matrix by another one (SET)
+* MCPDAddBC() modifies one element of this matrix and  leaves  other  ones
+  unchanged (ADD)
+* thus  MCPDAddBC()  call  preserves  all  modifications  done by previous
+  calls,  while  MCPDSetBC()  completely discards all changes  done to the
+  equality constraints.
+
+INPUT PARAMETERS:
+    S       -   solver
+    I       -   row index of element being constrained
+    J       -   column index of element being constrained
+    BndL    -   lower bound
+    BndU    -   upper bound
+
+  -- ALGLIB --
+     Copyright 23.05.2010 by Bochkanov Sergey
+*************************************************************************/
+void mcpdaddbc(const mcpdstate &s, const ae_int_t i, const ae_int_t j, const double bndl, const double bndu);
+
+
+/*************************************************************************
+This function is used to set linear equality/inequality constraints on the
+elements of the transition matrix P.
+
+This function can be used to set one or several general linear constraints
+on the elements of P. Two types of constraints are supported:
+* equality constraints
+* inequality constraints (both less-or-equal and greater-or-equal)
+
+Coefficients  of  constraints  are  specified  by  matrix  C (one  of  the
+parameters).  One  row  of  C  corresponds  to  one  constraint.   Because
+transition  matrix P has N*N elements,  we  need  N*N columns to store all
+coefficients  (they  are  stored row by row), and one more column to store
+right part - hence C has N*N+1 columns.  Constraint  kind is stored in the
+CT array.
+
+Thus, I-th linear constraint is
+    P[0,0]*C[I,0] + P[0,1]*C[I,1] + .. + P[0,N-1]*C[I,N-1] +
+        + P[1,0]*C[I,N] + P[1,1]*C[I,N+1] + ... +
+        + P[N-1,N-1]*C[I,N*N-1]  ?=?  C[I,N*N]
+where ?=? can be either "=" (CT[i]=0), "<=" (CT[i]<0) or ">=" (CT[i]>0).
+
+Your constraint may involve only some subset of P (less than N*N elements).
+For example it can be something like
+    P[0,0] + P[0,1] = 0.5
+In this case you still should pass matrix  with N*N+1 columns, but all its
+elements (except for C[0,0], C[0,1] and C[0,N*N-1]) will be zero.
+
+INPUT PARAMETERS:
+    S       -   solver
+    C       -   array[K,N*N+1] - coefficients of constraints
+                (see above for complete description)
+    CT      -   array[K] - constraint types
+                (see above for complete description)
+    K       -   number of equality/inequality constraints, K>=0:
+                * if given, only leading K elements of C/CT are used
+                * if not given, automatically determined from sizes of C/CT
+
+  -- ALGLIB --
+     Copyright 23.05.2010 by Bochkanov Sergey
+*************************************************************************/
+void mcpdsetlc(const mcpdstate &s, const real_2d_array &c, const integer_1d_array &ct, const ae_int_t k);
+void mcpdsetlc(const mcpdstate &s, const real_2d_array &c, const integer_1d_array &ct);
+
+
+/*************************************************************************
+This function allows to  tune  amount  of  Tikhonov  regularization  being
+applied to your problem.
+
+By default, regularizing term is equal to r*||P-prior_P||^2, where r is  a
+small non-zero value,  P is transition matrix, prior_P is identity matrix,
+||X||^2 is a sum of squared elements of X.
+
+This  function  allows  you to change coefficient r. You can  also  change
+prior values with MCPDSetPrior() function.
+
+INPUT PARAMETERS:
+    S       -   solver
+    V       -   regularization  coefficient, finite non-negative value. It
+                is  not  recommended  to specify zero value unless you are
+                pretty sure that you want it.
+
+  -- ALGLIB --
+     Copyright 23.05.2010 by Bochkanov Sergey
+*************************************************************************/
+void mcpdsettikhonovregularizer(const mcpdstate &s, const double v);
+
+
+/*************************************************************************
+This  function  allows to set prior values used for regularization of your
+problem.
+
+By default, regularizing term is equal to r*||P-prior_P||^2, where r is  a
+small non-zero value,  P is transition matrix, prior_P is identity matrix,
+||X||^2 is a sum of squared elements of X.
+
+This  function  allows  you to change prior values prior_P. You  can  also
+change r with MCPDSetTikhonovRegularizer() function.
+
+INPUT PARAMETERS:
+    S       -   solver
+    PP      -   array[N,N], matrix of prior values:
+                1. elements must be real numbers from [0,1]
+                2. columns must sum to 1.0.
+                First property is checked (exception is thrown otherwise),
+                while second one is not checked/enforced.
+
+  -- ALGLIB --
+     Copyright 23.05.2010 by Bochkanov Sergey
+*************************************************************************/
+void mcpdsetprior(const mcpdstate &s, const real_2d_array &pp);
+
+
+/*************************************************************************
+This function is used to change prediction weights
+
+MCPD solver scales prediction errors as follows
+    Error(P) = ||W*(y-P*x)||^2
+where
+    x is a system state at time t
+    y is a system state at time t+1
+    P is a transition matrix
+    W is a diagonal scaling matrix
+
+By default, weights are chosen in order  to  minimize  relative prediction
+error instead of absolute one. For example, if one component of  state  is
+about 0.5 in magnitude and another one is about 0.05, then algorithm  will
+make corresponding weights equal to 2.0 and 20.0.
+
+INPUT PARAMETERS:
+    S       -   solver
+    PW      -   array[N], weights:
+                * must be non-negative values (exception will be thrown otherwise)
+                * zero values will be replaced by automatically chosen values
+
+  -- ALGLIB --
+     Copyright 23.05.2010 by Bochkanov Sergey
+*************************************************************************/
+void mcpdsetpredictionweights(const mcpdstate &s, const real_1d_array &pw);
+
+
+/*************************************************************************
+This function is used to start solution of the MCPD problem.
+
+After return from this function, you can use MCPDResults() to get solution
+and completion code.
+
+  -- ALGLIB --
+     Copyright 23.05.2010 by Bochkanov Sergey
+*************************************************************************/
+void mcpdsolve(const mcpdstate &s);
+
+
+/*************************************************************************
+MCPD results
+
+INPUT PARAMETERS:
+    State   -   algorithm state
+
+OUTPUT PARAMETERS:
+    P       -   array[N,N], transition matrix
+    Rep     -   optimization report. You should check Rep.TerminationType
+                in  order  to  distinguish  successful  termination  from
+                unsuccessful one. Speaking short, positive values  denote
+                success, negative ones are failures.
+                More information about fields of this  structure  can  be
+                found in the comments on MCPDReport datatype.
+
+
+  -- ALGLIB --
+     Copyright 23.05.2010 by Bochkanov Sergey
+*************************************************************************/
+void mcpdresults(const mcpdstate &s, real_2d_array &p, mcpdreport &rep);
+
+/*************************************************************************
 Neural network training  using  modified  Levenberg-Marquardt  with  exact
 Hessian calculation and regularization. Subroutine trains  neural  network
 with restarts from random positions. Algorithm is well  suited  for  small
@@ -1739,15 +2939,23 @@ regularization).
 INPUT PARAMETERS:
     Network     -   neural network with initialized geometry
     TrnXY       -   training set
-    TrnSize     -   training set size
+    TrnSize     -   training set size, TrnSize>0
     ValXY       -   validation set
-    ValSize     -   validation set size
+    ValSize     -   validation set size, ValSize>0
     Decay       -   weight decay constant, >=0.001
                     Decay term 'Decay*||Weights||^2' is added to error
                     function.
                     If you don't know what Decay to choose, use 0.001.
-    Restarts    -   number of restarts from random position, >0.
-                    If you don't know what Restarts to choose, use 2.
+    Restarts    -   number of restarts, either:
+                    * strictly positive number - algorithm make specified
+                      number of restarts from random position.
+                    * -1, in which case algorithm makes exactly one run
+                      from the initial state of the network (no randomization).
+                    If you don't know what Restarts to choose, choose one
+                    one the following:
+                    * -1 (deterministic start)
+                    * +1 (one random restart)
+                    * +5 (moderate amount of random restarts)
 
 OUTPUT PARAMETERS:
     Network     -   trained neural network.
@@ -1837,6 +3045,35 @@ OUTPUT PARAMETERS:
      Copyright 09.12.2007 by Bochkanov Sergey
 *************************************************************************/
 void mlpkfoldcvlm(const multilayerperceptron &network, const real_2d_array &xy, const ae_int_t npoints, const double decay, const ae_int_t restarts, const ae_int_t foldscount, ae_int_t &info, mlpreport &rep, mlpcvreport &cvrep);
+
+/*************************************************************************
+This function serializes data structure to string.
+
+Important properties of s_out:
+* it contains alphanumeric characters, dots, underscores, minus signs
+* these symbols are grouped into words, which are separated by spaces
+  and Windows-style (CR+LF) newlines
+* although  serializer  uses  spaces and CR+LF as separators, you can 
+  replace any separator character by arbitrary combination of spaces,
+  tabs, Windows or Unix newlines. It allows flexible reformatting  of
+  the  string  in  case you want to include it into text or XML file. 
+  But you should not insert separators into the middle of the "words"
+  nor you should change case of letters.
+* s_out can be freely moved between 32-bit and 64-bit systems, little
+  and big endian machines, and so on. You can serialize structure  on
+  32-bit machine and unserialize it on 64-bit one (or vice versa), or
+  serialize  it  on  SPARC  and  unserialize  on  x86.  You  can also 
+  serialize  it  in  C++ version of ALGLIB and unserialize in C# one, 
+  and vice versa.
+*************************************************************************/
+void mlpeserialize(mlpensemble &obj, std::string &s_out);
+
+
+/*************************************************************************
+This function unserializes data structure from string.
+*************************************************************************/
+void mlpeunserialize(std::string &s_in, mlpensemble &obj);
+
 
 /*************************************************************************
 Like MLPCreate0, but for ensembles.
@@ -2333,6 +3570,17 @@ void dfbuildrandomdecisionforest(/* Real    */ ae_matrix* xy,
      decisionforest* df,
      dfreport* rep,
      ae_state *_state);
+void dfbuildrandomdecisionforestx1(/* Real    */ ae_matrix* xy,
+     ae_int_t npoints,
+     ae_int_t nvars,
+     ae_int_t nclasses,
+     ae_int_t ntrees,
+     ae_int_t nrndvars,
+     double r,
+     ae_int_t* info,
+     decisionforest* df,
+     dfreport* rep,
+     ae_state *_state);
 void dfbuildinternal(/* Real    */ ae_matrix* xy,
      ae_int_t npoints,
      ae_int_t nvars,
@@ -2374,6 +3622,13 @@ double dfavgrelerror(decisionforest* df,
      ae_int_t npoints,
      ae_state *_state);
 void dfcopy(decisionforest* df1, decisionforest* df2, ae_state *_state);
+void dfalloc(ae_serializer* s, decisionforest* forest, ae_state *_state);
+void dfserialize(ae_serializer* s,
+     decisionforest* forest,
+     ae_state *_state);
+void dfunserialize(ae_serializer* s,
+     decisionforest* forest,
+     ae_state *_state);
 ae_bool _decisionforest_init(decisionforest* p, ae_state *_state, ae_bool make_automatic);
 ae_bool _decisionforest_init_copy(decisionforest* dst, decisionforest* src, ae_state *_state, ae_bool make_automatic);
 void _decisionforest_clear(decisionforest* p);
@@ -2383,29 +3638,6 @@ void _dfreport_clear(dfreport* p);
 ae_bool _dfinternalbuffers_init(dfinternalbuffers* p, ae_state *_state, ae_bool make_automatic);
 ae_bool _dfinternalbuffers_init_copy(dfinternalbuffers* dst, dfinternalbuffers* src, ae_state *_state, ae_bool make_automatic);
 void _dfinternalbuffers_clear(dfinternalbuffers* p);
-void kmeansgenerate(/* Real    */ ae_matrix* xy,
-     ae_int_t npoints,
-     ae_int_t nvars,
-     ae_int_t k,
-     ae_int_t restarts,
-     ae_int_t* info,
-     /* Real    */ ae_matrix* c,
-     /* Integer */ ae_vector* xyc,
-     ae_state *_state);
-void fisherlda(/* Real    */ ae_matrix* xy,
-     ae_int_t npoints,
-     ae_int_t nvars,
-     ae_int_t nclasses,
-     ae_int_t* info,
-     /* Real    */ ae_vector* w,
-     ae_state *_state);
-void fisherldan(/* Real    */ ae_matrix* xy,
-     ae_int_t npoints,
-     ae_int_t nvars,
-     ae_int_t nclasses,
-     ae_int_t* info,
-     /* Real    */ ae_matrix* w,
-     ae_state *_state);
 void lrbuild(/* Real    */ ae_matrix* xy,
      ae_int_t npoints,
      ae_int_t nvars,
@@ -2484,6 +3716,41 @@ void _linearmodel_clear(linearmodel* p);
 ae_bool _lrreport_init(lrreport* p, ae_state *_state, ae_bool make_automatic);
 ae_bool _lrreport_init_copy(lrreport* dst, lrreport* src, ae_state *_state, ae_bool make_automatic);
 void _lrreport_clear(lrreport* p);
+void filtersma(/* Real    */ ae_vector* x,
+     ae_int_t n,
+     ae_int_t k,
+     ae_state *_state);
+void filterema(/* Real    */ ae_vector* x,
+     ae_int_t n,
+     double alpha,
+     ae_state *_state);
+void filterlrma(/* Real    */ ae_vector* x,
+     ae_int_t n,
+     ae_int_t k,
+     ae_state *_state);
+void kmeansgenerate(/* Real    */ ae_matrix* xy,
+     ae_int_t npoints,
+     ae_int_t nvars,
+     ae_int_t k,
+     ae_int_t restarts,
+     ae_int_t* info,
+     /* Real    */ ae_matrix* c,
+     /* Integer */ ae_vector* xyc,
+     ae_state *_state);
+void fisherlda(/* Real    */ ae_matrix* xy,
+     ae_int_t npoints,
+     ae_int_t nvars,
+     ae_int_t nclasses,
+     ae_int_t* info,
+     /* Real    */ ae_vector* w,
+     ae_state *_state);
+void fisherldan(/* Real    */ ae_matrix* xy,
+     ae_int_t npoints,
+     ae_int_t nvars,
+     ae_int_t nclasses,
+     ae_int_t* info,
+     /* Real    */ ae_matrix* w,
+     ae_state *_state);
 void mlpcreate0(ae_int_t nin,
      ae_int_t nout,
      multilayerperceptron* network,
@@ -2559,11 +3826,11 @@ void mlpcreatec2(ae_int_t nin,
 void mlpcopy(multilayerperceptron* network1,
      multilayerperceptron* network2,
      ae_state *_state);
-void mlpserialize(multilayerperceptron* network,
+void mlpserializeold(multilayerperceptron* network,
      /* Real    */ ae_vector* ra,
      ae_int_t* rlen,
      ae_state *_state);
-void mlpunserialize(/* Real    */ ae_vector* ra,
+void mlpunserializeold(/* Real    */ ae_vector* ra,
      multilayerperceptron* network,
      ae_state *_state);
 void mlprandomize(multilayerperceptron* network, ae_state *_state);
@@ -2577,7 +3844,69 @@ void mlpproperties(multilayerperceptron* network,
      ae_int_t* nout,
      ae_int_t* wcount,
      ae_state *_state);
+ae_int_t mlpgetinputscount(multilayerperceptron* network,
+     ae_state *_state);
+ae_int_t mlpgetoutputscount(multilayerperceptron* network,
+     ae_state *_state);
+ae_int_t mlpgetweightscount(multilayerperceptron* network,
+     ae_state *_state);
 ae_bool mlpissoftmax(multilayerperceptron* network, ae_state *_state);
+ae_int_t mlpgetlayerscount(multilayerperceptron* network,
+     ae_state *_state);
+ae_int_t mlpgetlayersize(multilayerperceptron* network,
+     ae_int_t k,
+     ae_state *_state);
+void mlpgetinputscaling(multilayerperceptron* network,
+     ae_int_t i,
+     double* mean,
+     double* sigma,
+     ae_state *_state);
+void mlpgetoutputscaling(multilayerperceptron* network,
+     ae_int_t i,
+     double* mean,
+     double* sigma,
+     ae_state *_state);
+void mlpgetneuroninfo(multilayerperceptron* network,
+     ae_int_t k,
+     ae_int_t i,
+     ae_int_t* fkind,
+     double* threshold,
+     ae_state *_state);
+double mlpgetweight(multilayerperceptron* network,
+     ae_int_t k0,
+     ae_int_t i0,
+     ae_int_t k1,
+     ae_int_t i1,
+     ae_state *_state);
+void mlpsetinputscaling(multilayerperceptron* network,
+     ae_int_t i,
+     double mean,
+     double sigma,
+     ae_state *_state);
+void mlpsetoutputscaling(multilayerperceptron* network,
+     ae_int_t i,
+     double mean,
+     double sigma,
+     ae_state *_state);
+void mlpsetneuroninfo(multilayerperceptron* network,
+     ae_int_t k,
+     ae_int_t i,
+     ae_int_t fkind,
+     double threshold,
+     ae_state *_state);
+void mlpsetweight(multilayerperceptron* network,
+     ae_int_t k0,
+     ae_int_t i0,
+     ae_int_t k1,
+     ae_int_t i1,
+     double w,
+     ae_state *_state);
+void mlpactivationfunction(double net,
+     ae_int_t k,
+     double* f,
+     double* df,
+     double* d2f,
+     ae_state *_state);
 void mlpprocess(multilayerperceptron* network,
      /* Real    */ ae_vector* x,
      /* Real    */ ae_vector* y,
@@ -2665,6 +3994,15 @@ void mlpinternalprocessvector(/* Integer */ ae_vector* structinfo,
      /* Real    */ ae_vector* x,
      /* Real    */ ae_vector* y,
      ae_state *_state);
+void mlpalloc(ae_serializer* s,
+     multilayerperceptron* network,
+     ae_state *_state);
+void mlpserialize(ae_serializer* s,
+     multilayerperceptron* network,
+     ae_state *_state);
+void mlpunserialize(ae_serializer* s,
+     multilayerperceptron* network,
+     ae_state *_state);
 ae_bool _multilayerperceptron_init(multilayerperceptron* p, ae_state *_state, ae_bool make_automatic);
 ae_bool _multilayerperceptron_init_copy(multilayerperceptron* dst, multilayerperceptron* src, ae_state *_state, ae_bool make_automatic);
 void _multilayerperceptron_clear(multilayerperceptron* p);
@@ -2728,6 +4066,65 @@ void _logitmcstate_clear(logitmcstate* p);
 ae_bool _mnlreport_init(mnlreport* p, ae_state *_state, ae_bool make_automatic);
 ae_bool _mnlreport_init_copy(mnlreport* dst, mnlreport* src, ae_state *_state, ae_bool make_automatic);
 void _mnlreport_clear(mnlreport* p);
+void mcpdcreate(ae_int_t n, mcpdstate* s, ae_state *_state);
+void mcpdcreateentry(ae_int_t n,
+     ae_int_t entrystate,
+     mcpdstate* s,
+     ae_state *_state);
+void mcpdcreateexit(ae_int_t n,
+     ae_int_t exitstate,
+     mcpdstate* s,
+     ae_state *_state);
+void mcpdcreateentryexit(ae_int_t n,
+     ae_int_t entrystate,
+     ae_int_t exitstate,
+     mcpdstate* s,
+     ae_state *_state);
+void mcpdaddtrack(mcpdstate* s,
+     /* Real    */ ae_matrix* xy,
+     ae_int_t k,
+     ae_state *_state);
+void mcpdsetec(mcpdstate* s,
+     /* Real    */ ae_matrix* ec,
+     ae_state *_state);
+void mcpdaddec(mcpdstate* s,
+     ae_int_t i,
+     ae_int_t j,
+     double c,
+     ae_state *_state);
+void mcpdsetbc(mcpdstate* s,
+     /* Real    */ ae_matrix* bndl,
+     /* Real    */ ae_matrix* bndu,
+     ae_state *_state);
+void mcpdaddbc(mcpdstate* s,
+     ae_int_t i,
+     ae_int_t j,
+     double bndl,
+     double bndu,
+     ae_state *_state);
+void mcpdsetlc(mcpdstate* s,
+     /* Real    */ ae_matrix* c,
+     /* Integer */ ae_vector* ct,
+     ae_int_t k,
+     ae_state *_state);
+void mcpdsettikhonovregularizer(mcpdstate* s, double v, ae_state *_state);
+void mcpdsetprior(mcpdstate* s,
+     /* Real    */ ae_matrix* pp,
+     ae_state *_state);
+void mcpdsetpredictionweights(mcpdstate* s,
+     /* Real    */ ae_vector* pw,
+     ae_state *_state);
+void mcpdsolve(mcpdstate* s, ae_state *_state);
+void mcpdresults(mcpdstate* s,
+     /* Real    */ ae_matrix* p,
+     mcpdreport* rep,
+     ae_state *_state);
+ae_bool _mcpdstate_init(mcpdstate* p, ae_state *_state, ae_bool make_automatic);
+ae_bool _mcpdstate_init_copy(mcpdstate* dst, mcpdstate* src, ae_state *_state, ae_bool make_automatic);
+void _mcpdstate_clear(mcpdstate* p);
+ae_bool _mcpdreport_init(mcpdreport* p, ae_state *_state, ae_bool make_automatic);
+ae_bool _mcpdreport_init_copy(mcpdreport* dst, mcpdreport* src, ae_state *_state, ae_bool make_automatic);
+void _mcpdreport_clear(mcpdreport* p);
 void mlptrainlm(multilayerperceptron* network,
      /* Real    */ ae_matrix* xy,
      ae_int_t npoints,
@@ -2875,13 +4272,6 @@ void mlpecreatefromnetwork(multilayerperceptron* network,
 void mlpecopy(mlpensemble* ensemble1,
      mlpensemble* ensemble2,
      ae_state *_state);
-void mlpeserialize(mlpensemble* ensemble,
-     /* Real    */ ae_vector* ra,
-     ae_int_t* rlen,
-     ae_state *_state);
-void mlpeunserialize(/* Real    */ ae_vector* ra,
-     mlpensemble* ensemble,
-     ae_state *_state);
 void mlperandomize(mlpensemble* ensemble, ae_state *_state);
 void mlpeproperties(mlpensemble* ensemble,
      ae_int_t* nin,
@@ -2943,6 +4333,13 @@ void mlpetraines(mlpensemble* ensemble,
      ae_int_t restarts,
      ae_int_t* info,
      mlpreport* rep,
+     ae_state *_state);
+void mlpealloc(ae_serializer* s, mlpensemble* ensemble, ae_state *_state);
+void mlpeserialize(ae_serializer* s,
+     mlpensemble* ensemble,
+     ae_state *_state);
+void mlpeunserialize(ae_serializer* s,
+     mlpensemble* ensemble,
      ae_state *_state);
 ae_bool _mlpensemble_init(mlpensemble* p, ae_state *_state, ae_bool make_automatic);
 ae_bool _mlpensemble_init_copy(mlpensemble* dst, mlpensemble* src, ae_state *_state, ae_bool make_automatic);

@@ -65,6 +65,7 @@ typedef struct
     ae_bool periodic;
     ae_int_t n;
     ae_int_t k;
+    ae_int_t continuity;
     ae_vector x;
     ae_vector c;
 } spline1dinterpolant;
@@ -97,6 +98,7 @@ typedef struct
 {
     double taskrcond;
     ae_int_t iterationscount;
+    ae_int_t varidx;
     double rmserror;
     double avgerror;
     double avgrelerror;
@@ -123,6 +125,7 @@ typedef struct
     ae_int_t nweights;
     ae_int_t wkind;
     ae_int_t wits;
+    double teststep;
     ae_bool xupdated;
     ae_bool needf;
     ae_bool needfg;
@@ -133,8 +136,10 @@ typedef struct
     double f;
     ae_vector g;
     ae_matrix h;
+    ae_vector tmp;
     ae_int_t repiterationscount;
     ae_int_t repterminationtype;
+    ae_int_t repvaridx;
     double reprmserror;
     double repavgerror;
     double repavgrelerror;
@@ -165,9 +170,67 @@ typedef struct
 } pspline3interpolant;
 typedef struct
 {
+    ae_int_t ny;
+    ae_int_t nx;
+    ae_int_t nc;
+    ae_int_t nl;
+    kdtree tree;
+    ae_matrix xc;
+    ae_matrix wr;
+    double rmax;
+    ae_matrix v;
+    ae_int_t gridtype;
+    ae_bool fixrad;
+    double lambdav;
+    double radvalue;
+    double radzvalue;
+    ae_int_t nlayers;
+    ae_int_t aterm;
+    ae_int_t algorithmtype;
+    double epsort;
+    double epserr;
+    ae_int_t maxits;
+    double h;
+    ae_int_t n;
+    ae_matrix x;
+    ae_matrix y;
+    ae_vector calcbufxcx;
+    ae_matrix calcbufx;
+    ae_vector calcbuftags;
+} rbfmodel;
+typedef struct
+{
+    ae_int_t arows;
+    ae_int_t acols;
+    ae_int_t annz;
+    ae_int_t iterationscount;
+    ae_int_t nmv;
+    ae_int_t terminationtype;
+} rbfreport;
+typedef struct
+{
     ae_int_t k;
-    ae_vector c;
+    ae_int_t stype;
+    ae_int_t n;
+    ae_int_t m;
+    ae_int_t d;
+    ae_vector x;
+    ae_vector y;
+    ae_vector f;
 } spline2dinterpolant;
+typedef struct
+{
+    ae_int_t k;
+    ae_int_t stype;
+    ae_int_t n;
+    ae_int_t m;
+    ae_int_t l;
+    ae_int_t d;
+    ae_vector x;
+    ae_vector y;
+    ae_vector z;
+    ae_vector f;
+} spline3dinterpolant;
 
 }
 
@@ -232,7 +295,7 @@ public:
 
 
 /*************************************************************************
-1-dimensional spline inteprolant
+1-dimensional spline interpolant
 *************************************************************************/
 class _spline1dinterpolant_owner
 {
@@ -401,6 +464,7 @@ public:
     virtual ~lsfitreport();
     double &taskrcond;
     ae_int_t &iterationscount;
+    ae_int_t &varidx;
     double &rmserror;
     double &avgerror;
     double &avgrelerror;
@@ -505,6 +569,68 @@ public:
 };
 
 /*************************************************************************
+RBF model.
+
+Never try to directly work with fields of this object - always use  ALGLIB
+functions to use this object.
+*************************************************************************/
+class _rbfmodel_owner
+{
+public:
+    _rbfmodel_owner();
+    _rbfmodel_owner(const _rbfmodel_owner &rhs);
+    _rbfmodel_owner& operator=(const _rbfmodel_owner &rhs);
+    virtual ~_rbfmodel_owner();
+    alglib_impl::rbfmodel* c_ptr();
+    alglib_impl::rbfmodel* c_ptr() const;
+protected:
+    alglib_impl::rbfmodel *p_struct;
+};
+class rbfmodel : public _rbfmodel_owner
+{
+public:
+    rbfmodel();
+    rbfmodel(const rbfmodel &rhs);
+    rbfmodel& operator=(const rbfmodel &rhs);
+    virtual ~rbfmodel();
+
+};
+
+
+/*************************************************************************
+RBF solution report:
+* TerminationType   -   termination type, positive values - success,
+                        non-positive - failure.
+*************************************************************************/
+class _rbfreport_owner
+{
+public:
+    _rbfreport_owner();
+    _rbfreport_owner(const _rbfreport_owner &rhs);
+    _rbfreport_owner& operator=(const _rbfreport_owner &rhs);
+    virtual ~_rbfreport_owner();
+    alglib_impl::rbfreport* c_ptr();
+    alglib_impl::rbfreport* c_ptr() const;
+protected:
+    alglib_impl::rbfreport *p_struct;
+};
+class rbfreport : public _rbfreport_owner
+{
+public:
+    rbfreport();
+    rbfreport(const rbfreport &rhs);
+    rbfreport& operator=(const rbfreport &rhs);
+    virtual ~rbfreport();
+    ae_int_t &arows;
+    ae_int_t &acols;
+    ae_int_t &annz;
+    ae_int_t &iterationscount;
+    ae_int_t &nmv;
+    ae_int_t &terminationtype;
+
+};
+
+/*************************************************************************
 2-dimensional spline inteprolant
 *************************************************************************/
 class _spline2dinterpolant_owner
@@ -526,6 +652,31 @@ public:
     spline2dinterpolant(const spline2dinterpolant &rhs);
     spline2dinterpolant& operator=(const spline2dinterpolant &rhs);
     virtual ~spline2dinterpolant();
+
+};
+
+/*************************************************************************
+3-dimensional spline inteprolant
+*************************************************************************/
+class _spline3dinterpolant_owner
+{
+public:
+    _spline3dinterpolant_owner();
+    _spline3dinterpolant_owner(const _spline3dinterpolant_owner &rhs);
+    _spline3dinterpolant_owner& operator=(const _spline3dinterpolant_owner &rhs);
+    virtual ~_spline3dinterpolant_owner();
+    alglib_impl::spline3dinterpolant* c_ptr();
+    alglib_impl::spline3dinterpolant* c_ptr() const;
+protected:
+    alglib_impl::spline3dinterpolant *p_struct;
+};
+class spline3dinterpolant : public _spline3dinterpolant_owner
+{
+public:
+    spline3dinterpolant();
+    spline3dinterpolant(const spline3dinterpolant &rhs);
+    spline3dinterpolant& operator=(const spline3dinterpolant &rhs);
+    virtual ~spline3dinterpolant();
 
 };
 
@@ -1750,7 +1901,7 @@ INPUT PARAMETERS:
     C   -   spline interpolant.
     X   -   point
 
-Result:
+OUTPUT PARAMETERS:
     Tbl -   coefficients table, unpacked format, array[0..N-2, 0..5].
             For I = 0...N-2:
                 Tbl[I,0] = X[i]
@@ -1762,6 +1913,11 @@ Result:
             On [x[i], x[i+1]] spline is equals to:
                 S(x) = C0 + C1*t + C2*t^2 + C3*t^3
                 t = x-x[i]
+
+NOTE:
+    You  can rebuild spline with  Spline1DBuildHermite()  function,  which
+    accepts as inputs function values and derivatives at nodes, which  are
+    easy to calculate when you have coefficients.
 
   -- ALGLIB PROJECT --
      Copyright 29.06.2007 by Bochkanov Sergey
@@ -1813,6 +1969,30 @@ Result:
      Copyright 23.06.2007 by Bochkanov Sergey
 *************************************************************************/
 double spline1dintegrate(const spline1dinterpolant &c, const double x);
+
+
+/*************************************************************************
+This function builds monotone cubic Hermite interpolant. This interpolant
+is monotonic in [x(0),x(n-1)] and is constant outside of this interval.
+
+In  case  y[]  form  non-monotonic  sequence,  interpolant  is  piecewise
+monotonic.  Say, for x=(0,1,2,3,4)  and  y=(0,1,2,1,0)  interpolant  will
+monotonically grow at [0..2] and monotonically decrease at [2..4].
+
+INPUT PARAMETERS:
+    X           -   spline nodes, array[0..N-1]. Subroutine automatically
+                    sorts points, so caller may pass unsorted array.
+    Y           -   function values, array[0..N-1]
+    N           -   the number of points(N>=2).
+
+OUTPUT PARAMETERS:
+    C           -   spline interpolant.
+
+ -- ALGLIB PROJECT --
+     Copyright 21.06.2012 by Bochkanov Sergey
+*************************************************************************/
+void spline1dbuildmonotone(const real_1d_array &x, const real_1d_array &y, const ae_int_t n, spline1dinterpolant &c);
+void spline1dbuildmonotone(const real_1d_array &x, const real_1d_array &y, spline1dinterpolant &c);
 
 /*************************************************************************
 Fitting by polynomials in barycentric form. This function provides  simple
@@ -3056,6 +3236,8 @@ INPUT PARAMETERS:
 
 OUTPUT PARAMETERS:
     Info    -   completetion code:
+                    * -7    gradient verification failed.
+                            See LSFitSetGradientCheck() for more information.
                     *  1    relative function improvement is no more than
                             EpsF.
                     *  2    relative step is no more than EpsX.
@@ -3078,6 +3260,60 @@ OUTPUT PARAMETERS:
      Copyright 17.08.2009 by Bochkanov Sergey
 *************************************************************************/
 void lsfitresults(const lsfitstate &state, ae_int_t &info, real_1d_array &c, lsfitreport &rep);
+
+
+/*************************************************************************
+This  subroutine  turns  on  verification  of  the  user-supplied analytic
+gradient:
+* user calls this subroutine before fitting begins
+* LSFitFit() is called
+* prior to actual fitting, for  each  point  in  data  set  X_i  and  each
+  component  of  parameters  being  fited C_j algorithm performs following
+  steps:
+  * two trial steps are made to C_j-TestStep*S[j] and C_j+TestStep*S[j],
+    where C_j is j-th parameter and S[j] is a scale of j-th parameter
+  * if needed, steps are bounded with respect to constraints on C[]
+  * F(X_i|C) is evaluated at these trial points
+  * we perform one more evaluation in the middle point of the interval
+  * we  build  cubic  model using function values and derivatives at trial
+    points and we compare its prediction with actual value in  the  middle
+    point
+  * in case difference between prediction and actual value is higher  than
+    some predetermined threshold, algorithm stops with completion code -7;
+    Rep.VarIdx is set to index of the parameter with incorrect derivative.
+* after verification is over, algorithm proceeds to the actual optimization.
+
+NOTE 1: verification needs N*K (points count * parameters count)  gradient
+        evaluations. It is very costly and you should use it only for  low
+        dimensional  problems,  when  you  want  to  be  sure  that you've
+        correctly calculated analytic derivatives. You should not  use  it
+        in the production code  (unless  you  want  to  check  derivatives
+        provided by some third party).
+
+NOTE 2: you  should  carefully  choose  TestStep. Value which is too large
+        (so large that function behaviour is significantly non-cubic) will
+        lead to false alarms. You may use  different  step  for  different
+        parameters by means of setting scale with LSFitSetScale().
+
+NOTE 3: this function may lead to false positives. In case it reports that
+        I-th  derivative was calculated incorrectly, you may decrease test
+        step  and  try  one  more  time  - maybe your function changes too
+        sharply  and  your  step  is  too  large for such rapidly chanding
+        function.
+
+NOTE 4: this function works only for optimizers created with LSFitCreateWFG()
+        or LSFitCreateFG() constructors.
+
+INPUT PARAMETERS:
+    State       -   structure used to store algorithm state
+    TestStep    -   verification step:
+                    * TestStep=0 turns verification off
+                    * TestStep>0 activates verification
+
+  -- ALGLIB --
+     Copyright 15.06.2012 by Bochkanov Sergey
+*************************************************************************/
+void lsfitsetgradientcheck(const lsfitstate &state, const double teststep);
 
 /*************************************************************************
 This function  builds  non-periodic 2-dimensional parametric spline  which
@@ -3468,40 +3704,521 @@ RESULT:
 double pspline3arclength(const pspline3interpolant &p, const double a, const double b);
 
 /*************************************************************************
-This subroutine builds bilinear spline coefficients table.
+This function serializes data structure to string.
 
-Input parameters:
-    X   -   spline abscissas, array[0..N-1]
-    Y   -   spline ordinates, array[0..M-1]
-    F   -   function values, array[0..M-1,0..N-1]
-    M,N -   grid size, M>=2, N>=2
-
-Output parameters:
-    C   -   spline interpolant
-
-  -- ALGLIB PROJECT --
-     Copyright 05.07.2007 by Bochkanov Sergey
+Important properties of s_out:
+* it contains alphanumeric characters, dots, underscores, minus signs
+* these symbols are grouped into words, which are separated by spaces
+  and Windows-style (CR+LF) newlines
+* although  serializer  uses  spaces and CR+LF as separators, you can 
+  replace any separator character by arbitrary combination of spaces,
+  tabs, Windows or Unix newlines. It allows flexible reformatting  of
+  the  string  in  case you want to include it into text or XML file. 
+  But you should not insert separators into the middle of the "words"
+  nor you should change case of letters.
+* s_out can be freely moved between 32-bit and 64-bit systems, little
+  and big endian machines, and so on. You can serialize structure  on
+  32-bit machine and unserialize it on 64-bit one (or vice versa), or
+  serialize  it  on  SPARC  and  unserialize  on  x86.  You  can also 
+  serialize  it  in  C++ version of ALGLIB and unserialize in C# one, 
+  and vice versa.
 *************************************************************************/
-void spline2dbuildbilinear(const real_1d_array &x, const real_1d_array &y, const real_2d_array &f, const ae_int_t m, const ae_int_t n, spline2dinterpolant &c);
+void rbfserialize(rbfmodel &obj, std::string &s_out);
 
 
 /*************************************************************************
-This subroutine builds bicubic spline coefficients table.
-
-Input parameters:
-    X   -   spline abscissas, array[0..N-1]
-    Y   -   spline ordinates, array[0..M-1]
-    F   -   function values, array[0..M-1,0..N-1]
-    M,N -   grid size, M>=2, N>=2
-
-Output parameters:
-    C   -   spline interpolant
-
-  -- ALGLIB PROJECT --
-     Copyright 05.07.2007 by Bochkanov Sergey
+This function unserializes data structure from string.
 *************************************************************************/
-void spline2dbuildbicubic(const real_1d_array &x, const real_1d_array &y, const real_2d_array &f, const ae_int_t m, const ae_int_t n, spline2dinterpolant &c);
+void rbfunserialize(std::string &s_in, rbfmodel &obj);
 
+
+/*************************************************************************
+This function creates RBF  model  for  a  scalar (NY=1)  or  vector (NY>1)
+function in a NX-dimensional space (NX=2 or NX=3).
+
+Newly created model is empty. It can be used for interpolation right after
+creation, but it just returns zeros. You have to add points to the  model,
+tune interpolation settings, and then  call  model  construction  function
+RBFBuildModel() which will update model according to your specification.
+
+USAGE:
+1. User creates model with RBFCreate()
+2. User adds dataset with RBFSetPoints() (points do NOT have to  be  on  a
+   regular grid)
+3. (OPTIONAL) User chooses polynomial term by calling:
+   * RBFLinTerm() to set linear term
+   * RBFConstTerm() to set constant term
+   * RBFZeroTerm() to set zero term
+   By default, linear term is used.
+4. User chooses specific RBF algorithm to use: either QNN (RBFSetAlgoQNN)
+   or ML (RBFSetAlgoMultiLayer).
+5. User calls RBFBuildModel() function which rebuilds model  according  to
+   the specification
+6. User may call RBFCalc() to calculate model value at the specified point,
+   RBFGridCalc() to  calculate   model  values at the points of the regular
+   grid. User may extract model coefficients with RBFUnpack() call.
+
+INPUT PARAMETERS:
+    NX      -   dimension of the space, NX=2 or NX=3
+    NY      -   function dimension, NY>=1
+
+OUTPUT PARAMETERS:
+    S       -   RBF model (initially equals to zero)
+
+NOTE 1: memory requirements. RBF models require amount of memory  which is
+        proportional  to  the  number  of data points. Memory is allocated
+        during model construction, but most of this memory is freed  after
+        model coefficients are calculated.
+
+        Some approximate estimates for N centers with default settings are
+        given below:
+        * about 250*N*(sizeof(double)+2*sizeof(int)) bytes  of  memory  is
+          needed during model construction stage.
+        * about 15*N*sizeof(double) bytes is needed after model is built.
+        For example, for N=100000 we may need 0.6 GB of memory  to  build
+        model, but just about 0.012 GB to store it.
+
+  -- ALGLIB --
+     Copyright 13.12.2011 by Bochkanov Sergey
+*************************************************************************/
+void rbfcreate(const ae_int_t nx, const ae_int_t ny, rbfmodel &s);
+
+
+/*************************************************************************
+This function adds dataset.
+
+This function overrides results of the previous calls, i.e. multiple calls
+of this function will result in only the last set being added.
+
+INPUT PARAMETERS:
+    S       -   RBF model, initialized by RBFCreate() call.
+    XY      -   points, array[N,NX+NY]. One row corresponds to  one  point
+                in the dataset. First NX elements  are  coordinates,  next
+                NY elements are function values. Array may  be larger than
+                specific,  in  this  case  only leading [N,NX+NY] elements
+                will be used.
+    N       -   number of points in the dataset
+
+After you've added dataset and (optionally) tuned algorithm  settings  you
+should call RBFBuildModel() in order to build a model for you.
+
+NOTE: this   function  has   some   serialization-related  subtleties.  We
+      recommend you to study serialization examples from ALGLIB  Reference
+      Manual if you want to perform serialization of your models.
+
+
+  -- ALGLIB --
+     Copyright 13.12.2011 by Bochkanov Sergey
+*************************************************************************/
+void rbfsetpoints(const rbfmodel &s, const real_2d_array &xy, const ae_int_t n);
+void rbfsetpoints(const rbfmodel &s, const real_2d_array &xy);
+
+
+/*************************************************************************
+This  function  sets  RBF interpolation algorithm. ALGLIB supports several
+RBF algorithms with different properties.
+
+This algorithm is called RBF-QNN and  it  is  good  for  point  sets  with
+following properties:
+a) all points are distinct
+b) all points are well separated.
+c) points  distribution  is  approximately  uniform.  There is no "contour
+   lines", clusters of points, or other small-scale structures.
+
+Algorithm description:
+1) interpolation centers are allocated to data points
+2) interpolation radii are calculated as distances to the  nearest centers
+   times Q coefficient (where Q is a value from [0.75,1.50]).
+3) after  performing (2) radii are transformed in order to avoid situation
+   when single outlier has very large radius and  influences  many  points
+   across all dataset. Transformation has following form:
+       new_r[i] = min(r[i],Z*median(r[]))
+   where r[i] is I-th radius, median()  is a median  radius across  entire
+   dataset, Z is user-specified value which controls amount  of  deviation
+   from median radius.
+
+When (a) is violated,  we  will  be unable to build RBF model. When (b) or
+(c) are violated, model will be built, but interpolation quality  will  be
+low. See http://www.alglib.net/interpolation/ for more information on this
+subject.
+
+This algorithm is used by default.
+
+Additional Q parameter controls smoothness properties of the RBF basis:
+* Q<0.75 will give perfectly conditioned basis,  but  terrible  smoothness
+  properties (RBF interpolant will have sharp peaks around function values)
+* Q around 1.0 gives good balance between smoothness and condition number
+* Q>1.5 will lead to badly conditioned systems and slow convergence of the
+  underlying linear solver (although smoothness will be very good)
+* Q>2.0 will effectively make optimizer useless because it won't  converge
+  within reasonable amount of iterations. It is possible to set such large
+  Q, but it is advised not to do so.
+
+INPUT PARAMETERS:
+    S       -   RBF model, initialized by RBFCreate() call
+    Q       -   Q parameter, Q>0, recommended value - 1.0
+    Z       -   Z parameter, Z>0, recommended value - 5.0
+
+NOTE: this   function  has   some   serialization-related  subtleties.  We
+      recommend you to study serialization examples from ALGLIB  Reference
+      Manual if you want to perform serialization of your models.
+
+
+  -- ALGLIB --
+     Copyright 13.12.2011 by Bochkanov Sergey
+*************************************************************************/
+void rbfsetalgoqnn(const rbfmodel &s, const double q, const double z);
+void rbfsetalgoqnn(const rbfmodel &s);
+
+
+/*************************************************************************
+This  function  sets  RBF interpolation algorithm. ALGLIB supports several
+RBF algorithms with different properties.
+
+This  algorithm is called RBF-ML. It builds  multilayer  RBF  model,  i.e.
+model with subsequently decreasing  radii,  which  allows  us  to  combine
+smoothness (due to  large radii of  the first layers) with  exactness (due
+to small radii of the last layers) and fast convergence.
+
+Internally RBF-ML uses many different  means  of acceleration, from sparse
+matrices  to  KD-trees,  which  results in algorithm whose working time is
+roughly proportional to N*log(N)*Density*RBase^2*NLayers,  where  N  is  a
+number of points, Density is an average density if points per unit of  the
+interpolation space, RBase is an initial radius, NLayers is  a  number  of
+layers.
+
+RBF-ML is good for following kinds of interpolation problems:
+1. "exact" problems (perfect fit) with well separated points
+2. least squares problems with arbitrary distribution of points (algorithm
+   gives  perfect  fit  where it is possible, and resorts to least squares
+   fit in the hard areas).
+3. noisy problems where  we  want  to  apply  some  controlled  amount  of
+   smoothing.
+
+INPUT PARAMETERS:
+    S       -   RBF model, initialized by RBFCreate() call
+    RBase   -   RBase parameter, RBase>0
+    NLayers -   NLayers parameter, NLayers>0, recommended value  to  start
+                with - about 5.
+    LambdaV -   regularization value, can be useful when  solving  problem
+                in the least squares sense.  Optimal  lambda  is  problem-
+                dependent and require trial and error. In our  experience,
+                good lambda can be as large as 0.1, and you can use  0.001
+                as initial guess.
+                Default  value  - 0.01, which is used when LambdaV is  not
+                given.  You  can  specify  zero  value,  but  it  is   not
+                recommended to do so.
+
+TUNING ALGORITHM
+
+In order to use this algorithm you have to choose three parameters:
+* initial radius RBase
+* number of layers in the model NLayers
+* regularization coefficient LambdaV
+
+Initial radius is easy to choose - you can pick any number  several  times
+larger  than  the  average  distance between points. Algorithm won't break
+down if you choose radius which is too large (model construction time will
+increase, but model will be built correctly).
+
+Choose such number of layers that RLast=RBase/2^(NLayers-1)  (radius  used
+by  the  last  layer)  will  be  smaller than the typical distance between
+points.  In  case  model  error  is  too large, you can increase number of
+layers.  Having  more  layers  will make model construction and evaluation
+proportionally slower, but it will allow you to have model which precisely
+fits your data. From the other side, if you want to  suppress  noise,  you
+can DECREASE number of layers to make your model less flexible.
+
+Regularization coefficient LambdaV controls smoothness of  the  individual
+models built for each layer. We recommend you to use default value in case
+you don't want to tune this parameter,  because  having  non-zero  LambdaV
+accelerates and stabilizes internal iterative algorithm. In case you  want
+to suppress noise you can use  LambdaV  as  additional  parameter  (larger
+value = more smoothness) to tune.
+
+TYPICAL ERRORS
+
+1. Using  initial  radius  which is too large. Memory requirements  of the
+   RBF-ML are roughly proportional to N*Density*RBase^2 (where Density  is
+   an average density of points per unit of the interpolation  space).  In
+   the extreme case of the very large RBase we will need O(N^2)  units  of
+   memory - and many layers in order to decrease radius to some reasonably
+   small value.
+
+2. Using too small number of layers - RBF models with large radius are not
+   flexible enough to reproduce small variations in the  target  function.
+   You  need  many  layers  with  different radii, from large to small, in
+   order to have good model.
+
+3. Using  initial  radius  which  is  too  small.  You will get model with
+   "holes" in the areas which are too far away from interpolation centers.
+   However, algorithm will work correctly (and quickly) in this case.
+
+4. Using too many layers - you will get too large and too slow model. This
+   model  will  perfectly  reproduce  your function, but maybe you will be
+   able to achieve similar results with less layers (and less memory).
+
+  -- ALGLIB --
+     Copyright 02.03.2012 by Bochkanov Sergey
+*************************************************************************/
+void rbfsetalgomultilayer(const rbfmodel &s, const double rbase, const ae_int_t nlayers, const double lambdav);
+void rbfsetalgomultilayer(const rbfmodel &s, const double rbase, const ae_int_t nlayers);
+
+
+/*************************************************************************
+This function sets linear term (model is a sum of radial  basis  functions
+plus linear polynomial). This function won't have effect until  next  call
+to RBFBuildModel().
+
+INPUT PARAMETERS:
+    S       -   RBF model, initialized by RBFCreate() call
+
+NOTE: this   function  has   some   serialization-related  subtleties.  We
+      recommend you to study serialization examples from ALGLIB  Reference
+      Manual if you want to perform serialization of your models.
+
+  -- ALGLIB --
+     Copyright 13.12.2011 by Bochkanov Sergey
+*************************************************************************/
+void rbfsetlinterm(const rbfmodel &s);
+
+
+/*************************************************************************
+This function sets constant term (model is a sum of radial basis functions
+plus constant).  This  function  won't  have  effect  until  next  call to
+RBFBuildModel().
+
+INPUT PARAMETERS:
+    S       -   RBF model, initialized by RBFCreate() call
+
+NOTE: this   function  has   some   serialization-related  subtleties.  We
+      recommend you to study serialization examples from ALGLIB  Reference
+      Manual if you want to perform serialization of your models.
+
+  -- ALGLIB --
+     Copyright 13.12.2011 by Bochkanov Sergey
+*************************************************************************/
+void rbfsetconstterm(const rbfmodel &s);
+
+
+/*************************************************************************
+This  function  sets  zero  term (model is a sum of radial basis functions
+without polynomial term). This function won't have effect until next  call
+to RBFBuildModel().
+
+INPUT PARAMETERS:
+    S       -   RBF model, initialized by RBFCreate() call
+
+NOTE: this   function  has   some   serialization-related  subtleties.  We
+      recommend you to study serialization examples from ALGLIB  Reference
+      Manual if you want to perform serialization of your models.
+
+  -- ALGLIB --
+     Copyright 13.12.2011 by Bochkanov Sergey
+*************************************************************************/
+void rbfsetzeroterm(const rbfmodel &s);
+
+
+/*************************************************************************
+This   function  builds  RBF  model  and  returns  report  (contains  some
+information which can be used for evaluation of the algorithm properties).
+
+Call to this function modifies RBF model by calculating its centers/radii/
+weights  and  saving  them  into  RBFModel  structure.  Initially RBFModel
+contain zero coefficients, but after call to this function  we  will  have
+coefficients which were calculated in order to fit our dataset.
+
+After you called this function you can call RBFCalc(),  RBFGridCalc()  and
+other model calculation functions.
+
+INPUT PARAMETERS:
+    S       -   RBF model, initialized by RBFCreate() call
+    Rep     -   report:
+                * Rep.TerminationType:
+                  * -5 - non-distinct basis function centers were detected,
+                         interpolation aborted
+                  * -4 - nonconvergence of the internal SVD solver
+                  *  1 - successful termination
+                Fields are used for debugging purposes:
+                * Rep.IterationsCount - iterations count of the LSQR solver
+                * Rep.NMV - number of matrix-vector products
+                * Rep.ARows - rows count for the system matrix
+                * Rep.ACols - columns count for the system matrix
+                * Rep.ANNZ - number of significantly non-zero elements
+                  (elements above some algorithm-determined threshold)
+
+NOTE:  failure  to  build  model will leave current state of the structure
+unchanged.
+
+  -- ALGLIB --
+     Copyright 13.12.2011 by Bochkanov Sergey
+*************************************************************************/
+void rbfbuildmodel(const rbfmodel &s, rbfreport &rep);
+
+
+/*************************************************************************
+This function calculates values of the RBF model in the given point.
+
+This function should be used when we have NY=1 (scalar function) and  NX=2
+(2-dimensional space). If you have 3-dimensional space, use RBFCalc3(). If
+you have general situation (NX-dimensional space, NY-dimensional function)
+you should use general, less efficient implementation RBFCalc().
+
+If  you  want  to  calculate  function  values  many times, consider using
+RBFGridCalc2(), which is far more efficient than many subsequent calls  to
+RBFCalc2().
+
+This function returns 0.0 when:
+* model is not initialized
+* NX<>2
+ *NY<>1
+
+INPUT PARAMETERS:
+    S       -   RBF model
+    X0      -   first coordinate, finite number
+    X1      -   second coordinate, finite number
+
+RESULT:
+    value of the model or 0.0 (as defined above)
+
+  -- ALGLIB --
+     Copyright 13.12.2011 by Bochkanov Sergey
+*************************************************************************/
+double rbfcalc2(const rbfmodel &s, const double x0, const double x1);
+
+
+/*************************************************************************
+This function calculates values of the RBF model in the given point.
+
+This function should be used when we have NY=1 (scalar function) and  NX=3
+(3-dimensional space). If you have 2-dimensional space, use RBFCalc2(). If
+you have general situation (NX-dimensional space, NY-dimensional function)
+you should use general, less efficient implementation RBFCalc().
+
+This function returns 0.0 when:
+* model is not initialized
+* NX<>3
+ *NY<>1
+
+INPUT PARAMETERS:
+    S       -   RBF model
+    X0      -   first coordinate, finite number
+    X1      -   second coordinate, finite number
+    X2      -   third coordinate, finite number
+
+RESULT:
+    value of the model or 0.0 (as defined above)
+
+  -- ALGLIB --
+     Copyright 13.12.2011 by Bochkanov Sergey
+*************************************************************************/
+double rbfcalc3(const rbfmodel &s, const double x0, const double x1, const double x2);
+
+
+/*************************************************************************
+This function calculates values of the RBF model at the given point.
+
+This is general function which can be used for arbitrary NX (dimension  of
+the space of arguments) and NY (dimension of the function itself). However
+when  you  have  NY=1  you  may  find more convenient to use RBFCalc2() or
+RBFCalc3().
+
+This function returns 0.0 when model is not initialized.
+
+INPUT PARAMETERS:
+    S       -   RBF model
+    X       -   coordinates, array[NX].
+                X may have more than NX elements, in this case only
+                leading NX will be used.
+
+OUTPUT PARAMETERS:
+    Y       -   function value, array[NY]. Y is out-parameter and
+                reallocated after call to this function. In case you  want
+                to reuse previously allocated Y, you may use RBFCalcBuf(),
+                which reallocates Y only when it is too small.
+
+  -- ALGLIB --
+     Copyright 13.12.2011 by Bochkanov Sergey
+*************************************************************************/
+void rbfcalc(const rbfmodel &s, const real_1d_array &x, real_1d_array &y);
+
+
+/*************************************************************************
+This function calculates values of the RBF model at the given point.
+
+Same as RBFCalc(), but does not reallocate Y when in is large enough to
+store function values.
+
+INPUT PARAMETERS:
+    S       -   RBF model
+    X       -   coordinates, array[NX].
+                X may have more than NX elements, in this case only
+                leading NX will be used.
+    Y       -   possibly preallocated array
+
+OUTPUT PARAMETERS:
+    Y       -   function value, array[NY]. Y is not reallocated when it
+                is larger than NY.
+
+  -- ALGLIB --
+     Copyright 13.12.2011 by Bochkanov Sergey
+*************************************************************************/
+void rbfcalcbuf(const rbfmodel &s, const real_1d_array &x, real_1d_array &y);
+
+
+/*************************************************************************
+This function calculates values of the RBF model at the regular grid.
+
+Grid have N0*N1 points, with Point[I,J] = (X0[I], X1[J])
+
+This function returns 0.0 when:
+* model is not initialized
+* NX<>2
+ *NY<>1
+
+INPUT PARAMETERS:
+    S       -   RBF model
+    X0      -   array of grid nodes, first coordinates, array[N0]
+    N0      -   grid size (number of nodes) in the first dimension
+    X1      -   array of grid nodes, second coordinates, array[N1]
+    N1      -   grid size (number of nodes) in the second dimension
+
+OUTPUT PARAMETERS:
+    Y       -   function values, array[N0,N1]. Y is out-variable and
+                is reallocated by this function.
+
+  -- ALGLIB --
+     Copyright 13.12.2011 by Bochkanov Sergey
+*************************************************************************/
+void rbfgridcalc2(const rbfmodel &s, const real_1d_array &x0, const ae_int_t n0, const real_1d_array &x1, const ae_int_t n1, real_2d_array &y);
+
+
+/*************************************************************************
+This function "unpacks" RBF model by extracting its coefficients.
+
+INPUT PARAMETERS:
+    S       -   RBF model
+
+OUTPUT PARAMETERS:
+    NX      -   dimensionality of argument
+    NY      -   dimensionality of the target function
+    XWR     -   model information, array[NC,NX+NY+1].
+                One row of the array corresponds to one basis function:
+                * first NX columns  - coordinates of the center
+                * next NY columns   - weights, one per dimension of the
+                                      function being modelled
+                * last column       - radius, same for all dimensions of
+                                      the function being modelled
+    NC      -   number of the centers
+    V       -   polynomial  term , array[NY,NX+1]. One row per one
+                dimension of the function being modelled. First NX
+                elements are linear coefficients, V[NX] is equal to the
+                constant part.
+
+  -- ALGLIB --
+     Copyright 13.12.2011 by Bochkanov Sergey
+*************************************************************************/
+void rbfunpack(const rbfmodel &s, ae_int_t &nx, ae_int_t &ny, real_2d_array &xwr, ae_int_t &nc, real_2d_array &v);
 
 /*************************************************************************
 This subroutine calculates the value of the bilinear or bicubic spline  at
@@ -3542,41 +4259,6 @@ void spline2ddiff(const spline2dinterpolant &c, const double x, const double y, 
 
 
 /*************************************************************************
-This subroutine unpacks two-dimensional spline into the coefficients table
-
-Input parameters:
-    C   -   spline interpolant.
-
-Result:
-    M, N-   grid size (x-axis and y-axis)
-    Tbl -   coefficients table, unpacked format,
-            [0..(N-1)*(M-1)-1, 0..19].
-            For I = 0...M-2, J=0..N-2:
-                K =  I*(N-1)+J
-                Tbl[K,0] = X[j]
-                Tbl[K,1] = X[j+1]
-                Tbl[K,2] = Y[i]
-                Tbl[K,3] = Y[i+1]
-                Tbl[K,4] = C00
-                Tbl[K,5] = C01
-                Tbl[K,6] = C02
-                Tbl[K,7] = C03
-                Tbl[K,8] = C10
-                Tbl[K,9] = C11
-                ...
-                Tbl[K,19] = C33
-            On each grid square spline is equals to:
-                S(x) = SUM(c[i,j]*(x^i)*(y^j), i=0..3, j=0..3)
-                t = x-x[j]
-                u = y-y[i]
-
-  -- ALGLIB PROJECT --
-     Copyright 29.06.2007 by Bochkanov Sergey
-*************************************************************************/
-void spline2dunpack(const spline2dinterpolant &c, ae_int_t &m, ae_int_t &n, real_2d_array &tbl);
-
-
-/*************************************************************************
 This subroutine performs linear transformation of the spline argument.
 
 Input parameters:
@@ -3606,6 +4288,21 @@ Output parameters:
      Copyright 30.06.2007 by Bochkanov Sergey
 *************************************************************************/
 void spline2dlintransf(const spline2dinterpolant &c, const double a, const double b);
+
+
+/*************************************************************************
+This subroutine makes the copy of the spline model.
+
+Input parameters:
+    C   -   spline interpolant
+
+Output parameters:
+    CC  -   spline copy
+
+  -- ALGLIB PROJECT --
+     Copyright 29.06.2007 by Bochkanov Sergey
+*************************************************************************/
+void spline2dcopy(const spline2dinterpolant &c, spline2dinterpolant &cc);
 
 
 /*************************************************************************
@@ -3650,6 +4347,390 @@ Output parameters:
      Copyright by Bochkanov Sergey
 *************************************************************************/
 void spline2dresamplebilinear(const real_2d_array &a, const ae_int_t oldheight, const ae_int_t oldwidth, real_2d_array &b, const ae_int_t newheight, const ae_int_t newwidth);
+
+
+/*************************************************************************
+This subroutine builds bilinear vector-valued spline.
+
+Input parameters:
+    X   -   spline abscissas, array[0..N-1]
+    Y   -   spline ordinates, array[0..M-1]
+    F   -   function values, array[0..M*N*D-1]:
+            * first D elements store D values at (X[0],Y[0])
+            * next D elements store D values at (X[1],Y[0])
+            * general form - D function values at (X[i],Y[j]) are stored
+              at F[D*(J*N+I)...D*(J*N+I)+D-1].
+    M,N -   grid size, M>=2, N>=2
+    D   -   vector dimension, D>=1
+
+Output parameters:
+    C   -   spline interpolant
+
+  -- ALGLIB PROJECT --
+     Copyright 16.04.2012 by Bochkanov Sergey
+*************************************************************************/
+void spline2dbuildbilinearv(const real_1d_array &x, const ae_int_t n, const real_1d_array &y, const ae_int_t m, const real_1d_array &f, const ae_int_t d, spline2dinterpolant &c);
+
+
+/*************************************************************************
+This subroutine builds bicubic vector-valued spline.
+
+Input parameters:
+    X   -   spline abscissas, array[0..N-1]
+    Y   -   spline ordinates, array[0..M-1]
+    F   -   function values, array[0..M*N*D-1]:
+            * first D elements store D values at (X[0],Y[0])
+            * next D elements store D values at (X[1],Y[0])
+            * general form - D function values at (X[i],Y[j]) are stored
+              at F[D*(J*N+I)...D*(J*N+I)+D-1].
+    M,N -   grid size, M>=2, N>=2
+    D   -   vector dimension, D>=1
+
+Output parameters:
+    C   -   spline interpolant
+
+  -- ALGLIB PROJECT --
+     Copyright 16.04.2012 by Bochkanov Sergey
+*************************************************************************/
+void spline2dbuildbicubicv(const real_1d_array &x, const ae_int_t n, const real_1d_array &y, const ae_int_t m, const real_1d_array &f, const ae_int_t d, spline2dinterpolant &c);
+
+
+/*************************************************************************
+This subroutine calculates bilinear or bicubic vector-valued spline at the
+given point (X,Y).
+
+INPUT PARAMETERS:
+    C   -   spline interpolant.
+    X, Y-   point
+    F   -   output buffer, possibly preallocated array. In case array size
+            is large enough to store result, it is not reallocated.  Array
+            which is too short will be reallocated
+
+OUTPUT PARAMETERS:
+    F   -   array[D] (or larger) which stores function values
+
+  -- ALGLIB PROJECT --
+     Copyright 16.04.2012 by Bochkanov Sergey
+*************************************************************************/
+void spline2dcalcvbuf(const spline2dinterpolant &c, const double x, const double y, real_1d_array &f);
+
+
+/*************************************************************************
+This subroutine calculates bilinear or bicubic vector-valued spline at the
+given point (X,Y).
+
+INPUT PARAMETERS:
+    C   -   spline interpolant.
+    X, Y-   point
+
+OUTPUT PARAMETERS:
+    F   -   array[D] which stores function values.  F is out-parameter and
+            it  is  reallocated  after  call to this function. In case you
+            want  to    reuse  previously  allocated  F,   you   may   use
+            Spline2DCalcVBuf(),  which  reallocates  F only when it is too
+            small.
+
+  -- ALGLIB PROJECT --
+     Copyright 16.04.2012 by Bochkanov Sergey
+*************************************************************************/
+void spline2dcalcv(const spline2dinterpolant &c, const double x, const double y, real_1d_array &f);
+
+
+/*************************************************************************
+This subroutine unpacks two-dimensional spline into the coefficients table
+
+Input parameters:
+    C   -   spline interpolant.
+
+Result:
+    M, N-   grid size (x-axis and y-axis)
+    D   -   number of components
+    Tbl -   coefficients table, unpacked format,
+            D - components: [0..(N-1)*(M-1)*D-1, 0..19].
+            For T=0..D-1 (component index), I = 0...N-2 (x index),
+            J=0..M-2 (y index):
+                K :=  T + I*D + J*D*(N-1)
+
+                K-th row stores decomposition for T-th component of the
+                vector-valued function
+
+                Tbl[K,0] = X[i]
+                Tbl[K,1] = X[i+1]
+                Tbl[K,2] = Y[j]
+                Tbl[K,3] = Y[j+1]
+                Tbl[K,4] = C00
+                Tbl[K,5] = C01
+                Tbl[K,6] = C02
+                Tbl[K,7] = C03
+                Tbl[K,8] = C10
+                Tbl[K,9] = C11
+                ...
+                Tbl[K,19] = C33
+            On each grid square spline is equals to:
+                S(x) = SUM(c[i,j]*(t^i)*(u^j), i=0..3, j=0..3)
+                t = x-x[j]
+                u = y-y[i]
+
+  -- ALGLIB PROJECT --
+     Copyright 16.04.2012 by Bochkanov Sergey
+*************************************************************************/
+void spline2dunpackv(const spline2dinterpolant &c, ae_int_t &m, ae_int_t &n, ae_int_t &d, real_2d_array &tbl);
+
+
+/*************************************************************************
+This subroutine was deprecated in ALGLIB 3.6.0
+
+We recommend you to switch  to  Spline2DBuildBilinearV(),  which  is  more
+flexible and accepts its arguments in more convenient order.
+
+  -- ALGLIB PROJECT --
+     Copyright 05.07.2007 by Bochkanov Sergey
+*************************************************************************/
+void spline2dbuildbilinear(const real_1d_array &x, const real_1d_array &y, const real_2d_array &f, const ae_int_t m, const ae_int_t n, spline2dinterpolant &c);
+
+
+/*************************************************************************
+This subroutine was deprecated in ALGLIB 3.6.0
+
+We recommend you to switch  to  Spline2DBuildBicubicV(),  which  is  more
+flexible and accepts its arguments in more convenient order.
+
+  -- ALGLIB PROJECT --
+     Copyright 05.07.2007 by Bochkanov Sergey
+*************************************************************************/
+void spline2dbuildbicubic(const real_1d_array &x, const real_1d_array &y, const real_2d_array &f, const ae_int_t m, const ae_int_t n, spline2dinterpolant &c);
+
+
+/*************************************************************************
+This subroutine was deprecated in ALGLIB 3.6.0
+
+We recommend you to switch  to  Spline2DUnpackV(),  which is more flexible
+and accepts its arguments in more convenient order.
+
+  -- ALGLIB PROJECT --
+     Copyright 29.06.2007 by Bochkanov Sergey
+*************************************************************************/
+void spline2dunpack(const spline2dinterpolant &c, ae_int_t &m, ae_int_t &n, real_2d_array &tbl);
+
+/*************************************************************************
+This subroutine calculates the value of the trilinear or tricubic spline at
+the given point (X,Y,Z).
+
+INPUT PARAMETERS:
+    C   -   coefficients table.
+            Built by BuildBilinearSpline or BuildBicubicSpline.
+    X, Y,
+    Z   -   point
+
+Result:
+    S(x,y,z)
+
+  -- ALGLIB PROJECT --
+     Copyright 26.04.2012 by Bochkanov Sergey
+*************************************************************************/
+double spline3dcalc(const spline3dinterpolant &c, const double x, const double y, const double z);
+
+
+/*************************************************************************
+This subroutine performs linear transformation of the spline argument.
+
+INPUT PARAMETERS:
+    C       -   spline interpolant
+    AX, BX  -   transformation coefficients: x = A*u + B
+    AY, BY  -   transformation coefficients: y = A*v + B
+    AZ, BZ  -   transformation coefficients: z = A*w + B
+
+OUTPUT PARAMETERS:
+    C   -   transformed spline
+
+  -- ALGLIB PROJECT --
+     Copyright 26.04.2012 by Bochkanov Sergey
+*************************************************************************/
+void spline3dlintransxyz(const spline3dinterpolant &c, const double ax, const double bx, const double ay, const double by, const double az, const double bz);
+
+
+/*************************************************************************
+This subroutine performs linear transformation of the spline.
+
+INPUT PARAMETERS:
+    C   -   spline interpolant.
+    A, B-   transformation coefficients: S2(x,y) = A*S(x,y,z) + B
+
+OUTPUT PARAMETERS:
+    C   -   transformed spline
+
+  -- ALGLIB PROJECT --
+     Copyright 26.04.2012 by Bochkanov Sergey
+*************************************************************************/
+void spline3dlintransf(const spline3dinterpolant &c, const double a, const double b);
+
+
+/*************************************************************************
+Trilinear spline resampling
+
+INPUT PARAMETERS:
+    A           -   array[0..OldXCount*OldYCount*OldZCount-1], function
+                    values at the old grid, :
+                        A[0]        x=0,y=0,z=0
+                        A[1]        x=1,y=0,z=0
+                        A[..]       ...
+                        A[..]       x=oldxcount-1,y=0,z=0
+                        A[..]       x=0,y=1,z=0
+                        A[..]       ...
+                        ...
+    OldZCount   -   old Z-count, OldZCount>1
+    OldYCount   -   old Y-count, OldYCount>1
+    OldXCount   -   old X-count, OldXCount>1
+    NewZCount   -   new Z-count, NewZCount>1
+    NewYCount   -   new Y-count, NewYCount>1
+    NewXCount   -   new X-count, NewXCount>1
+
+OUTPUT PARAMETERS:
+    B           -   array[0..NewXCount*NewYCount*NewZCount-1], function
+                    values at the new grid:
+                        B[0]        x=0,y=0,z=0
+                        B[1]        x=1,y=0,z=0
+                        B[..]       ...
+                        B[..]       x=newxcount-1,y=0,z=0
+                        B[..]       x=0,y=1,z=0
+                        B[..]       ...
+                        ...
+
+  -- ALGLIB routine --
+     26.04.2012
+     Copyright by Bochkanov Sergey
+*************************************************************************/
+void spline3dresampletrilinear(const real_1d_array &a, const ae_int_t oldzcount, const ae_int_t oldycount, const ae_int_t oldxcount, const ae_int_t newzcount, const ae_int_t newycount, const ae_int_t newxcount, real_1d_array &b);
+
+
+/*************************************************************************
+This subroutine builds trilinear vector-valued spline.
+
+INPUT PARAMETERS:
+    X   -   spline abscissas,  array[0..N-1]
+    Y   -   spline ordinates,  array[0..M-1]
+    Z   -   spline applicates, array[0..L-1]
+    F   -   function values, array[0..M*N*L*D-1]:
+            * first D elements store D values at (X[0],Y[0],Z[0])
+            * next D elements store D values at (X[1],Y[0],Z[0])
+            * next D elements store D values at (X[2],Y[0],Z[0])
+            * ...
+            * next D elements store D values at (X[0],Y[1],Z[0])
+            * next D elements store D values at (X[1],Y[1],Z[0])
+            * next D elements store D values at (X[2],Y[1],Z[0])
+            * ...
+            * next D elements store D values at (X[0],Y[0],Z[1])
+            * next D elements store D values at (X[1],Y[0],Z[1])
+            * next D elements store D values at (X[2],Y[0],Z[1])
+            * ...
+            * general form - D function values at (X[i],Y[j]) are stored
+              at F[D*(N*(M*K+J)+I)...D*(N*(M*K+J)+I)+D-1].
+    M,N,
+    L   -   grid size, M>=2, N>=2, L>=2
+    D   -   vector dimension, D>=1
+
+OUTPUT PARAMETERS:
+    C   -   spline interpolant
+
+  -- ALGLIB PROJECT --
+     Copyright 26.04.2012 by Bochkanov Sergey
+*************************************************************************/
+void spline3dbuildtrilinearv(const real_1d_array &x, const ae_int_t n, const real_1d_array &y, const ae_int_t m, const real_1d_array &z, const ae_int_t l, const real_1d_array &f, const ae_int_t d, spline3dinterpolant &c);
+
+
+/*************************************************************************
+This subroutine calculates bilinear or bicubic vector-valued spline at the
+given point (X,Y,Z).
+
+INPUT PARAMETERS:
+    C   -   spline interpolant.
+    X, Y,
+    Z   -   point
+    F   -   output buffer, possibly preallocated array. In case array size
+            is large enough to store result, it is not reallocated.  Array
+            which is too short will be reallocated
+
+OUTPUT PARAMETERS:
+    F   -   array[D] (or larger) which stores function values
+
+  -- ALGLIB PROJECT --
+     Copyright 26.04.2012 by Bochkanov Sergey
+*************************************************************************/
+void spline3dcalcvbuf(const spline3dinterpolant &c, const double x, const double y, const double z, real_1d_array &f);
+
+
+/*************************************************************************
+This subroutine calculates trilinear or tricubic vector-valued spline at the
+given point (X,Y,Z).
+
+INPUT PARAMETERS:
+    C   -   spline interpolant.
+    X, Y,
+    Z   -   point
+
+OUTPUT PARAMETERS:
+    F   -   array[D] which stores function values.  F is out-parameter and
+            it  is  reallocated  after  call to this function. In case you
+            want  to    reuse  previously  allocated  F,   you   may   use
+            Spline2DCalcVBuf(),  which  reallocates  F only when it is too
+            small.
+
+  -- ALGLIB PROJECT --
+     Copyright 26.04.2012 by Bochkanov Sergey
+*************************************************************************/
+void spline3dcalcv(const spline3dinterpolant &c, const double x, const double y, const double z, real_1d_array &f);
+
+
+/*************************************************************************
+This subroutine unpacks tri-dimensional spline into the coefficients table
+
+INPUT PARAMETERS:
+    C   -   spline interpolant.
+
+Result:
+    N   -   grid size (X)
+    M   -   grid size (Y)
+    L   -   grid size (Z)
+    D   -   number of components
+    SType-  spline type. Currently, only one spline type is supported:
+            trilinear spline, as indicated by SType=1.
+    Tbl -   spline coefficients: [0..(N-1)*(M-1)*(L-1)*D-1, 0..13].
+            For T=0..D-1 (component index), I = 0...N-2 (x index),
+            J=0..M-2 (y index), K=0..L-2 (z index):
+                Q := T + I*D + J*D*(N-1) + K*D*(N-1)*(M-1),
+
+                Q-th row stores decomposition for T-th component of the
+                vector-valued function
+
+                Tbl[Q,0] = X[i]
+                Tbl[Q,1] = X[i+1]
+                Tbl[Q,2] = Y[j]
+                Tbl[Q,3] = Y[j+1]
+                Tbl[Q,4] = Z[k]
+                Tbl[Q,5] = Z[k+1]
+
+                Tbl[Q,6] = C000
+                Tbl[Q,7] = C100
+                Tbl[Q,8] = C010
+                Tbl[Q,9] = C110
+                Tbl[Q,10]= C001
+                Tbl[Q,11]= C101
+                Tbl[Q,12]= C011
+                Tbl[Q,13]= C111
+            On each grid square spline is equals to:
+                S(x) = SUM(c[i,j,k]*(x^i)*(y^j)*(z^k), i=0..1, j=0..1, k=0..1)
+                t = x-x[j]
+                u = y-y[i]
+                v = z-z[k]
+
+            NOTE: format of Tbl is given for SType=1. Future versions of
+                  ALGLIB can use different formats for different values of
+                  SType.
+
+  -- ALGLIB PROJECT --
+     Copyright 26.04.2012 by Bochkanov Sergey
+*************************************************************************/
+void spline3dunpackv(const spline3dinterpolant &c, ae_int_t &n, ae_int_t &m, ae_int_t &l, ae_int_t &d, ae_int_t &stype, real_2d_array &tbl);
 }
 
 /////////////////////////////////////////////////////////////////////////
@@ -3921,10 +5002,55 @@ void spline1dconvdiffinternal(/* Real    */ ae_vector* xold,
      /* Real    */ ae_vector* d2,
      ae_bool needd2,
      ae_state *_state);
+void spline1drootsandextrema(spline1dinterpolant* c,
+     /* Real    */ ae_vector* r,
+     ae_int_t* nr,
+     ae_bool* dr,
+     /* Real    */ ae_vector* e,
+     /* Integer */ ae_vector* et,
+     ae_int_t* ne,
+     ae_bool* de,
+     ae_state *_state);
 void heapsortdpoints(/* Real    */ ae_vector* x,
      /* Real    */ ae_vector* y,
      /* Real    */ ae_vector* d,
      ae_int_t n,
+     ae_state *_state);
+void solvepolinom2(double p0,
+     double m0,
+     double p1,
+     double m1,
+     double* x0,
+     double* x1,
+     ae_int_t* nr,
+     ae_state *_state);
+void solvecubicpolinom(double pa,
+     double ma,
+     double pb,
+     double mb,
+     double a,
+     double b,
+     double* x0,
+     double* x1,
+     double* x2,
+     double* ex0,
+     double* ex1,
+     ae_int_t* nr,
+     ae_int_t* ne,
+     /* Real    */ ae_vector* tempdata,
+     ae_state *_state);
+ae_int_t bisectmethod(double pa,
+     double ma,
+     double pb,
+     double mb,
+     double a,
+     double b,
+     double* x,
+     ae_state *_state);
+void spline1dbuildmonotone(/* Real    */ ae_vector* x,
+     /* Real    */ ae_vector* y,
+     ae_int_t n,
+     spline1dinterpolant* c,
      ae_state *_state);
 ae_bool _spline1dinterpolant_init(spline1dinterpolant* p, ae_state *_state, ae_bool make_automatic);
 ae_bool _spline1dinterpolant_init_copy(spline1dinterpolant* dst, spline1dinterpolant* src, ae_state *_state, ae_bool make_automatic);
@@ -4145,6 +5271,9 @@ void lsfitresults(lsfitstate* state,
      /* Real    */ ae_vector* c,
      lsfitreport* rep,
      ae_state *_state);
+void lsfitsetgradientcheck(lsfitstate* state,
+     double teststep,
+     ae_state *_state);
 void lsfitscalexy(/* Real    */ ae_vector* x,
      /* Real    */ ae_vector* y,
      /* Real    */ ae_vector* w,
@@ -4280,20 +5409,63 @@ void _pspline2interpolant_clear(pspline2interpolant* p);
 ae_bool _pspline3interpolant_init(pspline3interpolant* p, ae_state *_state, ae_bool make_automatic);
 ae_bool _pspline3interpolant_init_copy(pspline3interpolant* dst, pspline3interpolant* src, ae_state *_state, ae_bool make_automatic);
 void _pspline3interpolant_clear(pspline3interpolant* p);
-void spline2dbuildbilinear(/* Real    */ ae_vector* x,
-     /* Real    */ ae_vector* y,
-     /* Real    */ ae_matrix* f,
-     ae_int_t m,
+void rbfcreate(ae_int_t nx, ae_int_t ny, rbfmodel* s, ae_state *_state);
+void rbfsetpoints(rbfmodel* s,
+     /* Real    */ ae_matrix* xy,
      ae_int_t n,
-     spline2dinterpolant* c,
      ae_state *_state);
-void spline2dbuildbicubic(/* Real    */ ae_vector* x,
+void rbfsetalgoqnn(rbfmodel* s, double q, double z, ae_state *_state);
+void rbfsetalgomultilayer(rbfmodel* s,
+     double rbase,
+     ae_int_t nlayers,
+     double lambdav,
+     ae_state *_state);
+void rbfsetlinterm(rbfmodel* s, ae_state *_state);
+void rbfsetconstterm(rbfmodel* s, ae_state *_state);
+void rbfsetzeroterm(rbfmodel* s, ae_state *_state);
+void rbfsetcond(rbfmodel* s,
+     double epsort,
+     double epserr,
+     ae_int_t maxits,
+     ae_state *_state);
+void rbfbuildmodel(rbfmodel* s, rbfreport* rep, ae_state *_state);
+double rbfcalc2(rbfmodel* s, double x0, double x1, ae_state *_state);
+double rbfcalc3(rbfmodel* s,
+     double x0,
+     double x1,
+     double x2,
+     ae_state *_state);
+void rbfcalc(rbfmodel* s,
+     /* Real    */ ae_vector* x,
      /* Real    */ ae_vector* y,
-     /* Real    */ ae_matrix* f,
-     ae_int_t m,
-     ae_int_t n,
-     spline2dinterpolant* c,
      ae_state *_state);
+void rbfcalcbuf(rbfmodel* s,
+     /* Real    */ ae_vector* x,
+     /* Real    */ ae_vector* y,
+     ae_state *_state);
+void rbfgridcalc2(rbfmodel* s,
+     /* Real    */ ae_vector* x0,
+     ae_int_t n0,
+     /* Real    */ ae_vector* x1,
+     ae_int_t n1,
+     /* Real    */ ae_matrix* y,
+     ae_state *_state);
+void rbfunpack(rbfmodel* s,
+     ae_int_t* nx,
+     ae_int_t* ny,
+     /* Real    */ ae_matrix* xwr,
+     ae_int_t* nc,
+     /* Real    */ ae_matrix* v,
+     ae_state *_state);
+void rbfalloc(ae_serializer* s, rbfmodel* model, ae_state *_state);
+void rbfserialize(ae_serializer* s, rbfmodel* model, ae_state *_state);
+void rbfunserialize(ae_serializer* s, rbfmodel* model, ae_state *_state);
+ae_bool _rbfmodel_init(rbfmodel* p, ae_state *_state, ae_bool make_automatic);
+ae_bool _rbfmodel_init_copy(rbfmodel* dst, rbfmodel* src, ae_state *_state, ae_bool make_automatic);
+void _rbfmodel_clear(rbfmodel* p);
+ae_bool _rbfreport_init(rbfreport* p, ae_state *_state, ae_bool make_automatic);
+ae_bool _rbfreport_init_copy(rbfreport* dst, rbfreport* src, ae_state *_state, ae_bool make_automatic);
+void _rbfreport_clear(rbfreport* p);
 double spline2dcalc(spline2dinterpolant* c,
      double x,
      double y,
@@ -4305,11 +5477,6 @@ void spline2ddiff(spline2dinterpolant* c,
      double* fx,
      double* fy,
      double* fxy,
-     ae_state *_state);
-void spline2dunpack(spline2dinterpolant* c,
-     ae_int_t* m,
-     ae_int_t* n,
-     /* Real    */ ae_matrix* tbl,
      ae_state *_state);
 void spline2dlintransxy(spline2dinterpolant* c,
      double ax,
@@ -4338,9 +5505,122 @@ void spline2dresamplebilinear(/* Real    */ ae_matrix* a,
      ae_int_t newheight,
      ae_int_t newwidth,
      ae_state *_state);
+void spline2dbuildbilinearv(/* Real    */ ae_vector* x,
+     ae_int_t n,
+     /* Real    */ ae_vector* y,
+     ae_int_t m,
+     /* Real    */ ae_vector* f,
+     ae_int_t d,
+     spline2dinterpolant* c,
+     ae_state *_state);
+void spline2dbuildbicubicv(/* Real    */ ae_vector* x,
+     ae_int_t n,
+     /* Real    */ ae_vector* y,
+     ae_int_t m,
+     /* Real    */ ae_vector* f,
+     ae_int_t d,
+     spline2dinterpolant* c,
+     ae_state *_state);
+void spline2dcalcvbuf(spline2dinterpolant* c,
+     double x,
+     double y,
+     /* Real    */ ae_vector* f,
+     ae_state *_state);
+void spline2dcalcv(spline2dinterpolant* c,
+     double x,
+     double y,
+     /* Real    */ ae_vector* f,
+     ae_state *_state);
+void spline2dunpackv(spline2dinterpolant* c,
+     ae_int_t* m,
+     ae_int_t* n,
+     ae_int_t* d,
+     /* Real    */ ae_matrix* tbl,
+     ae_state *_state);
+void spline2dbuildbilinear(/* Real    */ ae_vector* x,
+     /* Real    */ ae_vector* y,
+     /* Real    */ ae_matrix* f,
+     ae_int_t m,
+     ae_int_t n,
+     spline2dinterpolant* c,
+     ae_state *_state);
+void spline2dbuildbicubic(/* Real    */ ae_vector* x,
+     /* Real    */ ae_vector* y,
+     /* Real    */ ae_matrix* f,
+     ae_int_t m,
+     ae_int_t n,
+     spline2dinterpolant* c,
+     ae_state *_state);
+void spline2dunpack(spline2dinterpolant* c,
+     ae_int_t* m,
+     ae_int_t* n,
+     /* Real    */ ae_matrix* tbl,
+     ae_state *_state);
 ae_bool _spline2dinterpolant_init(spline2dinterpolant* p, ae_state *_state, ae_bool make_automatic);
 ae_bool _spline2dinterpolant_init_copy(spline2dinterpolant* dst, spline2dinterpolant* src, ae_state *_state, ae_bool make_automatic);
 void _spline2dinterpolant_clear(spline2dinterpolant* p);
+double spline3dcalc(spline3dinterpolant* c,
+     double x,
+     double y,
+     double z,
+     ae_state *_state);
+void spline3dlintransxyz(spline3dinterpolant* c,
+     double ax,
+     double bx,
+     double ay,
+     double by,
+     double az,
+     double bz,
+     ae_state *_state);
+void spline3dlintransf(spline3dinterpolant* c,
+     double a,
+     double b,
+     ae_state *_state);
+void spline3dcopy(spline3dinterpolant* c,
+     spline3dinterpolant* cc,
+     ae_state *_state);
+void spline3dresampletrilinear(/* Real    */ ae_vector* a,
+     ae_int_t oldzcount,
+     ae_int_t oldycount,
+     ae_int_t oldxcount,
+     ae_int_t newzcount,
+     ae_int_t newycount,
+     ae_int_t newxcount,
+     /* Real    */ ae_vector* b,
+     ae_state *_state);
+void spline3dbuildtrilinearv(/* Real    */ ae_vector* x,
+     ae_int_t n,
+     /* Real    */ ae_vector* y,
+     ae_int_t m,
+     /* Real    */ ae_vector* z,
+     ae_int_t l,
+     /* Real    */ ae_vector* f,
+     ae_int_t d,
+     spline3dinterpolant* c,
+     ae_state *_state);
+void spline3dcalcvbuf(spline3dinterpolant* c,
+     double x,
+     double y,
+     double z,
+     /* Real    */ ae_vector* f,
+     ae_state *_state);
+void spline3dcalcv(spline3dinterpolant* c,
+     double x,
+     double y,
+     double z,
+     /* Real    */ ae_vector* f,
+     ae_state *_state);
+void spline3dunpackv(spline3dinterpolant* c,
+     ae_int_t* n,
+     ae_int_t* m,
+     ae_int_t* l,
+     ae_int_t* d,
+     ae_int_t* stype,
+     /* Real    */ ae_matrix* tbl,
+     ae_state *_state);
+ae_bool _spline3dinterpolant_init(spline3dinterpolant* p, ae_state *_state, ae_bool make_automatic);
+ae_bool _spline3dinterpolant_init_copy(spline3dinterpolant* dst, spline3dinterpolant* src, ae_state *_state, ae_bool make_automatic);
+void _spline3dinterpolant_clear(spline3dinterpolant* p);
 
 }
 #endif

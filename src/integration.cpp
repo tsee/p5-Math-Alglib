@@ -1043,6 +1043,7 @@ namespace alglib_impl
 
 
 
+static ae_int_t autogk_maxsubintervals = 10000;
 static void autogk_autogkinternalprepare(double a,
      double b,
      double eps,
@@ -3463,7 +3464,7 @@ static ae_bool autogk_autogkinternaliteration(autogkinternalstate* state,
     state->info = 1;
     if( ae_fp_eq(state->eps,0) )
     {
-        state->eps = 1000*ae_machineepsilon;
+        state->eps = 100000*ae_machineepsilon;
     }
     
     /*
@@ -3629,9 +3630,8 @@ lbl_14:
     
     /*
      * TODO: every 20 iterations recalculate errors/sums
-     * TODO: one more criterion to prevent infinite loops with too strict Eps
      */
-    if( ae_fp_less_eq(state->sumerr,state->eps*state->sumabs) )
+    if( ae_fp_less_eq(state->sumerr,state->eps*state->sumabs)||state->heapused>=autogk_maxsubintervals )
     {
         state->r = 0;
         for(j=0; j<=state->heapused-1; j++)

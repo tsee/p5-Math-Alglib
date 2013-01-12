@@ -340,6 +340,81 @@ double hqrndexponential(const hqrndstate &state, const double lambdav)
 }
 
 /*************************************************************************
+This function generates  random number from discrete distribution given by
+finite sample X.
+
+INPUT PARAMETERS
+    State   -   high quality random number generator, must be
+                initialized with HQRNDRandomize() or HQRNDSeed().
+        X   -   finite sample
+        N   -   number of elements to use, N>=1
+
+RESULT
+    this function returns one of the X[i] for random i=0..N-1
+
+  -- ALGLIB --
+     Copyright 08.11.2011 by Bochkanov Sergey
+*************************************************************************/
+double hqrnddiscrete(const hqrndstate &state, const real_1d_array &x, const ae_int_t n)
+{
+    alglib_impl::ae_state _alglib_env_state;
+    alglib_impl::ae_state_init(&_alglib_env_state);
+    try
+    {
+        double result = alglib_impl::hqrnddiscrete(const_cast<alglib_impl::hqrndstate*>(state.c_ptr()), const_cast<alglib_impl::ae_vector*>(x.c_ptr()), n, &_alglib_env_state);
+        alglib_impl::ae_state_clear(&_alglib_env_state);
+        return *(reinterpret_cast<double*>(&result));
+    }
+    catch(alglib_impl::ae_error_type)
+    {
+        throw ap_error(_alglib_env_state.error_msg);
+    }
+    catch(...)
+    {
+        throw;
+    }
+}
+
+/*************************************************************************
+This function generates random number from continuous  distribution  given
+by finite sample X.
+
+INPUT PARAMETERS
+    State   -   high quality random number generator, must be
+                initialized with HQRNDRandomize() or HQRNDSeed().
+        X   -   finite sample, array[N] (can be larger, in this  case only
+                leading N elements are used). THIS ARRAY MUST BE SORTED BY
+                ASCENDING.
+        N   -   number of elements to use, N>=1
+
+RESULT
+    this function returns random number from continuous distribution which
+    tries to approximate X as mush as possible. min(X)<=Result<=max(X).
+
+  -- ALGLIB --
+     Copyright 08.11.2011 by Bochkanov Sergey
+*************************************************************************/
+double hqrndcontinuous(const hqrndstate &state, const real_1d_array &x, const ae_int_t n)
+{
+    alglib_impl::ae_state _alglib_env_state;
+    alglib_impl::ae_state_init(&_alglib_env_state);
+    try
+    {
+        double result = alglib_impl::hqrndcontinuous(const_cast<alglib_impl::hqrndstate*>(state.c_ptr()), const_cast<alglib_impl::ae_vector*>(x.c_ptr()), n, &_alglib_env_state);
+        alglib_impl::ae_state_clear(&_alglib_env_state);
+        return *(reinterpret_cast<double*>(&result));
+    }
+    catch(alglib_impl::ae_error_type)
+    {
+        throw ap_error(_alglib_env_state.error_msg);
+    }
+    catch(...)
+    {
+        throw;
+    }
+}
+
+/*************************************************************************
 
 *************************************************************************/
 _kdtree_owner::_kdtree_owner()
@@ -405,6 +480,87 @@ kdtree::~kdtree()
 {
 }
 
+
+/*************************************************************************
+This function serializes data structure to string.
+
+Important properties of s_out:
+* it contains alphanumeric characters, dots, underscores, minus signs
+* these symbols are grouped into words, which are separated by spaces
+  and Windows-style (CR+LF) newlines
+* although  serializer  uses  spaces and CR+LF as separators, you can 
+  replace any separator character by arbitrary combination of spaces,
+  tabs, Windows or Unix newlines. It allows flexible reformatting  of
+  the  string  in  case you want to include it into text or XML file. 
+  But you should not insert separators into the middle of the "words"
+  nor you should change case of letters.
+* s_out can be freely moved between 32-bit and 64-bit systems, little
+  and big endian machines, and so on. You can serialize structure  on
+  32-bit machine and unserialize it on 64-bit one (or vice versa), or
+  serialize  it  on  SPARC  and  unserialize  on  x86.  You  can also 
+  serialize  it  in  C++ version of ALGLIB and unserialize in C# one, 
+  and vice versa.
+*************************************************************************/
+void kdtreeserialize(kdtree &obj, std::string &s_out)
+{
+    alglib_impl::ae_state state;
+    alglib_impl::ae_serializer serializer;
+    alglib_impl::ae_int_t ssize;
+
+    alglib_impl::ae_state_init(&state);
+    try
+    {
+        alglib_impl::ae_serializer_init(&serializer);
+        alglib_impl::ae_serializer_alloc_start(&serializer);
+        alglib_impl::kdtreealloc(&serializer, obj.c_ptr(), &state);
+        ssize = alglib_impl::ae_serializer_get_alloc_size(&serializer);
+        s_out.clear();
+        s_out.reserve((size_t)(ssize+1));
+        alglib_impl::ae_serializer_sstart_str(&serializer, &s_out);
+        alglib_impl::kdtreeserialize(&serializer, obj.c_ptr(), &state);
+        alglib_impl::ae_serializer_stop(&serializer);
+        if( s_out.length()>(size_t)ssize )
+            throw ap_error("ALGLIB: serialization integrity error");
+        alglib_impl::ae_serializer_clear(&serializer);
+        alglib_impl::ae_state_clear(&state);
+    }
+    catch(alglib_impl::ae_error_type)
+    {
+        throw ap_error(state.error_msg);
+    }
+    catch(...)
+    {
+        throw;
+    }
+}
+/*************************************************************************
+This function unserializes data structure from string.
+*************************************************************************/
+void kdtreeunserialize(std::string &s_in, kdtree &obj)
+{
+    alglib_impl::ae_state state;
+    alglib_impl::ae_serializer serializer;
+
+    alglib_impl::ae_state_init(&state);
+    try
+    {
+        alglib_impl::ae_serializer_init(&serializer);
+        alglib_impl::ae_serializer_ustart_str(&serializer, &s_in);
+        alglib_impl::kdtreeunserialize(&serializer, obj.c_ptr(), &state);
+        alglib_impl::ae_serializer_stop(&serializer);
+        alglib_impl::ae_serializer_clear(&serializer);
+        alglib_impl::ae_state_clear(&state);
+    }
+    catch(alglib_impl::ae_error_type)
+    {
+        throw ap_error(state.error_msg);
+    }
+    catch(...)
+    {
+        throw;
+    }
+}
+
 /*************************************************************************
 KD-tree creation
 
@@ -415,7 +571,7 @@ INPUT PARAMETERS
                 one row corresponds to one point.
                 first NX columns contain X-values, next NY (NY may be zero)
                 columns may contain associated Y-values
-    N       -   number of points, N>=1
+    N       -   number of points, N>=0.
     NX      -   space dimension, NX>=1.
     NY      -   number of optional Y-values, NY>=0.
     NormType-   norm type:
@@ -470,7 +626,7 @@ INPUT PARAMETERS
                 one row corresponds to one point.
                 first NX columns contain X-values, next NY (NY may be zero)
                 columns may contain associated Y-values
-    N       -   number of points, N>=1
+    N       -   number of points, N>=0.
     NX      -   space dimension, NX>=1.
     NY      -   number of optional Y-values, NY>=0.
     NormType-   norm type:
@@ -532,7 +688,7 @@ INPUT PARAMETERS
                 columns may contain associated Y-values
     Tags    -   tags, array[0..N-1], contains integer tags associated
                 with points.
-    N       -   number of points, N>=1
+    N       -   number of points, N>=0
     NX      -   space dimension, NX>=1.
     NY      -   number of optional Y-values, NY>=0.
     NormType-   norm type:
@@ -589,7 +745,7 @@ INPUT PARAMETERS
                 columns may contain associated Y-values
     Tags    -   tags, array[0..N-1], contains integer tags associated
                 with points.
-    N       -   number of points, N>=1
+    N       -   number of points, N>=0
     NX      -   space dimension, NX>=1.
     NY      -   number of optional Y-values, NY>=0.
     NormType-   norm type:
@@ -1295,6 +1451,7 @@ static ae_int_t hqrnd_hqrndintegerbase(hqrndstate* state,
 
 
 static ae_int_t nearestneighbor_splitnodesize = 6;
+static ae_int_t nearestneighbor_kdtreefirstversion = 0;
 static void nearestneighbor_kdtreesplit(kdtree* kdt,
      ae_int_t i1,
      ae_int_t i2,
@@ -1315,6 +1472,20 @@ static void nearestneighbor_kdtreequerynnrec(kdtree* kdt,
 static void nearestneighbor_kdtreeinitbox(kdtree* kdt,
      /* Real    */ ae_vector* x,
      ae_state *_state);
+static void nearestneighbor_kdtreeallocdatasetindependent(kdtree* kdt,
+     ae_int_t nx,
+     ae_int_t ny,
+     ae_state *_state);
+static void nearestneighbor_kdtreeallocdatasetdependent(kdtree* kdt,
+     ae_int_t n,
+     ae_int_t nx,
+     ae_int_t ny,
+     ae_state *_state);
+static void nearestneighbor_kdtreealloctemporaries(kdtree* kdt,
+     ae_int_t n,
+     ae_int_t nx,
+     ae_int_t ny,
+     ae_state *_state);
 
 
 
@@ -1329,10 +1500,14 @@ RNG.
 *************************************************************************/
 void hqrndrandomize(hqrndstate* state, ae_state *_state)
 {
+    ae_int_t s0;
+    ae_int_t s1;
 
     _hqrndstate_clear(state);
 
-    hqrndseed(ae_randominteger(hqrnd_hqrndm1, _state), ae_randominteger(hqrnd_hqrndm2, _state), state, _state);
+    s0 = ae_randominteger(hqrnd_hqrndm1, _state);
+    s1 = ae_randominteger(hqrnd_hqrndm2, _state);
+    hqrndseed(s0, s1, state, _state);
 }
 
 
@@ -1529,6 +1704,90 @@ double hqrndexponential(hqrndstate* state,
 
 
 /*************************************************************************
+This function generates  random number from discrete distribution given by
+finite sample X.
+
+INPUT PARAMETERS
+    State   -   high quality random number generator, must be
+                initialized with HQRNDRandomize() or HQRNDSeed().
+        X   -   finite sample
+        N   -   number of elements to use, N>=1
+
+RESULT
+    this function returns one of the X[i] for random i=0..N-1
+
+  -- ALGLIB --
+     Copyright 08.11.2011 by Bochkanov Sergey
+*************************************************************************/
+double hqrnddiscrete(hqrndstate* state,
+     /* Real    */ ae_vector* x,
+     ae_int_t n,
+     ae_state *_state)
+{
+    double result;
+
+
+    ae_assert(n>0, "HQRNDDiscrete: N<=0", _state);
+    ae_assert(n<=x->cnt, "HQRNDDiscrete: Length(X)<N", _state);
+    result = x->ptr.p_double[hqrnduniformi(state, n, _state)];
+    return result;
+}
+
+
+/*************************************************************************
+This function generates random number from continuous  distribution  given
+by finite sample X.
+
+INPUT PARAMETERS
+    State   -   high quality random number generator, must be
+                initialized with HQRNDRandomize() or HQRNDSeed().
+        X   -   finite sample, array[N] (can be larger, in this  case only
+                leading N elements are used). THIS ARRAY MUST BE SORTED BY
+                ASCENDING.
+        N   -   number of elements to use, N>=1
+
+RESULT
+    this function returns random number from continuous distribution which  
+    tries to approximate X as mush as possible. min(X)<=Result<=max(X).
+
+  -- ALGLIB --
+     Copyright 08.11.2011 by Bochkanov Sergey
+*************************************************************************/
+double hqrndcontinuous(hqrndstate* state,
+     /* Real    */ ae_vector* x,
+     ae_int_t n,
+     ae_state *_state)
+{
+    double mx;
+    double mn;
+    ae_int_t i;
+    double result;
+
+
+    ae_assert(n>0, "HQRNDContinuous: N<=0", _state);
+    ae_assert(n<=x->cnt, "HQRNDContinuous: Length(X)<N", _state);
+    if( n==1 )
+    {
+        result = x->ptr.p_double[0];
+        return result;
+    }
+    i = hqrnduniformi(state, n-1, _state);
+    mn = x->ptr.p_double[i];
+    mx = x->ptr.p_double[i+1];
+    ae_assert(ae_fp_greater_eq(mx,mn), "HQRNDDiscrete: X is not sorted by ascending", _state);
+    if( ae_fp_neq(mx,mn) )
+    {
+        result = (mx-mn)*hqrnduniformr(state, _state)+mn;
+    }
+    else
+    {
+        result = mn;
+    }
+    return result;
+}
+
+
+/*************************************************************************
 
 L'Ecuyer, Efficient and portable combined random number generators
 *************************************************************************/
@@ -1598,7 +1857,7 @@ INPUT PARAMETERS
                 one row corresponds to one point.
                 first NX columns contain X-values, next NY (NY may be zero)
                 columns may contain associated Y-values
-    N       -   number of points, N>=1
+    N       -   number of points, N>=0.
     NX      -   space dimension, NX>=1.
     NY      -   number of optional Y-values, NY>=0.
     NormType-   norm type:
@@ -1639,17 +1898,20 @@ void kdtreebuild(/* Real    */ ae_matrix* xy,
     _kdtree_clear(kdt);
     ae_vector_init(&tags, 0, DT_INT, _state, ae_true);
 
-    ae_assert(n>=1, "KDTreeBuild: N<1!", _state);
-    ae_assert(nx>=1, "KDTreeBuild: NX<1!", _state);
-    ae_assert(ny>=0, "KDTreeBuild: NY<0!", _state);
-    ae_assert(normtype>=0&&normtype<=2, "KDTreeBuild: incorrect NormType!", _state);
-    ae_assert(xy->rows>=n, "KDTreeBuild: rows(X)<N!", _state);
-    ae_assert(xy->cols>=nx+ny, "KDTreeBuild: cols(X)<NX+NY!", _state);
-    ae_assert(apservisfinitematrix(xy, n, nx+ny, _state), "KDTreeBuild: X contains infinite or NaN values!", _state);
-    ae_vector_set_length(&tags, n, _state);
-    for(i=0; i<=n-1; i++)
+    ae_assert(n>=0, "KDTreeBuild: N<0", _state);
+    ae_assert(nx>=1, "KDTreeBuild: NX<1", _state);
+    ae_assert(ny>=0, "KDTreeBuild: NY<0", _state);
+    ae_assert(normtype>=0&&normtype<=2, "KDTreeBuild: incorrect NormType", _state);
+    ae_assert(xy->rows>=n, "KDTreeBuild: rows(X)<N", _state);
+    ae_assert(xy->cols>=nx+ny||n==0, "KDTreeBuild: cols(X)<NX+NY", _state);
+    ae_assert(apservisfinitematrix(xy, n, nx+ny, _state), "KDTreeBuild: XY contains infinite or NaN values", _state);
+    if( n>0 )
     {
-        tags.ptr.p_int[i] = 0;
+        ae_vector_set_length(&tags, n, _state);
+        for(i=0; i<=n-1; i++)
+        {
+            tags.ptr.p_int[i] = 0;
+        }
     }
     kdtreebuildtagged(xy, &tags, n, nx, ny, normtype, kdt, _state);
     ae_frame_leave(_state);
@@ -1669,7 +1931,7 @@ INPUT PARAMETERS
                 columns may contain associated Y-values
     Tags    -   tags, array[0..N-1], contains integer tags associated
                 with points.
-    N       -   number of points, N>=1
+    N       -   number of points, N>=0
     NX      -   space dimension, NX>=1.
     NY      -   number of optional Y-values, NY>=0.
     NormType-   norm type:
@@ -1710,13 +1972,13 @@ void kdtreebuildtagged(/* Real    */ ae_matrix* xy,
 
     _kdtree_clear(kdt);
 
-    ae_assert(n>=1, "KDTreeBuildTagged: N<1!", _state);
-    ae_assert(nx>=1, "KDTreeBuildTagged: NX<1!", _state);
-    ae_assert(ny>=0, "KDTreeBuildTagged: NY<0!", _state);
-    ae_assert(normtype>=0&&normtype<=2, "KDTreeBuildTagged: incorrect NormType!", _state);
-    ae_assert(xy->rows>=n, "KDTreeBuildTagged: rows(X)<N!", _state);
-    ae_assert(xy->cols>=nx+ny, "KDTreeBuildTagged: cols(X)<NX+NY!", _state);
-    ae_assert(apservisfinitematrix(xy, n, nx+ny, _state), "KDTreeBuildTagged: X contains infinite or NaN values!", _state);
+    ae_assert(n>=0, "KDTreeBuildTagged: N<0", _state);
+    ae_assert(nx>=1, "KDTreeBuildTagged: NX<1", _state);
+    ae_assert(ny>=0, "KDTreeBuildTagged: NY<0", _state);
+    ae_assert(normtype>=0&&normtype<=2, "KDTreeBuildTagged: incorrect NormType", _state);
+    ae_assert(xy->rows>=n, "KDTreeBuildTagged: rows(X)<N", _state);
+    ae_assert(xy->cols>=nx+ny||n==0, "KDTreeBuildTagged: cols(X)<NX+NY", _state);
+    ae_assert(apservisfinitematrix(xy, n, nx+ny, _state), "KDTreeBuildTagged: XY contains infinite or NaN values", _state);
     
     /*
      * initialize
@@ -1725,13 +1987,21 @@ void kdtreebuildtagged(/* Real    */ ae_matrix* xy,
     kdt->nx = nx;
     kdt->ny = ny;
     kdt->normtype = normtype;
-    kdt->distmatrixtype = 0;
-    ae_matrix_set_length(&kdt->xy, n, 2*nx+ny, _state);
-    ae_vector_set_length(&kdt->tags, n, _state);
-    ae_vector_set_length(&kdt->idx, n, _state);
-    ae_vector_set_length(&kdt->r, n, _state);
-    ae_vector_set_length(&kdt->x, nx, _state);
-    ae_vector_set_length(&kdt->buf, ae_maxint(n, nx, _state), _state);
+    kdt->kcur = 0;
+    
+    /*
+     * N=0 => quick exit
+     */
+    if( n==0 )
+    {
+        return;
+    }
+    
+    /*
+     * Allocate
+     */
+    nearestneighbor_kdtreeallocdatasetindependent(kdt, nx, ny, _state);
+    nearestneighbor_kdtreeallocdatasetdependent(kdt, n, nx, ny, _state);
     
     /*
      * Initial fill
@@ -1746,10 +2016,6 @@ void kdtreebuildtagged(/* Real    */ ae_matrix* xy,
     /*
      * Determine bounding box
      */
-    ae_vector_set_length(&kdt->boxmin, nx, _state);
-    ae_vector_set_length(&kdt->boxmax, nx, _state);
-    ae_vector_set_length(&kdt->curboxmin, nx, _state);
-    ae_vector_set_length(&kdt->curboxmax, nx, _state);
     ae_v_move(&kdt->boxmin.ptr.p_double[0], 1, &kdt->xy.ptr.pp_double[0][0], 1, ae_v_len(0,nx-1));
     ae_v_move(&kdt->boxmax.ptr.p_double[0], 1, &kdt->xy.ptr.pp_double[0][0], 1, ae_v_len(0,nx-1));
     for(i=1; i<=n-1; i++)
@@ -1774,11 +2040,6 @@ void kdtreebuildtagged(/* Real    */ ae_matrix* xy,
     ae_v_move(&kdt->curboxmin.ptr.p_double[0], 1, &kdt->boxmin.ptr.p_double[0], 1, ae_v_len(0,nx-1));
     ae_v_move(&kdt->curboxmax.ptr.p_double[0], 1, &kdt->boxmax.ptr.p_double[0], 1, ae_v_len(0,nx-1));
     nearestneighbor_kdtreegeneratetreerec(kdt, &nodesoffs, &splitsoffs, 0, n, 8, _state);
-    
-    /*
-     * Set current query size to 0
-     */
-    kdt->kcur = 0;
 }
 
 
@@ -1869,6 +2130,16 @@ ae_int_t kdtreequeryrnn(kdtree* kdt,
     ae_assert(ae_fp_greater(r,0), "KDTreeQueryRNN: incorrect R!", _state);
     ae_assert(x->cnt>=kdt->nx, "KDTreeQueryRNN: Length(X)<NX!", _state);
     ae_assert(isfinitevector(x, kdt->nx, _state), "KDTreeQueryRNN: X contains infinite or NaN values!", _state);
+    
+    /*
+     * Handle special case: KDT.N=0
+     */
+    if( kdt->n==0 )
+    {
+        kdt->kcur = 0;
+        result = 0;
+        return result;
+    }
     
     /*
      * Prepare parameters
@@ -1964,6 +2235,16 @@ ae_int_t kdtreequeryaknn(kdtree* kdt,
     ae_assert(ae_fp_greater_eq(eps,0), "KDTreeQueryAKNN: incorrect Eps!", _state);
     ae_assert(x->cnt>=kdt->nx, "KDTreeQueryAKNN: Length(X)<NX!", _state);
     ae_assert(isfinitevector(x, kdt->nx, _state), "KDTreeQueryAKNN: X contains infinite or NaN values!", _state);
+    
+    /*
+     * Handle special case: KDT.N=0
+     */
+    if( kdt->n==0 )
+    {
+        kdt->kcur = 0;
+        result = 0;
+        return result;
+    }
     
     /*
      * Prepare parameters
@@ -2340,6 +2621,111 @@ void kdtreequeryresultsdistancesi(kdtree* kdt,
 
 
 /*************************************************************************
+Serializer: allocation
+
+  -- ALGLIB --
+     Copyright 14.03.2011 by Bochkanov Sergey
+*************************************************************************/
+void kdtreealloc(ae_serializer* s, kdtree* tree, ae_state *_state)
+{
+
+
+    
+    /*
+     * Header
+     */
+    ae_serializer_alloc_entry(s);
+    ae_serializer_alloc_entry(s);
+    
+    /*
+     * Data
+     */
+    ae_serializer_alloc_entry(s);
+    ae_serializer_alloc_entry(s);
+    ae_serializer_alloc_entry(s);
+    ae_serializer_alloc_entry(s);
+    allocrealmatrix(s, &tree->xy, -1, -1, _state);
+    allocintegerarray(s, &tree->tags, -1, _state);
+    allocrealarray(s, &tree->boxmin, -1, _state);
+    allocrealarray(s, &tree->boxmax, -1, _state);
+    allocintegerarray(s, &tree->nodes, -1, _state);
+    allocrealarray(s, &tree->splits, -1, _state);
+}
+
+
+/*************************************************************************
+Serializer: serialization
+
+  -- ALGLIB --
+     Copyright 14.03.2011 by Bochkanov Sergey
+*************************************************************************/
+void kdtreeserialize(ae_serializer* s, kdtree* tree, ae_state *_state)
+{
+
+
+    
+    /*
+     * Header
+     */
+    ae_serializer_serialize_int(s, getkdtreeserializationcode(_state), _state);
+    ae_serializer_serialize_int(s, nearestneighbor_kdtreefirstversion, _state);
+    
+    /*
+     * Data
+     */
+    ae_serializer_serialize_int(s, tree->n, _state);
+    ae_serializer_serialize_int(s, tree->nx, _state);
+    ae_serializer_serialize_int(s, tree->ny, _state);
+    ae_serializer_serialize_int(s, tree->normtype, _state);
+    serializerealmatrix(s, &tree->xy, -1, -1, _state);
+    serializeintegerarray(s, &tree->tags, -1, _state);
+    serializerealarray(s, &tree->boxmin, -1, _state);
+    serializerealarray(s, &tree->boxmax, -1, _state);
+    serializeintegerarray(s, &tree->nodes, -1, _state);
+    serializerealarray(s, &tree->splits, -1, _state);
+}
+
+
+/*************************************************************************
+Serializer: unserialization
+
+  -- ALGLIB --
+     Copyright 14.03.2011 by Bochkanov Sergey
+*************************************************************************/
+void kdtreeunserialize(ae_serializer* s, kdtree* tree, ae_state *_state)
+{
+    ae_int_t i0;
+    ae_int_t i1;
+
+    _kdtree_clear(tree);
+
+    
+    /*
+     * check correctness of header
+     */
+    ae_serializer_unserialize_int(s, &i0, _state);
+    ae_assert(i0==getkdtreeserializationcode(_state), "KDTreeUnserialize: stream header corrupted", _state);
+    ae_serializer_unserialize_int(s, &i1, _state);
+    ae_assert(i1==nearestneighbor_kdtreefirstversion, "KDTreeUnserialize: stream header corrupted", _state);
+    
+    /*
+     * Unserialize data
+     */
+    ae_serializer_unserialize_int(s, &tree->n, _state);
+    ae_serializer_unserialize_int(s, &tree->nx, _state);
+    ae_serializer_unserialize_int(s, &tree->ny, _state);
+    ae_serializer_unserialize_int(s, &tree->normtype, _state);
+    unserializerealmatrix(s, &tree->xy, _state);
+    unserializeintegerarray(s, &tree->tags, _state);
+    unserializerealarray(s, &tree->boxmin, _state);
+    unserializerealarray(s, &tree->boxmax, _state);
+    unserializeintegerarray(s, &tree->nodes, _state);
+    unserializerealarray(s, &tree->splits, _state);
+    nearestneighbor_kdtreealloctemporaries(tree, tree->n, tree->nx, tree->ny, _state);
+}
+
+
+/*************************************************************************
 Rearranges nodes [I1,I2) using partition in D-th dimension with S as threshold.
 Returns split position I3: [I1,I3) and [I3,I2) are created as result.
 
@@ -2361,6 +2747,7 @@ static void nearestneighbor_kdtreesplit(kdtree* kdt,
 
     *i3 = 0;
 
+    ae_assert(kdt->n>0, "KDTreeSplit: internal error", _state);
     
     /*
      * split XY/Tags in two parts:
@@ -2457,6 +2844,7 @@ static void nearestneighbor_kdtreegeneratetreerec(kdtree* kdt,
     double v;
 
 
+    ae_assert(kdt->n>0, "KDTreeGenerateTreeRec: internal error", _state);
     ae_assert(i2>i1, "KDTreeGenerateTreeRec: internal error", _state);
     
     /*
@@ -2648,6 +3036,7 @@ static void nearestneighbor_kdtreequerynnrec(kdtree* kdt,
     ae_bool updatemin;
 
 
+    ae_assert(kdt->n>0, "KDTreeQueryNNRec: internal error", _state);
     
     /*
      * Leaf node.
@@ -2912,6 +3301,7 @@ static void nearestneighbor_kdtreeinitbox(kdtree* kdt,
     double vmax;
 
 
+    ae_assert(kdt->n>0, "KDTreeInitBox: internal error", _state);
     
     /*
      * calculate distance from point to current bounding box
@@ -2989,6 +3379,89 @@ static void nearestneighbor_kdtreeinitbox(kdtree* kdt,
 }
 
 
+/*************************************************************************
+This function allocates all dataset-independent array  fields  of  KDTree,
+i.e.  such  array  fields  that  their dimensions do not depend on dataset
+size.
+
+This function do not sets KDT.NX or KDT.NY - it just allocates arrays
+
+  -- ALGLIB --
+     Copyright 14.03.2011 by Bochkanov Sergey
+*************************************************************************/
+static void nearestneighbor_kdtreeallocdatasetindependent(kdtree* kdt,
+     ae_int_t nx,
+     ae_int_t ny,
+     ae_state *_state)
+{
+
+
+    ae_assert(kdt->n>0, "KDTreeAllocDatasetIndependent: internal error", _state);
+    ae_vector_set_length(&kdt->x, nx, _state);
+    ae_vector_set_length(&kdt->boxmin, nx, _state);
+    ae_vector_set_length(&kdt->boxmax, nx, _state);
+    ae_vector_set_length(&kdt->curboxmin, nx, _state);
+    ae_vector_set_length(&kdt->curboxmax, nx, _state);
+}
+
+
+/*************************************************************************
+This function allocates all dataset-dependent array fields of KDTree, i.e.
+such array fields that their dimensions depend on dataset size.
+
+This function do not sets KDT.N, KDT.NX or KDT.NY -
+it just allocates arrays.
+
+  -- ALGLIB --
+     Copyright 14.03.2011 by Bochkanov Sergey
+*************************************************************************/
+static void nearestneighbor_kdtreeallocdatasetdependent(kdtree* kdt,
+     ae_int_t n,
+     ae_int_t nx,
+     ae_int_t ny,
+     ae_state *_state)
+{
+
+
+    ae_assert(n>0, "KDTreeAllocDatasetDependent: internal error", _state);
+    ae_matrix_set_length(&kdt->xy, n, 2*nx+ny, _state);
+    ae_vector_set_length(&kdt->tags, n, _state);
+    ae_vector_set_length(&kdt->idx, n, _state);
+    ae_vector_set_length(&kdt->r, n, _state);
+    ae_vector_set_length(&kdt->x, nx, _state);
+    ae_vector_set_length(&kdt->buf, ae_maxint(n, nx, _state), _state);
+    ae_vector_set_length(&kdt->nodes, nearestneighbor_splitnodesize*2*n, _state);
+    ae_vector_set_length(&kdt->splits, 2*n, _state);
+}
+
+
+/*************************************************************************
+This function allocates temporaries.
+
+This function do not sets KDT.N, KDT.NX or KDT.NY -
+it just allocates arrays.
+
+  -- ALGLIB --
+     Copyright 14.03.2011 by Bochkanov Sergey
+*************************************************************************/
+static void nearestneighbor_kdtreealloctemporaries(kdtree* kdt,
+     ae_int_t n,
+     ae_int_t nx,
+     ae_int_t ny,
+     ae_state *_state)
+{
+
+
+    ae_assert(n>0, "KDTreeAllocTemporaries: internal error", _state);
+    ae_vector_set_length(&kdt->x, nx, _state);
+    ae_vector_set_length(&kdt->idx, n, _state);
+    ae_vector_set_length(&kdt->r, n, _state);
+    ae_vector_set_length(&kdt->buf, ae_maxint(n, nx, _state), _state);
+    ae_vector_set_length(&kdt->curboxmin, nx, _state);
+    ae_vector_set_length(&kdt->curboxmax, nx, _state);
+}
+
+
 ae_bool _kdtree_init(kdtree* p, ae_state *_state, ae_bool make_automatic)
 {
     if( !ae_matrix_init(&p->xy, 0, 0, DT_REAL, _state, make_automatic) )
@@ -2998,10 +3471,6 @@ ae_bool _kdtree_init(kdtree* p, ae_state *_state, ae_bool make_automatic)
     if( !ae_vector_init(&p->boxmin, 0, DT_REAL, _state, make_automatic) )
         return ae_false;
     if( !ae_vector_init(&p->boxmax, 0, DT_REAL, _state, make_automatic) )
-        return ae_false;
-    if( !ae_vector_init(&p->curboxmin, 0, DT_REAL, _state, make_automatic) )
-        return ae_false;
-    if( !ae_vector_init(&p->curboxmax, 0, DT_REAL, _state, make_automatic) )
         return ae_false;
     if( !ae_vector_init(&p->nodes, 0, DT_INT, _state, make_automatic) )
         return ae_false;
@@ -3015,6 +3484,10 @@ ae_bool _kdtree_init(kdtree* p, ae_state *_state, ae_bool make_automatic)
         return ae_false;
     if( !ae_vector_init(&p->buf, 0, DT_REAL, _state, make_automatic) )
         return ae_false;
+    if( !ae_vector_init(&p->curboxmin, 0, DT_REAL, _state, make_automatic) )
+        return ae_false;
+    if( !ae_vector_init(&p->curboxmax, 0, DT_REAL, _state, make_automatic) )
+        return ae_false;
     return ae_true;
 }
 
@@ -3025,7 +3498,6 @@ ae_bool _kdtree_init_copy(kdtree* dst, kdtree* src, ae_state *_state, ae_bool ma
     dst->nx = src->nx;
     dst->ny = src->ny;
     dst->normtype = src->normtype;
-    dst->distmatrixtype = src->distmatrixtype;
     if( !ae_matrix_init_copy(&dst->xy, &src->xy, _state, make_automatic) )
         return ae_false;
     if( !ae_vector_init_copy(&dst->tags, &src->tags, _state, make_automatic) )
@@ -3034,11 +3506,6 @@ ae_bool _kdtree_init_copy(kdtree* dst, kdtree* src, ae_state *_state, ae_bool ma
         return ae_false;
     if( !ae_vector_init_copy(&dst->boxmax, &src->boxmax, _state, make_automatic) )
         return ae_false;
-    if( !ae_vector_init_copy(&dst->curboxmin, &src->curboxmin, _state, make_automatic) )
-        return ae_false;
-    if( !ae_vector_init_copy(&dst->curboxmax, &src->curboxmax, _state, make_automatic) )
-        return ae_false;
-    dst->curdist = src->curdist;
     if( !ae_vector_init_copy(&dst->nodes, &src->nodes, _state, make_automatic) )
         return ae_false;
     if( !ae_vector_init_copy(&dst->splits, &src->splits, _state, make_automatic) )
@@ -3056,6 +3523,11 @@ ae_bool _kdtree_init_copy(kdtree* dst, kdtree* src, ae_state *_state, ae_bool ma
         return ae_false;
     if( !ae_vector_init_copy(&dst->buf, &src->buf, _state, make_automatic) )
         return ae_false;
+    if( !ae_vector_init_copy(&dst->curboxmin, &src->curboxmin, _state, make_automatic) )
+        return ae_false;
+    if( !ae_vector_init_copy(&dst->curboxmax, &src->curboxmax, _state, make_automatic) )
+        return ae_false;
+    dst->curdist = src->curdist;
     dst->debugcounter = src->debugcounter;
     return ae_true;
 }
@@ -3067,14 +3539,14 @@ void _kdtree_clear(kdtree* p)
     ae_vector_clear(&p->tags);
     ae_vector_clear(&p->boxmin);
     ae_vector_clear(&p->boxmax);
-    ae_vector_clear(&p->curboxmin);
-    ae_vector_clear(&p->curboxmax);
     ae_vector_clear(&p->nodes);
     ae_vector_clear(&p->splits);
     ae_vector_clear(&p->x);
     ae_vector_clear(&p->idx);
     ae_vector_clear(&p->r);
     ae_vector_clear(&p->buf);
+    ae_vector_clear(&p->curboxmin);
+    ae_vector_clear(&p->curboxmax);
 }
 
 

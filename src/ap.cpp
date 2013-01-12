@@ -60,6 +60,15 @@ namespace alglib_impl
 #define AE_LITTLE_ENDIAN 1
 #define AE_BIG_ENDIAN 2
 #define AE_MIXED_ENDIAN 3
+#define AE_SER_ENTRY_LENGTH 11
+#define AE_SER_ENTRIES_PER_ROW 5
+
+#define AE_SM_DEFAULT 0
+#define AE_SM_ALLOC 1
+#define AE_SM_READY2S 2
+#define AE_SM_TO_STRING 10
+#define AE_SM_FROM_STRING 20
+#define AE_SM_TO_CPPSTRING 11
 
 
 /*
@@ -67,6 +76,10 @@ namespace alglib_impl
  */
 #ifdef AE_USE_ALLOC_COUNTER
 ae_int64_t _alloc_counter = 0;
+#endif
+#ifdef AE_DEBUGRNG
+static ae_int_t _debug_rng_s0 = 11;
+static ae_int_t _debug_rng_s1 = 13;
 #endif
 
 /*
@@ -193,7 +206,11 @@ void* ae_malloc(size_t size, ae_state *state)
         return NULL;
     result = aligned_malloc(size,AE_DATA_ALIGN);
     if( result==NULL && state!=NULL)
-        ae_break(state, ERR_OUT_OF_MEMORY, "ae_malloc(): out of memory");
+    {
+        char buf[256];
+        sprintf(buf, "ae_malloc(): out of memory (attempted to allocate %llu bytes)", (unsigned long long)size);
+        ae_break(state, ERR_OUT_OF_MEMORY, buf);
+    }
     return result;
 }
 
@@ -1013,10 +1030,12 @@ Note: results of this function depend on both CPU and compiler;
 if compiler doesn't support SSE intrinsics, function won't set 
 corresponding flag.
 ************************************************************************/
+static volatile ae_bool _ae_cpuid_initialized = ae_false;
+static volatile ae_bool _ae_cpuid_has_sse2 = ae_false;
 ae_int_t ae_cpuid()
 {
     /*
-     * to speed up CPU detection we cache our data in the static vars.
+     * to speed up CPU detection we cache results from previous attempts
      * there is no synchronization, but it is still thread safe.
      *
      * thread safety is guaranteed on all modern architectures which
@@ -1024,29 +1043,39 @@ ae_int_t ae_cpuid()
      * to the same location will be executed in serial manner.
      *
      */
-    static ae_bool initialized = ae_false;
-    static ae_bool has_sse2 = ae_false;
     ae_int_t result;
     
     /*
      * if not initialized, determine system properties
      */
-    if( !initialized )
+    if( !_ae_cpuid_initialized )
     {
         /*
          * SSE2
          */
 #if defined(AE_CPU)
 #if (AE_CPU==AE_INTEL) && defined(AE_HAS_SSE2_INTRINSICS)
-#if AE_COMPILER==AE_GNUC
-#elif AE_COMPILER==AE_MSVC
+#if AE_COMPILER==AE_MSVC
         {
             int CPUInfo[4];
             __cpuid(CPUInfo, 1);
             if( (CPUInfo[3]&0x04000000)!=0 )
-                has_sse2 = ae_true;
+                _ae_cpuid_has_sse2 = ae_true;
+        }
+#elif AE_COMPILER==AE_GNUC
+        {
+            ae_int_t a,b,c,d;
+            __asm__ __volatile__ ("cpuid": "=a" (a), "=b" (b), "=c" (c), "=d" (d) : "a" (1));
+            if( (d&0x04000000)!=0 )
+                _ae_cpuid_has_sse2 = ae_true;
         }
 #elif AE_COMPILER==AE_SUNC
+        {
+            ae_int_t a,b,c,d;
+            __asm__ __volatile__ ("cpuid": "=a" (a), "=b" (b), "=c" (c), "=d" (d) : "a" (1));
+            if( (d&0x04000000)!=0 )
+                _ae_cpuid_has_sse2 = ae_true;
+        }
 #else
 #endif
 #endif
@@ -1054,14 +1083,14 @@ ae_int_t ae_cpuid()
         /*
          * set initialization flag
          */
-        initialized = ae_true;
+        _ae_cpuid_initialized = ae_true;
     }
     
     /*
      * return
      */
     result = 0;
-    if( has_sse2 )
+    if( _ae_cpuid_has_sse2 )
         result = result|CPU_SSE2;
     return result;
 }
@@ -1173,7 +1202,7 @@ ae_bool ae_isinf_stateless(double x,    ae_int_t endianness)
         low  = u.p[1];
     }
     
-    // 31 least significant bits of high are compared
+    /* 31 least significant bits of high are compared */
     return ((high&0x7FFFFFFF)==0x7FF00000) && (low==0); 
 }
 
@@ -1197,7 +1226,7 @@ ae_bool ae_isposinf_stateless(double x, ae_int_t endianness)
         low  = u.p[1];
     }
     
-    // all 32 bits of high are compared
+    /* all 32 bits of high are compared */
     return (high==(ae_int32_t)0x7FF00000) && (low==0); 
 }
 
@@ -1221,7 +1250,7 @@ ae_bool ae_isneginf_stateless(double x, ae_int_t endianness)
         low  = u.p[1];
     }
     
-    // this code is a bit tricky to avoid comparison of high with 0xFFF00000, which may be unsafe with some buggy compilers
+    /* this code is a bit tricky to avoid comparison of high with 0xFFF00000, which may be unsafe with some buggy compilers */
     return ((high&0x7FFFFFFF)==0x7FF00000) && (high!=(ae_int32_t)0x7FF00000) && (low==0);
 }
 
@@ -1343,22 +1372,47 @@ double ae_minreal(double m1, double m2, ae_state *state)
     return m1>m2 ? m2 : m1;
 }
 
+#ifdef AE_DEBUGRNG
+ae_int_t ae_debugrng()
+{
+    ae_int_t k;
+    ae_int_t result;
+    k = _debug_rng_s0/53668;
+    _debug_rng_s0 = 40014*(_debug_rng_s0-k*53668)-k*12211;
+    if( _debug_rng_s0<0 )
+        _debug_rng_s0 = _debug_rng_s0+2147483563;
+    k = _debug_rng_s1/52774;
+    _debug_rng_s1 = 40692*(_debug_rng_s1-k*52774)-k*3791;
+    if( _debug_rng_s1<0 )
+        _debug_rng_s1 = _debug_rng_s1+2147483399;
+    result = _debug_rng_s0-_debug_rng_s1;
+    if( result<1 )
+        result = result+2147483562;
+    return result;
+} 
+#endif
+
 double ae_randomreal(ae_state *state)
 {
+#ifdef AE_DEBUGRNG
+    return ae_debugrng()/2147483563.0;
+#else
     int i1 = rand();
     int i2 = rand();
-    double mx;
-    while(i1==RAND_MAX)
-        i1 =rand();
-    while(i2==RAND_MAX)
-        i2 =rand();
-    mx = RAND_MAX;
-    return (i1+i2/mx)/mx;
+    double mx = (double)(RAND_MAX)+1.0;
+    volatile double tmp0 = i2/mx;
+    volatile double tmp1 = i1+tmp0;
+    return tmp1/mx;
+#endif
 }
 
 ae_int_t ae_randominteger(ae_int_t maxv, ae_state *state)
 {
+#ifdef AE_DEBUGRNG
+    return (ae_debugrng()-1)%maxv;
+#else
     return rand()%maxv;
+#endif
 }
 
 double   ae_sin(double x, ae_state *state)
@@ -1405,9 +1459,9 @@ double   ae_atan(double x, ae_state *state)
     return atan(x);
 }
 
-double   ae_atan2(double x, double y, ae_state *state)
+double   ae_atan2(double y, double x, ae_state *state)
 {
-    return atan2(x,y);
+    return atan2(y,x);
 }
 
 double   ae_log(double x, ae_state *state)
@@ -2009,6 +2063,657 @@ ae_bool ae_force_hermitian(ae_matrix *a)
     x.owner = OWN_CALLER;
     ae_x_attach_to_matrix(&x, a);
     return x_force_hermitian(&x);
+}
+
+/************************************************************************
+This function converts six-bit value (from 0 to 63)  to  character  (only
+digits, lowercase and uppercase letters, minus and underscore are used).
+
+If v is negative or greater than 63, this function returns '?'.
+************************************************************************/
+static char _sixbits2char_tbl[64] = { 
+        '0', '1', '2', '3', '4', '5', '6', '7',
+        '8', '9', 'A', 'B', 'C', 'D', 'E', 'F',
+        'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N',
+        'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V',
+        'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd', 
+        'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 
+        'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 
+        'u', 'v', 'w', 'x', 'y', 'z', '-', '_' };
+
+char ae_sixbits2char(ae_int_t v)
+{
+    
+    if( v<0 || v>63 )
+        return '?';
+    return _sixbits2char_tbl[v]; 
+    
+    /* v is correct, process it */
+    /*if( v<10 )
+        return '0'+v;
+    v -= 10;
+    if( v<26 )
+        return 'A'+v;
+    v -= 26;
+    if( v<26 )
+        return 'a'+v;
+    v -= 26;
+    return v==0 ? '-' : '_';*/
+}
+
+/************************************************************************
+This function converts character to six-bit value (from 0 to 63).
+
+This function is inverse of ae_sixbits2char()
+If c is not correct character, this function returns -1.
+************************************************************************/
+static ae_int_t _ae_char2sixbits_tbl[] = {
+    -1, -1, -1, -1, -1, -1, -1, -1,
+    -1, -1, -1, -1, -1, -1, -1, -1,
+    -1, -1, -1, -1, -1, -1, -1, -1,
+    -1, -1, -1, -1, -1, -1, -1, -1,
+    -1, -1, -1, -1, -1, -1, -1, -1,
+    -1, -1, -1, -1, -1, 62, -1, -1,
+     0,  1,  2,  3,  4,  5,  6,  7,
+     8,  9, -1, -1, -1, -1, -1, -1,
+    -1, 10, 11, 12, 13, 14, 15, 16,
+    17, 18, 19, 20, 21, 22, 23, 24,
+    25, 26, 27, 28, 29, 30, 31, 32,
+    33, 34, 35, -1, -1, -1, -1, 63,
+    -1, 36, 37, 38, 39, 40, 41, 42,
+    43, 44, 45, 46, 47, 48, 49, 50,
+    51, 52, 53, 54, 55, 56, 57, 58,
+    59, 60, 61, -1, -1, -1, -1, -1 };
+ae_int_t ae_char2sixbits(char c)
+{
+    return (c>=0 && c<127) ? _ae_char2sixbits_tbl[c] : -1;
+}
+
+/************************************************************************
+This function converts three bytes (24 bits) to four six-bit values 
+(24 bits again).
+
+src     pointer to three bytes
+dst     pointer to four ints
+************************************************************************/
+void ae_threebytes2foursixbits(const unsigned char *src, ae_int_t *dst)
+{
+    dst[0] = src[0] & 0x3F;
+    dst[1] = (src[0]>>6) | ((src[1]&0x0F)<<2);
+    dst[2] = (src[1]>>4) | ((src[2]&0x03)<<4);
+    dst[3] = src[2]>>2;
+}
+
+/************************************************************************
+This function converts four six-bit values (24 bits) to three bytes
+(24 bits again).
+
+src     pointer to four ints
+dst     pointer to three bytes
+************************************************************************/
+void ae_foursixbits2threebytes(const ae_int_t *src, unsigned char *dst)
+{
+    dst[0] = (unsigned char)(     src[0] | ((src[1]&0x03)<<6));
+    dst[1] = (unsigned char)((src[1]>>2) | ((src[2]&0x0F)<<4));
+    dst[2] = (unsigned char)((src[2]>>4) | (src[3]<<2));
+}
+
+/************************************************************************
+This function serializes boolean value into buffer
+
+v           boolean value to be serialized
+buf         buffer, at least 12 characters wide 
+            (11 chars for value, one for trailing zero)
+state       ALGLIB environment state
+************************************************************************/
+void ae_bool2str(ae_bool v, char *buf, ae_state *state)
+{
+    char c = v ? '1' : '0';
+    ae_int_t i;
+    for(i=0; i<AE_SER_ENTRY_LENGTH; i++)
+        buf[i] = c;
+    buf[AE_SER_ENTRY_LENGTH] = 0;
+}
+
+/************************************************************************
+This function unserializes boolean value from buffer
+
+buf         buffer which contains value; leading spaces/tabs/newlines are 
+            ignored, traling spaces/tabs/newlines are treated as  end  of
+            the boolean value.
+state       ALGLIB environment state
+
+This function raises an error in case unexpected symbol is found
+************************************************************************/
+ae_bool ae_str2bool(const char *buf, ae_state *state, const char **pasttheend)
+{
+    ae_bool was0, was1;
+    const char *emsg = "ALGLIB: unable to read boolean value from stream";
+    
+    was0 = ae_false;
+    was1 = ae_false;
+    while( *buf==' ' || *buf=='\t' || *buf=='\n' || *buf=='\r' )
+        buf++;
+    while( *buf!=' ' && *buf!='\t' && *buf!='\n' && *buf!='\r' && *buf!=0 )
+    {
+        if( *buf=='0' )
+        {
+            was0 = ae_true;
+            buf++;
+            continue;
+        }
+        if( *buf=='1' )
+        {
+            was1 = ae_true;
+            buf++;
+            continue;
+        }
+        ae_break(state, ERR_ASSERTION_FAILED, emsg);
+    }
+    *pasttheend = buf;
+    if( (!was0) && (!was1) )
+        ae_break(state, ERR_ASSERTION_FAILED, emsg);
+    if( was0 && was1 )
+        ae_break(state, ERR_ASSERTION_FAILED, emsg);
+    return was1 ? ae_true : ae_false;
+}
+
+/************************************************************************
+This function serializes integer value into buffer
+
+v           integer value to be serialized
+buf         buffer, at least 12 characters wide 
+            (11 chars for value, one for trailing zero)
+state       ALGLIB environment state
+************************************************************************/
+void ae_int2str(ae_int_t v, char *buf, ae_state *state)
+{
+    union _u
+    {
+        ae_int_t ival;
+        unsigned char bytes[9];
+    } u;
+    ae_int_t i;
+    ae_int_t sixbits[12];
+    unsigned char c;
+    
+    /*
+     * copy v to array of chars, sign extending it and 
+     * converting to little endian order
+     *
+     * because we don't want to mention size of ae_int_t explicitly, 
+     * we do it as follows:
+     * 1. we fill u.bytes by zeros or ones (depending on sign of v)
+     * 2. we copy v to u.ival
+     * 3. if we run on big endian architecture, we reorder u.bytes
+     * 4. now we have signed 64-bit representation of v stored in u.bytes
+     * 5. additionally, we set 9th byte of u.bytes to zero in order to
+     *    simplify conversion to six-bit representation
+     */
+    c = v<0 ? (unsigned char)0xFF : (unsigned char)0x00;
+    u.ival = v;
+    for(i=sizeof(ae_int_t); i<=8; i++) /* <=8 is preferred because it avoids unnecessary compiler warnings*/
+        u.bytes[i] = c;
+    u.bytes[8] = 0;
+    if( state->endianness==AE_BIG_ENDIAN )
+    {
+        for(i=0; i<sizeof(ae_int_t)/2; i++)
+        {
+            unsigned char tc;
+            tc = u.bytes[i];
+            u.bytes[i] = u.bytes[sizeof(ae_int_t)-1-i];
+            u.bytes[sizeof(ae_int_t)-1-i] = tc;
+        }
+    }
+    
+    /*
+     * convert to six-bit representation, output
+     *
+     * NOTE: last 12th element of sixbits is always zero, we do not output it
+     */
+    ae_threebytes2foursixbits(u.bytes+0, sixbits+0);
+    ae_threebytes2foursixbits(u.bytes+3, sixbits+4);
+    ae_threebytes2foursixbits(u.bytes+6, sixbits+8);        
+    for(i=0; i<AE_SER_ENTRY_LENGTH; i++)
+        buf[i] = ae_sixbits2char(sixbits[i]);
+    buf[AE_SER_ENTRY_LENGTH] = 0x00;
+}
+
+/************************************************************************
+This function unserializes integer value from string
+
+buf         buffer which contains value; leading spaces/tabs/newlines are 
+            ignored, traling spaces/tabs/newlines are treated as  end  of
+            the boolean value.
+state       ALGLIB environment state
+
+This function raises an error in case unexpected symbol is found
+************************************************************************/
+ae_int_t ae_str2int(const char *buf, ae_state *state, const char **pasttheend)
+{
+    const char *emsg = "ALGLIB: unable to read integer value from stream";
+    ae_int_t sixbits[12];
+    ae_int_t sixbitsread, i;
+    union _u
+    {
+        ae_int_t ival;
+        unsigned char bytes[9];
+    } u;
+    /* 
+     * 1. skip leading spaces
+     * 2. read and decode six-bit digits
+     * 3. set trailing digits to zeros
+     * 4. convert to little endian 64-bit integer representation
+     * 5. convert to big endian representation, if needed
+     */
+    while( *buf==' ' || *buf=='\t' || *buf=='\n' || *buf=='\r' )
+        buf++;
+    sixbitsread = 0;
+    while( *buf!=' ' && *buf!='\t' && *buf!='\n' && *buf!='\r' && *buf!=0 )
+    {
+        ae_int_t d;
+        d = ae_char2sixbits(*buf);
+        if( d<0 || sixbitsread>=AE_SER_ENTRY_LENGTH )
+            ae_break(state, ERR_ASSERTION_FAILED, emsg);
+        sixbits[sixbitsread] = d;
+        sixbitsread++;
+        buf++;
+    }
+    *pasttheend = buf;
+    if( sixbitsread==0 )
+        ae_break(state, ERR_ASSERTION_FAILED, emsg);
+    for(i=sixbitsread; i<12; i++)
+        sixbits[i] = 0;
+    ae_foursixbits2threebytes(sixbits+0, u.bytes+0);
+    ae_foursixbits2threebytes(sixbits+4, u.bytes+3);
+    ae_foursixbits2threebytes(sixbits+8, u.bytes+6);
+    if( state->endianness==AE_BIG_ENDIAN )
+    {
+        for(i=0; i<sizeof(ae_int_t)/2; i++)
+        {
+            unsigned char tc;
+            tc = u.bytes[i];
+            u.bytes[i] = u.bytes[sizeof(ae_int_t)-1-i];
+            u.bytes[sizeof(ae_int_t)-1-i] = tc;
+        }
+    }
+    return u.ival;
+}
+
+
+/************************************************************************
+This function serializes double value into buffer
+
+v           double value to be serialized
+buf         buffer, at least 12 characters wide 
+            (11 chars for value, one for trailing zero)
+state       ALGLIB environment state
+************************************************************************/
+void ae_double2str(double v, char *buf, ae_state *state)
+{
+    union _u
+    {
+        double dval;
+        unsigned char bytes[9];
+    } u;
+    ae_int_t i;
+    ae_int_t sixbits[12];
+
+    /*
+     * handle special quantities
+     */
+    if( ae_isnan(v, state) )
+    {
+        const char *s = ".nan_______";
+        memcpy(buf, s, strlen(s)+1);
+        return;
+    }
+    if( ae_isposinf(v, state) )
+    {
+        const char *s = ".posinf____";
+        memcpy(buf, s, strlen(s)+1);
+        return;
+    }
+    if( ae_isneginf(v, state) )
+    {
+        const char *s = ".neginf____";
+        memcpy(buf, s, strlen(s)+1);
+        return;
+    }
+    
+    /*
+     * process general case:
+     * 1. copy v to array of chars
+     * 2. set 9th byte of u.bytes to zero in order to
+     *    simplify conversion to six-bit representation
+     * 3. convert to little endian (if needed)
+     * 4. convert to six-bit representation
+     *    (last 12th element of sixbits is always zero, we do not output it)
+     */
+    u.dval = v;
+    u.bytes[8] = 0;
+    if( state->endianness==AE_BIG_ENDIAN )
+    {
+        for(i=0; i<sizeof(double)/2; i++)
+        {
+            unsigned char tc;
+            tc = u.bytes[i];
+            u.bytes[i] = u.bytes[sizeof(double)-1-i];
+            u.bytes[sizeof(double)-1-i] = tc;
+        }
+    }
+    ae_threebytes2foursixbits(u.bytes+0, sixbits+0);
+    ae_threebytes2foursixbits(u.bytes+3, sixbits+4);
+    ae_threebytes2foursixbits(u.bytes+6, sixbits+8);
+    for(i=0; i<AE_SER_ENTRY_LENGTH; i++)
+        buf[i] = ae_sixbits2char(sixbits[i]);
+    buf[AE_SER_ENTRY_LENGTH] = 0x00;
+}
+
+/************************************************************************
+This function unserializes double value from string
+
+buf         buffer which contains value; leading spaces/tabs/newlines are 
+            ignored, traling spaces/tabs/newlines are treated as  end  of
+            the boolean value.
+state       ALGLIB environment state
+
+This function raises an error in case unexpected symbol is found
+************************************************************************/
+double ae_str2double(const char *buf, ae_state *state, const char **pasttheend)
+{
+    const char *emsg = "ALGLIB: unable to read double value from stream";
+    ae_int_t sixbits[12];
+    ae_int_t sixbitsread, i;
+    union _u
+    {
+        double dval;
+        unsigned char bytes[9];
+    } u;
+    
+    
+     /* 
+      * skip leading spaces
+      */
+    while( *buf==' ' || *buf=='\t' || *buf=='\n' || *buf=='\r' )
+        buf++;
+      
+    /*
+     * Handle special cases
+     */
+    if( *buf=='.' )
+    {
+        const char *s_nan =    ".nan_______";
+        const char *s_posinf = ".posinf____";
+        const char *s_neginf = ".neginf____";
+        if( strncmp(buf, s_nan, strlen(s_nan))==0 )
+        {
+            *pasttheend = buf+strlen(s_nan);
+            return state->v_nan;
+        }
+        if( strncmp(buf, s_posinf, strlen(s_posinf))==0 )
+        {
+            *pasttheend = buf+strlen(s_posinf);
+            return state->v_posinf;
+        }
+        if( strncmp(buf, s_neginf, strlen(s_neginf))==0 )
+        {
+            *pasttheend = buf+strlen(s_neginf);
+            return state->v_neginf;
+        }
+        ae_break(state, ERR_ASSERTION_FAILED, emsg);
+    }
+    
+    /* 
+     * General case:
+     * 1. read and decode six-bit digits
+     * 2. check that all 11 digits were read
+     * 3. set last 12th digit to zero (needed for simplicity of conversion)
+     * 4. convert to 8 bytes
+     * 5. convert to big endian representation, if needed
+     */
+    sixbitsread = 0;
+    while( *buf!=' ' && *buf!='\t' && *buf!='\n' && *buf!='\r' && *buf!=0 )
+    {
+        ae_int_t d;
+        d = ae_char2sixbits(*buf);
+        if( d<0 || sixbitsread>=AE_SER_ENTRY_LENGTH )
+            ae_break(state, ERR_ASSERTION_FAILED, emsg);
+        sixbits[sixbitsread] = d;
+        sixbitsread++;
+        buf++;
+    }
+    *pasttheend = buf;
+    if( sixbitsread!=AE_SER_ENTRY_LENGTH )
+        ae_break(state, ERR_ASSERTION_FAILED, emsg);
+    sixbits[AE_SER_ENTRY_LENGTH] = 0;
+    ae_foursixbits2threebytes(sixbits+0, u.bytes+0);
+    ae_foursixbits2threebytes(sixbits+4, u.bytes+3);
+    ae_foursixbits2threebytes(sixbits+8, u.bytes+6);
+    if( state->endianness==AE_BIG_ENDIAN )
+    {
+        for(i=0; i<sizeof(double)/2; i++)
+        {
+            unsigned char tc;
+            tc = u.bytes[i];
+            u.bytes[i] = u.bytes[sizeof(double)-1-i];
+            u.bytes[sizeof(double)-1-i] = tc;
+        }
+    }
+    return u.dval;
+}
+
+/************************************************************************
+This function initializes serializer
+************************************************************************/
+void ae_serializer_init(ae_serializer *serializer)
+{
+    serializer->mode = AE_SM_DEFAULT;
+    serializer->entries_needed = 0;
+    serializer->bytes_asked = 0;
+}
+
+void ae_serializer_clear(ae_serializer *serializer)
+{
+}
+
+void ae_serializer_alloc_start(ae_serializer *serializer)
+{
+    serializer->entries_needed = 0;
+    serializer->bytes_asked = 0;
+    serializer->mode = AE_SM_ALLOC;
+}
+
+void ae_serializer_alloc_entry(ae_serializer *serializer)
+{
+    serializer->entries_needed++;
+}
+
+ae_int_t ae_serializer_get_alloc_size(ae_serializer *serializer)
+{
+    ae_int_t rows, lastrowsize, result;
+    
+    serializer->mode = AE_SM_READY2S;
+    
+    /* if no entries needes (degenerate case) */
+    if( serializer->entries_needed==0 )
+    {
+        serializer->bytes_asked = 1;
+        return serializer->bytes_asked;
+    }
+    
+    /* non-degenerate case */
+    rows = serializer->entries_needed/AE_SER_ENTRIES_PER_ROW;
+    lastrowsize = AE_SER_ENTRIES_PER_ROW;
+    if( serializer->entries_needed%AE_SER_ENTRIES_PER_ROW )
+    {
+        lastrowsize = serializer->entries_needed%AE_SER_ENTRIES_PER_ROW;
+        rows++;
+    }
+    
+    /* calculate result size */
+    result  = ((rows-1)*AE_SER_ENTRIES_PER_ROW+lastrowsize)*AE_SER_ENTRY_LENGTH;
+    result +=  (rows-1)*(AE_SER_ENTRIES_PER_ROW-1)+(lastrowsize-1);
+    result += rows*2;
+    serializer->bytes_asked = result;
+    return result;
+}
+
+#ifdef AE_USE_CPP_SERIALIZATION
+void ae_serializer_sstart_str(ae_serializer *serializer, std::string *buf)
+{
+    serializer->mode = AE_SM_TO_CPPSTRING;
+    serializer->out_cppstr = buf;
+    serializer->entries_saved = 0;
+    serializer->bytes_written = 0;
+}
+#endif
+
+#ifdef AE_USE_CPP_SERIALIZATION
+void ae_serializer_ustart_str(ae_serializer *serializer, const std::string *buf)
+{
+    serializer->mode = AE_SM_FROM_STRING;
+    serializer->in_str = buf->c_str();
+}
+#endif
+
+void ae_serializer_sstart_str(ae_serializer *serializer, char *buf)
+{
+    serializer->mode = AE_SM_TO_STRING;
+    serializer->out_str = buf;
+    serializer->out_str[0] = 0;
+    serializer->entries_saved = 0;
+    serializer->bytes_written = 0;
+}
+
+void ae_serializer_ustart_str(ae_serializer *serializer, const char *buf)
+{
+    serializer->mode = AE_SM_FROM_STRING;
+    serializer->in_str = buf;
+}
+
+void ae_serializer_serialize_bool(ae_serializer *serializer, ae_bool v, ae_state *state)
+{
+    char buf[AE_SER_ENTRY_LENGTH+2+1];
+    const char *emsg = "ALGLIB: serialization integrity error";
+    ae_int_t bytes_appended;
+    
+    /* prepare serialization, check consistency */
+    ae_bool2str(v, buf, state);
+    serializer->entries_saved++;
+    if( serializer->entries_saved%AE_SER_ENTRIES_PER_ROW )
+        strcat(buf, " ");
+    else
+        strcat(buf, "\r\n");
+    bytes_appended = (ae_int_t)strlen(buf);
+    if( serializer->bytes_written+bytes_appended > serializer->bytes_asked )
+        ae_break(state, ERR_ASSERTION_FAILED, emsg);
+    serializer->bytes_written += bytes_appended;
+        
+    /* append to buffer */
+#ifdef AE_USE_CPP_SERIALIZATION
+    if( serializer->mode==AE_SM_TO_CPPSTRING )
+    {
+        *(serializer->out_cppstr) += buf;
+        return;
+    }
+#endif
+    if( serializer->mode==AE_SM_TO_STRING )
+    {
+        strcat(serializer->out_str, buf);
+        serializer->out_str += bytes_appended;
+        return;
+    }
+    ae_break(state, ERR_ASSERTION_FAILED, emsg);
+}
+
+void ae_serializer_serialize_int(ae_serializer *serializer, ae_int_t v, ae_state *state)
+{
+    char buf[AE_SER_ENTRY_LENGTH+2+1];
+    const char *emsg = "ALGLIB: serialization integrity error";
+    ae_int_t bytes_appended;
+    
+    /* prepare serialization, check consistency */
+    ae_int2str(v, buf, state);
+    serializer->entries_saved++;
+    if( serializer->entries_saved%AE_SER_ENTRIES_PER_ROW )
+        strcat(buf, " ");
+    else
+        strcat(buf, "\r\n");
+    bytes_appended = (ae_int_t)strlen(buf);
+    if( serializer->bytes_written+bytes_appended > serializer->bytes_asked )
+        ae_break(state, ERR_ASSERTION_FAILED, emsg);
+    serializer->bytes_written += bytes_appended;
+        
+    /* append to buffer */
+#ifdef AE_USE_CPP_SERIALIZATION
+    if( serializer->mode==AE_SM_TO_CPPSTRING )
+    {
+        *(serializer->out_cppstr) += buf;
+        return;
+    }
+#endif
+    if( serializer->mode==AE_SM_TO_STRING )
+    {
+        strcat(serializer->out_str, buf);
+        serializer->out_str += bytes_appended;
+        return;
+    }
+    ae_break(state, ERR_ASSERTION_FAILED, emsg);
+}
+
+void ae_serializer_serialize_double(ae_serializer *serializer, double v, ae_state *state)
+{
+    char buf[AE_SER_ENTRY_LENGTH+2+1];
+    const char *emsg = "ALGLIB: serialization integrity error";
+    ae_int_t bytes_appended;
+    
+    /* prepare serialization, check consistency */
+    ae_double2str(v, buf, state);
+    serializer->entries_saved++;
+    if( serializer->entries_saved%AE_SER_ENTRIES_PER_ROW )
+        strcat(buf, " ");
+    else
+        strcat(buf, "\r\n");
+    bytes_appended = (ae_int_t)strlen(buf);
+    if( serializer->bytes_written+bytes_appended > serializer->bytes_asked )
+        ae_break(state, ERR_ASSERTION_FAILED, emsg);
+    serializer->bytes_written += bytes_appended;
+        
+    /* append to buffer */
+#ifdef AE_USE_CPP_SERIALIZATION
+    if( serializer->mode==AE_SM_TO_CPPSTRING )
+    {
+        *(serializer->out_cppstr) += buf;
+        return;
+    }
+#endif
+    if( serializer->mode==AE_SM_TO_STRING )
+    {
+        strcat(serializer->out_str, buf);
+        serializer->out_str += bytes_appended;
+        return;
+    }
+    ae_break(state, ERR_ASSERTION_FAILED, emsg);
+}
+
+void ae_serializer_unserialize_bool(ae_serializer *serializer, ae_bool *v, ae_state *state)
+{
+    *v = ae_str2bool(serializer->in_str, state, &serializer->in_str);
+}
+
+void ae_serializer_unserialize_int(ae_serializer *serializer, ae_int_t *v, ae_state *state)
+{
+    *v = ae_str2int(serializer->in_str, state, &serializer->in_str);
+}
+
+void ae_serializer_unserialize_double(ae_serializer *serializer, double *v, ae_state *state)
+{
+    *v = ae_str2double(serializer->in_str, state, &serializer->in_str);
+}
+
+void ae_serializer_stop(ae_serializer *serializer)
+{
 }
 
 
@@ -3013,6 +3718,33 @@ void _rcommstate_clear(rcommstate* p)
     ae_vector_clear(&p->ca);
 }
 
+#ifdef AE_DEBUGRNG
+void ae_set_seed(ae_int_t s0, ae_int_t s1)
+{
+    ae_int_t hqrnd_hqrndm1 = 2147483563;
+    ae_int_t hqrnd_hqrndm2 = 2147483399;
+    
+    while(s0<1)
+        s0 += hqrnd_hqrndm1-1;
+    while(s0>hqrnd_hqrndm1-1)
+        s0 -= hqrnd_hqrndm1-1;
+        
+    while(s1<1)
+        s1 += hqrnd_hqrndm2-1;
+    while(s1>hqrnd_hqrndm2-1)
+        s1 -= hqrnd_hqrndm2-1;
+        
+    _debug_rng_s0 = s0;
+    _debug_rng_s1 = s1;
+}
+
+void ae_get_seed(ae_int_t *s0, ae_int_t *s1)
+{
+    *s0 = _debug_rng_s0;
+    *s1 = _debug_rng_s1;
+}
+#endif
+
 }
 
 /////////////////////////////////////////////////////////////////////////
@@ -3196,12 +3928,13 @@ const alglib_impl::ae_complex* alglib::complex::c_ptr() const
     return (const alglib_impl::ae_complex*)this;
 }
     
-std::string alglib::complex::tostring(int dps) const
+std::string alglib::complex::tostring(int _dps) const
 {
     char mask[32];
     char buf_x[32];
     char buf_y[32];
     char buf_zero[32];
+    int dps = _dps>=0 ? _dps : -_dps;
     if( dps<=0 || dps>=20 )
         throw ap_error("complex::tostring(): incorrect dps");
 
@@ -3212,7 +3945,7 @@ std::string alglib::complex::tostring(int dps) const
         return "INF";
 
     // generate mask
-    if( sprintf(mask, "%%.%df", dps)>=(int)sizeof(mask) )
+    if( sprintf(mask, "%%.%d%s", dps, _dps>=0 ? "f" : "e")>=(int)sizeof(mask) )
         throw ap_error("complex::tostring(): buffer overflow");
 
     // print |x|, |y| and zero with same mask and compare
@@ -5478,15 +6211,16 @@ std::string alglib::arraytostring(const ae_int_t *ptr, ae_int_t n)
     return result;
 }
 
-std::string alglib::arraytostring(const double *ptr, ae_int_t n, int dps)
+std::string alglib::arraytostring(const double *ptr, ae_int_t n, int _dps)
 {
     std::string result;
     ae_int_t i;
     char buf[64];
     char mask1[64];
     char mask2[64];
+    int dps = _dps>=0 ? _dps : -_dps;
     result = "[";
-    if( sprintf(mask1, "%%.%df", dps)>=(int)sizeof(mask1) )
+    if( sprintf(mask1, "%%.%d%s", dps, _dps>=0 ? "f" : "e")>=(int)sizeof(mask1) )
         throw ap_error("arraytostring(): buffer overflow");
     if( sprintf(mask2, ",%s", mask1)>=(int)sizeof(mask2) )
         throw ap_error("arraytostring(): buffer overflow");
@@ -5538,18 +6272,26 @@ int alglib::sign(double x)
 
 double alglib::randomreal()
 {
+#ifdef AE_DEBUGRNG
+    return alglib_impl::ae_debugrng()/2147483563.0;
+#else
     int i1 = rand();
     int i2 = rand();
-    while(i1==RAND_MAX)
-        i1 =rand();
-    while(i2==RAND_MAX)
-        i2 =rand();
-    double mx = RAND_MAX;
-    return (i1+i2/mx)/mx;
+    double mx = (double)(RAND_MAX)+1.0;
+    volatile double tmp0 = i2/mx;
+    volatile double tmp1 = i1+tmp0;
+    return tmp1/mx;
+#endif
 }
 
-int alglib::randominteger(int maxv)
-{  return rand()%maxv; }
+alglib::ae_int_t alglib::randominteger(alglib::ae_int_t maxv)
+{
+#ifdef AE_DEBUGRNG
+    return ((alglib::ae_int_t)(alglib_impl::ae_debugrng()-1))%maxv;
+#else
+    return ((alglib::ae_int_t)rand())%maxv;
+#endif
+}
 
 int alglib::round(double x)
 { return int(floor(x+0.5)); }
@@ -6388,17 +7130,16 @@ This function supports SSE2; it can be used when:
 1. AE_HAS_SSE2_INTRINSICS was defined (checked at compile-time)
 2. ae_cpuid() result contains CPU_SSE2 (checked at run-time)
 
-If (1) is failed, this function will still be defined and callable, but it 
-will do nothing.  If (2)  is  failed , call to this function will probably 
-crash your system. 
+If (1) is failed, this function will be undefined. If (2) is failed,  call 
+to this function will probably crash your system. 
 
 If  you  want  to  know  whether  it  is safe to call it, you should check 
 results  of  ae_cpuid(). If CPU_SSE2 bit is set, this function is callable 
 and will do its work.
 *************************************************************************/
+#if defined(AE_HAS_SSE2_INTRINSICS)
 void _ialglib_rmv_sse2(ae_int_t m, ae_int_t n, const double *a, const double *x, double *y, ae_int_t stride, double alpha, double beta)
 {
-#if defined(AE_HAS_SSE2_INTRINSICS)
     ae_int_t i, k, n2;
     ae_int_t mb3, mtail, nhead, nb8, nb2, ntail;
     const double *pa0, *pa1, *pa2, *pb;
@@ -6671,8 +7412,8 @@ void _ialglib_rmv_sse2(ae_int_t m, ae_int_t n, const double *a, const double *x,
             y[0] = alpha*row0;
         y+=stride;
     }
-#endif
 }
+#endif
 
 
 /*************************************************************************
@@ -6767,17 +7508,16 @@ This function supports SSE2; it can be used when:
 1. AE_HAS_SSE2_INTRINSICS was defined (checked at compile-time)
 2. ae_cpuid() result contains CPU_SSE2 (checked at run-time)
 
-If (1) is failed, this function will still be defined and callable, but it 
-will do nothing.  If (2)  is  failed , call to this function will probably 
-crash your system. 
+If (1) is failed, this function will be undefined. If (2) is failed,  call 
+to this function will probably crash your system. 
 
 If  you  want  to  know  whether  it  is safe to call it, you should check 
 results  of  ae_cpuid(). If CPU_SSE2 bit is set, this function is callable 
 and will do its work.
 *************************************************************************/
+#if defined(AE_HAS_SSE2_INTRINSICS)
 void _ialglib_cmv_sse2(ae_int_t m, ae_int_t n, const double *a, const double *x, ae_complex *cy, double *dy, ae_int_t stride, ae_complex alpha, ae_complex beta)
 {
-#if defined(AE_HAS_SSE2_INTRINSICS)
     ae_int_t i, j, m2;
     const double *pa0, *pa1, *parow, *pb;
     __m128d vbeta, vbetax, vbetay;
@@ -6886,8 +7626,8 @@ void _ialglib_cmv_sse2(ae_int_t m, ae_int_t n, const double *a, const double *x,
         dy += 2*stride;
         parow += 2*alglib_c_block;
     }
-#endif
 }
+#endif
 
 /********************************************************************
 This subroutine sets vector to zero
@@ -7100,17 +7840,16 @@ This function supports SSE2; it can be used when:
 1. AE_HAS_SSE2_INTRINSICS was defined (checked at compile-time)
 2. ae_cpuid() result contains CPU_SSE2 (checked at run-time)
 
-If (1) is failed, this function will still be defined and callable, but it 
-will do nothing.  If (2)  is  failed , call to this function will probably 
-crash your system. 
+If (1) is failed, this function will be undefined. If (2) is failed,  call 
+to this function will probably crash your system. 
 
 If  you  want  to  know  whether  it  is safe to call it, you should check 
 results  of  ae_cpuid(). If CPU_SSE2 bit is set, this function is callable 
 and will do its work.
 ********************************************************************/
+#if defined(AE_HAS_SSE2_INTRINSICS)
 void _ialglib_mcopyblock_sse2(ae_int_t m, ae_int_t n, const double *a, ae_int_t op, ae_int_t stride, double *b)
 {
-#if defined(AE_HAS_SSE2_INTRINSICS)
     ae_int_t i, j, nb8, mb2, ntail;
     const double *psrc0, *psrc1;
     double *pdst;
@@ -7206,8 +7945,8 @@ void _ialglib_mcopyblock_sse2(ae_int_t m, ae_int_t n, const double *a, ae_int_t 
                 pdst0[0] = psrc0[0];
         }
     }
-#endif
 }
+#endif
 
 
 /********************************************************************
@@ -7418,10 +8157,10 @@ ae_bool _ialglib_rmatrixgemm(ae_int_t m,
 {
     int i;
     double *crow;
-    double __abuf[alglib_r_block+alglib_simd_alignment];
-    double __b[alglib_r_block*alglib_r_block+alglib_simd_alignment];
-    double * const abuf = (double * const) ae_align(__abuf,alglib_simd_alignment);
-    double * const b    = (double * const) ae_align(__b,   alglib_simd_alignment);
+    double _abuf[alglib_r_block+alglib_simd_alignment];
+    double _bbuf[alglib_r_block*alglib_r_block+alglib_simd_alignment];
+    double * const abuf = (double * const) ae_align(_abuf,alglib_simd_alignment);
+    double * const b    = (double * const) ae_align(_bbuf,alglib_simd_alignment);
     void (*rmv)(ae_int_t, ae_int_t, const double *, const double *, double *, ae_int_t, double, double) = &_ialglib_rmv;
     void (*mcopyblock)(ae_int_t, ae_int_t, const double *, ae_int_t, ae_int_t, double *) = &_ialglib_mcopyblock;
     
@@ -7431,11 +8170,13 @@ ae_bool _ialglib_rmatrixgemm(ae_int_t m,
     /*
      * Check for SSE2 support
      */
+#ifdef AE_HAS_SSE2_INTRINSICS
     if( ae_cpuid() & CPU_SSE2 )
     {
         rmv = &_ialglib_rmv_sse2;
         mcopyblock = &_ialglib_mcopyblock_sse2;
-    }    
+    }
+#endif
     
     /*
      * copy b
@@ -7514,10 +8255,12 @@ ae_bool _ialglib_cmatrixgemm(ae_int_t m,
     /*
      * Check for SSE2 support
      */
+#ifdef AE_HAS_SSE2_INTRINSICS
     if( ae_cpuid() & CPU_SSE2 )
     {
         cmv = &_ialglib_cmv_sse2;
     }    
+#endif
     
     /*
      * copy b
@@ -7596,10 +8339,12 @@ ae_bool _ialglib_cmatrixrighttrsm(ae_int_t m,
     /*
      * Check for SSE2 support
      */
+#ifdef AE_HAS_SSE2_INTRINSICS
     if( ae_cpuid() & CPU_SSE2 )
     {
         cmv = &_ialglib_cmv_sse2;
     }    
+#endif
     
     /*
      * Prepare
@@ -7692,11 +8437,13 @@ ae_bool _ialglib_rmatrixrighttrsm(ae_int_t m,
     /*
      * Check for SSE2 support
      */
+#ifdef AE_HAS_SSE2_INTRINSICS
     if( ae_cpuid() & CPU_SSE2 )
     {
         rmv = &_ialglib_rmv_sse2;
         mcopyblock = &_ialglib_mcopyblock_sse2;
     }    
+#endif
     
     /*
      * Prepare
@@ -7773,10 +8520,12 @@ ae_bool _ialglib_cmatrixlefttrsm(ae_int_t m,
     /*
      * Check for SSE2 support
      */
+#ifdef AE_HAS_SSE2_INTRINSICS
     if( ae_cpuid() & CPU_SSE2 )
     {
         cmv = &_ialglib_cmv_sse2;
     }    
+#endif
     
     /*
      * Prepare
@@ -7869,11 +8618,13 @@ ae_bool _ialglib_rmatrixlefttrsm(ae_int_t m,
     /*
      * Check for SSE2 support
      */
+#ifdef AE_HAS_SSE2_INTRINSICS
     if( ae_cpuid() & CPU_SSE2 )
     {
         rmv = &_ialglib_rmv_sse2;
         mcopyblock = &_ialglib_mcopyblock_sse2;
     }    
+#endif
     
     /*
      * Prepare
@@ -8451,14 +9202,11 @@ This function supports SSE2; it can be used when:
 1. AE_HAS_SSE2_INTRINSICS was defined (checked at compile-time)
 2. ae_cpuid() result contains CPU_SSE2 (checked at run-time)
 
-If (1) is failed, this function will still be defined and callable, but it 
-will do nothing.  If (2)  is  failed , call to this function will probably 
-crash your system. 
-
 If  you  want  to  know  whether  it  is safe to call it, you should check 
 results  of  ae_cpuid(). If CPU_SSE2 bit is set, this function is callable 
 and will do its work.
 *************************************************************************/
+#if defined(AE_HAS_SSE2_INTRINSICS)
 void _ialglib_pack_n2_sse2(
     double *col0,
     double *col1,
@@ -8466,7 +9214,6 @@ void _ialglib_pack_n2_sse2(
     ae_int_t src_stride,
     double *dst)
 {
-#if defined(AE_HAS_SSE2_INTRINSICS)
     ae_int_t n2, j, stride2;
     
     /*
@@ -8554,8 +9301,8 @@ void _ialglib_pack_n2_sse2(
         dst[0] = *col0;
         dst[1] = *col1;
     }
-#endif
 }
+#endif
 
 
 /********************************************************************
@@ -8686,9 +9433,9 @@ If  you  want  to  know  whether  it  is safe to call it, you should check
 results  of  ae_cpuid(). If CPU_SSE2 bit is set, this function is callable 
 and will do its work.
 ********************************************************************/
+#if defined(AE_HAS_SSE2_INTRINSICS)
 void _ialglib_mm22_sse2(double alpha, const double *a, const double *b, ae_int_t k, double beta, double *r, ae_int_t stride, ae_int_t store_mode)
 {
-#if defined(AE_HAS_SSE2_INTRINSICS)
     /*
      * We calculate product of two Kx2 matrices (result is 2x2). 
      * VA and VB store result as follows:
@@ -8797,8 +9544,8 @@ void _ialglib_mm22_sse2(double alpha, const double *a, const double *b, ae_int_t
             r[0] = beta*r[0] + buf[0];
         return;
     }
-#endif
 }
+#endif
 
 
 /*************************************************************************
@@ -8857,9 +9604,9 @@ If  you  want  to  know  whether  it  is safe to call it, you should check
 results  of  ae_cpuid(). If CPU_SSE2 bit is set, this function is callable 
 and will do its work.
 *************************************************************************/
+#if defined(AE_HAS_SSE2_INTRINSICS)
 void _ialglib_mm22x2_sse2(double alpha, const double *a, const double *b0, const double *b1, ae_int_t k, double beta, double *r, ae_int_t stride)
 {
-#if defined(AE_HAS_SSE2_INTRINSICS)
     /*
      * We calculate product of two Kx2 matrices (result is 2x2). 
      * V0, V1, V2, V3 store result as follows:
@@ -8946,7 +9693,7 @@ void _ialglib_mm22x2_sse2(double alpha, const double *a, const double *b0, const
         _mm_storeu_pd(r+stride,   _mm_add_pd(_mm_mul_pd(_mm_loadu_pd(r+stride),vbeta),r10));
         _mm_storeu_pd(r+stride+2, _mm_add_pd(_mm_mul_pd(_mm_loadu_pd(r+stride+2),vbeta),r11));
     }    
-#endif
 }
+#endif
 
 }

@@ -48,6 +48,8 @@ namespace alglib_impl
 {
 
 
+
+
 static void tsort_tagsortfastirec(/* Real    */ ae_vector* a,
      /* Integer */ ae_vector* b,
      /* Real    */ ae_vector* bufa,
@@ -140,7 +142,6 @@ static double xblas_xfastpow(double r, ae_int_t n, ae_state *_state);
 
 static double linmin_ftol = 0.001;
 static double linmin_xtol = 100*ae_machineepsilon;
-static double linmin_gtol = 0.3;
 static ae_int_t linmin_maxfev = 20;
 static double linmin_stpmin = 1.0E-50;
 static double linmin_defstpmax = 1.0E+50;
@@ -246,6 +247,76 @@ static void ftbase_reffht(/* Real    */ ae_vector* a,
 
 
 
+
+
+ae_int_t getrdfserializationcode(ae_state *_state)
+{
+    ae_int_t result;
+
+
+    result = 1;
+    return result;
+}
+
+
+ae_int_t getkdtreeserializationcode(ae_state *_state)
+{
+    ae_int_t result;
+
+
+    result = 2;
+    return result;
+}
+
+
+ae_int_t getmlpserializationcode(ae_state *_state)
+{
+    ae_int_t result;
+
+
+    result = 3;
+    return result;
+}
+
+
+ae_int_t getmlpeserializationcode(ae_state *_state)
+{
+    ae_int_t result;
+
+
+    result = 4;
+    return result;
+}
+
+
+ae_int_t getrbfserializationcode(ae_state *_state)
+{
+    ae_int_t result;
+
+
+    result = 5;
+    return result;
+}
+
+
+
+
+/*************************************************************************
+This function compares two numbers for approximate equality, with tolerance
+to errors as large as max(|a|,|b|)*tol.
+
+
+  -- ALGLIB --
+     Copyright 02.12.2009 by Bochkanov Sergey
+*************************************************************************/
+ae_bool approxequalrel(double a, double b, double tol, ae_state *_state)
+{
+    ae_bool result;
+
+
+    result = ae_fp_less_eq(ae_fabs(a-b, _state),ae_maxreal(ae_fabs(a, _state), ae_fabs(b, _state), _state)*tol);
+    return result;
+}
 
 
 /*************************************************************************
@@ -499,6 +570,23 @@ ae_bool aredistinct(/* Real    */ ae_vector* x,
 
 
 /*************************************************************************
+This function checks that two boolean values are the same (both  are  True 
+or both are False).
+
+  -- ALGLIB --
+     Copyright 02.12.2009 by Bochkanov Sergey
+*************************************************************************/
+ae_bool aresameboolean(ae_bool v1, ae_bool v2, ae_state *_state)
+{
+    ae_bool result;
+
+
+    result = (v1&&v2)||(!v1&&!v2);
+    return result;
+}
+
+
+/*************************************************************************
 If Length(X)<N, resizes X
 
   -- ALGLIB --
@@ -568,15 +656,64 @@ void rmatrixsetlengthatleast(/* Real    */ ae_matrix* x,
 {
 
 
-    if( x->rows<m||x->cols<n )
+    if( m>0&&n>0 )
     {
-        ae_matrix_set_length(x, m, n, _state);
+        if( x->rows<m||x->cols<n )
+        {
+            ae_matrix_set_length(x, m, n, _state);
+        }
     }
 }
 
 
 /*************************************************************************
-This function checks that all values from X[] are finite
+Resizes X and:
+* preserves old contents of X
+* fills new elements by zeros
+
+  -- ALGLIB --
+     Copyright 20.03.2009 by Bochkanov Sergey
+*************************************************************************/
+void rmatrixresize(/* Real    */ ae_matrix* x,
+     ae_int_t m,
+     ae_int_t n,
+     ae_state *_state)
+{
+    ae_frame _frame_block;
+    ae_matrix oldx;
+    ae_int_t i;
+    ae_int_t j;
+    ae_int_t m2;
+    ae_int_t n2;
+
+    ae_frame_make(_state, &_frame_block);
+    ae_matrix_init(&oldx, 0, 0, DT_REAL, _state, ae_true);
+
+    m2 = x->rows;
+    n2 = x->cols;
+    ae_swap_matrices(x, &oldx);
+    ae_matrix_set_length(x, m, n, _state);
+    for(i=0; i<=m-1; i++)
+    {
+        for(j=0; j<=n-1; j++)
+        {
+            if( i<m2&&j<n2 )
+            {
+                x->ptr.pp_double[i][j] = oldx.ptr.pp_double[i][j];
+            }
+            else
+            {
+                x->ptr.pp_double[i][j] = 0.0;
+            }
+        }
+    }
+    ae_frame_leave(_state);
+}
+
+
+/*************************************************************************
+This function checks that length(X) is at least N and first N values  from
+X[] are finite
 
   -- ALGLIB --
      Copyright 18.06.2010 by Bochkanov Sergey
@@ -590,6 +727,16 @@ ae_bool isfinitevector(/* Real    */ ae_vector* x,
 
 
     ae_assert(n>=0, "APSERVIsFiniteVector: internal error (N<0)", _state);
+    if( n==0 )
+    {
+        result = ae_true;
+        return result;
+    }
+    if( x->cnt<n )
+    {
+        result = ae_false;
+        return result;
+    }
     for(i=0; i<=n-1; i++)
     {
         if( !ae_isfinite(x->ptr.p_double[i], _state) )
@@ -604,7 +751,7 @@ ae_bool isfinitevector(/* Real    */ ae_vector* x,
 
 
 /*************************************************************************
-This function checks that all values from X[] are finite
+This function checks that first N values from X[] are finite
 
   -- ALGLIB --
      Copyright 18.06.2010 by Bochkanov Sergey
@@ -632,7 +779,8 @@ ae_bool isfinitecvector(/* Complex */ ae_vector* z,
 
 
 /*************************************************************************
-This function checks that all values from X[0..M-1,0..N-1] are finite
+This function checks that size of X is at least MxN and values from
+X[0..M-1,0..N-1] are finite.
 
   -- ALGLIB --
      Copyright 18.06.2010 by Bochkanov Sergey
@@ -649,6 +797,16 @@ ae_bool apservisfinitematrix(/* Real    */ ae_matrix* x,
 
     ae_assert(n>=0, "APSERVIsFiniteMatrix: internal error (N<0)", _state);
     ae_assert(m>=0, "APSERVIsFiniteMatrix: internal error (M<0)", _state);
+    if( m==0||n==0 )
+    {
+        result = ae_true;
+        return result;
+    }
+    if( x->rows<m||x->cols<n )
+    {
+        result = ae_false;
+        return result;
+    }
     for(i=0; i<=m-1; i++)
     {
         for(j=0; j<=n-1; j++)
@@ -700,8 +858,8 @@ ae_bool apservisfinitecmatrix(/* Complex */ ae_matrix* x,
 
 
 /*************************************************************************
-This function checks that all values from upper/lower triangle of
-X[0..N-1,0..N-1] are finite
+This function checks that size of X is at least NxN and all values from
+upper/lower triangle of X[0..N-1,0..N-1] are finite
 
   -- ALGLIB --
      Copyright 18.06.2010 by Bochkanov Sergey
@@ -719,6 +877,16 @@ ae_bool isfinitertrmatrix(/* Real    */ ae_matrix* x,
 
 
     ae_assert(n>=0, "APSERVIsFiniteRTRMatrix: internal error (N<0)", _state);
+    if( n==0 )
+    {
+        result = ae_true;
+        return result;
+    }
+    if( x->rows<n||x->cols<n )
+    {
+        result = ae_false;
+        return result;
+    }
     for(i=0; i<=n-1; i++)
     {
         if( isupper )
@@ -1098,6 +1266,429 @@ double boundval(double x, double b1, double b2, ae_state *_state)
         return result;
     }
     result = x;
+    return result;
+}
+
+
+/*************************************************************************
+Allocation of serializer: complex value
+*************************************************************************/
+void alloccomplex(ae_serializer* s, ae_complex v, ae_state *_state)
+{
+
+
+    ae_serializer_alloc_entry(s);
+    ae_serializer_alloc_entry(s);
+}
+
+
+/*************************************************************************
+Serialization: complex value
+*************************************************************************/
+void serializecomplex(ae_serializer* s, ae_complex v, ae_state *_state)
+{
+
+
+    ae_serializer_serialize_double(s, v.x, _state);
+    ae_serializer_serialize_double(s, v.y, _state);
+}
+
+
+/*************************************************************************
+Unserialization: complex value
+*************************************************************************/
+ae_complex unserializecomplex(ae_serializer* s, ae_state *_state)
+{
+    ae_complex result;
+
+
+    ae_serializer_unserialize_double(s, &result.x, _state);
+    ae_serializer_unserialize_double(s, &result.y, _state);
+    return result;
+}
+
+
+/*************************************************************************
+Allocation of serializer: real array
+*************************************************************************/
+void allocrealarray(ae_serializer* s,
+     /* Real    */ ae_vector* v,
+     ae_int_t n,
+     ae_state *_state)
+{
+    ae_int_t i;
+
+
+    if( n<0 )
+    {
+        n = v->cnt;
+    }
+    ae_serializer_alloc_entry(s);
+    for(i=0; i<=n-1; i++)
+    {
+        ae_serializer_alloc_entry(s);
+    }
+}
+
+
+/*************************************************************************
+Serialization: complex value
+*************************************************************************/
+void serializerealarray(ae_serializer* s,
+     /* Real    */ ae_vector* v,
+     ae_int_t n,
+     ae_state *_state)
+{
+    ae_int_t i;
+
+
+    if( n<0 )
+    {
+        n = v->cnt;
+    }
+    ae_serializer_serialize_int(s, n, _state);
+    for(i=0; i<=n-1; i++)
+    {
+        ae_serializer_serialize_double(s, v->ptr.p_double[i], _state);
+    }
+}
+
+
+/*************************************************************************
+Unserialization: complex value
+*************************************************************************/
+void unserializerealarray(ae_serializer* s,
+     /* Real    */ ae_vector* v,
+     ae_state *_state)
+{
+    ae_int_t n;
+    ae_int_t i;
+    double t;
+
+    ae_vector_clear(v);
+
+    ae_serializer_unserialize_int(s, &n, _state);
+    if( n==0 )
+    {
+        return;
+    }
+    ae_vector_set_length(v, n, _state);
+    for(i=0; i<=n-1; i++)
+    {
+        ae_serializer_unserialize_double(s, &t, _state);
+        v->ptr.p_double[i] = t;
+    }
+}
+
+
+/*************************************************************************
+Allocation of serializer: Integer array
+*************************************************************************/
+void allocintegerarray(ae_serializer* s,
+     /* Integer */ ae_vector* v,
+     ae_int_t n,
+     ae_state *_state)
+{
+    ae_int_t i;
+
+
+    if( n<0 )
+    {
+        n = v->cnt;
+    }
+    ae_serializer_alloc_entry(s);
+    for(i=0; i<=n-1; i++)
+    {
+        ae_serializer_alloc_entry(s);
+    }
+}
+
+
+/*************************************************************************
+Serialization: Integer array
+*************************************************************************/
+void serializeintegerarray(ae_serializer* s,
+     /* Integer */ ae_vector* v,
+     ae_int_t n,
+     ae_state *_state)
+{
+    ae_int_t i;
+
+
+    if( n<0 )
+    {
+        n = v->cnt;
+    }
+    ae_serializer_serialize_int(s, n, _state);
+    for(i=0; i<=n-1; i++)
+    {
+        ae_serializer_serialize_int(s, v->ptr.p_int[i], _state);
+    }
+}
+
+
+/*************************************************************************
+Unserialization: complex value
+*************************************************************************/
+void unserializeintegerarray(ae_serializer* s,
+     /* Integer */ ae_vector* v,
+     ae_state *_state)
+{
+    ae_int_t n;
+    ae_int_t i;
+    ae_int_t t;
+
+    ae_vector_clear(v);
+
+    ae_serializer_unserialize_int(s, &n, _state);
+    if( n==0 )
+    {
+        return;
+    }
+    ae_vector_set_length(v, n, _state);
+    for(i=0; i<=n-1; i++)
+    {
+        ae_serializer_unserialize_int(s, &t, _state);
+        v->ptr.p_int[i] = t;
+    }
+}
+
+
+/*************************************************************************
+Allocation of serializer: real matrix
+*************************************************************************/
+void allocrealmatrix(ae_serializer* s,
+     /* Real    */ ae_matrix* v,
+     ae_int_t n0,
+     ae_int_t n1,
+     ae_state *_state)
+{
+    ae_int_t i;
+    ae_int_t j;
+
+
+    if( n0<0 )
+    {
+        n0 = v->rows;
+    }
+    if( n1<0 )
+    {
+        n1 = v->cols;
+    }
+    ae_serializer_alloc_entry(s);
+    ae_serializer_alloc_entry(s);
+    for(i=0; i<=n0-1; i++)
+    {
+        for(j=0; j<=n1-1; j++)
+        {
+            ae_serializer_alloc_entry(s);
+        }
+    }
+}
+
+
+/*************************************************************************
+Serialization: complex value
+*************************************************************************/
+void serializerealmatrix(ae_serializer* s,
+     /* Real    */ ae_matrix* v,
+     ae_int_t n0,
+     ae_int_t n1,
+     ae_state *_state)
+{
+    ae_int_t i;
+    ae_int_t j;
+
+
+    if( n0<0 )
+    {
+        n0 = v->rows;
+    }
+    if( n1<0 )
+    {
+        n1 = v->cols;
+    }
+    ae_serializer_serialize_int(s, n0, _state);
+    ae_serializer_serialize_int(s, n1, _state);
+    for(i=0; i<=n0-1; i++)
+    {
+        for(j=0; j<=n1-1; j++)
+        {
+            ae_serializer_serialize_double(s, v->ptr.pp_double[i][j], _state);
+        }
+    }
+}
+
+
+/*************************************************************************
+Unserialization: complex value
+*************************************************************************/
+void unserializerealmatrix(ae_serializer* s,
+     /* Real    */ ae_matrix* v,
+     ae_state *_state)
+{
+    ae_int_t i;
+    ae_int_t j;
+    ae_int_t n0;
+    ae_int_t n1;
+    double t;
+
+    ae_matrix_clear(v);
+
+    ae_serializer_unserialize_int(s, &n0, _state);
+    ae_serializer_unserialize_int(s, &n1, _state);
+    if( n0==0||n1==0 )
+    {
+        return;
+    }
+    ae_matrix_set_length(v, n0, n1, _state);
+    for(i=0; i<=n0-1; i++)
+    {
+        for(j=0; j<=n1-1; j++)
+        {
+            ae_serializer_unserialize_double(s, &t, _state);
+            v->ptr.pp_double[i][j] = t;
+        }
+    }
+}
+
+
+/*************************************************************************
+Copy integer array
+*************************************************************************/
+void copyintegerarray(/* Integer */ ae_vector* src,
+     /* Integer */ ae_vector* dst,
+     ae_state *_state)
+{
+    ae_int_t i;
+
+    ae_vector_clear(dst);
+
+    if( src->cnt>0 )
+    {
+        ae_vector_set_length(dst, src->cnt, _state);
+        for(i=0; i<=src->cnt-1; i++)
+        {
+            dst->ptr.p_int[i] = src->ptr.p_int[i];
+        }
+    }
+}
+
+
+/*************************************************************************
+Copy real array
+*************************************************************************/
+void copyrealarray(/* Real    */ ae_vector* src,
+     /* Real    */ ae_vector* dst,
+     ae_state *_state)
+{
+    ae_int_t i;
+
+    ae_vector_clear(dst);
+
+    if( src->cnt>0 )
+    {
+        ae_vector_set_length(dst, src->cnt, _state);
+        for(i=0; i<=src->cnt-1; i++)
+        {
+            dst->ptr.p_double[i] = src->ptr.p_double[i];
+        }
+    }
+}
+
+
+/*************************************************************************
+Copy real matrix
+*************************************************************************/
+void copyrealmatrix(/* Real    */ ae_matrix* src,
+     /* Real    */ ae_matrix* dst,
+     ae_state *_state)
+{
+    ae_int_t i;
+    ae_int_t j;
+
+    ae_matrix_clear(dst);
+
+    if( src->rows>0&&src->cols>0 )
+    {
+        ae_matrix_set_length(dst, src->rows, src->cols, _state);
+        for(i=0; i<=src->rows-1; i++)
+        {
+            for(j=0; j<=src->cols-1; j++)
+            {
+                dst->ptr.pp_double[i][j] = src->ptr.pp_double[i][j];
+            }
+        }
+    }
+}
+
+
+/*************************************************************************
+This function searches integer array. Elements in this array are actually
+records, each NRec elements wide. Each record has unique header - NHeader
+integer values, which identify it. Records are lexicographically sorted by
+header.
+
+Records are identified by their index, not offset (offset = NRec*index).
+
+This function searches A (records with indices [I0,I1)) for a record with
+header B. It returns index of this record (not offset!), or -1 on failure.
+
+  -- ALGLIB --
+     Copyright 28.03.2011 by Bochkanov Sergey
+*************************************************************************/
+ae_int_t recsearch(/* Integer */ ae_vector* a,
+     ae_int_t nrec,
+     ae_int_t nheader,
+     ae_int_t i0,
+     ae_int_t i1,
+     /* Integer */ ae_vector* b,
+     ae_state *_state)
+{
+    ae_int_t mididx;
+    ae_int_t cflag;
+    ae_int_t k;
+    ae_int_t offs;
+    ae_int_t result;
+
+
+    result = -1;
+    for(;;)
+    {
+        if( i0>=i1 )
+        {
+            break;
+        }
+        mididx = (i0+i1)/2;
+        offs = nrec*mididx;
+        cflag = 0;
+        for(k=0; k<=nheader-1; k++)
+        {
+            if( a->ptr.p_int[offs+k]<b->ptr.p_int[k] )
+            {
+                cflag = -1;
+                break;
+            }
+            if( a->ptr.p_int[offs+k]>b->ptr.p_int[k] )
+            {
+                cflag = 1;
+                break;
+            }
+        }
+        if( cflag==0 )
+        {
+            result = mididx;
+            return result;
+        }
+        if( cflag<0 )
+        {
+            i0 = mididx+1;
+        }
+        else
+        {
+            i1 = mididx;
+        }
+    }
     return result;
 }
 
@@ -1569,6 +2160,118 @@ void tagsortfast(/* Real    */ ae_vector* a,
 
 
 /*************************************************************************
+Sorting function optimized for integer keys and real labels, can be used
+to sort middle of the array
+
+A is sorted, and same permutations are applied to B.
+
+NOTES:
+    this function assumes that A[] is finite; it doesn't checks that
+    condition. All other conditions (size of input arrays, etc.) are not
+    checked too.
+
+  -- ALGLIB --
+     Copyright 11.12.2008 by Bochkanov Sergey
+*************************************************************************/
+void tagsortmiddleir(/* Integer */ ae_vector* a,
+     /* Real    */ ae_vector* b,
+     ae_int_t offset,
+     ae_int_t n,
+     ae_state *_state)
+{
+    ae_int_t i;
+    ae_int_t k;
+    ae_int_t t;
+    ae_int_t tmp;
+    double tmpr;
+
+
+    
+    /*
+     * Special cases
+     */
+    if( n<=1 )
+    {
+        return;
+    }
+    
+    /*
+     * General case, N>1: sort, update B
+     */
+    i = 2;
+    do
+    {
+        t = i;
+        while(t!=1)
+        {
+            k = t/2;
+            if( a->ptr.p_int[offset+k-1]>=a->ptr.p_int[offset+t-1] )
+            {
+                t = 1;
+            }
+            else
+            {
+                tmp = a->ptr.p_int[offset+k-1];
+                a->ptr.p_int[offset+k-1] = a->ptr.p_int[offset+t-1];
+                a->ptr.p_int[offset+t-1] = tmp;
+                tmpr = b->ptr.p_double[offset+k-1];
+                b->ptr.p_double[offset+k-1] = b->ptr.p_double[offset+t-1];
+                b->ptr.p_double[offset+t-1] = tmpr;
+                t = k;
+            }
+        }
+        i = i+1;
+    }
+    while(i<=n);
+    i = n-1;
+    do
+    {
+        tmp = a->ptr.p_int[offset+i];
+        a->ptr.p_int[offset+i] = a->ptr.p_int[offset+0];
+        a->ptr.p_int[offset+0] = tmp;
+        tmpr = b->ptr.p_double[offset+i];
+        b->ptr.p_double[offset+i] = b->ptr.p_double[offset+0];
+        b->ptr.p_double[offset+0] = tmpr;
+        t = 1;
+        while(t!=0)
+        {
+            k = 2*t;
+            if( k>i )
+            {
+                t = 0;
+            }
+            else
+            {
+                if( k<i )
+                {
+                    if( a->ptr.p_int[offset+k]>a->ptr.p_int[offset+k-1] )
+                    {
+                        k = k+1;
+                    }
+                }
+                if( a->ptr.p_int[offset+t-1]>=a->ptr.p_int[offset+k-1] )
+                {
+                    t = 0;
+                }
+                else
+                {
+                    tmp = a->ptr.p_int[offset+k-1];
+                    a->ptr.p_int[offset+k-1] = a->ptr.p_int[offset+t-1];
+                    a->ptr.p_int[offset+t-1] = tmp;
+                    tmpr = b->ptr.p_double[offset+k-1];
+                    b->ptr.p_double[offset+k-1] = b->ptr.p_double[offset+t-1];
+                    b->ptr.p_double[offset+t-1] = tmpr;
+                    t = k;
+                }
+            }
+        }
+        i = i-1;
+    }
+    while(i>=1);
+}
+
+
+/*************************************************************************
 Heap operations: adds element to the heap
 
 PARAMETERS:
@@ -1818,6 +2521,96 @@ void tagheappopi(/* Real    */ ae_vector* a,
     b->ptr.p_int[*n-1] = b->ptr.p_int[0];
     *n = *n-1;
     tagheapreplacetopi(a, b, *n, va, vb, _state);
+}
+
+
+/*************************************************************************
+Search first element less than T in sorted array.
+
+PARAMETERS:
+    A - sorted array by ascending from 0 to N-1
+    N - number of elements in array
+    T - the desired element
+
+RESULT:
+    The very first element's index, which isn't less than T.
+In the case when there aren't such elements, returns N.
+*************************************************************************/
+ae_int_t lowerbound(/* Real    */ ae_vector* a,
+     ae_int_t n,
+     double t,
+     ae_state *_state)
+{
+    ae_int_t l;
+    ae_int_t half;
+    ae_int_t first;
+    ae_int_t middle;
+    ae_int_t result;
+
+
+    l = n;
+    first = 0;
+    while(l>0)
+    {
+        half = l/2;
+        middle = first+half;
+        if( ae_fp_less(a->ptr.p_double[middle],t) )
+        {
+            first = middle+1;
+            l = l-half-1;
+        }
+        else
+        {
+            l = half;
+        }
+    }
+    result = first;
+    return result;
+}
+
+
+/*************************************************************************
+Search first element more than T in sorted array.
+
+PARAMETERS:
+    A - sorted array by ascending from 0 to N-1
+    N - number of elements in array
+    T - the desired element
+
+    RESULT:
+    The very first element's index, which more than T.
+In the case when there aren't such elements, returns N.
+*************************************************************************/
+ae_int_t upperbound(/* Real    */ ae_vector* a,
+     ae_int_t n,
+     double t,
+     ae_state *_state)
+{
+    ae_int_t l;
+    ae_int_t half;
+    ae_int_t first;
+    ae_int_t middle;
+    ae_int_t result;
+
+
+    l = n;
+    first = 0;
+    while(l>0)
+    {
+        half = l/2;
+        middle = first+half;
+        if( ae_fp_less(t,a->ptr.p_double[middle]) )
+        {
+            l = half;
+        }
+        else
+        {
+            first = middle+1;
+            l = l-half-1;
+        }
+    }
+    result = first;
+    return result;
 }
 
 
@@ -2901,579 +3694,6 @@ ae_bool cmatrixgemmf(ae_int_t m,
 
 
 
-double vectornorm2(/* Real    */ ae_vector* x,
-     ae_int_t i1,
-     ae_int_t i2,
-     ae_state *_state)
-{
-    ae_int_t n;
-    ae_int_t ix;
-    double absxi;
-    double scl;
-    double ssq;
-    double result;
-
-
-    n = i2-i1+1;
-    if( n<1 )
-    {
-        result = 0;
-        return result;
-    }
-    if( n==1 )
-    {
-        result = ae_fabs(x->ptr.p_double[i1], _state);
-        return result;
-    }
-    scl = 0;
-    ssq = 1;
-    for(ix=i1; ix<=i2; ix++)
-    {
-        if( ae_fp_neq(x->ptr.p_double[ix],0) )
-        {
-            absxi = ae_fabs(x->ptr.p_double[ix], _state);
-            if( ae_fp_less(scl,absxi) )
-            {
-                ssq = 1+ssq*ae_sqr(scl/absxi, _state);
-                scl = absxi;
-            }
-            else
-            {
-                ssq = ssq+ae_sqr(absxi/scl, _state);
-            }
-        }
-    }
-    result = scl*ae_sqrt(ssq, _state);
-    return result;
-}
-
-
-ae_int_t vectoridxabsmax(/* Real    */ ae_vector* x,
-     ae_int_t i1,
-     ae_int_t i2,
-     ae_state *_state)
-{
-    ae_int_t i;
-    double a;
-    ae_int_t result;
-
-
-    result = i1;
-    a = ae_fabs(x->ptr.p_double[result], _state);
-    for(i=i1+1; i<=i2; i++)
-    {
-        if( ae_fp_greater(ae_fabs(x->ptr.p_double[i], _state),ae_fabs(x->ptr.p_double[result], _state)) )
-        {
-            result = i;
-        }
-    }
-    return result;
-}
-
-
-ae_int_t columnidxabsmax(/* Real    */ ae_matrix* x,
-     ae_int_t i1,
-     ae_int_t i2,
-     ae_int_t j,
-     ae_state *_state)
-{
-    ae_int_t i;
-    double a;
-    ae_int_t result;
-
-
-    result = i1;
-    a = ae_fabs(x->ptr.pp_double[result][j], _state);
-    for(i=i1+1; i<=i2; i++)
-    {
-        if( ae_fp_greater(ae_fabs(x->ptr.pp_double[i][j], _state),ae_fabs(x->ptr.pp_double[result][j], _state)) )
-        {
-            result = i;
-        }
-    }
-    return result;
-}
-
-
-ae_int_t rowidxabsmax(/* Real    */ ae_matrix* x,
-     ae_int_t j1,
-     ae_int_t j2,
-     ae_int_t i,
-     ae_state *_state)
-{
-    ae_int_t j;
-    double a;
-    ae_int_t result;
-
-
-    result = j1;
-    a = ae_fabs(x->ptr.pp_double[i][result], _state);
-    for(j=j1+1; j<=j2; j++)
-    {
-        if( ae_fp_greater(ae_fabs(x->ptr.pp_double[i][j], _state),ae_fabs(x->ptr.pp_double[i][result], _state)) )
-        {
-            result = j;
-        }
-    }
-    return result;
-}
-
-
-double upperhessenberg1norm(/* Real    */ ae_matrix* a,
-     ae_int_t i1,
-     ae_int_t i2,
-     ae_int_t j1,
-     ae_int_t j2,
-     /* Real    */ ae_vector* work,
-     ae_state *_state)
-{
-    ae_int_t i;
-    ae_int_t j;
-    double result;
-
-
-    ae_assert(i2-i1==j2-j1, "UpperHessenberg1Norm: I2-I1<>J2-J1!", _state);
-    for(j=j1; j<=j2; j++)
-    {
-        work->ptr.p_double[j] = 0;
-    }
-    for(i=i1; i<=i2; i++)
-    {
-        for(j=ae_maxint(j1, j1+i-i1-1, _state); j<=j2; j++)
-        {
-            work->ptr.p_double[j] = work->ptr.p_double[j]+ae_fabs(a->ptr.pp_double[i][j], _state);
-        }
-    }
-    result = 0;
-    for(j=j1; j<=j2; j++)
-    {
-        result = ae_maxreal(result, work->ptr.p_double[j], _state);
-    }
-    return result;
-}
-
-
-void copymatrix(/* Real    */ ae_matrix* a,
-     ae_int_t is1,
-     ae_int_t is2,
-     ae_int_t js1,
-     ae_int_t js2,
-     /* Real    */ ae_matrix* b,
-     ae_int_t id1,
-     ae_int_t id2,
-     ae_int_t jd1,
-     ae_int_t jd2,
-     ae_state *_state)
-{
-    ae_int_t isrc;
-    ae_int_t idst;
-
-
-    if( is1>is2||js1>js2 )
-    {
-        return;
-    }
-    ae_assert(is2-is1==id2-id1, "CopyMatrix: different sizes!", _state);
-    ae_assert(js2-js1==jd2-jd1, "CopyMatrix: different sizes!", _state);
-    for(isrc=is1; isrc<=is2; isrc++)
-    {
-        idst = isrc-is1+id1;
-        ae_v_move(&b->ptr.pp_double[idst][jd1], 1, &a->ptr.pp_double[isrc][js1], 1, ae_v_len(jd1,jd2));
-    }
-}
-
-
-void inplacetranspose(/* Real    */ ae_matrix* a,
-     ae_int_t i1,
-     ae_int_t i2,
-     ae_int_t j1,
-     ae_int_t j2,
-     /* Real    */ ae_vector* work,
-     ae_state *_state)
-{
-    ae_int_t i;
-    ae_int_t j;
-    ae_int_t ips;
-    ae_int_t jps;
-    ae_int_t l;
-
-
-    if( i1>i2||j1>j2 )
-    {
-        return;
-    }
-    ae_assert(i1-i2==j1-j2, "InplaceTranspose error: incorrect array size!", _state);
-    for(i=i1; i<=i2-1; i++)
-    {
-        j = j1+i-i1;
-        ips = i+1;
-        jps = j1+ips-i1;
-        l = i2-i;
-        ae_v_move(&work->ptr.p_double[1], 1, &a->ptr.pp_double[ips][j], a->stride, ae_v_len(1,l));
-        ae_v_move(&a->ptr.pp_double[ips][j], a->stride, &a->ptr.pp_double[i][jps], 1, ae_v_len(ips,i2));
-        ae_v_move(&a->ptr.pp_double[i][jps], 1, &work->ptr.p_double[1], 1, ae_v_len(jps,j2));
-    }
-}
-
-
-void copyandtranspose(/* Real    */ ae_matrix* a,
-     ae_int_t is1,
-     ae_int_t is2,
-     ae_int_t js1,
-     ae_int_t js2,
-     /* Real    */ ae_matrix* b,
-     ae_int_t id1,
-     ae_int_t id2,
-     ae_int_t jd1,
-     ae_int_t jd2,
-     ae_state *_state)
-{
-    ae_int_t isrc;
-    ae_int_t jdst;
-
-
-    if( is1>is2||js1>js2 )
-    {
-        return;
-    }
-    ae_assert(is2-is1==jd2-jd1, "CopyAndTranspose: different sizes!", _state);
-    ae_assert(js2-js1==id2-id1, "CopyAndTranspose: different sizes!", _state);
-    for(isrc=is1; isrc<=is2; isrc++)
-    {
-        jdst = isrc-is1+jd1;
-        ae_v_move(&b->ptr.pp_double[id1][jdst], b->stride, &a->ptr.pp_double[isrc][js1], 1, ae_v_len(id1,id2));
-    }
-}
-
-
-void matrixvectormultiply(/* Real    */ ae_matrix* a,
-     ae_int_t i1,
-     ae_int_t i2,
-     ae_int_t j1,
-     ae_int_t j2,
-     ae_bool trans,
-     /* Real    */ ae_vector* x,
-     ae_int_t ix1,
-     ae_int_t ix2,
-     double alpha,
-     /* Real    */ ae_vector* y,
-     ae_int_t iy1,
-     ae_int_t iy2,
-     double beta,
-     ae_state *_state)
-{
-    ae_int_t i;
-    double v;
-
-
-    if( !trans )
-    {
-        
-        /*
-         * y := alpha*A*x + beta*y;
-         */
-        if( i1>i2||j1>j2 )
-        {
-            return;
-        }
-        ae_assert(j2-j1==ix2-ix1, "MatrixVectorMultiply: A and X dont match!", _state);
-        ae_assert(i2-i1==iy2-iy1, "MatrixVectorMultiply: A and Y dont match!", _state);
-        
-        /*
-         * beta*y
-         */
-        if( ae_fp_eq(beta,0) )
-        {
-            for(i=iy1; i<=iy2; i++)
-            {
-                y->ptr.p_double[i] = 0;
-            }
-        }
-        else
-        {
-            ae_v_muld(&y->ptr.p_double[iy1], 1, ae_v_len(iy1,iy2), beta);
-        }
-        
-        /*
-         * alpha*A*x
-         */
-        for(i=i1; i<=i2; i++)
-        {
-            v = ae_v_dotproduct(&a->ptr.pp_double[i][j1], 1, &x->ptr.p_double[ix1], 1, ae_v_len(j1,j2));
-            y->ptr.p_double[iy1+i-i1] = y->ptr.p_double[iy1+i-i1]+alpha*v;
-        }
-    }
-    else
-    {
-        
-        /*
-         * y := alpha*A'*x + beta*y;
-         */
-        if( i1>i2||j1>j2 )
-        {
-            return;
-        }
-        ae_assert(i2-i1==ix2-ix1, "MatrixVectorMultiply: A and X dont match!", _state);
-        ae_assert(j2-j1==iy2-iy1, "MatrixVectorMultiply: A and Y dont match!", _state);
-        
-        /*
-         * beta*y
-         */
-        if( ae_fp_eq(beta,0) )
-        {
-            for(i=iy1; i<=iy2; i++)
-            {
-                y->ptr.p_double[i] = 0;
-            }
-        }
-        else
-        {
-            ae_v_muld(&y->ptr.p_double[iy1], 1, ae_v_len(iy1,iy2), beta);
-        }
-        
-        /*
-         * alpha*A'*x
-         */
-        for(i=i1; i<=i2; i++)
-        {
-            v = alpha*x->ptr.p_double[ix1+i-i1];
-            ae_v_addd(&y->ptr.p_double[iy1], 1, &a->ptr.pp_double[i][j1], 1, ae_v_len(iy1,iy2), v);
-        }
-    }
-}
-
-
-double pythag2(double x, double y, ae_state *_state)
-{
-    double w;
-    double xabs;
-    double yabs;
-    double z;
-    double result;
-
-
-    xabs = ae_fabs(x, _state);
-    yabs = ae_fabs(y, _state);
-    w = ae_maxreal(xabs, yabs, _state);
-    z = ae_minreal(xabs, yabs, _state);
-    if( ae_fp_eq(z,0) )
-    {
-        result = w;
-    }
-    else
-    {
-        result = w*ae_sqrt(1+ae_sqr(z/w, _state), _state);
-    }
-    return result;
-}
-
-
-void matrixmatrixmultiply(/* Real    */ ae_matrix* a,
-     ae_int_t ai1,
-     ae_int_t ai2,
-     ae_int_t aj1,
-     ae_int_t aj2,
-     ae_bool transa,
-     /* Real    */ ae_matrix* b,
-     ae_int_t bi1,
-     ae_int_t bi2,
-     ae_int_t bj1,
-     ae_int_t bj2,
-     ae_bool transb,
-     double alpha,
-     /* Real    */ ae_matrix* c,
-     ae_int_t ci1,
-     ae_int_t ci2,
-     ae_int_t cj1,
-     ae_int_t cj2,
-     double beta,
-     /* Real    */ ae_vector* work,
-     ae_state *_state)
-{
-    ae_int_t arows;
-    ae_int_t acols;
-    ae_int_t brows;
-    ae_int_t bcols;
-    ae_int_t crows;
-    ae_int_t ccols;
-    ae_int_t i;
-    ae_int_t j;
-    ae_int_t k;
-    ae_int_t l;
-    ae_int_t r;
-    double v;
-
-
-    
-    /*
-     * Setup
-     */
-    if( !transa )
-    {
-        arows = ai2-ai1+1;
-        acols = aj2-aj1+1;
-    }
-    else
-    {
-        arows = aj2-aj1+1;
-        acols = ai2-ai1+1;
-    }
-    if( !transb )
-    {
-        brows = bi2-bi1+1;
-        bcols = bj2-bj1+1;
-    }
-    else
-    {
-        brows = bj2-bj1+1;
-        bcols = bi2-bi1+1;
-    }
-    ae_assert(acols==brows, "MatrixMatrixMultiply: incorrect matrix sizes!", _state);
-    if( ((arows<=0||acols<=0)||brows<=0)||bcols<=0 )
-    {
-        return;
-    }
-    crows = arows;
-    ccols = bcols;
-    
-    /*
-     * Test WORK
-     */
-    i = ae_maxint(arows, acols, _state);
-    i = ae_maxint(brows, i, _state);
-    i = ae_maxint(i, bcols, _state);
-    work->ptr.p_double[1] = 0;
-    work->ptr.p_double[i] = 0;
-    
-    /*
-     * Prepare C
-     */
-    if( ae_fp_eq(beta,0) )
-    {
-        for(i=ci1; i<=ci2; i++)
-        {
-            for(j=cj1; j<=cj2; j++)
-            {
-                c->ptr.pp_double[i][j] = 0;
-            }
-        }
-    }
-    else
-    {
-        for(i=ci1; i<=ci2; i++)
-        {
-            ae_v_muld(&c->ptr.pp_double[i][cj1], 1, ae_v_len(cj1,cj2), beta);
-        }
-    }
-    
-    /*
-     * A*B
-     */
-    if( !transa&&!transb )
-    {
-        for(l=ai1; l<=ai2; l++)
-        {
-            for(r=bi1; r<=bi2; r++)
-            {
-                v = alpha*a->ptr.pp_double[l][aj1+r-bi1];
-                k = ci1+l-ai1;
-                ae_v_addd(&c->ptr.pp_double[k][cj1], 1, &b->ptr.pp_double[r][bj1], 1, ae_v_len(cj1,cj2), v);
-            }
-        }
-        return;
-    }
-    
-    /*
-     * A*B'
-     */
-    if( !transa&&transb )
-    {
-        if( arows*acols<brows*bcols )
-        {
-            for(r=bi1; r<=bi2; r++)
-            {
-                for(l=ai1; l<=ai2; l++)
-                {
-                    v = ae_v_dotproduct(&a->ptr.pp_double[l][aj1], 1, &b->ptr.pp_double[r][bj1], 1, ae_v_len(aj1,aj2));
-                    c->ptr.pp_double[ci1+l-ai1][cj1+r-bi1] = c->ptr.pp_double[ci1+l-ai1][cj1+r-bi1]+alpha*v;
-                }
-            }
-            return;
-        }
-        else
-        {
-            for(l=ai1; l<=ai2; l++)
-            {
-                for(r=bi1; r<=bi2; r++)
-                {
-                    v = ae_v_dotproduct(&a->ptr.pp_double[l][aj1], 1, &b->ptr.pp_double[r][bj1], 1, ae_v_len(aj1,aj2));
-                    c->ptr.pp_double[ci1+l-ai1][cj1+r-bi1] = c->ptr.pp_double[ci1+l-ai1][cj1+r-bi1]+alpha*v;
-                }
-            }
-            return;
-        }
-    }
-    
-    /*
-     * A'*B
-     */
-    if( transa&&!transb )
-    {
-        for(l=aj1; l<=aj2; l++)
-        {
-            for(r=bi1; r<=bi2; r++)
-            {
-                v = alpha*a->ptr.pp_double[ai1+r-bi1][l];
-                k = ci1+l-aj1;
-                ae_v_addd(&c->ptr.pp_double[k][cj1], 1, &b->ptr.pp_double[r][bj1], 1, ae_v_len(cj1,cj2), v);
-            }
-        }
-        return;
-    }
-    
-    /*
-     * A'*B'
-     */
-    if( transa&&transb )
-    {
-        if( arows*acols<brows*bcols )
-        {
-            for(r=bi1; r<=bi2; r++)
-            {
-                k = cj1+r-bi1;
-                for(i=1; i<=crows; i++)
-                {
-                    work->ptr.p_double[i] = 0.0;
-                }
-                for(l=ai1; l<=ai2; l++)
-                {
-                    v = alpha*b->ptr.pp_double[r][bj1+l-ai1];
-                    ae_v_addd(&work->ptr.p_double[1], 1, &a->ptr.pp_double[l][aj1], 1, ae_v_len(1,crows), v);
-                }
-                ae_v_add(&c->ptr.pp_double[ci1][k], c->stride, &work->ptr.p_double[1], 1, ae_v_len(ci1,ci2));
-            }
-            return;
-        }
-        else
-        {
-            for(l=aj1; l<=aj2; l++)
-            {
-                k = ai2-ai1+1;
-                ae_v_move(&work->ptr.p_double[1], 1, &a->ptr.pp_double[ai1][l], a->stride, ae_v_len(1,k));
-                for(r=bi1; r<=bi2; r++)
-                {
-                    v = ae_v_dotproduct(&work->ptr.p_double[1], 1, &b->ptr.pp_double[r][bj1], 1, ae_v_len(1,k));
-                    c->ptr.pp_double[ci1+l-aj1][cj1+r-bi1] = c->ptr.pp_double[ci1+l-aj1][cj1+r-bi1]+alpha*v;
-                }
-            }
-            return;
-        }
-    }
-}
-
-
-
-
 void hermitianmatrixvectormultiply(/* Complex */ ae_matrix* a,
      ae_bool isupper,
      ae_int_t i1,
@@ -4317,6 +4537,579 @@ void symmetricrank2update(/* Real    */ ae_matrix* a,
             ae_v_addd(&t->ptr.p_double[tp1], 1, &x->ptr.p_double[tp1], 1, ae_v_len(tp1,tp2), v);
             ae_v_muld(&t->ptr.p_double[tp1], 1, ae_v_len(tp1,tp2), alpha);
             ae_v_add(&a->ptr.pp_double[i][i1], 1, &t->ptr.p_double[tp1], 1, ae_v_len(i1,i));
+        }
+    }
+}
+
+
+
+
+double vectornorm2(/* Real    */ ae_vector* x,
+     ae_int_t i1,
+     ae_int_t i2,
+     ae_state *_state)
+{
+    ae_int_t n;
+    ae_int_t ix;
+    double absxi;
+    double scl;
+    double ssq;
+    double result;
+
+
+    n = i2-i1+1;
+    if( n<1 )
+    {
+        result = 0;
+        return result;
+    }
+    if( n==1 )
+    {
+        result = ae_fabs(x->ptr.p_double[i1], _state);
+        return result;
+    }
+    scl = 0;
+    ssq = 1;
+    for(ix=i1; ix<=i2; ix++)
+    {
+        if( ae_fp_neq(x->ptr.p_double[ix],0) )
+        {
+            absxi = ae_fabs(x->ptr.p_double[ix], _state);
+            if( ae_fp_less(scl,absxi) )
+            {
+                ssq = 1+ssq*ae_sqr(scl/absxi, _state);
+                scl = absxi;
+            }
+            else
+            {
+                ssq = ssq+ae_sqr(absxi/scl, _state);
+            }
+        }
+    }
+    result = scl*ae_sqrt(ssq, _state);
+    return result;
+}
+
+
+ae_int_t vectoridxabsmax(/* Real    */ ae_vector* x,
+     ae_int_t i1,
+     ae_int_t i2,
+     ae_state *_state)
+{
+    ae_int_t i;
+    double a;
+    ae_int_t result;
+
+
+    result = i1;
+    a = ae_fabs(x->ptr.p_double[result], _state);
+    for(i=i1+1; i<=i2; i++)
+    {
+        if( ae_fp_greater(ae_fabs(x->ptr.p_double[i], _state),ae_fabs(x->ptr.p_double[result], _state)) )
+        {
+            result = i;
+        }
+    }
+    return result;
+}
+
+
+ae_int_t columnidxabsmax(/* Real    */ ae_matrix* x,
+     ae_int_t i1,
+     ae_int_t i2,
+     ae_int_t j,
+     ae_state *_state)
+{
+    ae_int_t i;
+    double a;
+    ae_int_t result;
+
+
+    result = i1;
+    a = ae_fabs(x->ptr.pp_double[result][j], _state);
+    for(i=i1+1; i<=i2; i++)
+    {
+        if( ae_fp_greater(ae_fabs(x->ptr.pp_double[i][j], _state),ae_fabs(x->ptr.pp_double[result][j], _state)) )
+        {
+            result = i;
+        }
+    }
+    return result;
+}
+
+
+ae_int_t rowidxabsmax(/* Real    */ ae_matrix* x,
+     ae_int_t j1,
+     ae_int_t j2,
+     ae_int_t i,
+     ae_state *_state)
+{
+    ae_int_t j;
+    double a;
+    ae_int_t result;
+
+
+    result = j1;
+    a = ae_fabs(x->ptr.pp_double[i][result], _state);
+    for(j=j1+1; j<=j2; j++)
+    {
+        if( ae_fp_greater(ae_fabs(x->ptr.pp_double[i][j], _state),ae_fabs(x->ptr.pp_double[i][result], _state)) )
+        {
+            result = j;
+        }
+    }
+    return result;
+}
+
+
+double upperhessenberg1norm(/* Real    */ ae_matrix* a,
+     ae_int_t i1,
+     ae_int_t i2,
+     ae_int_t j1,
+     ae_int_t j2,
+     /* Real    */ ae_vector* work,
+     ae_state *_state)
+{
+    ae_int_t i;
+    ae_int_t j;
+    double result;
+
+
+    ae_assert(i2-i1==j2-j1, "UpperHessenberg1Norm: I2-I1<>J2-J1!", _state);
+    for(j=j1; j<=j2; j++)
+    {
+        work->ptr.p_double[j] = 0;
+    }
+    for(i=i1; i<=i2; i++)
+    {
+        for(j=ae_maxint(j1, j1+i-i1-1, _state); j<=j2; j++)
+        {
+            work->ptr.p_double[j] = work->ptr.p_double[j]+ae_fabs(a->ptr.pp_double[i][j], _state);
+        }
+    }
+    result = 0;
+    for(j=j1; j<=j2; j++)
+    {
+        result = ae_maxreal(result, work->ptr.p_double[j], _state);
+    }
+    return result;
+}
+
+
+void copymatrix(/* Real    */ ae_matrix* a,
+     ae_int_t is1,
+     ae_int_t is2,
+     ae_int_t js1,
+     ae_int_t js2,
+     /* Real    */ ae_matrix* b,
+     ae_int_t id1,
+     ae_int_t id2,
+     ae_int_t jd1,
+     ae_int_t jd2,
+     ae_state *_state)
+{
+    ae_int_t isrc;
+    ae_int_t idst;
+
+
+    if( is1>is2||js1>js2 )
+    {
+        return;
+    }
+    ae_assert(is2-is1==id2-id1, "CopyMatrix: different sizes!", _state);
+    ae_assert(js2-js1==jd2-jd1, "CopyMatrix: different sizes!", _state);
+    for(isrc=is1; isrc<=is2; isrc++)
+    {
+        idst = isrc-is1+id1;
+        ae_v_move(&b->ptr.pp_double[idst][jd1], 1, &a->ptr.pp_double[isrc][js1], 1, ae_v_len(jd1,jd2));
+    }
+}
+
+
+void inplacetranspose(/* Real    */ ae_matrix* a,
+     ae_int_t i1,
+     ae_int_t i2,
+     ae_int_t j1,
+     ae_int_t j2,
+     /* Real    */ ae_vector* work,
+     ae_state *_state)
+{
+    ae_int_t i;
+    ae_int_t j;
+    ae_int_t ips;
+    ae_int_t jps;
+    ae_int_t l;
+
+
+    if( i1>i2||j1>j2 )
+    {
+        return;
+    }
+    ae_assert(i1-i2==j1-j2, "InplaceTranspose error: incorrect array size!", _state);
+    for(i=i1; i<=i2-1; i++)
+    {
+        j = j1+i-i1;
+        ips = i+1;
+        jps = j1+ips-i1;
+        l = i2-i;
+        ae_v_move(&work->ptr.p_double[1], 1, &a->ptr.pp_double[ips][j], a->stride, ae_v_len(1,l));
+        ae_v_move(&a->ptr.pp_double[ips][j], a->stride, &a->ptr.pp_double[i][jps], 1, ae_v_len(ips,i2));
+        ae_v_move(&a->ptr.pp_double[i][jps], 1, &work->ptr.p_double[1], 1, ae_v_len(jps,j2));
+    }
+}
+
+
+void copyandtranspose(/* Real    */ ae_matrix* a,
+     ae_int_t is1,
+     ae_int_t is2,
+     ae_int_t js1,
+     ae_int_t js2,
+     /* Real    */ ae_matrix* b,
+     ae_int_t id1,
+     ae_int_t id2,
+     ae_int_t jd1,
+     ae_int_t jd2,
+     ae_state *_state)
+{
+    ae_int_t isrc;
+    ae_int_t jdst;
+
+
+    if( is1>is2||js1>js2 )
+    {
+        return;
+    }
+    ae_assert(is2-is1==jd2-jd1, "CopyAndTranspose: different sizes!", _state);
+    ae_assert(js2-js1==id2-id1, "CopyAndTranspose: different sizes!", _state);
+    for(isrc=is1; isrc<=is2; isrc++)
+    {
+        jdst = isrc-is1+jd1;
+        ae_v_move(&b->ptr.pp_double[id1][jdst], b->stride, &a->ptr.pp_double[isrc][js1], 1, ae_v_len(id1,id2));
+    }
+}
+
+
+void matrixvectormultiply(/* Real    */ ae_matrix* a,
+     ae_int_t i1,
+     ae_int_t i2,
+     ae_int_t j1,
+     ae_int_t j2,
+     ae_bool trans,
+     /* Real    */ ae_vector* x,
+     ae_int_t ix1,
+     ae_int_t ix2,
+     double alpha,
+     /* Real    */ ae_vector* y,
+     ae_int_t iy1,
+     ae_int_t iy2,
+     double beta,
+     ae_state *_state)
+{
+    ae_int_t i;
+    double v;
+
+
+    if( !trans )
+    {
+        
+        /*
+         * y := alpha*A*x + beta*y;
+         */
+        if( i1>i2||j1>j2 )
+        {
+            return;
+        }
+        ae_assert(j2-j1==ix2-ix1, "MatrixVectorMultiply: A and X dont match!", _state);
+        ae_assert(i2-i1==iy2-iy1, "MatrixVectorMultiply: A and Y dont match!", _state);
+        
+        /*
+         * beta*y
+         */
+        if( ae_fp_eq(beta,0) )
+        {
+            for(i=iy1; i<=iy2; i++)
+            {
+                y->ptr.p_double[i] = 0;
+            }
+        }
+        else
+        {
+            ae_v_muld(&y->ptr.p_double[iy1], 1, ae_v_len(iy1,iy2), beta);
+        }
+        
+        /*
+         * alpha*A*x
+         */
+        for(i=i1; i<=i2; i++)
+        {
+            v = ae_v_dotproduct(&a->ptr.pp_double[i][j1], 1, &x->ptr.p_double[ix1], 1, ae_v_len(j1,j2));
+            y->ptr.p_double[iy1+i-i1] = y->ptr.p_double[iy1+i-i1]+alpha*v;
+        }
+    }
+    else
+    {
+        
+        /*
+         * y := alpha*A'*x + beta*y;
+         */
+        if( i1>i2||j1>j2 )
+        {
+            return;
+        }
+        ae_assert(i2-i1==ix2-ix1, "MatrixVectorMultiply: A and X dont match!", _state);
+        ae_assert(j2-j1==iy2-iy1, "MatrixVectorMultiply: A and Y dont match!", _state);
+        
+        /*
+         * beta*y
+         */
+        if( ae_fp_eq(beta,0) )
+        {
+            for(i=iy1; i<=iy2; i++)
+            {
+                y->ptr.p_double[i] = 0;
+            }
+        }
+        else
+        {
+            ae_v_muld(&y->ptr.p_double[iy1], 1, ae_v_len(iy1,iy2), beta);
+        }
+        
+        /*
+         * alpha*A'*x
+         */
+        for(i=i1; i<=i2; i++)
+        {
+            v = alpha*x->ptr.p_double[ix1+i-i1];
+            ae_v_addd(&y->ptr.p_double[iy1], 1, &a->ptr.pp_double[i][j1], 1, ae_v_len(iy1,iy2), v);
+        }
+    }
+}
+
+
+double pythag2(double x, double y, ae_state *_state)
+{
+    double w;
+    double xabs;
+    double yabs;
+    double z;
+    double result;
+
+
+    xabs = ae_fabs(x, _state);
+    yabs = ae_fabs(y, _state);
+    w = ae_maxreal(xabs, yabs, _state);
+    z = ae_minreal(xabs, yabs, _state);
+    if( ae_fp_eq(z,0) )
+    {
+        result = w;
+    }
+    else
+    {
+        result = w*ae_sqrt(1+ae_sqr(z/w, _state), _state);
+    }
+    return result;
+}
+
+
+void matrixmatrixmultiply(/* Real    */ ae_matrix* a,
+     ae_int_t ai1,
+     ae_int_t ai2,
+     ae_int_t aj1,
+     ae_int_t aj2,
+     ae_bool transa,
+     /* Real    */ ae_matrix* b,
+     ae_int_t bi1,
+     ae_int_t bi2,
+     ae_int_t bj1,
+     ae_int_t bj2,
+     ae_bool transb,
+     double alpha,
+     /* Real    */ ae_matrix* c,
+     ae_int_t ci1,
+     ae_int_t ci2,
+     ae_int_t cj1,
+     ae_int_t cj2,
+     double beta,
+     /* Real    */ ae_vector* work,
+     ae_state *_state)
+{
+    ae_int_t arows;
+    ae_int_t acols;
+    ae_int_t brows;
+    ae_int_t bcols;
+    ae_int_t crows;
+    ae_int_t ccols;
+    ae_int_t i;
+    ae_int_t j;
+    ae_int_t k;
+    ae_int_t l;
+    ae_int_t r;
+    double v;
+
+
+    
+    /*
+     * Setup
+     */
+    if( !transa )
+    {
+        arows = ai2-ai1+1;
+        acols = aj2-aj1+1;
+    }
+    else
+    {
+        arows = aj2-aj1+1;
+        acols = ai2-ai1+1;
+    }
+    if( !transb )
+    {
+        brows = bi2-bi1+1;
+        bcols = bj2-bj1+1;
+    }
+    else
+    {
+        brows = bj2-bj1+1;
+        bcols = bi2-bi1+1;
+    }
+    ae_assert(acols==brows, "MatrixMatrixMultiply: incorrect matrix sizes!", _state);
+    if( ((arows<=0||acols<=0)||brows<=0)||bcols<=0 )
+    {
+        return;
+    }
+    crows = arows;
+    ccols = bcols;
+    
+    /*
+     * Test WORK
+     */
+    i = ae_maxint(arows, acols, _state);
+    i = ae_maxint(brows, i, _state);
+    i = ae_maxint(i, bcols, _state);
+    work->ptr.p_double[1] = 0;
+    work->ptr.p_double[i] = 0;
+    
+    /*
+     * Prepare C
+     */
+    if( ae_fp_eq(beta,0) )
+    {
+        for(i=ci1; i<=ci2; i++)
+        {
+            for(j=cj1; j<=cj2; j++)
+            {
+                c->ptr.pp_double[i][j] = 0;
+            }
+        }
+    }
+    else
+    {
+        for(i=ci1; i<=ci2; i++)
+        {
+            ae_v_muld(&c->ptr.pp_double[i][cj1], 1, ae_v_len(cj1,cj2), beta);
+        }
+    }
+    
+    /*
+     * A*B
+     */
+    if( !transa&&!transb )
+    {
+        for(l=ai1; l<=ai2; l++)
+        {
+            for(r=bi1; r<=bi2; r++)
+            {
+                v = alpha*a->ptr.pp_double[l][aj1+r-bi1];
+                k = ci1+l-ai1;
+                ae_v_addd(&c->ptr.pp_double[k][cj1], 1, &b->ptr.pp_double[r][bj1], 1, ae_v_len(cj1,cj2), v);
+            }
+        }
+        return;
+    }
+    
+    /*
+     * A*B'
+     */
+    if( !transa&&transb )
+    {
+        if( arows*acols<brows*bcols )
+        {
+            for(r=bi1; r<=bi2; r++)
+            {
+                for(l=ai1; l<=ai2; l++)
+                {
+                    v = ae_v_dotproduct(&a->ptr.pp_double[l][aj1], 1, &b->ptr.pp_double[r][bj1], 1, ae_v_len(aj1,aj2));
+                    c->ptr.pp_double[ci1+l-ai1][cj1+r-bi1] = c->ptr.pp_double[ci1+l-ai1][cj1+r-bi1]+alpha*v;
+                }
+            }
+            return;
+        }
+        else
+        {
+            for(l=ai1; l<=ai2; l++)
+            {
+                for(r=bi1; r<=bi2; r++)
+                {
+                    v = ae_v_dotproduct(&a->ptr.pp_double[l][aj1], 1, &b->ptr.pp_double[r][bj1], 1, ae_v_len(aj1,aj2));
+                    c->ptr.pp_double[ci1+l-ai1][cj1+r-bi1] = c->ptr.pp_double[ci1+l-ai1][cj1+r-bi1]+alpha*v;
+                }
+            }
+            return;
+        }
+    }
+    
+    /*
+     * A'*B
+     */
+    if( transa&&!transb )
+    {
+        for(l=aj1; l<=aj2; l++)
+        {
+            for(r=bi1; r<=bi2; r++)
+            {
+                v = alpha*a->ptr.pp_double[ai1+r-bi1][l];
+                k = ci1+l-aj1;
+                ae_v_addd(&c->ptr.pp_double[k][cj1], 1, &b->ptr.pp_double[r][bj1], 1, ae_v_len(cj1,cj2), v);
+            }
+        }
+        return;
+    }
+    
+    /*
+     * A'*B'
+     */
+    if( transa&&transb )
+    {
+        if( arows*acols<brows*bcols )
+        {
+            for(r=bi1; r<=bi2; r++)
+            {
+                k = cj1+r-bi1;
+                for(i=1; i<=crows; i++)
+                {
+                    work->ptr.p_double[i] = 0.0;
+                }
+                for(l=ai1; l<=ai2; l++)
+                {
+                    v = alpha*b->ptr.pp_double[r][bj1+l-ai1];
+                    ae_v_addd(&work->ptr.p_double[1], 1, &a->ptr.pp_double[l][aj1], 1, ae_v_len(1,crows), v);
+                }
+                ae_v_add(&c->ptr.pp_double[ci1][k], c->stride, &work->ptr.p_double[1], 1, ae_v_len(ci1,ci2));
+            }
+            return;
+        }
+        else
+        {
+            for(l=aj1; l<=aj2; l++)
+            {
+                k = ai2-ai1+1;
+                ae_v_move(&work->ptr.p_double[1], 1, &a->ptr.pp_double[ai1][l], a->stride, ae_v_len(1,k));
+                for(r=bi1; r<=bi2; r++)
+                {
+                    v = ae_v_dotproduct(&work->ptr.p_double[1], 1, &b->ptr.pp_double[r][bj1], 1, ae_v_len(1,k));
+                    c->ptr.pp_double[ci1+l-aj1][cj1+r-bi1] = c->ptr.pp_double[ci1+l-aj1][cj1+r-bi1]+alpha*v;
+                }
+            }
+            return;
         }
     }
 }
@@ -8050,6 +8843,7 @@ void mcsrch(ae_int_t n,
      /* Real    */ ae_vector* s,
      double* stp,
      double stpmax,
+     double gtol,
      ae_int_t* info,
      ae_int_t* nfev,
      /* Real    */ ae_vector* wa,
@@ -8112,7 +8906,7 @@ void mcsrch(ae_int_t n,
                 *stp = 0.0;
                 return;
             }
-            if( ((((((n<=0||ae_fp_less_eq(*stp,0))||ae_fp_less(linmin_ftol,0))||ae_fp_less(linmin_gtol,zero))||ae_fp_less(linmin_xtol,zero))||ae_fp_less(linmin_stpmin,zero))||ae_fp_less(stpmax,linmin_stpmin))||linmin_maxfev<=0 )
+            if( ((((((n<=0||ae_fp_less_eq(*stp,0))||ae_fp_less(linmin_ftol,0))||ae_fp_less(gtol,zero))||ae_fp_less(linmin_xtol,zero))||ae_fp_less(linmin_stpmin,zero))||ae_fp_less(stpmax,linmin_stpmin))||linmin_maxfev<=0 )
             {
                 *stage = 0;
                 return;
@@ -8257,7 +9051,7 @@ void mcsrch(ae_int_t n,
             {
                 *info = 2;
             }
-            if( ae_fp_less_eq(*f,state->ftest1)&&ae_fp_less_eq(ae_fabs(state->dg, _state),-linmin_gtol*state->dginit) )
+            if( ae_fp_less_eq(*f,state->ftest1)&&ae_fp_less_eq(ae_fabs(state->dg, _state),-gtol*state->dginit) )
             {
                 *info = 1;
             }
@@ -8275,7 +9069,7 @@ void mcsrch(ae_int_t n,
              *        IN THE FIRST STAGE WE SEEK A STEP FOR WHICH THE MODIFIED
              *        FUNCTION HAS A NONPOSITIVE VALUE AND NONNEGATIVE DERIVATIVE.
              */
-            if( (state->stage1&&ae_fp_less_eq(*f,state->ftest1))&&ae_fp_greater_eq(state->dg,ae_minreal(linmin_ftol, linmin_gtol, _state)*state->dginit) )
+            if( (state->stage1&&ae_fp_less_eq(*f,state->ftest1))&&ae_fp_greater_eq(state->dg,ae_minreal(linmin_ftol, gtol, _state)*state->dginit) )
             {
                 state->stage1 = ae_false;
             }

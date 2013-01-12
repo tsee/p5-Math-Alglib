@@ -52,6 +52,39 @@ typedef struct
     rcommstate rstate;
     ae_vector tmp2;
 } fblslincgstate;
+typedef struct
+{
+    ae_vector vals;
+    ae_vector idx;
+    ae_vector ridx;
+    ae_vector didx;
+    ae_vector uidx;
+    ae_int_t matrixtype;
+    ae_int_t m;
+    ae_int_t n;
+    ae_int_t nfree;
+    ae_int_t ninitialized;
+} sparsematrix;
+typedef struct
+{
+    ae_int_t n;
+    ae_int_t m;
+    ae_int_t nstart;
+    ae_int_t nits;
+    ae_int_t seedval;
+    ae_vector x0;
+    ae_vector x1;
+    ae_vector t;
+    ae_vector xbest;
+    hqrndstate r;
+    ae_vector x;
+    ae_vector mv;
+    ae_vector mtv;
+    ae_bool needmv;
+    ae_bool needmtv;
+    double repnorm;
+    rcommstate rstate;
+} normestimatorstate;
 
 }
 
@@ -62,6 +95,10 @@ typedef struct
 /////////////////////////////////////////////////////////////////////////
 namespace alglib
 {
+
+
+
+
 
 
 
@@ -104,6 +141,63 @@ public:
 
 };
 
+
+
+/*************************************************************************
+Sparse matrix
+
+You should use ALGLIB functions to work with sparse matrix.
+Never try to access its fields directly!
+*************************************************************************/
+class _sparsematrix_owner
+{
+public:
+    _sparsematrix_owner();
+    _sparsematrix_owner(const _sparsematrix_owner &rhs);
+    _sparsematrix_owner& operator=(const _sparsematrix_owner &rhs);
+    virtual ~_sparsematrix_owner();
+    alglib_impl::sparsematrix* c_ptr();
+    alglib_impl::sparsematrix* c_ptr() const;
+protected:
+    alglib_impl::sparsematrix *p_struct;
+};
+class sparsematrix : public _sparsematrix_owner
+{
+public:
+    sparsematrix();
+    sparsematrix(const sparsematrix &rhs);
+    sparsematrix& operator=(const sparsematrix &rhs);
+    virtual ~sparsematrix();
+
+};
+
+/*************************************************************************
+This object stores state of the iterative norm estimation algorithm.
+
+You should use ALGLIB functions to work with this object.
+*************************************************************************/
+class _normestimatorstate_owner
+{
+public:
+    _normestimatorstate_owner();
+    _normestimatorstate_owner(const _normestimatorstate_owner &rhs);
+    _normestimatorstate_owner& operator=(const _normestimatorstate_owner &rhs);
+    virtual ~_normestimatorstate_owner();
+    alglib_impl::normestimatorstate* c_ptr();
+    alglib_impl::normestimatorstate* c_ptr() const;
+protected:
+    alglib_impl::normestimatorstate *p_struct;
+};
+class normestimatorstate : public _normestimatorstate_owner
+{
+public:
+    normestimatorstate();
+    normestimatorstate(const normestimatorstate &rhs);
+    normestimatorstate& operator=(const normestimatorstate &rhs);
+    virtual ~normestimatorstate();
+
+};
+
 /*************************************************************************
 Cache-oblivous complex "copy-and-transpose"
 
@@ -113,7 +207,7 @@ Input parameters:
     A   -   source matrix, MxN submatrix is copied and transposed
     IA  -   submatrix offset (row index)
     JA  -   submatrix offset (column index)
-    A   -   destination matrix
+    B   -   destination matrix, must be large enough to store result
     IB  -   submatrix offset (row index)
     JB  -   submatrix offset (column index)
 *************************************************************************/
@@ -129,7 +223,7 @@ Input parameters:
     A   -   source matrix, MxN submatrix is copied and transposed
     IA  -   submatrix offset (row index)
     JA  -   submatrix offset (column index)
-    A   -   destination matrix
+    B   -   destination matrix, must be large enough to store result
     IB  -   submatrix offset (row index)
     JB  -   submatrix offset (column index)
 *************************************************************************/
@@ -145,7 +239,7 @@ Input parameters:
     A   -   source matrix, MxN submatrix is copied and transposed
     IA  -   submatrix offset (row index)
     JA  -   submatrix offset (column index)
-    B   -   destination matrix
+    B   -   destination matrix, must be large enough to store result
     IB  -   submatrix offset (row index)
     JB  -   submatrix offset (column index)
 *************************************************************************/
@@ -161,7 +255,7 @@ Input parameters:
     A   -   source matrix, MxN submatrix is copied and transposed
     IA  -   submatrix offset (row index)
     JA  -   submatrix offset (column index)
-    B   -   destination matrix
+    B   -   destination matrix, must be large enough to store result
     IB  -   submatrix offset (row index)
     JB  -   submatrix offset (column index)
 *************************************************************************/
@@ -220,6 +314,7 @@ INPUT PARAMETERS:
     X   -   input vector
     IX  -   subvector offset
     IY  -   subvector offset
+    Y   -   preallocated matrix, must be large enough to store result
 
 OUTPUT PARAMETERS:
     Y   -   vector which stores result
@@ -251,6 +346,7 @@ INPUT PARAMETERS:
     X   -   input vector
     IX  -   subvector offset
     IY  -   subvector offset
+    Y   -   preallocated matrix, must be large enough to store result
 
 OUTPUT PARAMETERS:
     Y   -   vector which stores result
@@ -288,7 +384,7 @@ INPUT PARAMETERS
                 * 0 - no transformation
                 * 1 - transposition
                 * 2 - conjugate transposition
-    C   -   matrix, actial matrix is stored in C[I2:I2+M-1,J2:J2+N-1]
+    X   -   matrix, actial matrix is stored in X[I2:I2+M-1,J2:J2+N-1]
     I2  -   submatrix offset
     J2  -   submatrix offset
 
@@ -320,7 +416,7 @@ INPUT PARAMETERS
                 * 0 - no transformation
                 * 1 - transposition
                 * 2 - conjugate transposition
-    C   -   matrix, actial matrix is stored in C[I2:I2+M-1,J2:J2+N-1]
+    X   -   matrix, actial matrix is stored in X[I2:I2+M-1,J2:J2+N-1]
     I2  -   submatrix offset
     J2  -   submatrix offset
 
@@ -332,9 +428,28 @@ void cmatrixlefttrsm(const ae_int_t m, const ae_int_t n, const complex_2d_array 
 
 
 /*************************************************************************
-Same as CMatrixRightTRSM, but for real matrices
+This subroutine calculates X*op(A^-1) where:
+* X is MxN general matrix
+* A is NxN upper/lower triangular/unitriangular matrix
+* "op" may be identity transformation, transposition
 
-OpType may be only 0 or 1.
+Multiplication result replaces X.
+Cache-oblivious algorithm is used.
+
+INPUT PARAMETERS
+    N   -   matrix size, N>=0
+    M   -   matrix size, N>=0
+    A       -   matrix, actial matrix is stored in A[I1:I1+N-1,J1:J1+N-1]
+    I1      -   submatrix offset
+    J1      -   submatrix offset
+    IsUpper -   whether matrix is upper triangular
+    IsUnit  -   whether matrix is unitriangular
+    OpType  -   transformation type:
+                * 0 - no transformation
+                * 1 - transposition
+    X   -   matrix, actial matrix is stored in X[I2:I2+M-1,J2:J2+N-1]
+    I2  -   submatrix offset
+    J2  -   submatrix offset
 
   -- ALGLIB routine --
      15.12.2009
@@ -344,9 +459,28 @@ void rmatrixrighttrsm(const ae_int_t m, const ae_int_t n, const real_2d_array &a
 
 
 /*************************************************************************
-Same as CMatrixLeftTRSM, but for real matrices
+This subroutine calculates op(A^-1)*X where:
+* X is MxN general matrix
+* A is MxM upper/lower triangular/unitriangular matrix
+* "op" may be identity transformation, transposition
 
-OpType may be only 0 or 1.
+Multiplication result replaces X.
+Cache-oblivious algorithm is used.
+
+INPUT PARAMETERS
+    N   -   matrix size, N>=0
+    M   -   matrix size, N>=0
+    A       -   matrix, actial matrix is stored in A[I1:I1+M-1,J1:J1+M-1]
+    I1      -   submatrix offset
+    J1      -   submatrix offset
+    IsUpper -   whether matrix is upper triangular
+    IsUnit  -   whether matrix is unitriangular
+    OpType  -   transformation type:
+                * 0 - no transformation
+                * 1 - transposition
+    X   -   matrix, actial matrix is stored in X[I2:I2+M-1,J2:J2+N-1]
+    I2  -   submatrix offset
+    J2  -   submatrix offset
 
   -- ALGLIB routine --
      15.12.2009
@@ -392,9 +526,33 @@ void cmatrixsyrk(const ae_int_t n, const ae_int_t k, const double alpha, const c
 
 
 /*************************************************************************
-Same as CMatrixSYRK, but for real matrices
+This subroutine calculates  C=alpha*A*A^T+beta*C  or  C=alpha*A^T*A+beta*C
+where:
+* C is NxN symmetric matrix given by its upper/lower triangle
+* A is NxK matrix when A*A^T is calculated, KxN matrix otherwise
 
-OpType may be only 0 or 1.
+Additional info:
+* cache-oblivious algorithm is used.
+* multiplication result replaces C. If Beta=0, C elements are not used in
+  calculations (not multiplied by zero - just not referenced)
+* if Alpha=0, A is not used (not multiplied by zero - just not referenced)
+* if both Beta and Alpha are zero, C is filled by zeros.
+
+INPUT PARAMETERS
+    N       -   matrix size, N>=0
+    K       -   matrix size, K>=0
+    Alpha   -   coefficient
+    A       -   matrix
+    IA      -   submatrix offset
+    JA      -   submatrix offset
+    OpTypeA -   multiplication type:
+                * 0 - A*A^T is calculated
+                * 2 - A^T*A is calculated
+    Beta    -   coefficient
+    C       -   matrix
+    IC      -   submatrix offset
+    JC      -   submatrix offset
+    IsUpper -   whether C is upper triangular or lower triangular
 
   -- ALGLIB routine --
      16.12.2009
@@ -418,8 +576,8 @@ Additional info:
 * if both Beta and Alpha are zero, C is filled by zeros.
 
 INPUT PARAMETERS
+    M       -   matrix size, M>0
     N       -   matrix size, N>0
-    M       -   matrix size, N>0
     K       -   matrix size, K>0
     Alpha   -   coefficient
     A       -   matrix
@@ -449,8 +607,40 @@ void cmatrixgemm(const ae_int_t m, const ae_int_t n, const ae_int_t k, const alg
 
 
 /*************************************************************************
-Same as CMatrixGEMM, but for real numbers.
-OpType may be only 0 or 1.
+This subroutine calculates C = alpha*op1(A)*op2(B) +beta*C where:
+* C is MxN general matrix
+* op1(A) is MxK matrix
+* op2(B) is KxN matrix
+* "op" may be identity transformation, transposition
+
+Additional info:
+* cache-oblivious algorithm is used.
+* multiplication result replaces C. If Beta=0, C elements are not used in
+  calculations (not multiplied by zero - just not referenced)
+* if Alpha=0, A is not used (not multiplied by zero - just not referenced)
+* if both Beta and Alpha are zero, C is filled by zeros.
+
+INPUT PARAMETERS
+    M       -   matrix size, M>0
+    N       -   matrix size, N>0
+    K       -   matrix size, K>0
+    Alpha   -   coefficient
+    A       -   matrix
+    IA      -   submatrix offset
+    JA      -   submatrix offset
+    OpTypeA -   transformation type:
+                * 0 - no transformation
+                * 1 - transposition
+    B       -   matrix
+    IB      -   submatrix offset
+    JB      -   submatrix offset
+    OpTypeB -   transformation type:
+                * 0 - no transformation
+                * 1 - transposition
+    Beta    -   coefficient
+    C       -   matrix
+    IC      -   submatrix offset
+    JC      -   submatrix offset
 
   -- ALGLIB routine --
      16.12.2009
@@ -1212,6 +1402,141 @@ Output parameters:
      Copyright 2005-2010 by Bochkanov Sergey
 *************************************************************************/
 void hmatrixtdunpackq(const complex_2d_array &a, const ae_int_t n, const bool isupper, const complex_1d_array &tau, complex_2d_array &q);
+
+/*************************************************************************
+Singular value decomposition of a bidiagonal matrix (extended algorithm)
+
+The algorithm performs the singular value decomposition  of  a  bidiagonal
+matrix B (upper or lower) representing it as B = Q*S*P^T, where Q and  P -
+orthogonal matrices, S - diagonal matrix with non-negative elements on the
+main diagonal, in descending order.
+
+The  algorithm  finds  singular  values.  In  addition,  the algorithm can
+calculate  matrices  Q  and P (more precisely, not the matrices, but their
+product  with  given  matrices U and VT - U*Q and (P^T)*VT)).  Of  course,
+matrices U and VT can be of any type, including identity. Furthermore, the
+algorithm can calculate Q'*C (this product is calculated more  effectively
+than U*Q,  because  this calculation operates with rows instead  of matrix
+columns).
+
+The feature of the algorithm is its ability to find  all  singular  values
+including those which are arbitrarily close to 0  with  relative  accuracy
+close to  machine precision. If the parameter IsFractionalAccuracyRequired
+is set to True, all singular values will have high relative accuracy close
+to machine precision. If the parameter is set to False, only  the  biggest
+singular value will have relative accuracy  close  to  machine  precision.
+The absolute error of other singular values is equal to the absolute error
+of the biggest singular value.
+
+Input parameters:
+    D       -   main diagonal of matrix B.
+                Array whose index ranges within [0..N-1].
+    E       -   superdiagonal (or subdiagonal) of matrix B.
+                Array whose index ranges within [0..N-2].
+    N       -   size of matrix B.
+    IsUpper -   True, if the matrix is upper bidiagonal.
+    IsFractionalAccuracyRequired -
+                THIS PARAMETER IS IGNORED SINCE ALGLIB 3.5.0
+                SINGULAR VALUES ARE ALWAYS SEARCHED WITH HIGH ACCURACY.
+    U       -   matrix to be multiplied by Q.
+                Array whose indexes range within [0..NRU-1, 0..N-1].
+                The matrix can be bigger, in that case only the  submatrix
+                [0..NRU-1, 0..N-1] will be multiplied by Q.
+    NRU     -   number of rows in matrix U.
+    C       -   matrix to be multiplied by Q'.
+                Array whose indexes range within [0..N-1, 0..NCC-1].
+                The matrix can be bigger, in that case only the  submatrix
+                [0..N-1, 0..NCC-1] will be multiplied by Q'.
+    NCC     -   number of columns in matrix C.
+    VT      -   matrix to be multiplied by P^T.
+                Array whose indexes range within [0..N-1, 0..NCVT-1].
+                The matrix can be bigger, in that case only the  submatrix
+                [0..N-1, 0..NCVT-1] will be multiplied by P^T.
+    NCVT    -   number of columns in matrix VT.
+
+Output parameters:
+    D       -   singular values of matrix B in descending order.
+    U       -   if NRU>0, contains matrix U*Q.
+    VT      -   if NCVT>0, contains matrix (P^T)*VT.
+    C       -   if NCC>0, contains matrix Q'*C.
+
+Result:
+    True, if the algorithm has converged.
+    False, if the algorithm hasn't converged (rare case).
+
+Additional information:
+    The type of convergence is controlled by the internal  parameter  TOL.
+    If the parameter is greater than 0, the singular values will have
+    relative accuracy TOL. If TOL<0, the singular values will have
+    absolute accuracy ABS(TOL)*norm(B).
+    By default, |TOL| falls within the range of 10*Epsilon and 100*Epsilon,
+    where Epsilon is the machine precision. It is not  recommended  to  use
+    TOL less than 10*Epsilon since this will  considerably  slow  down  the
+    algorithm and may not lead to error decreasing.
+History:
+    * 31 March, 2007.
+        changed MAXITR from 6 to 12.
+
+  -- LAPACK routine (version 3.0) --
+     Univ. of Tennessee, Univ. of California Berkeley, NAG Ltd.,
+     Courant Institute, Argonne National Lab, and Rice University
+     October 31, 1999.
+*************************************************************************/
+bool rmatrixbdsvd(real_1d_array &d, const real_1d_array &e, const ae_int_t n, const bool isupper, const bool isfractionalaccuracyrequired, real_2d_array &u, const ae_int_t nru, real_2d_array &c, const ae_int_t ncc, real_2d_array &vt, const ae_int_t ncvt);
+
+/*************************************************************************
+Singular value decomposition of a rectangular matrix.
+
+The algorithm calculates the singular value decomposition of a matrix of
+size MxN: A = U * S * V^T
+
+The algorithm finds the singular values and, optionally, matrices U and V^T.
+The algorithm can find both first min(M,N) columns of matrix U and rows of
+matrix V^T (singular vectors), and matrices U and V^T wholly (of sizes MxM
+and NxN respectively).
+
+Take into account that the subroutine does not return matrix V but V^T.
+
+Input parameters:
+    A           -   matrix to be decomposed.
+                    Array whose indexes range within [0..M-1, 0..N-1].
+    M           -   number of rows in matrix A.
+    N           -   number of columns in matrix A.
+    UNeeded     -   0, 1 or 2. See the description of the parameter U.
+    VTNeeded    -   0, 1 or 2. See the description of the parameter VT.
+    AdditionalMemory -
+                    If the parameter:
+                     * equals 0, the algorithm doesn’t use additional
+                       memory (lower requirements, lower performance).
+                     * equals 1, the algorithm uses additional
+                       memory of size min(M,N)*min(M,N) of real numbers.
+                       It often speeds up the algorithm.
+                     * equals 2, the algorithm uses additional
+                       memory of size M*min(M,N) of real numbers.
+                       It allows to get a maximum performance.
+                    The recommended value of the parameter is 2.
+
+Output parameters:
+    W           -   contains singular values in descending order.
+    U           -   if UNeeded=0, U isn't changed, the left singular vectors
+                    are not calculated.
+                    if Uneeded=1, U contains left singular vectors (first
+                    min(M,N) columns of matrix U). Array whose indexes range
+                    within [0..M-1, 0..Min(M,N)-1].
+                    if UNeeded=2, U contains matrix U wholly. Array whose
+                    indexes range within [0..M-1, 0..M-1].
+    VT          -   if VTNeeded=0, VT isn’t changed, the right singular vectors
+                    are not calculated.
+                    if VTNeeded=1, VT contains right singular vectors (first
+                    min(M,N) rows of matrix V^T). Array whose indexes range
+                    within [0..min(M,N)-1, 0..N-1].
+                    if VTNeeded=2, VT contains matrix V^T wholly. Array whose
+                    indexes range within [0..N-1, 0..N-1].
+
+  -- ALGLIB --
+     Copyright 2005 by Bochkanov Sergey
+*************************************************************************/
+bool rmatrixsvd(const real_2d_array &a, const ae_int_t m, const ae_int_t n, const ae_int_t uneeded, const ae_int_t vtneeded, const ae_int_t additionalmemory, real_1d_array &w, real_2d_array &u, real_2d_array &vt);
 
 /*************************************************************************
 Finding the eigenvalues and eigenvectors of a symmetric matrix
@@ -2783,141 +3108,661 @@ Output parameters:
 void cmatrixtrinverse(complex_2d_array &a, const ae_int_t n, const bool isupper, const bool isunit, ae_int_t &info, matinvreport &rep);
 void cmatrixtrinverse(complex_2d_array &a, const bool isupper, ae_int_t &info, matinvreport &rep);
 
+
+
 /*************************************************************************
-Singular value decomposition of a bidiagonal matrix (extended algorithm)
+This function creates sparse matrix in a Hash-Table format.
 
-The algorithm performs the singular value decomposition  of  a  bidiagonal
-matrix B (upper or lower) representing it as B = Q*S*P^T, where Q and  P -
-orthogonal matrices, S - diagonal matrix with non-negative elements on the
-main diagonal, in descending order.
+This function creates Hast-Table matrix, which can be  converted  to  CRS
+format after its initialization is over. Typical  usage  scenario  for  a
+sparse matrix is:
+1. creation in a Hash-Table format
+2. insertion of the matrix elements
+3. conversion to the CRS representation
+4. matrix is passed to some linear algebra algorithm
 
-The  algorithm  finds  singular  values.  In  addition,  the algorithm can
-calculate  matrices  Q  and P (more precisely, not the matrices, but their
-product  with  given  matrices U and VT - U*Q and (P^T)*VT)).  Of  course,
-matrices U and VT can be of any type, including identity. Furthermore, the
-algorithm can calculate Q'*C (this product is calculated more  effectively
-than U*Q,  because  this calculation operates with rows instead  of matrix
-columns).
+Some  information  about  different matrix formats can be found below, in
+the "NOTES" section.
 
-The feature of the algorithm is its ability to find  all  singular  values
-including those which are arbitrarily close to 0  with  relative  accuracy
-close to  machine precision. If the parameter IsFractionalAccuracyRequired
-is set to True, all singular values will have high relative accuracy close
-to machine precision. If the parameter is set to False, only  the  biggest
-singular value will have relative accuracy  close  to  machine  precision.
-The absolute error of other singular values is equal to the absolute error
-of the biggest singular value.
+INPUT PARAMETERS
+    M           -   number of rows in a matrix, M>=1
+    N           -   number of columns in a matrix, N>=1
+    K           -   K>=0, expected number of non-zero elements in a matrix.
+                    K can be inexact approximation, can be less than actual
+                    number  of  elements  (table will grow when needed) or
+                    even zero).
+                    It is important to understand that although hash-table
+                    may grow automatically, it is better to  provide  good
+                    estimate of data size.
 
-Input parameters:
-    D       -   main diagonal of matrix B.
-                Array whose index ranges within [0..N-1].
-    E       -   superdiagonal (or subdiagonal) of matrix B.
-                Array whose index ranges within [0..N-2].
-    N       -   size of matrix B.
-    IsUpper -   True, if the matrix is upper bidiagonal.
-    IsFractionalAccuracyRequired -
-                accuracy to search singular values with.
-    U       -   matrix to be multiplied by Q.
-                Array whose indexes range within [0..NRU-1, 0..N-1].
-                The matrix can be bigger, in that case only the  submatrix
-                [0..NRU-1, 0..N-1] will be multiplied by Q.
-    NRU     -   number of rows in matrix U.
-    C       -   matrix to be multiplied by Q'.
-                Array whose indexes range within [0..N-1, 0..NCC-1].
-                The matrix can be bigger, in that case only the  submatrix
-                [0..N-1, 0..NCC-1] will be multiplied by Q'.
-    NCC     -   number of columns in matrix C.
-    VT      -   matrix to be multiplied by P^T.
-                Array whose indexes range within [0..N-1, 0..NCVT-1].
-                The matrix can be bigger, in that case only the  submatrix
-                [0..N-1, 0..NCVT-1] will be multiplied by P^T.
-    NCVT    -   number of columns in matrix VT.
+OUTPUT PARAMETERS
+    S           -   sparse M*N matrix in Hash-Table representation.
+                    All elements of the matrix are zero.
 
-Output parameters:
-    D       -   singular values of matrix B in descending order.
-    U       -   if NRU>0, contains matrix U*Q.
-    VT      -   if NCVT>0, contains matrix (P^T)*VT.
-    C       -   if NCC>0, contains matrix Q'*C.
+NOTE 1.
 
-Result:
-    True, if the algorithm has converged.
-    False, if the algorithm hasn't converged (rare case).
+Sparse matrices can be stored using either Hash-Table  representation  or
+Compressed  Row  Storage  representation. Hast-table is better suited for
+querying   and   dynamic   operations   (thus,  it  is  used  for  matrix
+initialization), but it is inefficient when you want to make some  linear
+algebra operations.
 
-Additional information:
-    The type of convergence is controlled by the internal  parameter  TOL.
-    If the parameter is greater than 0, the singular values will have
-    relative accuracy TOL. If TOL<0, the singular values will have
-    absolute accuracy ABS(TOL)*norm(B).
-    By default, |TOL| falls within the range of 10*Epsilon and 100*Epsilon,
-    where Epsilon is the machine precision. It is not  recommended  to  use
-    TOL less than 10*Epsilon since this will  considerably  slow  down  the
-    algorithm and may not lead to error decreasing.
-History:
-    * 31 March, 2007.
-        changed MAXITR from 6 to 12.
+From the other side, CRS is better suited for linear algebra  operations,
+but initialization is less convenient - you have to tell row sizes at the
+initialization,  and  you  can  fill matrix only row by row, from left to
+right. CRS is also very inefficient when you want to find matrix  element
+by its index.
 
-  -- LAPACK routine (version 3.0) --
-     Univ. of Tennessee, Univ. of California Berkeley, NAG Ltd.,
-     Courant Institute, Argonne National Lab, and Rice University
-     October 31, 1999.
+Thus,  Hash-Table  representation   does   not   support  linear  algebra
+operations, while CRS format does not support modification of the  table.
+Tables below outline information about these two formats:
+
+    OPERATIONS WITH MATRIX      HASH        CRS
+    create                      +           +
+    read element                +           +
+    modify element              +
+    add value to element        +
+    A*x  (dense vector)                     +
+    A'*x (dense vector)                     +
+    A*X  (dense matrix)                     +
+    A'*X (dense matrix)                     +
+
+NOTE 2.
+
+Hash-tables use memory inefficiently, and they have to keep  some  amount
+of the "spare memory" in order to have good performance. Hash  table  for
+matrix with K non-zero elements will  need  C*K*(8+2*sizeof(int))  bytes,
+where C is a small constant, about 1.5-2 in magnitude.
+
+CRS storage, from the other side, is  more  memory-efficient,  and  needs
+just K*(8+sizeof(int))+M*sizeof(int) bytes, where M is a number  of  rows
+in a matrix.
+
+When you convert from the Hash-Table to CRS  representation, all unneeded
+memory will be freed.
+
+  -- ALGLIB PROJECT --
+     Copyright 14.10.2011 by Bochkanov Sergey
 *************************************************************************/
-bool rmatrixbdsvd(real_1d_array &d, const real_1d_array &e, const ae_int_t n, const bool isupper, const bool isfractionalaccuracyrequired, real_2d_array &u, const ae_int_t nru, real_2d_array &c, const ae_int_t ncc, real_2d_array &vt, const ae_int_t ncvt);
+void sparsecreate(const ae_int_t m, const ae_int_t n, const ae_int_t k, sparsematrix &s);
+void sparsecreate(const ae_int_t m, const ae_int_t n, sparsematrix &s);
+
 
 /*************************************************************************
-Singular value decomposition of a rectangular matrix.
+This function creates sparse matrix in a CRS format (expert function for
+situations when you are running out of memory).
 
-The algorithm calculates the singular value decomposition of a matrix of
-size MxN: A = U * S * V^T
+This function creates CRS matrix. Typical usage scenario for a CRS matrix
+is:
+1. creation (you have to tell number of non-zero elements at each row  at
+   this moment)
+2. insertion of the matrix elements (row by row, from left to right)
+3. matrix is passed to some linear algebra algorithm
 
-The algorithm finds the singular values and, optionally, matrices U and V^T.
-The algorithm can find both first min(M,N) columns of matrix U and rows of
-matrix V^T (singular vectors), and matrices U and V^T wholly (of sizes MxM
-and NxN respectively).
+This function is a memory-efficient alternative to SparseCreate(), but it
+is more complex because it requires you to know in advance how large your
+matrix is. Some  information about  different matrix formats can be found
+below, in the "NOTES" section.
 
-Take into account that the subroutine does not return matrix V but V^T.
+INPUT PARAMETERS
+    M           -   number of rows in a matrix, M>=1
+    N           -   number of columns in a matrix, N>=1
+    NER         -   number of elements at each row, array[M], NER[i]>=0
 
-Input parameters:
-    A           -   matrix to be decomposed.
-                    Array whose indexes range within [0..M-1, 0..N-1].
-    M           -   number of rows in matrix A.
-    N           -   number of columns in matrix A.
-    UNeeded     -   0, 1 or 2. See the description of the parameter U.
-    VTNeeded    -   0, 1 or 2. See the description of the parameter VT.
-    AdditionalMemory -
-                    If the parameter:
-                     * equals 0, the algorithm doesn’t use additional
-                       memory (lower requirements, lower performance).
-                     * equals 1, the algorithm uses additional
-                       memory of size min(M,N)*min(M,N) of real numbers.
-                       It often speeds up the algorithm.
-                     * equals 2, the algorithm uses additional
-                       memory of size M*min(M,N) of real numbers.
-                       It allows to get a maximum performance.
-                    The recommended value of the parameter is 2.
+OUTPUT PARAMETERS
+    S           -   sparse M*N matrix in CRS representation.
+                    You have to fill ALL non-zero elements by calling
+                    SparseSet() BEFORE you try to use this matrix.
 
-Output parameters:
-    W           -   contains singular values in descending order.
-    U           -   if UNeeded=0, U isn't changed, the left singular vectors
-                    are not calculated.
-                    if Uneeded=1, U contains left singular vectors (first
-                    min(M,N) columns of matrix U). Array whose indexes range
-                    within [0..M-1, 0..Min(M,N)-1].
-                    if UNeeded=2, U contains matrix U wholly. Array whose
-                    indexes range within [0..M-1, 0..M-1].
-    VT          -   if VTNeeded=0, VT isn’t changed, the right singular vectors
-                    are not calculated.
-                    if VTNeeded=1, VT contains right singular vectors (first
-                    min(M,N) rows of matrix V^T). Array whose indexes range
-                    within [0..min(M,N)-1, 0..N-1].
-                    if VTNeeded=2, VT contains matrix V^T wholly. Array whose
-                    indexes range within [0..N-1, 0..N-1].
+NOTE 1.
+
+Sparse matrices can be stored using either Hash-Table  representation  or
+Compressed  Row  Storage  representation. Hast-table is better suited for
+querying   and   dynamic   operations   (thus,  it  is  used  for  matrix
+initialization), but it is inefficient when you want to make some  linear
+algebra operations.
+
+From the other side, CRS is better suited for linear algebra  operations,
+but initialization is less convenient - you have to tell row sizes at the
+initialization,  and  you  can  fill matrix only row by row, from left to
+right. CRS is also very inefficient when you want to find matrix  element
+by its index.
+
+Thus,  Hash-Table  representation   does   not   support  linear  algebra
+operations, while CRS format does not support modification of the  table.
+Tables below outline information about these two formats:
+
+    OPERATIONS WITH MATRIX      HASH        CRS
+    create                      +           +
+    read element                +           +
+    modify element              +
+    add value to element        +
+    A*x  (dense vector)                     +
+    A'*x (dense vector)                     +
+    A*X  (dense matrix)                     +
+    A'*X (dense matrix)                     +
+
+NOTE 2.
+
+Hash-tables use memory inefficiently, and they have to keep  some  amount
+of the "spare memory" in order to have good performance. Hash  table  for
+matrix with K non-zero elements will  need  C*K*(8+2*sizeof(int))  bytes,
+where C is a small constant, about 1.5-2 in magnitude.
+
+CRS storage, from the other side, is  more  memory-efficient,  and  needs
+just K*(8+sizeof(int))+M*sizeof(int) bytes, where M is a number  of  rows
+in a matrix.
+
+When you convert from the Hash-Table to CRS  representation, all unneeded
+memory will be freed.
+
+  -- ALGLIB PROJECT --
+     Copyright 14.10.2011 by Bochkanov Sergey
+*************************************************************************/
+void sparsecreatecrs(const ae_int_t m, const ae_int_t n, const integer_1d_array &ner, sparsematrix &s);
+
+
+/*************************************************************************
+This function copies S0 to S1.
+
+NOTE:  this  function  does  not verify its arguments, it just copies all
+fields of the structure.
+
+  -- ALGLIB PROJECT --
+     Copyright 14.10.2011 by Bochkanov Sergey
+*************************************************************************/
+void sparsecopy(const sparsematrix &s0, sparsematrix &s1);
+
+
+/*************************************************************************
+This function adds value to S[i,j] - element of the sparse matrix. Matrix
+must be in a Hash-Table mode.
+
+In case S[i,j] already exists in the table, V i added to  its  value.  In
+case  S[i,j]  is  non-existent,  it  is  inserted  in  the  table.  Table
+automatically grows when necessary.
+
+INPUT PARAMETERS
+    S           -   sparse M*N matrix in Hash-Table representation.
+                    Exception will be thrown for CRS matrix.
+    I           -   row index of the element to modify, 0<=I<M
+    J           -   column index of the element to modify, 0<=J<N
+    V           -   value to add, must be finite number
+
+OUTPUT PARAMETERS
+    S           -   modified matrix
+
+NOTE 1:  when  S[i,j]  is exactly zero after modification, it is  deleted
+from the table.
+
+  -- ALGLIB PROJECT --
+     Copyright 14.10.2011 by Bochkanov Sergey
+*************************************************************************/
+void sparseadd(const sparsematrix &s, const ae_int_t i, const ae_int_t j, const double v);
+
+
+/*************************************************************************
+This function modifies S[i,j] - element of the sparse matrix. Matrix must
+be in a Hash-Table mode.
+
+In  case  new  value  of S[i,j] is zero, this element is deleted from the
+table.
+
+INPUT PARAMETERS
+    S           -   sparse M*N matrix in Hash-Table representation.
+                    Exception will be thrown for CRS matrix.
+    I           -   row index of the element to modify, 0<=I<M
+    J           -   column index of the element to modify, 0<=J<N
+    V           -   value to set, must be finite number, can be zero
+
+OUTPUT PARAMETERS
+    S           -   modified matrix
+
+NOTE:  this  function  has  no  effect  when  called with zero V for non-
+existent element.
+
+  -- ALGLIB PROJECT --
+     Copyright 14.10.2011 by Bochkanov Sergey
+*************************************************************************/
+void sparseset(const sparsematrix &s, const ae_int_t i, const ae_int_t j, const double v);
+
+
+/*************************************************************************
+This function returns S[i,j] - element of the sparse matrix.  Matrix  can
+be in any mode (Hash-Table or CRS), but this function is  less  efficient
+for CRS matrices.  Hash-Table  matrices can  find element  in O(1)  time,
+while  CRS  matrices  need  O(RS) time, where RS is an number of non-zero
+elements in a row.
+
+INPUT PARAMETERS
+    S           -   sparse M*N matrix in Hash-Table representation.
+                    Exception will be thrown for CRS matrix.
+    I           -   row index of the element to modify, 0<=I<M
+    J           -   column index of the element to modify, 0<=J<N
+
+RESULT
+    value of S[I,J] or zero (in case no element with such index is found)
+
+  -- ALGLIB PROJECT --
+     Copyright 14.10.2011 by Bochkanov Sergey
+*************************************************************************/
+double sparseget(const sparsematrix &s, const ae_int_t i, const ae_int_t j);
+
+
+/*************************************************************************
+This function converts matrix to CRS format.
+
+Some  algorithms  (linear  algebra ones, for example) require matrices in
+CRS format.
+
+INPUT PARAMETERS
+    S           -   sparse M*N matrix.
+
+OUTPUT PARAMETERS
+    S           -   matrix in CRS format
+
+NOTE:  this  function  has  no  effect  when  called with matrix which is
+already in CRS mode.
+
+  -- ALGLIB PROJECT --
+     Copyright 14.10.2011 by Bochkanov Sergey
+*************************************************************************/
+void sparseconverttocrs(const sparsematrix &s);
+
+
+/*************************************************************************
+This function calculates matrix-vector product  S*x.  Matrix  S  must  be
+stored in CRS format (exception will be thrown otherwise).
+
+INPUT PARAMETERS
+    S           -   sparse M*N matrix in CRS format (you MUST convert  it
+                    to CRS before calling this function).
+    X           -   array[N], input vector. For  performance  reasons  we
+                    make only quick checks - we check that array size  is
+                    at least N, but we do not check for NAN's or INF's.
+    Y           -   output buffer, possibly preallocated. In case  buffer
+                    size is too small to store  result,  this  buffer  is
+                    automatically resized.
+
+OUTPUT PARAMETERS
+    Y           -   array[M], S*x
+
+NOTE: this function throws exception when called for non-CRS matrix.  You
+must convert your matrix  with  SparseConvertToCRS()  before  using  this
+function.
+
+  -- ALGLIB PROJECT --
+     Copyright 14.10.2011 by Bochkanov Sergey
+*************************************************************************/
+void sparsemv(const sparsematrix &s, const real_1d_array &x, real_1d_array &y);
+
+
+/*************************************************************************
+This function calculates matrix-vector product  S^T*x. Matrix S  must  be
+stored in CRS format (exception will be thrown otherwise).
+
+INPUT PARAMETERS
+    S           -   sparse M*N matrix in CRS format (you MUST convert  it
+                    to CRS before calling this function).
+    X           -   array[M], input vector. For  performance  reasons  we
+                    make only quick checks - we check that array size  is
+                    at least M, but we do not check for NAN's or INF's.
+    Y           -   output buffer, possibly preallocated. In case  buffer
+                    size is too small to store  result,  this  buffer  is
+                    automatically resized.
+
+OUTPUT PARAMETERS
+    Y           -   array[N], S^T*x
+
+NOTE: this function throws exception when called for non-CRS matrix.  You
+must convert your matrix  with  SparseConvertToCRS()  before  using  this
+function.
+
+  -- ALGLIB PROJECT --
+     Copyright 14.10.2011 by Bochkanov Sergey
+*************************************************************************/
+void sparsemtv(const sparsematrix &s, const real_1d_array &x, real_1d_array &y);
+
+
+/*************************************************************************
+This function simultaneously calculates two matrix-vector products:
+    S*x and S^T*x.
+S must be square (non-rectangular) matrix stored in CRS format (exception
+will be thrown otherwise).
+
+INPUT PARAMETERS
+    S           -   sparse N*N matrix in CRS format (you MUST convert  it
+                    to CRS before calling this function).
+    X           -   array[N], input vector. For  performance  reasons  we
+                    make only quick checks - we check that array size  is
+                    at least N, but we do not check for NAN's or INF's.
+    Y0          -   output buffer, possibly preallocated. In case  buffer
+                    size is too small to store  result,  this  buffer  is
+                    automatically resized.
+    Y1          -   output buffer, possibly preallocated. In case  buffer
+                    size is too small to store  result,  this  buffer  is
+                    automatically resized.
+
+OUTPUT PARAMETERS
+    Y0          -   array[N], S*x
+    Y1          -   array[N], S^T*x
+
+NOTE: this function throws exception when called for non-CRS matrix.  You
+must convert your matrix  with  SparseConvertToCRS()  before  using  this
+function. It also throws exception when S is non-square.
+
+  -- ALGLIB PROJECT --
+     Copyright 14.10.2011 by Bochkanov Sergey
+*************************************************************************/
+void sparsemv2(const sparsematrix &s, const real_1d_array &x, real_1d_array &y0, real_1d_array &y1);
+
+
+/*************************************************************************
+This function calculates matrix-vector product  S*x, when S is  symmetric
+matrix.  Matrix  S  must  be stored in  CRS  format  (exception  will  be
+thrown otherwise).
+
+INPUT PARAMETERS
+    S           -   sparse M*M matrix in CRS format (you MUST convert  it
+                    to CRS before calling this function).
+    X           -   array[N], input vector. For  performance  reasons  we
+                    make only quick checks - we check that array size  is
+                    at least N, but we do not check for NAN's or INF's.
+    Y           -   output buffer, possibly preallocated. In case  buffer
+                    size is too small to store  result,  this  buffer  is
+                    automatically resized.
+
+OUTPUT PARAMETERS
+    Y           -   array[M], S*x
+
+NOTE: this function throws exception when called for non-CRS matrix.  You
+must convert your matrix  with  SparseConvertToCRS()  before  using  this
+function.
+
+  -- ALGLIB PROJECT --
+     Copyright 14.10.2011 by Bochkanov Sergey
+*************************************************************************/
+void sparsesmv(const sparsematrix &s, const bool isupper, const real_1d_array &x, real_1d_array &y);
+
+
+/*************************************************************************
+This function calculates matrix-matrix product  S*A.  Matrix  S  must  be
+stored in CRS format (exception will be thrown otherwise).
+
+INPUT PARAMETERS
+    S           -   sparse M*N matrix in CRS format (you MUST convert  it
+                    to CRS before calling this function).
+    A           -   array[N][K], input dense matrix. For  performance reasons
+                    we make only quick checks - we check that array size
+                    is at least N, but we do not check for NAN's or INF's.
+    K           -   number of columns of matrix (A).
+    B           -   output buffer, possibly preallocated. In case  buffer
+                    size is too small to store  result,  this  buffer  is
+                    automatically resized.
+
+OUTPUT PARAMETERS
+    B           -   array[M][K], S*A
+
+NOTE: this function throws exception when called for non-CRS matrix.  You
+must convert your matrix  with  SparseConvertToCRS()  before  using  this
+function.
+
+  -- ALGLIB PROJECT --
+     Copyright 14.10.2011 by Bochkanov Sergey
+*************************************************************************/
+void sparsemm(const sparsematrix &s, const real_2d_array &a, const ae_int_t k, real_2d_array &b);
+
+
+/*************************************************************************
+This function calculates matrix-matrix product  S^T*A. Matrix S  must  be
+stored in CRS format (exception will be thrown otherwise).
+
+INPUT PARAMETERS
+    S           -   sparse M*N matrix in CRS format (you MUST convert  it
+                    to CRS before calling this function).
+    A           -   array[M][K], input dense matrix. For performance reasons
+                    we make only quick checks - we check that array size  is
+                    at least M, but we do not check for NAN's or INF's.
+    K           -   number of columns of matrix (A).
+    B           -   output buffer, possibly preallocated. In case  buffer
+                    size is too small to store  result,  this  buffer  is
+                    automatically resized.
+
+OUTPUT PARAMETERS
+    B           -   array[N][K], S^T*A
+
+NOTE: this function throws exception when called for non-CRS matrix.  You
+must convert your matrix  with  SparseConvertToCRS()  before  using  this
+function.
+
+  -- ALGLIB PROJECT --
+     Copyright 14.10.2011 by Bochkanov Sergey
+*************************************************************************/
+void sparsemtm(const sparsematrix &s, const real_2d_array &a, const ae_int_t k, real_2d_array &b);
+
+
+/*************************************************************************
+This function simultaneously calculates two matrix-matrix products:
+    S*A and S^T*A.
+S must be square (non-rectangular) matrix stored in CRS format (exception
+will be thrown otherwise).
+
+INPUT PARAMETERS
+    S           -   sparse N*N matrix in CRS format (you MUST convert  it
+                    to CRS before calling this function).
+    A           -   array[N][K], input dense matrix. For performance reasons
+                    we make only quick checks - we check that array size  is
+                    at least N, but we do not check for NAN's or INF's.
+    K           -   number of columns of matrix (A).
+    B0          -   output buffer, possibly preallocated. In case  buffer
+                    size is too small to store  result,  this  buffer  is
+                    automatically resized.
+    B1          -   output buffer, possibly preallocated. In case  buffer
+                    size is too small to store  result,  this  buffer  is
+                    automatically resized.
+
+OUTPUT PARAMETERS
+    B0          -   array[N][K], S*A
+    B1          -   array[N][K], S^T*A
+
+NOTE: this function throws exception when called for non-CRS matrix.  You
+must convert your matrix  with  SparseConvertToCRS()  before  using  this
+function. It also throws exception when S is non-square.
+
+  -- ALGLIB PROJECT --
+     Copyright 14.10.2011 by Bochkanov Sergey
+*************************************************************************/
+void sparsemm2(const sparsematrix &s, const real_2d_array &a, const ae_int_t k, real_2d_array &b0, real_2d_array &b1);
+
+
+/*************************************************************************
+This function calculates matrix-matrix product  S*A, when S  is  symmetric
+matrix.  Matrix  S  must  be stored  in  CRS  format  (exception  will  be
+thrown otherwise).
+
+INPUT PARAMETERS
+    S           -   sparse M*M matrix in CRS format (you MUST convert  it
+                    to CRS before calling this function).
+    A           -   array[N][K], input dense matrix. For performance reasons
+                    we make only quick checks - we check that array size is
+                    at least N, but we do not check for NAN's or INF's.
+    K           -   number of columns of matrix (A).
+    B           -   output buffer, possibly preallocated. In case  buffer
+                    size is too small to store  result,  this  buffer  is
+                    automatically resized.
+
+OUTPUT PARAMETERS
+    B           -   array[M][K], S*A
+
+NOTE: this function throws exception when called for non-CRS matrix.  You
+must convert your matrix  with  SparseConvertToCRS()  before  using  this
+function.
+
+  -- ALGLIB PROJECT --
+     Copyright 14.10.2011 by Bochkanov Sergey
+*************************************************************************/
+void sparsesmm(const sparsematrix &s, const bool isupper, const real_2d_array &a, const ae_int_t k, real_2d_array &b);
+
+
+/*************************************************************************
+This procedure resizes Hash-Table matrix. It can be called when you  have
+deleted too many elements from the matrix, and you want to  free unneeded
+memory.
+
+  -- ALGLIB PROJECT --
+     Copyright 14.10.2011 by Bochkanov Sergey
+*************************************************************************/
+void sparseresizematrix(const sparsematrix &s);
+
+
+/*************************************************************************
+This  function  is  used  to enumerate all elements of the sparse matrix.
+Before  first  call  user  initializes  T0 and T1 counters by zero. These
+counters are used to remember current position in a  matrix;  after  each
+call they are updated by the function.
+
+Subsequent calls to this function return non-zero elements of the  sparse
+matrix, one by one. If you enumerate CRS matrix, matrix is traversed from
+left to right, from top to bottom. In case you enumerate matrix stored as
+Hash table, elements are returned in random order.
+
+EXAMPLE
+    > T0=0
+    > T1=0
+    > while SparseEnumerate(S,T0,T1,I,J,V) do
+    >     ....do something with I,J,V
+
+INPUT PARAMETERS
+    S           -   sparse M*N matrix in Hash-Table or CRS representation.
+    T0          -   internal counter
+    T1          -   internal counter
+
+OUTPUT PARAMETERS
+    T0          -   new value of the internal counter
+    T1          -   new value of the internal counter
+    I           -   row index of non-zero element, 0<=I<M.
+    J           -   column index of non-zero element, 0<=J<N
+    V           -   value of the T-th element
+
+RESULT
+    True in case of success (next non-zero element was retrieved)
+    False in case all non-zero elements were enumerated
+
+  -- ALGLIB PROJECT --
+     Copyright 14.03.2012 by Bochkanov Sergey
+*************************************************************************/
+bool sparseenumerate(const sparsematrix &s, ae_int_t &t0, ae_int_t &t1, ae_int_t &i, ae_int_t &j, double &v);
+
+
+/*************************************************************************
+This function rewrites existing (non-zero) element. It  returns  True   if
+element  exists  or  False,  when  it  is  called for non-existing  (zero)
+element.
+
+The purpose of this function is to provide convenient thread-safe  way  to
+modify  sparse  matrix.  Such  modification  (already  existing element is
+rewritten) is guaranteed to be thread-safe without any synchronization, as
+long as different threads modify different elements.
+
+INPUT PARAMETERS
+    S           -   sparse M*N matrix in Hash-Table or CRS representation.
+    I           -   row index of non-zero element to modify, 0<=I<M
+    J           -   column index of non-zero element to modify, 0<=J<N
+    V           -   value to rewrite, must be finite number
+
+OUTPUT PARAMETERS
+    S           -   modified matrix
+
+  -- ALGLIB PROJECT --
+     Copyright 14.03.2012 by Bochkanov Sergey
+*************************************************************************/
+bool sparserewriteexisting(const sparsematrix &s, const ae_int_t i, const ae_int_t j, const double v);
+
+/*************************************************************************
+This procedure initializes matrix norm estimator.
+
+USAGE:
+1. User initializes algorithm state with NormEstimatorCreate() call
+2. User calls NormEstimatorEstimateSparse() (or NormEstimatorIteration())
+3. User calls NormEstimatorResults() to get solution.
+
+INPUT PARAMETERS:
+    M       -   number of rows in the matrix being estimated, M>0
+    N       -   number of columns in the matrix being estimated, N>0
+    NStart  -   number of random starting vectors
+                recommended value - at least 5.
+    NIts    -   number of iterations to do with best starting vector
+                recommended value - at least 5.
+
+OUTPUT PARAMETERS:
+    State   -   structure which stores algorithm state
+
+
+NOTE: this algorithm is effectively deterministic, i.e. it always  returns
+same result when repeatedly called for the same matrix. In fact, algorithm
+uses randomized starting vectors, but internal  random  numbers  generator
+always generates same sequence of the random values (it is a  feature, not
+bug).
+
+Algorithm can be made non-deterministic with NormEstimatorSetSeed(0) call.
 
   -- ALGLIB --
-     Copyright 2005 by Bochkanov Sergey
+     Copyright 06.12.2011 by Bochkanov Sergey
 *************************************************************************/
-bool rmatrixsvd(const real_2d_array &a, const ae_int_t m, const ae_int_t n, const ae_int_t uneeded, const ae_int_t vtneeded, const ae_int_t additionalmemory, real_1d_array &w, real_2d_array &u, real_2d_array &vt);
+void normestimatorcreate(const ae_int_t m, const ae_int_t n, const ae_int_t nstart, const ae_int_t nits, normestimatorstate &state);
 
 
+/*************************************************************************
+This function changes seed value used by algorithm. In some cases we  need
+deterministic processing, i.e. subsequent calls must return equal results,
+in other cases we need non-deterministic algorithm which returns different
+results for the same matrix on every pass.
+
+Setting zero seed will lead to non-deterministic algorithm, while non-zero
+value will make our algorithm deterministic.
+
+INPUT PARAMETERS:
+    State       -   norm estimator state, must be initialized with a  call
+                    to NormEstimatorCreate()
+    SeedVal     -   seed value, >=0. Zero value = non-deterministic algo.
+
+  -- ALGLIB --
+     Copyright 06.12.2011 by Bochkanov Sergey
+*************************************************************************/
+void normestimatorsetseed(const normestimatorstate &state, const ae_int_t seedval);
+
+
+/*************************************************************************
+This function estimates norm of the sparse M*N matrix A.
+
+INPUT PARAMETERS:
+    State       -   norm estimator state, must be initialized with a  call
+                    to NormEstimatorCreate()
+    A           -   sparse M*N matrix, must be converted to CRS format
+                    prior to calling this function.
+
+After this function  is  over  you can call NormEstimatorResults() to get
+estimate of the norm(A).
+
+  -- ALGLIB --
+     Copyright 06.12.2011 by Bochkanov Sergey
+*************************************************************************/
+void normestimatorestimatesparse(const normestimatorstate &state, const sparsematrix &a);
+
+
+/*************************************************************************
+Matrix norm estimation results
+
+INPUT PARAMETERS:
+    State   -   algorithm state
+
+OUTPUT PARAMETERS:
+    Nrm     -   estimate of the matrix norm, Nrm>=0
+
+  -- ALGLIB --
+     Copyright 06.12.2011 by Bochkanov Sergey
+*************************************************************************/
+void normestimatorresults(const normestimatorstate &state, double &nrm);
 
 /*************************************************************************
 Determinant calculation of the matrix given by its LU decomposition.
@@ -3583,6 +4428,20 @@ void cmatrixlqunpackl(/* Complex */ ae_matrix* a,
      ae_int_t n,
      /* Complex */ ae_matrix* l,
      ae_state *_state);
+void rmatrixqrbasecase(/* Real    */ ae_matrix* a,
+     ae_int_t m,
+     ae_int_t n,
+     /* Real    */ ae_vector* work,
+     /* Real    */ ae_vector* t,
+     /* Real    */ ae_vector* tau,
+     ae_state *_state);
+void rmatrixlqbasecase(/* Real    */ ae_matrix* a,
+     ae_int_t m,
+     ae_int_t n,
+     /* Real    */ ae_vector* work,
+     /* Real    */ ae_vector* t,
+     /* Real    */ ae_vector* tau,
+     ae_state *_state);
 void rmatrixbd(/* Real    */ ae_matrix* a,
      ae_int_t m,
      ae_int_t n,
@@ -3668,6 +4527,40 @@ void hmatrixtdunpackq(/* Complex */ ae_matrix* a,
      ae_bool isupper,
      /* Complex */ ae_vector* tau,
      /* Complex */ ae_matrix* q,
+     ae_state *_state);
+ae_bool rmatrixbdsvd(/* Real    */ ae_vector* d,
+     /* Real    */ ae_vector* e,
+     ae_int_t n,
+     ae_bool isupper,
+     ae_bool isfractionalaccuracyrequired,
+     /* Real    */ ae_matrix* u,
+     ae_int_t nru,
+     /* Real    */ ae_matrix* c,
+     ae_int_t ncc,
+     /* Real    */ ae_matrix* vt,
+     ae_int_t ncvt,
+     ae_state *_state);
+ae_bool bidiagonalsvddecomposition(/* Real    */ ae_vector* d,
+     /* Real    */ ae_vector* e,
+     ae_int_t n,
+     ae_bool isupper,
+     ae_bool isfractionalaccuracyrequired,
+     /* Real    */ ae_matrix* u,
+     ae_int_t nru,
+     /* Real    */ ae_matrix* c,
+     ae_int_t ncc,
+     /* Real    */ ae_matrix* vt,
+     ae_int_t ncvt,
+     ae_state *_state);
+ae_bool rmatrixsvd(/* Real    */ ae_matrix* a,
+     ae_int_t m,
+     ae_int_t n,
+     ae_int_t uneeded,
+     ae_int_t vtneeded,
+     ae_int_t additionalmemory,
+     /* Real    */ ae_vector* w,
+     /* Real    */ ae_matrix* u,
+     /* Real    */ ae_matrix* vt,
      ae_state *_state);
 ae_bool smatrixevd(/* Real    */ ae_matrix* a,
      ae_int_t n,
@@ -3972,40 +4865,6 @@ void cmatrixtrinverse(/* Complex */ ae_matrix* a,
 ae_bool _matinvreport_init(matinvreport* p, ae_state *_state, ae_bool make_automatic);
 ae_bool _matinvreport_init_copy(matinvreport* dst, matinvreport* src, ae_state *_state, ae_bool make_automatic);
 void _matinvreport_clear(matinvreport* p);
-ae_bool rmatrixbdsvd(/* Real    */ ae_vector* d,
-     /* Real    */ ae_vector* e,
-     ae_int_t n,
-     ae_bool isupper,
-     ae_bool isfractionalaccuracyrequired,
-     /* Real    */ ae_matrix* u,
-     ae_int_t nru,
-     /* Real    */ ae_matrix* c,
-     ae_int_t ncc,
-     /* Real    */ ae_matrix* vt,
-     ae_int_t ncvt,
-     ae_state *_state);
-ae_bool bidiagonalsvddecomposition(/* Real    */ ae_vector* d,
-     /* Real    */ ae_vector* e,
-     ae_int_t n,
-     ae_bool isupper,
-     ae_bool isfractionalaccuracyrequired,
-     /* Real    */ ae_matrix* u,
-     ae_int_t nru,
-     /* Real    */ ae_matrix* c,
-     ae_int_t ncc,
-     /* Real    */ ae_matrix* vt,
-     ae_int_t ncvt,
-     ae_state *_state);
-ae_bool rmatrixsvd(/* Real    */ ae_matrix* a,
-     ae_int_t m,
-     ae_int_t n,
-     ae_int_t uneeded,
-     ae_int_t vtneeded,
-     ae_int_t additionalmemory,
-     /* Real    */ ae_vector* w,
-     /* Real    */ ae_matrix* u,
-     /* Real    */ ae_matrix* vt,
-     ae_state *_state);
 void fblscholeskysolve(/* Real    */ ae_matrix* cha,
      double sqrtscalea,
      ae_int_t n,
@@ -4027,9 +4886,121 @@ void fblscgcreate(/* Real    */ ae_vector* x,
      fblslincgstate* state,
      ae_state *_state);
 ae_bool fblscgiteration(fblslincgstate* state, ae_state *_state);
+void fblssolvels(/* Real    */ ae_matrix* a,
+     /* Real    */ ae_vector* b,
+     ae_int_t m,
+     ae_int_t n,
+     /* Real    */ ae_vector* tmp0,
+     /* Real    */ ae_vector* tmp1,
+     /* Real    */ ae_vector* tmp2,
+     ae_state *_state);
 ae_bool _fblslincgstate_init(fblslincgstate* p, ae_state *_state, ae_bool make_automatic);
 ae_bool _fblslincgstate_init_copy(fblslincgstate* dst, fblslincgstate* src, ae_state *_state, ae_bool make_automatic);
 void _fblslincgstate_clear(fblslincgstate* p);
+void sparsecreate(ae_int_t m,
+     ae_int_t n,
+     ae_int_t k,
+     sparsematrix* s,
+     ae_state *_state);
+void sparsecreatecrs(ae_int_t m,
+     ae_int_t n,
+     /* Integer */ ae_vector* ner,
+     sparsematrix* s,
+     ae_state *_state);
+void sparsecopy(sparsematrix* s0, sparsematrix* s1, ae_state *_state);
+void sparseadd(sparsematrix* s,
+     ae_int_t i,
+     ae_int_t j,
+     double v,
+     ae_state *_state);
+void sparseset(sparsematrix* s,
+     ae_int_t i,
+     ae_int_t j,
+     double v,
+     ae_state *_state);
+double sparseget(sparsematrix* s,
+     ae_int_t i,
+     ae_int_t j,
+     ae_state *_state);
+void sparseconverttocrs(sparsematrix* s, ae_state *_state);
+void sparsemv(sparsematrix* s,
+     /* Real    */ ae_vector* x,
+     /* Real    */ ae_vector* y,
+     ae_state *_state);
+void sparsemtv(sparsematrix* s,
+     /* Real    */ ae_vector* x,
+     /* Real    */ ae_vector* y,
+     ae_state *_state);
+void sparsemv2(sparsematrix* s,
+     /* Real    */ ae_vector* x,
+     /* Real    */ ae_vector* y0,
+     /* Real    */ ae_vector* y1,
+     ae_state *_state);
+void sparsesmv(sparsematrix* s,
+     ae_bool isupper,
+     /* Real    */ ae_vector* x,
+     /* Real    */ ae_vector* y,
+     ae_state *_state);
+void sparsemm(sparsematrix* s,
+     /* Real    */ ae_matrix* a,
+     ae_int_t k,
+     /* Real    */ ae_matrix* b,
+     ae_state *_state);
+void sparsemtm(sparsematrix* s,
+     /* Real    */ ae_matrix* a,
+     ae_int_t k,
+     /* Real    */ ae_matrix* b,
+     ae_state *_state);
+void sparsemm2(sparsematrix* s,
+     /* Real    */ ae_matrix* a,
+     ae_int_t k,
+     /* Real    */ ae_matrix* b0,
+     /* Real    */ ae_matrix* b1,
+     ae_state *_state);
+void sparsesmm(sparsematrix* s,
+     ae_bool isupper,
+     /* Real    */ ae_matrix* a,
+     ae_int_t k,
+     /* Real    */ ae_matrix* b,
+     ae_state *_state);
+void sparseresizematrix(sparsematrix* s, ae_state *_state);
+double sparsegetaveragelengthofchain(sparsematrix* s, ae_state *_state);
+ae_bool sparseenumerate(sparsematrix* s,
+     ae_int_t* t0,
+     ae_int_t* t1,
+     ae_int_t* i,
+     ae_int_t* j,
+     double* v,
+     ae_state *_state);
+ae_bool sparserewriteexisting(sparsematrix* s,
+     ae_int_t i,
+     ae_int_t j,
+     double v,
+     ae_state *_state);
+ae_bool _sparsematrix_init(sparsematrix* p, ae_state *_state, ae_bool make_automatic);
+ae_bool _sparsematrix_init_copy(sparsematrix* dst, sparsematrix* src, ae_state *_state, ae_bool make_automatic);
+void _sparsematrix_clear(sparsematrix* p);
+void normestimatorcreate(ae_int_t m,
+     ae_int_t n,
+     ae_int_t nstart,
+     ae_int_t nits,
+     normestimatorstate* state,
+     ae_state *_state);
+void normestimatorsetseed(normestimatorstate* state,
+     ae_int_t seedval,
+     ae_state *_state);
+ae_bool normestimatoriteration(normestimatorstate* state,
+     ae_state *_state);
+void normestimatorestimatesparse(normestimatorstate* state,
+     sparsematrix* a,
+     ae_state *_state);
+void normestimatorresults(normestimatorstate* state,
+     double* nrm,
+     ae_state *_state);
+void normestimatorrestart(normestimatorstate* state, ae_state *_state);
+ae_bool _normestimatorstate_init(normestimatorstate* p, ae_state *_state, ae_bool make_automatic);
+ae_bool _normestimatorstate_init_copy(normestimatorstate* dst, normestimatorstate* src, ae_state *_state, ae_bool make_automatic);
+void _normestimatorstate_clear(normestimatorstate* p);
 double rmatrixludet(/* Real    */ ae_matrix* a,
      /* Integer */ ae_vector* pivots,
      ae_int_t n,

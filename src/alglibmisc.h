@@ -41,14 +41,10 @@ typedef struct
     ae_int_t nx;
     ae_int_t ny;
     ae_int_t normtype;
-    ae_int_t distmatrixtype;
     ae_matrix xy;
     ae_vector tags;
     ae_vector boxmin;
     ae_vector boxmax;
-    ae_vector curboxmin;
-    ae_vector curboxmax;
-    double curdist;
     ae_vector nodes;
     ae_vector splits;
     ae_vector x;
@@ -60,6 +56,9 @@ typedef struct
     ae_vector idx;
     ae_vector r;
     ae_vector buf;
+    ae_vector curboxmin;
+    ae_vector curboxmax;
+    double curdist;
     ae_int_t debugcounter;
 } kdtree;
 
@@ -222,6 +221,76 @@ State structure must be initialized with HQRNDRandomize() or HQRNDSeed().
 *************************************************************************/
 double hqrndexponential(const hqrndstate &state, const double lambdav);
 
+
+/*************************************************************************
+This function generates  random number from discrete distribution given by
+finite sample X.
+
+INPUT PARAMETERS
+    State   -   high quality random number generator, must be
+                initialized with HQRNDRandomize() or HQRNDSeed().
+        X   -   finite sample
+        N   -   number of elements to use, N>=1
+
+RESULT
+    this function returns one of the X[i] for random i=0..N-1
+
+  -- ALGLIB --
+     Copyright 08.11.2011 by Bochkanov Sergey
+*************************************************************************/
+double hqrnddiscrete(const hqrndstate &state, const real_1d_array &x, const ae_int_t n);
+
+
+/*************************************************************************
+This function generates random number from continuous  distribution  given
+by finite sample X.
+
+INPUT PARAMETERS
+    State   -   high quality random number generator, must be
+                initialized with HQRNDRandomize() or HQRNDSeed().
+        X   -   finite sample, array[N] (can be larger, in this  case only
+                leading N elements are used). THIS ARRAY MUST BE SORTED BY
+                ASCENDING.
+        N   -   number of elements to use, N>=1
+
+RESULT
+    this function returns random number from continuous distribution which
+    tries to approximate X as mush as possible. min(X)<=Result<=max(X).
+
+  -- ALGLIB --
+     Copyright 08.11.2011 by Bochkanov Sergey
+*************************************************************************/
+double hqrndcontinuous(const hqrndstate &state, const real_1d_array &x, const ae_int_t n);
+
+/*************************************************************************
+This function serializes data structure to string.
+
+Important properties of s_out:
+* it contains alphanumeric characters, dots, underscores, minus signs
+* these symbols are grouped into words, which are separated by spaces
+  and Windows-style (CR+LF) newlines
+* although  serializer  uses  spaces and CR+LF as separators, you can 
+  replace any separator character by arbitrary combination of spaces,
+  tabs, Windows or Unix newlines. It allows flexible reformatting  of
+  the  string  in  case you want to include it into text or XML file. 
+  But you should not insert separators into the middle of the "words"
+  nor you should change case of letters.
+* s_out can be freely moved between 32-bit and 64-bit systems, little
+  and big endian machines, and so on. You can serialize structure  on
+  32-bit machine and unserialize it on 64-bit one (or vice versa), or
+  serialize  it  on  SPARC  and  unserialize  on  x86.  You  can also 
+  serialize  it  in  C++ version of ALGLIB and unserialize in C# one, 
+  and vice versa.
+*************************************************************************/
+void kdtreeserialize(kdtree &obj, std::string &s_out);
+
+
+/*************************************************************************
+This function unserializes data structure from string.
+*************************************************************************/
+void kdtreeunserialize(std::string &s_in, kdtree &obj);
+
+
 /*************************************************************************
 KD-tree creation
 
@@ -232,7 +301,7 @@ INPUT PARAMETERS
                 one row corresponds to one point.
                 first NX columns contain X-values, next NY (NY may be zero)
                 columns may contain associated Y-values
-    N       -   number of points, N>=1
+    N       -   number of points, N>=0.
     NX      -   space dimension, NX>=1.
     NY      -   number of optional Y-values, NY>=0.
     NormType-   norm type:
@@ -274,7 +343,7 @@ INPUT PARAMETERS
                 columns may contain associated Y-values
     Tags    -   tags, array[0..N-1], contains integer tags associated
                 with points.
-    N       -   number of points, N>=1
+    N       -   number of points, N>=0
     NX      -   space dimension, NX>=1.
     NY      -   number of optional Y-values, NY>=0.
     NormType-   norm type:
@@ -618,6 +687,14 @@ void hqrndnormal2(hqrndstate* state,
 double hqrndexponential(hqrndstate* state,
      double lambdav,
      ae_state *_state);
+double hqrnddiscrete(hqrndstate* state,
+     /* Real    */ ae_vector* x,
+     ae_int_t n,
+     ae_state *_state);
+double hqrndcontinuous(hqrndstate* state,
+     /* Real    */ ae_vector* x,
+     ae_int_t n,
+     ae_state *_state);
 ae_bool _hqrndstate_init(hqrndstate* p, ae_state *_state, ae_bool make_automatic);
 ae_bool _hqrndstate_init_copy(hqrndstate* dst, hqrndstate* src, ae_state *_state, ae_bool make_automatic);
 void _hqrndstate_clear(hqrndstate* p);
@@ -676,6 +753,9 @@ void kdtreequeryresultstagsi(kdtree* kdt,
 void kdtreequeryresultsdistancesi(kdtree* kdt,
      /* Real    */ ae_vector* r,
      ae_state *_state);
+void kdtreealloc(ae_serializer* s, kdtree* tree, ae_state *_state);
+void kdtreeserialize(ae_serializer* s, kdtree* tree, ae_state *_state);
+void kdtreeunserialize(ae_serializer* s, kdtree* tree, ae_state *_state);
 ae_bool _kdtree_init(kdtree* p, ae_state *_state, ae_bool make_automatic);
 ae_bool _kdtree_init_copy(kdtree* dst, kdtree* src, ae_state *_state, ae_bool make_automatic);
 void _kdtree_clear(kdtree* p);

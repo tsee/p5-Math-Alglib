@@ -46,7 +46,7 @@ Input parameters:
     A   -   source matrix, MxN submatrix is copied and transposed
     IA  -   submatrix offset (row index)
     JA  -   submatrix offset (column index)
-    A   -   destination matrix
+    B   -   destination matrix, must be large enough to store result
     IB  -   submatrix offset (row index)
     JB  -   submatrix offset (column index)
 *************************************************************************/
@@ -79,7 +79,7 @@ Input parameters:
     A   -   source matrix, MxN submatrix is copied and transposed
     IA  -   submatrix offset (row index)
     JA  -   submatrix offset (column index)
-    A   -   destination matrix
+    B   -   destination matrix, must be large enough to store result
     IB  -   submatrix offset (row index)
     JB  -   submatrix offset (column index)
 *************************************************************************/
@@ -112,7 +112,7 @@ Input parameters:
     A   -   source matrix, MxN submatrix is copied and transposed
     IA  -   submatrix offset (row index)
     JA  -   submatrix offset (column index)
-    B   -   destination matrix
+    B   -   destination matrix, must be large enough to store result
     IB  -   submatrix offset (row index)
     JB  -   submatrix offset (column index)
 *************************************************************************/
@@ -145,7 +145,7 @@ Input parameters:
     A   -   source matrix, MxN submatrix is copied and transposed
     IA  -   submatrix offset (row index)
     JA  -   submatrix offset (column index)
-    B   -   destination matrix
+    B   -   destination matrix, must be large enough to store result
     IB  -   submatrix offset (row index)
     JB  -   submatrix offset (column index)
 *************************************************************************/
@@ -255,6 +255,7 @@ INPUT PARAMETERS:
     X   -   input vector
     IX  -   subvector offset
     IY  -   subvector offset
+    Y   -   preallocated matrix, must be large enough to store result
 
 OUTPUT PARAMETERS:
     Y   -   vector which stores result
@@ -303,6 +304,7 @@ INPUT PARAMETERS:
     X   -   input vector
     IX  -   subvector offset
     IY  -   subvector offset
+    Y   -   preallocated matrix, must be large enough to store result
 
 OUTPUT PARAMETERS:
     Y   -   vector which stores result
@@ -357,7 +359,7 @@ INPUT PARAMETERS
                 * 0 - no transformation
                 * 1 - transposition
                 * 2 - conjugate transposition
-    C   -   matrix, actial matrix is stored in C[I2:I2+M-1,J2:J2+N-1]
+    X   -   matrix, actial matrix is stored in X[I2:I2+M-1,J2:J2+N-1]
     I2  -   submatrix offset
     J2  -   submatrix offset
 
@@ -406,7 +408,7 @@ INPUT PARAMETERS
                 * 0 - no transformation
                 * 1 - transposition
                 * 2 - conjugate transposition
-    C   -   matrix, actial matrix is stored in C[I2:I2+M-1,J2:J2+N-1]
+    X   -   matrix, actial matrix is stored in X[I2:I2+M-1,J2:J2+N-1]
     I2  -   submatrix offset
     J2  -   submatrix offset
 
@@ -435,9 +437,28 @@ void cmatrixlefttrsm(const ae_int_t m, const ae_int_t n, const complex_2d_array 
 }
 
 /*************************************************************************
-Same as CMatrixRightTRSM, but for real matrices
+This subroutine calculates X*op(A^-1) where:
+* X is MxN general matrix
+* A is NxN upper/lower triangular/unitriangular matrix
+* "op" may be identity transformation, transposition
 
-OpType may be only 0 or 1.
+Multiplication result replaces X.
+Cache-oblivious algorithm is used.
+
+INPUT PARAMETERS
+    N   -   matrix size, N>=0
+    M   -   matrix size, N>=0
+    A       -   matrix, actial matrix is stored in A[I1:I1+N-1,J1:J1+N-1]
+    I1      -   submatrix offset
+    J1      -   submatrix offset
+    IsUpper -   whether matrix is upper triangular
+    IsUnit  -   whether matrix is unitriangular
+    OpType  -   transformation type:
+                * 0 - no transformation
+                * 1 - transposition
+    X   -   matrix, actial matrix is stored in X[I2:I2+M-1,J2:J2+N-1]
+    I2  -   submatrix offset
+    J2  -   submatrix offset
 
   -- ALGLIB routine --
      15.12.2009
@@ -464,9 +485,28 @@ void rmatrixrighttrsm(const ae_int_t m, const ae_int_t n, const real_2d_array &a
 }
 
 /*************************************************************************
-Same as CMatrixLeftTRSM, but for real matrices
+This subroutine calculates op(A^-1)*X where:
+* X is MxN general matrix
+* A is MxM upper/lower triangular/unitriangular matrix
+* "op" may be identity transformation, transposition
 
-OpType may be only 0 or 1.
+Multiplication result replaces X.
+Cache-oblivious algorithm is used.
+
+INPUT PARAMETERS
+    N   -   matrix size, N>=0
+    M   -   matrix size, N>=0
+    A       -   matrix, actial matrix is stored in A[I1:I1+M-1,J1:J1+M-1]
+    I1      -   submatrix offset
+    J1      -   submatrix offset
+    IsUpper -   whether matrix is upper triangular
+    IsUnit  -   whether matrix is unitriangular
+    OpType  -   transformation type:
+                * 0 - no transformation
+                * 1 - transposition
+    X   -   matrix, actial matrix is stored in X[I2:I2+M-1,J2:J2+N-1]
+    I2  -   submatrix offset
+    J2  -   submatrix offset
 
   -- ALGLIB routine --
      15.12.2009
@@ -546,9 +586,33 @@ void cmatrixsyrk(const ae_int_t n, const ae_int_t k, const double alpha, const c
 }
 
 /*************************************************************************
-Same as CMatrixSYRK, but for real matrices
+This subroutine calculates  C=alpha*A*A^T+beta*C  or  C=alpha*A^T*A+beta*C
+where:
+* C is NxN symmetric matrix given by its upper/lower triangle
+* A is NxK matrix when A*A^T is calculated, KxN matrix otherwise
 
-OpType may be only 0 or 1.
+Additional info:
+* cache-oblivious algorithm is used.
+* multiplication result replaces C. If Beta=0, C elements are not used in
+  calculations (not multiplied by zero - just not referenced)
+* if Alpha=0, A is not used (not multiplied by zero - just not referenced)
+* if both Beta and Alpha are zero, C is filled by zeros.
+
+INPUT PARAMETERS
+    N       -   matrix size, N>=0
+    K       -   matrix size, K>=0
+    Alpha   -   coefficient
+    A       -   matrix
+    IA      -   submatrix offset
+    JA      -   submatrix offset
+    OpTypeA -   multiplication type:
+                * 0 - A*A^T is calculated
+                * 2 - A^T*A is calculated
+    Beta    -   coefficient
+    C       -   matrix
+    IC      -   submatrix offset
+    JC      -   submatrix offset
+    IsUpper -   whether C is upper triangular or lower triangular
 
   -- ALGLIB routine --
      16.12.2009
@@ -589,8 +653,8 @@ Additional info:
 * if both Beta and Alpha are zero, C is filled by zeros.
 
 INPUT PARAMETERS
+    M       -   matrix size, M>0
     N       -   matrix size, N>0
-    M       -   matrix size, N>0
     K       -   matrix size, K>0
     Alpha   -   coefficient
     A       -   matrix
@@ -637,8 +701,40 @@ void cmatrixgemm(const ae_int_t m, const ae_int_t n, const ae_int_t k, const alg
 }
 
 /*************************************************************************
-Same as CMatrixGEMM, but for real numbers.
-OpType may be only 0 or 1.
+This subroutine calculates C = alpha*op1(A)*op2(B) +beta*C where:
+* C is MxN general matrix
+* op1(A) is MxK matrix
+* op2(B) is KxN matrix
+* "op" may be identity transformation, transposition
+
+Additional info:
+* cache-oblivious algorithm is used.
+* multiplication result replaces C. If Beta=0, C elements are not used in
+  calculations (not multiplied by zero - just not referenced)
+* if Alpha=0, A is not used (not multiplied by zero - just not referenced)
+* if both Beta and Alpha are zero, C is filled by zeros.
+
+INPUT PARAMETERS
+    M       -   matrix size, M>0
+    N       -   matrix size, N>0
+    K       -   matrix size, K>0
+    Alpha   -   coefficient
+    A       -   matrix
+    IA      -   submatrix offset
+    JA      -   submatrix offset
+    OpTypeA -   transformation type:
+                * 0 - no transformation
+                * 1 - transposition
+    B       -   matrix
+    IB      -   submatrix offset
+    JB      -   submatrix offset
+    OpTypeB -   transformation type:
+                * 0 - no transformation
+                * 1 - transposition
+    Beta    -   coefficient
+    C       -   matrix
+    IC      -   submatrix offset
+    JC      -   submatrix offset
 
   -- ALGLIB routine --
      16.12.2009
@@ -1834,6 +1930,177 @@ void hmatrixtdunpackq(const complex_2d_array &a, const ae_int_t n, const bool is
         alglib_impl::hmatrixtdunpackq(const_cast<alglib_impl::ae_matrix*>(a.c_ptr()), n, isupper, const_cast<alglib_impl::ae_vector*>(tau.c_ptr()), const_cast<alglib_impl::ae_matrix*>(q.c_ptr()), &_alglib_env_state);
         alglib_impl::ae_state_clear(&_alglib_env_state);
         return;
+    }
+    catch(alglib_impl::ae_error_type)
+    {
+        throw ap_error(_alglib_env_state.error_msg);
+    }
+    catch(...)
+    {
+        throw;
+    }
+}
+
+/*************************************************************************
+Singular value decomposition of a bidiagonal matrix (extended algorithm)
+
+The algorithm performs the singular value decomposition  of  a  bidiagonal
+matrix B (upper or lower) representing it as B = Q*S*P^T, where Q and  P -
+orthogonal matrices, S - diagonal matrix with non-negative elements on the
+main diagonal, in descending order.
+
+The  algorithm  finds  singular  values.  In  addition,  the algorithm can
+calculate  matrices  Q  and P (more precisely, not the matrices, but their
+product  with  given  matrices U and VT - U*Q and (P^T)*VT)).  Of  course,
+matrices U and VT can be of any type, including identity. Furthermore, the
+algorithm can calculate Q'*C (this product is calculated more  effectively
+than U*Q,  because  this calculation operates with rows instead  of matrix
+columns).
+
+The feature of the algorithm is its ability to find  all  singular  values
+including those which are arbitrarily close to 0  with  relative  accuracy
+close to  machine precision. If the parameter IsFractionalAccuracyRequired
+is set to True, all singular values will have high relative accuracy close
+to machine precision. If the parameter is set to False, only  the  biggest
+singular value will have relative accuracy  close  to  machine  precision.
+The absolute error of other singular values is equal to the absolute error
+of the biggest singular value.
+
+Input parameters:
+    D       -   main diagonal of matrix B.
+                Array whose index ranges within [0..N-1].
+    E       -   superdiagonal (or subdiagonal) of matrix B.
+                Array whose index ranges within [0..N-2].
+    N       -   size of matrix B.
+    IsUpper -   True, if the matrix is upper bidiagonal.
+    IsFractionalAccuracyRequired -
+                THIS PARAMETER IS IGNORED SINCE ALGLIB 3.5.0
+                SINGULAR VALUES ARE ALWAYS SEARCHED WITH HIGH ACCURACY.
+    U       -   matrix to be multiplied by Q.
+                Array whose indexes range within [0..NRU-1, 0..N-1].
+                The matrix can be bigger, in that case only the  submatrix
+                [0..NRU-1, 0..N-1] will be multiplied by Q.
+    NRU     -   number of rows in matrix U.
+    C       -   matrix to be multiplied by Q'.
+                Array whose indexes range within [0..N-1, 0..NCC-1].
+                The matrix can be bigger, in that case only the  submatrix
+                [0..N-1, 0..NCC-1] will be multiplied by Q'.
+    NCC     -   number of columns in matrix C.
+    VT      -   matrix to be multiplied by P^T.
+                Array whose indexes range within [0..N-1, 0..NCVT-1].
+                The matrix can be bigger, in that case only the  submatrix
+                [0..N-1, 0..NCVT-1] will be multiplied by P^T.
+    NCVT    -   number of columns in matrix VT.
+
+Output parameters:
+    D       -   singular values of matrix B in descending order.
+    U       -   if NRU>0, contains matrix U*Q.
+    VT      -   if NCVT>0, contains matrix (P^T)*VT.
+    C       -   if NCC>0, contains matrix Q'*C.
+
+Result:
+    True, if the algorithm has converged.
+    False, if the algorithm hasn't converged (rare case).
+
+Additional information:
+    The type of convergence is controlled by the internal  parameter  TOL.
+    If the parameter is greater than 0, the singular values will have
+    relative accuracy TOL. If TOL<0, the singular values will have
+    absolute accuracy ABS(TOL)*norm(B).
+    By default, |TOL| falls within the range of 10*Epsilon and 100*Epsilon,
+    where Epsilon is the machine precision. It is not  recommended  to  use
+    TOL less than 10*Epsilon since this will  considerably  slow  down  the
+    algorithm and may not lead to error decreasing.
+History:
+    * 31 March, 2007.
+        changed MAXITR from 6 to 12.
+
+  -- LAPACK routine (version 3.0) --
+     Univ. of Tennessee, Univ. of California Berkeley, NAG Ltd.,
+     Courant Institute, Argonne National Lab, and Rice University
+     October 31, 1999.
+*************************************************************************/
+bool rmatrixbdsvd(real_1d_array &d, const real_1d_array &e, const ae_int_t n, const bool isupper, const bool isfractionalaccuracyrequired, real_2d_array &u, const ae_int_t nru, real_2d_array &c, const ae_int_t ncc, real_2d_array &vt, const ae_int_t ncvt)
+{
+    alglib_impl::ae_state _alglib_env_state;
+    alglib_impl::ae_state_init(&_alglib_env_state);
+    try
+    {
+        ae_bool result = alglib_impl::rmatrixbdsvd(const_cast<alglib_impl::ae_vector*>(d.c_ptr()), const_cast<alglib_impl::ae_vector*>(e.c_ptr()), n, isupper, isfractionalaccuracyrequired, const_cast<alglib_impl::ae_matrix*>(u.c_ptr()), nru, const_cast<alglib_impl::ae_matrix*>(c.c_ptr()), ncc, const_cast<alglib_impl::ae_matrix*>(vt.c_ptr()), ncvt, &_alglib_env_state);
+        alglib_impl::ae_state_clear(&_alglib_env_state);
+        return *(reinterpret_cast<bool*>(&result));
+    }
+    catch(alglib_impl::ae_error_type)
+    {
+        throw ap_error(_alglib_env_state.error_msg);
+    }
+    catch(...)
+    {
+        throw;
+    }
+}
+
+/*************************************************************************
+Singular value decomposition of a rectangular matrix.
+
+The algorithm calculates the singular value decomposition of a matrix of
+size MxN: A = U * S * V^T
+
+The algorithm finds the singular values and, optionally, matrices U and V^T.
+The algorithm can find both first min(M,N) columns of matrix U and rows of
+matrix V^T (singular vectors), and matrices U and V^T wholly (of sizes MxM
+and NxN respectively).
+
+Take into account that the subroutine does not return matrix V but V^T.
+
+Input parameters:
+    A           -   matrix to be decomposed.
+                    Array whose indexes range within [0..M-1, 0..N-1].
+    M           -   number of rows in matrix A.
+    N           -   number of columns in matrix A.
+    UNeeded     -   0, 1 or 2. See the description of the parameter U.
+    VTNeeded    -   0, 1 or 2. See the description of the parameter VT.
+    AdditionalMemory -
+                    If the parameter:
+                     * equals 0, the algorithm doesn’t use additional
+                       memory (lower requirements, lower performance).
+                     * equals 1, the algorithm uses additional
+                       memory of size min(M,N)*min(M,N) of real numbers.
+                       It often speeds up the algorithm.
+                     * equals 2, the algorithm uses additional
+                       memory of size M*min(M,N) of real numbers.
+                       It allows to get a maximum performance.
+                    The recommended value of the parameter is 2.
+
+Output parameters:
+    W           -   contains singular values in descending order.
+    U           -   if UNeeded=0, U isn't changed, the left singular vectors
+                    are not calculated.
+                    if Uneeded=1, U contains left singular vectors (first
+                    min(M,N) columns of matrix U). Array whose indexes range
+                    within [0..M-1, 0..Min(M,N)-1].
+                    if UNeeded=2, U contains matrix U wholly. Array whose
+                    indexes range within [0..M-1, 0..M-1].
+    VT          -   if VTNeeded=0, VT isn’t changed, the right singular vectors
+                    are not calculated.
+                    if VTNeeded=1, VT contains right singular vectors (first
+                    min(M,N) rows of matrix V^T). Array whose indexes range
+                    within [0..min(M,N)-1, 0..N-1].
+                    if VTNeeded=2, VT contains matrix V^T wholly. Array whose
+                    indexes range within [0..N-1, 0..N-1].
+
+  -- ALGLIB --
+     Copyright 2005 by Bochkanov Sergey
+*************************************************************************/
+bool rmatrixsvd(const real_2d_array &a, const ae_int_t m, const ae_int_t n, const ae_int_t uneeded, const ae_int_t vtneeded, const ae_int_t additionalmemory, real_1d_array &w, real_2d_array &u, real_2d_array &vt)
+{
+    alglib_impl::ae_state _alglib_env_state;
+    alglib_impl::ae_state_init(&_alglib_env_state);
+    try
+    {
+        ae_bool result = alglib_impl::rmatrixsvd(const_cast<alglib_impl::ae_matrix*>(a.c_ptr()), m, n, uneeded, vtneeded, additionalmemory, const_cast<alglib_impl::ae_vector*>(w.c_ptr()), const_cast<alglib_impl::ae_matrix*>(u.c_ptr()), const_cast<alglib_impl::ae_matrix*>(vt.c_ptr()), &_alglib_env_state);
+        alglib_impl::ae_state_clear(&_alglib_env_state);
+        return *(reinterpret_cast<bool*>(&result));
     }
     catch(alglib_impl::ae_error_type)
     {
@@ -4969,91 +5236,994 @@ void cmatrixtrinverse(complex_2d_array &a, const bool isupper, ae_int_t &info, m
     }
 }
 
+
+
 /*************************************************************************
-Singular value decomposition of a bidiagonal matrix (extended algorithm)
+Sparse matrix
 
-The algorithm performs the singular value decomposition  of  a  bidiagonal
-matrix B (upper or lower) representing it as B = Q*S*P^T, where Q and  P -
-orthogonal matrices, S - diagonal matrix with non-negative elements on the
-main diagonal, in descending order.
-
-The  algorithm  finds  singular  values.  In  addition,  the algorithm can
-calculate  matrices  Q  and P (more precisely, not the matrices, but their
-product  with  given  matrices U and VT - U*Q and (P^T)*VT)).  Of  course,
-matrices U and VT can be of any type, including identity. Furthermore, the
-algorithm can calculate Q'*C (this product is calculated more  effectively
-than U*Q,  because  this calculation operates with rows instead  of matrix
-columns).
-
-The feature of the algorithm is its ability to find  all  singular  values
-including those which are arbitrarily close to 0  with  relative  accuracy
-close to  machine precision. If the parameter IsFractionalAccuracyRequired
-is set to True, all singular values will have high relative accuracy close
-to machine precision. If the parameter is set to False, only  the  biggest
-singular value will have relative accuracy  close  to  machine  precision.
-The absolute error of other singular values is equal to the absolute error
-of the biggest singular value.
-
-Input parameters:
-    D       -   main diagonal of matrix B.
-                Array whose index ranges within [0..N-1].
-    E       -   superdiagonal (or subdiagonal) of matrix B.
-                Array whose index ranges within [0..N-2].
-    N       -   size of matrix B.
-    IsUpper -   True, if the matrix is upper bidiagonal.
-    IsFractionalAccuracyRequired -
-                accuracy to search singular values with.
-    U       -   matrix to be multiplied by Q.
-                Array whose indexes range within [0..NRU-1, 0..N-1].
-                The matrix can be bigger, in that case only the  submatrix
-                [0..NRU-1, 0..N-1] will be multiplied by Q.
-    NRU     -   number of rows in matrix U.
-    C       -   matrix to be multiplied by Q'.
-                Array whose indexes range within [0..N-1, 0..NCC-1].
-                The matrix can be bigger, in that case only the  submatrix
-                [0..N-1, 0..NCC-1] will be multiplied by Q'.
-    NCC     -   number of columns in matrix C.
-    VT      -   matrix to be multiplied by P^T.
-                Array whose indexes range within [0..N-1, 0..NCVT-1].
-                The matrix can be bigger, in that case only the  submatrix
-                [0..N-1, 0..NCVT-1] will be multiplied by P^T.
-    NCVT    -   number of columns in matrix VT.
-
-Output parameters:
-    D       -   singular values of matrix B in descending order.
-    U       -   if NRU>0, contains matrix U*Q.
-    VT      -   if NCVT>0, contains matrix (P^T)*VT.
-    C       -   if NCC>0, contains matrix Q'*C.
-
-Result:
-    True, if the algorithm has converged.
-    False, if the algorithm hasn't converged (rare case).
-
-Additional information:
-    The type of convergence is controlled by the internal  parameter  TOL.
-    If the parameter is greater than 0, the singular values will have
-    relative accuracy TOL. If TOL<0, the singular values will have
-    absolute accuracy ABS(TOL)*norm(B).
-    By default, |TOL| falls within the range of 10*Epsilon and 100*Epsilon,
-    where Epsilon is the machine precision. It is not  recommended  to  use
-    TOL less than 10*Epsilon since this will  considerably  slow  down  the
-    algorithm and may not lead to error decreasing.
-History:
-    * 31 March, 2007.
-        changed MAXITR from 6 to 12.
-
-  -- LAPACK routine (version 3.0) --
-     Univ. of Tennessee, Univ. of California Berkeley, NAG Ltd.,
-     Courant Institute, Argonne National Lab, and Rice University
-     October 31, 1999.
+You should use ALGLIB functions to work with sparse matrix.
+Never try to access its fields directly!
 *************************************************************************/
-bool rmatrixbdsvd(real_1d_array &d, const real_1d_array &e, const ae_int_t n, const bool isupper, const bool isfractionalaccuracyrequired, real_2d_array &u, const ae_int_t nru, real_2d_array &c, const ae_int_t ncc, real_2d_array &vt, const ae_int_t ncvt)
+_sparsematrix_owner::_sparsematrix_owner()
+{
+    p_struct = (alglib_impl::sparsematrix*)alglib_impl::ae_malloc(sizeof(alglib_impl::sparsematrix), NULL);
+    if( p_struct==NULL )
+        throw ap_error("ALGLIB: malloc error");
+    if( !alglib_impl::_sparsematrix_init(p_struct, NULL, ae_false) )
+        throw ap_error("ALGLIB: malloc error");
+}
+
+_sparsematrix_owner::_sparsematrix_owner(const _sparsematrix_owner &rhs)
+{
+    p_struct = (alglib_impl::sparsematrix*)alglib_impl::ae_malloc(sizeof(alglib_impl::sparsematrix), NULL);
+    if( p_struct==NULL )
+        throw ap_error("ALGLIB: malloc error");
+    if( !alglib_impl::_sparsematrix_init_copy(p_struct, const_cast<alglib_impl::sparsematrix*>(rhs.p_struct), NULL, ae_false) )
+        throw ap_error("ALGLIB: malloc error");
+}
+
+_sparsematrix_owner& _sparsematrix_owner::operator=(const _sparsematrix_owner &rhs)
+{
+    if( this==&rhs )
+        return *this;
+    alglib_impl::_sparsematrix_clear(p_struct);
+    if( !alglib_impl::_sparsematrix_init_copy(p_struct, const_cast<alglib_impl::sparsematrix*>(rhs.p_struct), NULL, ae_false) )
+        throw ap_error("ALGLIB: malloc error");
+    return *this;
+}
+
+_sparsematrix_owner::~_sparsematrix_owner()
+{
+    alglib_impl::_sparsematrix_clear(p_struct);
+    ae_free(p_struct);
+}
+
+alglib_impl::sparsematrix* _sparsematrix_owner::c_ptr()
+{
+    return p_struct;
+}
+
+alglib_impl::sparsematrix* _sparsematrix_owner::c_ptr() const
+{
+    return const_cast<alglib_impl::sparsematrix*>(p_struct);
+}
+sparsematrix::sparsematrix() : _sparsematrix_owner() 
+{
+}
+
+sparsematrix::sparsematrix(const sparsematrix &rhs):_sparsematrix_owner(rhs) 
+{
+}
+
+sparsematrix& sparsematrix::operator=(const sparsematrix &rhs)
+{
+    if( this==&rhs )
+        return *this;
+    _sparsematrix_owner::operator=(rhs);
+    return *this;
+}
+
+sparsematrix::~sparsematrix()
+{
+}
+
+/*************************************************************************
+This function creates sparse matrix in a Hash-Table format.
+
+This function creates Hast-Table matrix, which can be  converted  to  CRS
+format after its initialization is over. Typical  usage  scenario  for  a
+sparse matrix is:
+1. creation in a Hash-Table format
+2. insertion of the matrix elements
+3. conversion to the CRS representation
+4. matrix is passed to some linear algebra algorithm
+
+Some  information  about  different matrix formats can be found below, in
+the "NOTES" section.
+
+INPUT PARAMETERS
+    M           -   number of rows in a matrix, M>=1
+    N           -   number of columns in a matrix, N>=1
+    K           -   K>=0, expected number of non-zero elements in a matrix.
+                    K can be inexact approximation, can be less than actual
+                    number  of  elements  (table will grow when needed) or
+                    even zero).
+                    It is important to understand that although hash-table
+                    may grow automatically, it is better to  provide  good
+                    estimate of data size.
+
+OUTPUT PARAMETERS
+    S           -   sparse M*N matrix in Hash-Table representation.
+                    All elements of the matrix are zero.
+
+NOTE 1.
+
+Sparse matrices can be stored using either Hash-Table  representation  or
+Compressed  Row  Storage  representation. Hast-table is better suited for
+querying   and   dynamic   operations   (thus,  it  is  used  for  matrix
+initialization), but it is inefficient when you want to make some  linear
+algebra operations.
+
+From the other side, CRS is better suited for linear algebra  operations,
+but initialization is less convenient - you have to tell row sizes at the
+initialization,  and  you  can  fill matrix only row by row, from left to
+right. CRS is also very inefficient when you want to find matrix  element
+by its index.
+
+Thus,  Hash-Table  representation   does   not   support  linear  algebra
+operations, while CRS format does not support modification of the  table.
+Tables below outline information about these two formats:
+
+    OPERATIONS WITH MATRIX      HASH        CRS
+    create                      +           +
+    read element                +           +
+    modify element              +
+    add value to element        +
+    A*x  (dense vector)                     +
+    A'*x (dense vector)                     +
+    A*X  (dense matrix)                     +
+    A'*X (dense matrix)                     +
+
+NOTE 2.
+
+Hash-tables use memory inefficiently, and they have to keep  some  amount
+of the "spare memory" in order to have good performance. Hash  table  for
+matrix with K non-zero elements will  need  C*K*(8+2*sizeof(int))  bytes,
+where C is a small constant, about 1.5-2 in magnitude.
+
+CRS storage, from the other side, is  more  memory-efficient,  and  needs
+just K*(8+sizeof(int))+M*sizeof(int) bytes, where M is a number  of  rows
+in a matrix.
+
+When you convert from the Hash-Table to CRS  representation, all unneeded
+memory will be freed.
+
+  -- ALGLIB PROJECT --
+     Copyright 14.10.2011 by Bochkanov Sergey
+*************************************************************************/
+void sparsecreate(const ae_int_t m, const ae_int_t n, const ae_int_t k, sparsematrix &s)
 {
     alglib_impl::ae_state _alglib_env_state;
     alglib_impl::ae_state_init(&_alglib_env_state);
     try
     {
-        ae_bool result = alglib_impl::rmatrixbdsvd(const_cast<alglib_impl::ae_vector*>(d.c_ptr()), const_cast<alglib_impl::ae_vector*>(e.c_ptr()), n, isupper, isfractionalaccuracyrequired, const_cast<alglib_impl::ae_matrix*>(u.c_ptr()), nru, const_cast<alglib_impl::ae_matrix*>(c.c_ptr()), ncc, const_cast<alglib_impl::ae_matrix*>(vt.c_ptr()), ncvt, &_alglib_env_state);
+        alglib_impl::sparsecreate(m, n, k, const_cast<alglib_impl::sparsematrix*>(s.c_ptr()), &_alglib_env_state);
+        alglib_impl::ae_state_clear(&_alglib_env_state);
+        return;
+    }
+    catch(alglib_impl::ae_error_type)
+    {
+        throw ap_error(_alglib_env_state.error_msg);
+    }
+    catch(...)
+    {
+        throw;
+    }
+}
+
+/*************************************************************************
+This function creates sparse matrix in a Hash-Table format.
+
+This function creates Hast-Table matrix, which can be  converted  to  CRS
+format after its initialization is over. Typical  usage  scenario  for  a
+sparse matrix is:
+1. creation in a Hash-Table format
+2. insertion of the matrix elements
+3. conversion to the CRS representation
+4. matrix is passed to some linear algebra algorithm
+
+Some  information  about  different matrix formats can be found below, in
+the "NOTES" section.
+
+INPUT PARAMETERS
+    M           -   number of rows in a matrix, M>=1
+    N           -   number of columns in a matrix, N>=1
+    K           -   K>=0, expected number of non-zero elements in a matrix.
+                    K can be inexact approximation, can be less than actual
+                    number  of  elements  (table will grow when needed) or
+                    even zero).
+                    It is important to understand that although hash-table
+                    may grow automatically, it is better to  provide  good
+                    estimate of data size.
+
+OUTPUT PARAMETERS
+    S           -   sparse M*N matrix in Hash-Table representation.
+                    All elements of the matrix are zero.
+
+NOTE 1.
+
+Sparse matrices can be stored using either Hash-Table  representation  or
+Compressed  Row  Storage  representation. Hast-table is better suited for
+querying   and   dynamic   operations   (thus,  it  is  used  for  matrix
+initialization), but it is inefficient when you want to make some  linear
+algebra operations.
+
+From the other side, CRS is better suited for linear algebra  operations,
+but initialization is less convenient - you have to tell row sizes at the
+initialization,  and  you  can  fill matrix only row by row, from left to
+right. CRS is also very inefficient when you want to find matrix  element
+by its index.
+
+Thus,  Hash-Table  representation   does   not   support  linear  algebra
+operations, while CRS format does not support modification of the  table.
+Tables below outline information about these two formats:
+
+    OPERATIONS WITH MATRIX      HASH        CRS
+    create                      +           +
+    read element                +           +
+    modify element              +
+    add value to element        +
+    A*x  (dense vector)                     +
+    A'*x (dense vector)                     +
+    A*X  (dense matrix)                     +
+    A'*X (dense matrix)                     +
+
+NOTE 2.
+
+Hash-tables use memory inefficiently, and they have to keep  some  amount
+of the "spare memory" in order to have good performance. Hash  table  for
+matrix with K non-zero elements will  need  C*K*(8+2*sizeof(int))  bytes,
+where C is a small constant, about 1.5-2 in magnitude.
+
+CRS storage, from the other side, is  more  memory-efficient,  and  needs
+just K*(8+sizeof(int))+M*sizeof(int) bytes, where M is a number  of  rows
+in a matrix.
+
+When you convert from the Hash-Table to CRS  representation, all unneeded
+memory will be freed.
+
+  -- ALGLIB PROJECT --
+     Copyright 14.10.2011 by Bochkanov Sergey
+*************************************************************************/
+void sparsecreate(const ae_int_t m, const ae_int_t n, sparsematrix &s)
+{
+    alglib_impl::ae_state _alglib_env_state;    
+    ae_int_t k;
+
+    k = 0;
+    alglib_impl::ae_state_init(&_alglib_env_state);
+    try
+    {
+        alglib_impl::sparsecreate(m, n, k, const_cast<alglib_impl::sparsematrix*>(s.c_ptr()), &_alglib_env_state);
+
+        alglib_impl::ae_state_clear(&_alglib_env_state);
+        return;
+    }
+    catch(alglib_impl::ae_error_type)
+    {
+        throw ap_error(_alglib_env_state.error_msg);
+    }
+    catch(...)
+    {
+        throw;
+    }
+}
+
+/*************************************************************************
+This function creates sparse matrix in a CRS format (expert function for
+situations when you are running out of memory).
+
+This function creates CRS matrix. Typical usage scenario for a CRS matrix
+is:
+1. creation (you have to tell number of non-zero elements at each row  at
+   this moment)
+2. insertion of the matrix elements (row by row, from left to right)
+3. matrix is passed to some linear algebra algorithm
+
+This function is a memory-efficient alternative to SparseCreate(), but it
+is more complex because it requires you to know in advance how large your
+matrix is. Some  information about  different matrix formats can be found
+below, in the "NOTES" section.
+
+INPUT PARAMETERS
+    M           -   number of rows in a matrix, M>=1
+    N           -   number of columns in a matrix, N>=1
+    NER         -   number of elements at each row, array[M], NER[i]>=0
+
+OUTPUT PARAMETERS
+    S           -   sparse M*N matrix in CRS representation.
+                    You have to fill ALL non-zero elements by calling
+                    SparseSet() BEFORE you try to use this matrix.
+
+NOTE 1.
+
+Sparse matrices can be stored using either Hash-Table  representation  or
+Compressed  Row  Storage  representation. Hast-table is better suited for
+querying   and   dynamic   operations   (thus,  it  is  used  for  matrix
+initialization), but it is inefficient when you want to make some  linear
+algebra operations.
+
+From the other side, CRS is better suited for linear algebra  operations,
+but initialization is less convenient - you have to tell row sizes at the
+initialization,  and  you  can  fill matrix only row by row, from left to
+right. CRS is also very inefficient when you want to find matrix  element
+by its index.
+
+Thus,  Hash-Table  representation   does   not   support  linear  algebra
+operations, while CRS format does not support modification of the  table.
+Tables below outline information about these two formats:
+
+    OPERATIONS WITH MATRIX      HASH        CRS
+    create                      +           +
+    read element                +           +
+    modify element              +
+    add value to element        +
+    A*x  (dense vector)                     +
+    A'*x (dense vector)                     +
+    A*X  (dense matrix)                     +
+    A'*X (dense matrix)                     +
+
+NOTE 2.
+
+Hash-tables use memory inefficiently, and they have to keep  some  amount
+of the "spare memory" in order to have good performance. Hash  table  for
+matrix with K non-zero elements will  need  C*K*(8+2*sizeof(int))  bytes,
+where C is a small constant, about 1.5-2 in magnitude.
+
+CRS storage, from the other side, is  more  memory-efficient,  and  needs
+just K*(8+sizeof(int))+M*sizeof(int) bytes, where M is a number  of  rows
+in a matrix.
+
+When you convert from the Hash-Table to CRS  representation, all unneeded
+memory will be freed.
+
+  -- ALGLIB PROJECT --
+     Copyright 14.10.2011 by Bochkanov Sergey
+*************************************************************************/
+void sparsecreatecrs(const ae_int_t m, const ae_int_t n, const integer_1d_array &ner, sparsematrix &s)
+{
+    alglib_impl::ae_state _alglib_env_state;
+    alglib_impl::ae_state_init(&_alglib_env_state);
+    try
+    {
+        alglib_impl::sparsecreatecrs(m, n, const_cast<alglib_impl::ae_vector*>(ner.c_ptr()), const_cast<alglib_impl::sparsematrix*>(s.c_ptr()), &_alglib_env_state);
+        alglib_impl::ae_state_clear(&_alglib_env_state);
+        return;
+    }
+    catch(alglib_impl::ae_error_type)
+    {
+        throw ap_error(_alglib_env_state.error_msg);
+    }
+    catch(...)
+    {
+        throw;
+    }
+}
+
+/*************************************************************************
+This function copies S0 to S1.
+
+NOTE:  this  function  does  not verify its arguments, it just copies all
+fields of the structure.
+
+  -- ALGLIB PROJECT --
+     Copyright 14.10.2011 by Bochkanov Sergey
+*************************************************************************/
+void sparsecopy(const sparsematrix &s0, sparsematrix &s1)
+{
+    alglib_impl::ae_state _alglib_env_state;
+    alglib_impl::ae_state_init(&_alglib_env_state);
+    try
+    {
+        alglib_impl::sparsecopy(const_cast<alglib_impl::sparsematrix*>(s0.c_ptr()), const_cast<alglib_impl::sparsematrix*>(s1.c_ptr()), &_alglib_env_state);
+        alglib_impl::ae_state_clear(&_alglib_env_state);
+        return;
+    }
+    catch(alglib_impl::ae_error_type)
+    {
+        throw ap_error(_alglib_env_state.error_msg);
+    }
+    catch(...)
+    {
+        throw;
+    }
+}
+
+/*************************************************************************
+This function adds value to S[i,j] - element of the sparse matrix. Matrix
+must be in a Hash-Table mode.
+
+In case S[i,j] already exists in the table, V i added to  its  value.  In
+case  S[i,j]  is  non-existent,  it  is  inserted  in  the  table.  Table
+automatically grows when necessary.
+
+INPUT PARAMETERS
+    S           -   sparse M*N matrix in Hash-Table representation.
+                    Exception will be thrown for CRS matrix.
+    I           -   row index of the element to modify, 0<=I<M
+    J           -   column index of the element to modify, 0<=J<N
+    V           -   value to add, must be finite number
+
+OUTPUT PARAMETERS
+    S           -   modified matrix
+
+NOTE 1:  when  S[i,j]  is exactly zero after modification, it is  deleted
+from the table.
+
+  -- ALGLIB PROJECT --
+     Copyright 14.10.2011 by Bochkanov Sergey
+*************************************************************************/
+void sparseadd(const sparsematrix &s, const ae_int_t i, const ae_int_t j, const double v)
+{
+    alglib_impl::ae_state _alglib_env_state;
+    alglib_impl::ae_state_init(&_alglib_env_state);
+    try
+    {
+        alglib_impl::sparseadd(const_cast<alglib_impl::sparsematrix*>(s.c_ptr()), i, j, v, &_alglib_env_state);
+        alglib_impl::ae_state_clear(&_alglib_env_state);
+        return;
+    }
+    catch(alglib_impl::ae_error_type)
+    {
+        throw ap_error(_alglib_env_state.error_msg);
+    }
+    catch(...)
+    {
+        throw;
+    }
+}
+
+/*************************************************************************
+This function modifies S[i,j] - element of the sparse matrix. Matrix must
+be in a Hash-Table mode.
+
+In  case  new  value  of S[i,j] is zero, this element is deleted from the
+table.
+
+INPUT PARAMETERS
+    S           -   sparse M*N matrix in Hash-Table representation.
+                    Exception will be thrown for CRS matrix.
+    I           -   row index of the element to modify, 0<=I<M
+    J           -   column index of the element to modify, 0<=J<N
+    V           -   value to set, must be finite number, can be zero
+
+OUTPUT PARAMETERS
+    S           -   modified matrix
+
+NOTE:  this  function  has  no  effect  when  called with zero V for non-
+existent element.
+
+  -- ALGLIB PROJECT --
+     Copyright 14.10.2011 by Bochkanov Sergey
+*************************************************************************/
+void sparseset(const sparsematrix &s, const ae_int_t i, const ae_int_t j, const double v)
+{
+    alglib_impl::ae_state _alglib_env_state;
+    alglib_impl::ae_state_init(&_alglib_env_state);
+    try
+    {
+        alglib_impl::sparseset(const_cast<alglib_impl::sparsematrix*>(s.c_ptr()), i, j, v, &_alglib_env_state);
+        alglib_impl::ae_state_clear(&_alglib_env_state);
+        return;
+    }
+    catch(alglib_impl::ae_error_type)
+    {
+        throw ap_error(_alglib_env_state.error_msg);
+    }
+    catch(...)
+    {
+        throw;
+    }
+}
+
+/*************************************************************************
+This function returns S[i,j] - element of the sparse matrix.  Matrix  can
+be in any mode (Hash-Table or CRS), but this function is  less  efficient
+for CRS matrices.  Hash-Table  matrices can  find element  in O(1)  time,
+while  CRS  matrices  need  O(RS) time, where RS is an number of non-zero
+elements in a row.
+
+INPUT PARAMETERS
+    S           -   sparse M*N matrix in Hash-Table representation.
+                    Exception will be thrown for CRS matrix.
+    I           -   row index of the element to modify, 0<=I<M
+    J           -   column index of the element to modify, 0<=J<N
+
+RESULT
+    value of S[I,J] or zero (in case no element with such index is found)
+
+  -- ALGLIB PROJECT --
+     Copyright 14.10.2011 by Bochkanov Sergey
+*************************************************************************/
+double sparseget(const sparsematrix &s, const ae_int_t i, const ae_int_t j)
+{
+    alglib_impl::ae_state _alglib_env_state;
+    alglib_impl::ae_state_init(&_alglib_env_state);
+    try
+    {
+        double result = alglib_impl::sparseget(const_cast<alglib_impl::sparsematrix*>(s.c_ptr()), i, j, &_alglib_env_state);
+        alglib_impl::ae_state_clear(&_alglib_env_state);
+        return *(reinterpret_cast<double*>(&result));
+    }
+    catch(alglib_impl::ae_error_type)
+    {
+        throw ap_error(_alglib_env_state.error_msg);
+    }
+    catch(...)
+    {
+        throw;
+    }
+}
+
+/*************************************************************************
+This function converts matrix to CRS format.
+
+Some  algorithms  (linear  algebra ones, for example) require matrices in
+CRS format.
+
+INPUT PARAMETERS
+    S           -   sparse M*N matrix.
+
+OUTPUT PARAMETERS
+    S           -   matrix in CRS format
+
+NOTE:  this  function  has  no  effect  when  called with matrix which is
+already in CRS mode.
+
+  -- ALGLIB PROJECT --
+     Copyright 14.10.2011 by Bochkanov Sergey
+*************************************************************************/
+void sparseconverttocrs(const sparsematrix &s)
+{
+    alglib_impl::ae_state _alglib_env_state;
+    alglib_impl::ae_state_init(&_alglib_env_state);
+    try
+    {
+        alglib_impl::sparseconverttocrs(const_cast<alglib_impl::sparsematrix*>(s.c_ptr()), &_alglib_env_state);
+        alglib_impl::ae_state_clear(&_alglib_env_state);
+        return;
+    }
+    catch(alglib_impl::ae_error_type)
+    {
+        throw ap_error(_alglib_env_state.error_msg);
+    }
+    catch(...)
+    {
+        throw;
+    }
+}
+
+/*************************************************************************
+This function calculates matrix-vector product  S*x.  Matrix  S  must  be
+stored in CRS format (exception will be thrown otherwise).
+
+INPUT PARAMETERS
+    S           -   sparse M*N matrix in CRS format (you MUST convert  it
+                    to CRS before calling this function).
+    X           -   array[N], input vector. For  performance  reasons  we
+                    make only quick checks - we check that array size  is
+                    at least N, but we do not check for NAN's or INF's.
+    Y           -   output buffer, possibly preallocated. In case  buffer
+                    size is too small to store  result,  this  buffer  is
+                    automatically resized.
+
+OUTPUT PARAMETERS
+    Y           -   array[M], S*x
+
+NOTE: this function throws exception when called for non-CRS matrix.  You
+must convert your matrix  with  SparseConvertToCRS()  before  using  this
+function.
+
+  -- ALGLIB PROJECT --
+     Copyright 14.10.2011 by Bochkanov Sergey
+*************************************************************************/
+void sparsemv(const sparsematrix &s, const real_1d_array &x, real_1d_array &y)
+{
+    alglib_impl::ae_state _alglib_env_state;
+    alglib_impl::ae_state_init(&_alglib_env_state);
+    try
+    {
+        alglib_impl::sparsemv(const_cast<alglib_impl::sparsematrix*>(s.c_ptr()), const_cast<alglib_impl::ae_vector*>(x.c_ptr()), const_cast<alglib_impl::ae_vector*>(y.c_ptr()), &_alglib_env_state);
+        alglib_impl::ae_state_clear(&_alglib_env_state);
+        return;
+    }
+    catch(alglib_impl::ae_error_type)
+    {
+        throw ap_error(_alglib_env_state.error_msg);
+    }
+    catch(...)
+    {
+        throw;
+    }
+}
+
+/*************************************************************************
+This function calculates matrix-vector product  S^T*x. Matrix S  must  be
+stored in CRS format (exception will be thrown otherwise).
+
+INPUT PARAMETERS
+    S           -   sparse M*N matrix in CRS format (you MUST convert  it
+                    to CRS before calling this function).
+    X           -   array[M], input vector. For  performance  reasons  we
+                    make only quick checks - we check that array size  is
+                    at least M, but we do not check for NAN's or INF's.
+    Y           -   output buffer, possibly preallocated. In case  buffer
+                    size is too small to store  result,  this  buffer  is
+                    automatically resized.
+
+OUTPUT PARAMETERS
+    Y           -   array[N], S^T*x
+
+NOTE: this function throws exception when called for non-CRS matrix.  You
+must convert your matrix  with  SparseConvertToCRS()  before  using  this
+function.
+
+  -- ALGLIB PROJECT --
+     Copyright 14.10.2011 by Bochkanov Sergey
+*************************************************************************/
+void sparsemtv(const sparsematrix &s, const real_1d_array &x, real_1d_array &y)
+{
+    alglib_impl::ae_state _alglib_env_state;
+    alglib_impl::ae_state_init(&_alglib_env_state);
+    try
+    {
+        alglib_impl::sparsemtv(const_cast<alglib_impl::sparsematrix*>(s.c_ptr()), const_cast<alglib_impl::ae_vector*>(x.c_ptr()), const_cast<alglib_impl::ae_vector*>(y.c_ptr()), &_alglib_env_state);
+        alglib_impl::ae_state_clear(&_alglib_env_state);
+        return;
+    }
+    catch(alglib_impl::ae_error_type)
+    {
+        throw ap_error(_alglib_env_state.error_msg);
+    }
+    catch(...)
+    {
+        throw;
+    }
+}
+
+/*************************************************************************
+This function simultaneously calculates two matrix-vector products:
+    S*x and S^T*x.
+S must be square (non-rectangular) matrix stored in CRS format (exception
+will be thrown otherwise).
+
+INPUT PARAMETERS
+    S           -   sparse N*N matrix in CRS format (you MUST convert  it
+                    to CRS before calling this function).
+    X           -   array[N], input vector. For  performance  reasons  we
+                    make only quick checks - we check that array size  is
+                    at least N, but we do not check for NAN's or INF's.
+    Y0          -   output buffer, possibly preallocated. In case  buffer
+                    size is too small to store  result,  this  buffer  is
+                    automatically resized.
+    Y1          -   output buffer, possibly preallocated. In case  buffer
+                    size is too small to store  result,  this  buffer  is
+                    automatically resized.
+
+OUTPUT PARAMETERS
+    Y0          -   array[N], S*x
+    Y1          -   array[N], S^T*x
+
+NOTE: this function throws exception when called for non-CRS matrix.  You
+must convert your matrix  with  SparseConvertToCRS()  before  using  this
+function. It also throws exception when S is non-square.
+
+  -- ALGLIB PROJECT --
+     Copyright 14.10.2011 by Bochkanov Sergey
+*************************************************************************/
+void sparsemv2(const sparsematrix &s, const real_1d_array &x, real_1d_array &y0, real_1d_array &y1)
+{
+    alglib_impl::ae_state _alglib_env_state;
+    alglib_impl::ae_state_init(&_alglib_env_state);
+    try
+    {
+        alglib_impl::sparsemv2(const_cast<alglib_impl::sparsematrix*>(s.c_ptr()), const_cast<alglib_impl::ae_vector*>(x.c_ptr()), const_cast<alglib_impl::ae_vector*>(y0.c_ptr()), const_cast<alglib_impl::ae_vector*>(y1.c_ptr()), &_alglib_env_state);
+        alglib_impl::ae_state_clear(&_alglib_env_state);
+        return;
+    }
+    catch(alglib_impl::ae_error_type)
+    {
+        throw ap_error(_alglib_env_state.error_msg);
+    }
+    catch(...)
+    {
+        throw;
+    }
+}
+
+/*************************************************************************
+This function calculates matrix-vector product  S*x, when S is  symmetric
+matrix.  Matrix  S  must  be stored in  CRS  format  (exception  will  be
+thrown otherwise).
+
+INPUT PARAMETERS
+    S           -   sparse M*M matrix in CRS format (you MUST convert  it
+                    to CRS before calling this function).
+    X           -   array[N], input vector. For  performance  reasons  we
+                    make only quick checks - we check that array size  is
+                    at least N, but we do not check for NAN's or INF's.
+    Y           -   output buffer, possibly preallocated. In case  buffer
+                    size is too small to store  result,  this  buffer  is
+                    automatically resized.
+
+OUTPUT PARAMETERS
+    Y           -   array[M], S*x
+
+NOTE: this function throws exception when called for non-CRS matrix.  You
+must convert your matrix  with  SparseConvertToCRS()  before  using  this
+function.
+
+  -- ALGLIB PROJECT --
+     Copyright 14.10.2011 by Bochkanov Sergey
+*************************************************************************/
+void sparsesmv(const sparsematrix &s, const bool isupper, const real_1d_array &x, real_1d_array &y)
+{
+    alglib_impl::ae_state _alglib_env_state;
+    alglib_impl::ae_state_init(&_alglib_env_state);
+    try
+    {
+        alglib_impl::sparsesmv(const_cast<alglib_impl::sparsematrix*>(s.c_ptr()), isupper, const_cast<alglib_impl::ae_vector*>(x.c_ptr()), const_cast<alglib_impl::ae_vector*>(y.c_ptr()), &_alglib_env_state);
+        alglib_impl::ae_state_clear(&_alglib_env_state);
+        return;
+    }
+    catch(alglib_impl::ae_error_type)
+    {
+        throw ap_error(_alglib_env_state.error_msg);
+    }
+    catch(...)
+    {
+        throw;
+    }
+}
+
+/*************************************************************************
+This function calculates matrix-matrix product  S*A.  Matrix  S  must  be
+stored in CRS format (exception will be thrown otherwise).
+
+INPUT PARAMETERS
+    S           -   sparse M*N matrix in CRS format (you MUST convert  it
+                    to CRS before calling this function).
+    A           -   array[N][K], input dense matrix. For  performance reasons
+                    we make only quick checks - we check that array size
+                    is at least N, but we do not check for NAN's or INF's.
+    K           -   number of columns of matrix (A).
+    B           -   output buffer, possibly preallocated. In case  buffer
+                    size is too small to store  result,  this  buffer  is
+                    automatically resized.
+
+OUTPUT PARAMETERS
+    B           -   array[M][K], S*A
+
+NOTE: this function throws exception when called for non-CRS matrix.  You
+must convert your matrix  with  SparseConvertToCRS()  before  using  this
+function.
+
+  -- ALGLIB PROJECT --
+     Copyright 14.10.2011 by Bochkanov Sergey
+*************************************************************************/
+void sparsemm(const sparsematrix &s, const real_2d_array &a, const ae_int_t k, real_2d_array &b)
+{
+    alglib_impl::ae_state _alglib_env_state;
+    alglib_impl::ae_state_init(&_alglib_env_state);
+    try
+    {
+        alglib_impl::sparsemm(const_cast<alglib_impl::sparsematrix*>(s.c_ptr()), const_cast<alglib_impl::ae_matrix*>(a.c_ptr()), k, const_cast<alglib_impl::ae_matrix*>(b.c_ptr()), &_alglib_env_state);
+        alglib_impl::ae_state_clear(&_alglib_env_state);
+        return;
+    }
+    catch(alglib_impl::ae_error_type)
+    {
+        throw ap_error(_alglib_env_state.error_msg);
+    }
+    catch(...)
+    {
+        throw;
+    }
+}
+
+/*************************************************************************
+This function calculates matrix-matrix product  S^T*A. Matrix S  must  be
+stored in CRS format (exception will be thrown otherwise).
+
+INPUT PARAMETERS
+    S           -   sparse M*N matrix in CRS format (you MUST convert  it
+                    to CRS before calling this function).
+    A           -   array[M][K], input dense matrix. For performance reasons
+                    we make only quick checks - we check that array size  is
+                    at least M, but we do not check for NAN's or INF's.
+    K           -   number of columns of matrix (A).
+    B           -   output buffer, possibly preallocated. In case  buffer
+                    size is too small to store  result,  this  buffer  is
+                    automatically resized.
+
+OUTPUT PARAMETERS
+    B           -   array[N][K], S^T*A
+
+NOTE: this function throws exception when called for non-CRS matrix.  You
+must convert your matrix  with  SparseConvertToCRS()  before  using  this
+function.
+
+  -- ALGLIB PROJECT --
+     Copyright 14.10.2011 by Bochkanov Sergey
+*************************************************************************/
+void sparsemtm(const sparsematrix &s, const real_2d_array &a, const ae_int_t k, real_2d_array &b)
+{
+    alglib_impl::ae_state _alglib_env_state;
+    alglib_impl::ae_state_init(&_alglib_env_state);
+    try
+    {
+        alglib_impl::sparsemtm(const_cast<alglib_impl::sparsematrix*>(s.c_ptr()), const_cast<alglib_impl::ae_matrix*>(a.c_ptr()), k, const_cast<alglib_impl::ae_matrix*>(b.c_ptr()), &_alglib_env_state);
+        alglib_impl::ae_state_clear(&_alglib_env_state);
+        return;
+    }
+    catch(alglib_impl::ae_error_type)
+    {
+        throw ap_error(_alglib_env_state.error_msg);
+    }
+    catch(...)
+    {
+        throw;
+    }
+}
+
+/*************************************************************************
+This function simultaneously calculates two matrix-matrix products:
+    S*A and S^T*A.
+S must be square (non-rectangular) matrix stored in CRS format (exception
+will be thrown otherwise).
+
+INPUT PARAMETERS
+    S           -   sparse N*N matrix in CRS format (you MUST convert  it
+                    to CRS before calling this function).
+    A           -   array[N][K], input dense matrix. For performance reasons
+                    we make only quick checks - we check that array size  is
+                    at least N, but we do not check for NAN's or INF's.
+    K           -   number of columns of matrix (A).
+    B0          -   output buffer, possibly preallocated. In case  buffer
+                    size is too small to store  result,  this  buffer  is
+                    automatically resized.
+    B1          -   output buffer, possibly preallocated. In case  buffer
+                    size is too small to store  result,  this  buffer  is
+                    automatically resized.
+
+OUTPUT PARAMETERS
+    B0          -   array[N][K], S*A
+    B1          -   array[N][K], S^T*A
+
+NOTE: this function throws exception when called for non-CRS matrix.  You
+must convert your matrix  with  SparseConvertToCRS()  before  using  this
+function. It also throws exception when S is non-square.
+
+  -- ALGLIB PROJECT --
+     Copyright 14.10.2011 by Bochkanov Sergey
+*************************************************************************/
+void sparsemm2(const sparsematrix &s, const real_2d_array &a, const ae_int_t k, real_2d_array &b0, real_2d_array &b1)
+{
+    alglib_impl::ae_state _alglib_env_state;
+    alglib_impl::ae_state_init(&_alglib_env_state);
+    try
+    {
+        alglib_impl::sparsemm2(const_cast<alglib_impl::sparsematrix*>(s.c_ptr()), const_cast<alglib_impl::ae_matrix*>(a.c_ptr()), k, const_cast<alglib_impl::ae_matrix*>(b0.c_ptr()), const_cast<alglib_impl::ae_matrix*>(b1.c_ptr()), &_alglib_env_state);
+        alglib_impl::ae_state_clear(&_alglib_env_state);
+        return;
+    }
+    catch(alglib_impl::ae_error_type)
+    {
+        throw ap_error(_alglib_env_state.error_msg);
+    }
+    catch(...)
+    {
+        throw;
+    }
+}
+
+/*************************************************************************
+This function calculates matrix-matrix product  S*A, when S  is  symmetric
+matrix.  Matrix  S  must  be stored  in  CRS  format  (exception  will  be
+thrown otherwise).
+
+INPUT PARAMETERS
+    S           -   sparse M*M matrix in CRS format (you MUST convert  it
+                    to CRS before calling this function).
+    A           -   array[N][K], input dense matrix. For performance reasons
+                    we make only quick checks - we check that array size is
+                    at least N, but we do not check for NAN's or INF's.
+    K           -   number of columns of matrix (A).
+    B           -   output buffer, possibly preallocated. In case  buffer
+                    size is too small to store  result,  this  buffer  is
+                    automatically resized.
+
+OUTPUT PARAMETERS
+    B           -   array[M][K], S*A
+
+NOTE: this function throws exception when called for non-CRS matrix.  You
+must convert your matrix  with  SparseConvertToCRS()  before  using  this
+function.
+
+  -- ALGLIB PROJECT --
+     Copyright 14.10.2011 by Bochkanov Sergey
+*************************************************************************/
+void sparsesmm(const sparsematrix &s, const bool isupper, const real_2d_array &a, const ae_int_t k, real_2d_array &b)
+{
+    alglib_impl::ae_state _alglib_env_state;
+    alglib_impl::ae_state_init(&_alglib_env_state);
+    try
+    {
+        alglib_impl::sparsesmm(const_cast<alglib_impl::sparsematrix*>(s.c_ptr()), isupper, const_cast<alglib_impl::ae_matrix*>(a.c_ptr()), k, const_cast<alglib_impl::ae_matrix*>(b.c_ptr()), &_alglib_env_state);
+        alglib_impl::ae_state_clear(&_alglib_env_state);
+        return;
+    }
+    catch(alglib_impl::ae_error_type)
+    {
+        throw ap_error(_alglib_env_state.error_msg);
+    }
+    catch(...)
+    {
+        throw;
+    }
+}
+
+/*************************************************************************
+This procedure resizes Hash-Table matrix. It can be called when you  have
+deleted too many elements from the matrix, and you want to  free unneeded
+memory.
+
+  -- ALGLIB PROJECT --
+     Copyright 14.10.2011 by Bochkanov Sergey
+*************************************************************************/
+void sparseresizematrix(const sparsematrix &s)
+{
+    alglib_impl::ae_state _alglib_env_state;
+    alglib_impl::ae_state_init(&_alglib_env_state);
+    try
+    {
+        alglib_impl::sparseresizematrix(const_cast<alglib_impl::sparsematrix*>(s.c_ptr()), &_alglib_env_state);
+        alglib_impl::ae_state_clear(&_alglib_env_state);
+        return;
+    }
+    catch(alglib_impl::ae_error_type)
+    {
+        throw ap_error(_alglib_env_state.error_msg);
+    }
+    catch(...)
+    {
+        throw;
+    }
+}
+
+/*************************************************************************
+This  function  is  used  to enumerate all elements of the sparse matrix.
+Before  first  call  user  initializes  T0 and T1 counters by zero. These
+counters are used to remember current position in a  matrix;  after  each
+call they are updated by the function.
+
+Subsequent calls to this function return non-zero elements of the  sparse
+matrix, one by one. If you enumerate CRS matrix, matrix is traversed from
+left to right, from top to bottom. In case you enumerate matrix stored as
+Hash table, elements are returned in random order.
+
+EXAMPLE
+    > T0=0
+    > T1=0
+    > while SparseEnumerate(S,T0,T1,I,J,V) do
+    >     ....do something with I,J,V
+
+INPUT PARAMETERS
+    S           -   sparse M*N matrix in Hash-Table or CRS representation.
+    T0          -   internal counter
+    T1          -   internal counter
+
+OUTPUT PARAMETERS
+    T0          -   new value of the internal counter
+    T1          -   new value of the internal counter
+    I           -   row index of non-zero element, 0<=I<M.
+    J           -   column index of non-zero element, 0<=J<N
+    V           -   value of the T-th element
+
+RESULT
+    True in case of success (next non-zero element was retrieved)
+    False in case all non-zero elements were enumerated
+
+  -- ALGLIB PROJECT --
+     Copyright 14.03.2012 by Bochkanov Sergey
+*************************************************************************/
+bool sparseenumerate(const sparsematrix &s, ae_int_t &t0, ae_int_t &t1, ae_int_t &i, ae_int_t &j, double &v)
+{
+    alglib_impl::ae_state _alglib_env_state;
+    alglib_impl::ae_state_init(&_alglib_env_state);
+    try
+    {
+        ae_bool result = alglib_impl::sparseenumerate(const_cast<alglib_impl::sparsematrix*>(s.c_ptr()), &t0, &t1, &i, &j, &v, &_alglib_env_state);
         alglib_impl::ae_state_clear(&_alglib_env_state);
         return *(reinterpret_cast<bool*>(&result));
     }
@@ -5068,66 +6238,155 @@ bool rmatrixbdsvd(real_1d_array &d, const real_1d_array &e, const ae_int_t n, co
 }
 
 /*************************************************************************
-Singular value decomposition of a rectangular matrix.
+This function rewrites existing (non-zero) element. It  returns  True   if
+element  exists  or  False,  when  it  is  called for non-existing  (zero)
+element.
 
-The algorithm calculates the singular value decomposition of a matrix of
-size MxN: A = U * S * V^T
+The purpose of this function is to provide convenient thread-safe  way  to
+modify  sparse  matrix.  Such  modification  (already  existing element is
+rewritten) is guaranteed to be thread-safe without any synchronization, as
+long as different threads modify different elements.
 
-The algorithm finds the singular values and, optionally, matrices U and V^T.
-The algorithm can find both first min(M,N) columns of matrix U and rows of
-matrix V^T (singular vectors), and matrices U and V^T wholly (of sizes MxM
-and NxN respectively).
+INPUT PARAMETERS
+    S           -   sparse M*N matrix in Hash-Table or CRS representation.
+    I           -   row index of non-zero element to modify, 0<=I<M
+    J           -   column index of non-zero element to modify, 0<=J<N
+    V           -   value to rewrite, must be finite number
 
-Take into account that the subroutine does not return matrix V but V^T.
+OUTPUT PARAMETERS
+    S           -   modified matrix
 
-Input parameters:
-    A           -   matrix to be decomposed.
-                    Array whose indexes range within [0..M-1, 0..N-1].
-    M           -   number of rows in matrix A.
-    N           -   number of columns in matrix A.
-    UNeeded     -   0, 1 or 2. See the description of the parameter U.
-    VTNeeded    -   0, 1 or 2. See the description of the parameter VT.
-    AdditionalMemory -
-                    If the parameter:
-                     * equals 0, the algorithm doesn’t use additional
-                       memory (lower requirements, lower performance).
-                     * equals 1, the algorithm uses additional
-                       memory of size min(M,N)*min(M,N) of real numbers.
-                       It often speeds up the algorithm.
-                     * equals 2, the algorithm uses additional
-                       memory of size M*min(M,N) of real numbers.
-                       It allows to get a maximum performance.
-                    The recommended value of the parameter is 2.
+  -- ALGLIB PROJECT --
+     Copyright 14.03.2012 by Bochkanov Sergey
+*************************************************************************/
+bool sparserewriteexisting(const sparsematrix &s, const ae_int_t i, const ae_int_t j, const double v)
+{
+    alglib_impl::ae_state _alglib_env_state;
+    alglib_impl::ae_state_init(&_alglib_env_state);
+    try
+    {
+        ae_bool result = alglib_impl::sparserewriteexisting(const_cast<alglib_impl::sparsematrix*>(s.c_ptr()), i, j, v, &_alglib_env_state);
+        alglib_impl::ae_state_clear(&_alglib_env_state);
+        return *(reinterpret_cast<bool*>(&result));
+    }
+    catch(alglib_impl::ae_error_type)
+    {
+        throw ap_error(_alglib_env_state.error_msg);
+    }
+    catch(...)
+    {
+        throw;
+    }
+}
 
-Output parameters:
-    W           -   contains singular values in descending order.
-    U           -   if UNeeded=0, U isn't changed, the left singular vectors
-                    are not calculated.
-                    if Uneeded=1, U contains left singular vectors (first
-                    min(M,N) columns of matrix U). Array whose indexes range
-                    within [0..M-1, 0..Min(M,N)-1].
-                    if UNeeded=2, U contains matrix U wholly. Array whose
-                    indexes range within [0..M-1, 0..M-1].
-    VT          -   if VTNeeded=0, VT isn’t changed, the right singular vectors
-                    are not calculated.
-                    if VTNeeded=1, VT contains right singular vectors (first
-                    min(M,N) rows of matrix V^T). Array whose indexes range
-                    within [0..min(M,N)-1, 0..N-1].
-                    if VTNeeded=2, VT contains matrix V^T wholly. Array whose
-                    indexes range within [0..N-1, 0..N-1].
+/*************************************************************************
+This object stores state of the iterative norm estimation algorithm.
+
+You should use ALGLIB functions to work with this object.
+*************************************************************************/
+_normestimatorstate_owner::_normestimatorstate_owner()
+{
+    p_struct = (alglib_impl::normestimatorstate*)alglib_impl::ae_malloc(sizeof(alglib_impl::normestimatorstate), NULL);
+    if( p_struct==NULL )
+        throw ap_error("ALGLIB: malloc error");
+    if( !alglib_impl::_normestimatorstate_init(p_struct, NULL, ae_false) )
+        throw ap_error("ALGLIB: malloc error");
+}
+
+_normestimatorstate_owner::_normestimatorstate_owner(const _normestimatorstate_owner &rhs)
+{
+    p_struct = (alglib_impl::normestimatorstate*)alglib_impl::ae_malloc(sizeof(alglib_impl::normestimatorstate), NULL);
+    if( p_struct==NULL )
+        throw ap_error("ALGLIB: malloc error");
+    if( !alglib_impl::_normestimatorstate_init_copy(p_struct, const_cast<alglib_impl::normestimatorstate*>(rhs.p_struct), NULL, ae_false) )
+        throw ap_error("ALGLIB: malloc error");
+}
+
+_normestimatorstate_owner& _normestimatorstate_owner::operator=(const _normestimatorstate_owner &rhs)
+{
+    if( this==&rhs )
+        return *this;
+    alglib_impl::_normestimatorstate_clear(p_struct);
+    if( !alglib_impl::_normestimatorstate_init_copy(p_struct, const_cast<alglib_impl::normestimatorstate*>(rhs.p_struct), NULL, ae_false) )
+        throw ap_error("ALGLIB: malloc error");
+    return *this;
+}
+
+_normestimatorstate_owner::~_normestimatorstate_owner()
+{
+    alglib_impl::_normestimatorstate_clear(p_struct);
+    ae_free(p_struct);
+}
+
+alglib_impl::normestimatorstate* _normestimatorstate_owner::c_ptr()
+{
+    return p_struct;
+}
+
+alglib_impl::normestimatorstate* _normestimatorstate_owner::c_ptr() const
+{
+    return const_cast<alglib_impl::normestimatorstate*>(p_struct);
+}
+normestimatorstate::normestimatorstate() : _normestimatorstate_owner() 
+{
+}
+
+normestimatorstate::normestimatorstate(const normestimatorstate &rhs):_normestimatorstate_owner(rhs) 
+{
+}
+
+normestimatorstate& normestimatorstate::operator=(const normestimatorstate &rhs)
+{
+    if( this==&rhs )
+        return *this;
+    _normestimatorstate_owner::operator=(rhs);
+    return *this;
+}
+
+normestimatorstate::~normestimatorstate()
+{
+}
+
+/*************************************************************************
+This procedure initializes matrix norm estimator.
+
+USAGE:
+1. User initializes algorithm state with NormEstimatorCreate() call
+2. User calls NormEstimatorEstimateSparse() (or NormEstimatorIteration())
+3. User calls NormEstimatorResults() to get solution.
+
+INPUT PARAMETERS:
+    M       -   number of rows in the matrix being estimated, M>0
+    N       -   number of columns in the matrix being estimated, N>0
+    NStart  -   number of random starting vectors
+                recommended value - at least 5.
+    NIts    -   number of iterations to do with best starting vector
+                recommended value - at least 5.
+
+OUTPUT PARAMETERS:
+    State   -   structure which stores algorithm state
+
+
+NOTE: this algorithm is effectively deterministic, i.e. it always  returns
+same result when repeatedly called for the same matrix. In fact, algorithm
+uses randomized starting vectors, but internal  random  numbers  generator
+always generates same sequence of the random values (it is a  feature, not
+bug).
+
+Algorithm can be made non-deterministic with NormEstimatorSetSeed(0) call.
 
   -- ALGLIB --
-     Copyright 2005 by Bochkanov Sergey
+     Copyright 06.12.2011 by Bochkanov Sergey
 *************************************************************************/
-bool rmatrixsvd(const real_2d_array &a, const ae_int_t m, const ae_int_t n, const ae_int_t uneeded, const ae_int_t vtneeded, const ae_int_t additionalmemory, real_1d_array &w, real_2d_array &u, real_2d_array &vt)
+void normestimatorcreate(const ae_int_t m, const ae_int_t n, const ae_int_t nstart, const ae_int_t nits, normestimatorstate &state)
 {
     alglib_impl::ae_state _alglib_env_state;
     alglib_impl::ae_state_init(&_alglib_env_state);
     try
     {
-        ae_bool result = alglib_impl::rmatrixsvd(const_cast<alglib_impl::ae_matrix*>(a.c_ptr()), m, n, uneeded, vtneeded, additionalmemory, const_cast<alglib_impl::ae_vector*>(w.c_ptr()), const_cast<alglib_impl::ae_matrix*>(u.c_ptr()), const_cast<alglib_impl::ae_matrix*>(vt.c_ptr()), &_alglib_env_state);
+        alglib_impl::normestimatorcreate(m, n, nstart, nits, const_cast<alglib_impl::normestimatorstate*>(state.c_ptr()), &_alglib_env_state);
         alglib_impl::ae_state_clear(&_alglib_env_state);
-        return *(reinterpret_cast<bool*>(&result));
+        return;
     }
     catch(alglib_impl::ae_error_type)
     {
@@ -5139,7 +6398,109 @@ bool rmatrixsvd(const real_2d_array &a, const ae_int_t m, const ae_int_t n, cons
     }
 }
 
+/*************************************************************************
+This function changes seed value used by algorithm. In some cases we  need
+deterministic processing, i.e. subsequent calls must return equal results,
+in other cases we need non-deterministic algorithm which returns different
+results for the same matrix on every pass.
 
+Setting zero seed will lead to non-deterministic algorithm, while non-zero
+value will make our algorithm deterministic.
+
+INPUT PARAMETERS:
+    State       -   norm estimator state, must be initialized with a  call
+                    to NormEstimatorCreate()
+    SeedVal     -   seed value, >=0. Zero value = non-deterministic algo.
+
+  -- ALGLIB --
+     Copyright 06.12.2011 by Bochkanov Sergey
+*************************************************************************/
+void normestimatorsetseed(const normestimatorstate &state, const ae_int_t seedval)
+{
+    alglib_impl::ae_state _alglib_env_state;
+    alglib_impl::ae_state_init(&_alglib_env_state);
+    try
+    {
+        alglib_impl::normestimatorsetseed(const_cast<alglib_impl::normestimatorstate*>(state.c_ptr()), seedval, &_alglib_env_state);
+        alglib_impl::ae_state_clear(&_alglib_env_state);
+        return;
+    }
+    catch(alglib_impl::ae_error_type)
+    {
+        throw ap_error(_alglib_env_state.error_msg);
+    }
+    catch(...)
+    {
+        throw;
+    }
+}
+
+/*************************************************************************
+This function estimates norm of the sparse M*N matrix A.
+
+INPUT PARAMETERS:
+    State       -   norm estimator state, must be initialized with a  call
+                    to NormEstimatorCreate()
+    A           -   sparse M*N matrix, must be converted to CRS format
+                    prior to calling this function.
+
+After this function  is  over  you can call NormEstimatorResults() to get
+estimate of the norm(A).
+
+  -- ALGLIB --
+     Copyright 06.12.2011 by Bochkanov Sergey
+*************************************************************************/
+void normestimatorestimatesparse(const normestimatorstate &state, const sparsematrix &a)
+{
+    alglib_impl::ae_state _alglib_env_state;
+    alglib_impl::ae_state_init(&_alglib_env_state);
+    try
+    {
+        alglib_impl::normestimatorestimatesparse(const_cast<alglib_impl::normestimatorstate*>(state.c_ptr()), const_cast<alglib_impl::sparsematrix*>(a.c_ptr()), &_alglib_env_state);
+        alglib_impl::ae_state_clear(&_alglib_env_state);
+        return;
+    }
+    catch(alglib_impl::ae_error_type)
+    {
+        throw ap_error(_alglib_env_state.error_msg);
+    }
+    catch(...)
+    {
+        throw;
+    }
+}
+
+/*************************************************************************
+Matrix norm estimation results
+
+INPUT PARAMETERS:
+    State   -   algorithm state
+
+OUTPUT PARAMETERS:
+    Nrm     -   estimate of the matrix norm, Nrm>=0
+
+  -- ALGLIB --
+     Copyright 06.12.2011 by Bochkanov Sergey
+*************************************************************************/
+void normestimatorresults(const normestimatorstate &state, double &nrm)
+{
+    alglib_impl::ae_state _alglib_env_state;
+    alglib_impl::ae_state_init(&_alglib_env_state);
+    try
+    {
+        alglib_impl::normestimatorresults(const_cast<alglib_impl::normestimatorstate*>(state.c_ptr()), &nrm, &_alglib_env_state);
+        alglib_impl::ae_state_clear(&_alglib_env_state);
+        return;
+    }
+    catch(alglib_impl::ae_error_type)
+    {
+        throw ap_error(_alglib_env_state.error_msg);
+    }
+    catch(...)
+    {
+        throw;
+    }
+}
 
 /*************************************************************************
 Determinant calculation of the matrix given by its LU decomposition.
@@ -6146,20 +7507,6 @@ static void ablas_rmatrixgemmk(ae_int_t m,
      ae_state *_state);
 
 
-static void ortfac_rmatrixqrbasecase(/* Real    */ ae_matrix* a,
-     ae_int_t m,
-     ae_int_t n,
-     /* Real    */ ae_vector* work,
-     /* Real    */ ae_vector* t,
-     /* Real    */ ae_vector* tau,
-     ae_state *_state);
-static void ortfac_rmatrixlqbasecase(/* Real    */ ae_matrix* a,
-     ae_int_t m,
-     ae_int_t n,
-     /* Real    */ ae_vector* work,
-     /* Real    */ ae_vector* t,
-     /* Real    */ ae_vector* tau,
-     ae_state *_state);
 static void ortfac_cmatrixqrbasecase(/* Complex */ ae_matrix* a,
      ae_int_t m,
      ae_int_t n,
@@ -6190,6 +7537,42 @@ static void ortfac_cmatrixblockreflector(/* Complex */ ae_matrix* a,
      /* Complex */ ae_matrix* t,
      /* Complex */ ae_vector* work,
      ae_state *_state);
+
+
+static ae_bool bdsvd_bidiagonalsvddecompositioninternal(/* Real    */ ae_vector* d,
+     /* Real    */ ae_vector* e,
+     ae_int_t n,
+     ae_bool isupper,
+     ae_bool isfractionalaccuracyrequired,
+     /* Real    */ ae_matrix* u,
+     ae_int_t ustart,
+     ae_int_t nru,
+     /* Real    */ ae_matrix* c,
+     ae_int_t cstart,
+     ae_int_t ncc,
+     /* Real    */ ae_matrix* vt,
+     ae_int_t vstart,
+     ae_int_t ncvt,
+     ae_state *_state);
+static double bdsvd_extsignbdsqr(double a, double b, ae_state *_state);
+static void bdsvd_svd2x2(double f,
+     double g,
+     double h,
+     double* ssmin,
+     double* ssmax,
+     ae_state *_state);
+static void bdsvd_svdv2x2(double f,
+     double g,
+     double h,
+     double* ssmin,
+     double* ssmax,
+     double* snr,
+     double* csr,
+     double* snl,
+     double* csl,
+     ae_state *_state);
+
+
 
 
 static ae_bool evd_tridiagonalevd(/* Real    */ ae_vector* d,
@@ -6554,40 +7937,18 @@ static void matinv_hpdmatrixcholeskyinverserec(/* Complex */ ae_matrix* a,
      ae_state *_state);
 
 
-static ae_bool bdsvd_bidiagonalsvddecompositioninternal(/* Real    */ ae_vector* d,
-     /* Real    */ ae_vector* e,
-     ae_int_t n,
-     ae_bool isupper,
-     ae_bool isfractionalaccuracyrequired,
-     /* Real    */ ae_matrix* u,
-     ae_int_t ustart,
-     ae_int_t nru,
-     /* Real    */ ae_matrix* c,
-     ae_int_t cstart,
-     ae_int_t ncc,
-     /* Real    */ ae_matrix* vt,
-     ae_int_t vstart,
-     ae_int_t ncvt,
-     ae_state *_state);
-static double bdsvd_extsignbdsqr(double a, double b, ae_state *_state);
-static void bdsvd_svd2x2(double f,
-     double g,
-     double h,
-     double* ssmin,
-     double* ssmax,
-     ae_state *_state);
-static void bdsvd_svdv2x2(double f,
-     double g,
-     double h,
-     double* ssmin,
-     double* ssmax,
-     double* snr,
-     double* csr,
-     double* snl,
-     double* csl,
-     ae_state *_state);
 
 
+static double sparse_desiredloadfactor = 0.66;
+static double sparse_maxloadfactor = 0.75;
+static double sparse_growfactor = 2.00;
+static ae_int_t sparse_additional = 10;
+static ae_int_t sparse_linalgswitch = 16;
+static void sparse_sparseinitduidx(sparsematrix* s, ae_state *_state);
+static ae_int_t sparse_hash(ae_int_t i,
+     ae_int_t j,
+     ae_int_t tabsize,
+     ae_state *_state);
 
 
 
@@ -6738,7 +8099,7 @@ Input parameters:
     A   -   source matrix, MxN submatrix is copied and transposed
     IA  -   submatrix offset (row index)
     JA  -   submatrix offset (column index)
-    A   -   destination matrix
+    B   -   destination matrix, must be large enough to store result
     IB  -   submatrix offset (row index)
     JB  -   submatrix offset (column index)
 *************************************************************************/
@@ -6799,7 +8160,7 @@ Input parameters:
     A   -   source matrix, MxN submatrix is copied and transposed
     IA  -   submatrix offset (row index)
     JA  -   submatrix offset (column index)
-    A   -   destination matrix
+    B   -   destination matrix, must be large enough to store result
     IB  -   submatrix offset (row index)
     JB  -   submatrix offset (column index)
 *************************************************************************/
@@ -6860,7 +8221,7 @@ Input parameters:
     A   -   source matrix, MxN submatrix is copied and transposed
     IA  -   submatrix offset (row index)
     JA  -   submatrix offset (column index)
-    B   -   destination matrix
+    B   -   destination matrix, must be large enough to store result
     IB  -   submatrix offset (row index)
     JB  -   submatrix offset (column index)
 *************************************************************************/
@@ -6877,6 +8238,10 @@ void cmatrixcopy(ae_int_t m,
     ae_int_t i;
 
 
+    if( m==0||n==0 )
+    {
+        return;
+    }
     for(i=0; i<=m-1; i++)
     {
         ae_v_cmove(&b->ptr.pp_complex[ib+i][jb], 1, &a->ptr.pp_complex[ia+i][ja], 1, "N", ae_v_len(jb,jb+n-1));
@@ -6893,7 +8258,7 @@ Input parameters:
     A   -   source matrix, MxN submatrix is copied and transposed
     IA  -   submatrix offset (row index)
     JA  -   submatrix offset (column index)
-    B   -   destination matrix
+    B   -   destination matrix, must be large enough to store result
     IB  -   submatrix offset (row index)
     JB  -   submatrix offset (column index)
 *************************************************************************/
@@ -6910,6 +8275,10 @@ void rmatrixcopy(ae_int_t m,
     ae_int_t i;
 
 
+    if( m==0||n==0 )
+    {
+        return;
+    }
     for(i=0; i<=m-1; i++)
     {
         ae_v_move(&b->ptr.pp_double[ib+i][jb], 1, &a->ptr.pp_double[ia+i][ja], 1, ae_v_len(jb,jb+n-1));
@@ -7025,6 +8394,7 @@ INPUT PARAMETERS:
     X   -   input vector
     IX  -   subvector offset
     IY  -   subvector offset
+    Y   -   preallocated matrix, must be large enough to store result
 
 OUTPUT PARAMETERS:
     Y   -   vector which stores result
@@ -7135,6 +8505,7 @@ INPUT PARAMETERS:
     X   -   input vector
     IX  -   subvector offset
     IY  -   subvector offset
+    Y   -   preallocated matrix, must be large enough to store result
 
 OUTPUT PARAMETERS:
     Y   -   vector which stores result
@@ -7234,7 +8605,7 @@ INPUT PARAMETERS
                 * 0 - no transformation
                 * 1 - transposition
                 * 2 - conjugate transposition
-    C   -   matrix, actial matrix is stored in C[I2:I2+M-1,J2:J2+N-1]
+    X   -   matrix, actial matrix is stored in X[I2:I2+M-1,J2:J2+N-1]
     I2  -   submatrix offset
     J2  -   submatrix offset
 
@@ -7366,7 +8737,7 @@ INPUT PARAMETERS
                 * 0 - no transformation
                 * 1 - transposition
                 * 2 - conjugate transposition
-    C   -   matrix, actial matrix is stored in C[I2:I2+M-1,J2:J2+N-1]
+    X   -   matrix, actial matrix is stored in X[I2:I2+M-1,J2:J2+N-1]
     I2  -   submatrix offset
     J2  -   submatrix offset
 
@@ -7472,9 +8843,28 @@ void cmatrixlefttrsm(ae_int_t m,
 
 
 /*************************************************************************
-Same as CMatrixRightTRSM, but for real matrices
+This subroutine calculates X*op(A^-1) where:
+* X is MxN general matrix
+* A is NxN upper/lower triangular/unitriangular matrix
+* "op" may be identity transformation, transposition
 
-OpType may be only 0 or 1.
+Multiplication result replaces X.
+Cache-oblivious algorithm is used.
+
+INPUT PARAMETERS
+    N   -   matrix size, N>=0
+    M   -   matrix size, N>=0
+    A       -   matrix, actial matrix is stored in A[I1:I1+N-1,J1:J1+N-1]
+    I1      -   submatrix offset
+    J1      -   submatrix offset
+    IsUpper -   whether matrix is upper triangular
+    IsUnit  -   whether matrix is unitriangular
+    OpType  -   transformation type:
+                * 0 - no transformation
+                * 1 - transposition
+    X   -   matrix, actial matrix is stored in X[I2:I2+M-1,J2:J2+N-1]
+    I2  -   submatrix offset
+    J2  -   submatrix offset
 
   -- ALGLIB routine --
      15.12.2009
@@ -7584,9 +8974,28 @@ void rmatrixrighttrsm(ae_int_t m,
 
 
 /*************************************************************************
-Same as CMatrixLeftTRSM, but for real matrices
+This subroutine calculates op(A^-1)*X where:
+* X is MxN general matrix
+* A is MxM upper/lower triangular/unitriangular matrix
+* "op" may be identity transformation, transposition
 
-OpType may be only 0 or 1.
+Multiplication result replaces X.
+Cache-oblivious algorithm is used.
+
+INPUT PARAMETERS
+    N   -   matrix size, N>=0
+    M   -   matrix size, N>=0
+    A       -   matrix, actial matrix is stored in A[I1:I1+M-1,J1:J1+M-1]
+    I1      -   submatrix offset
+    J1      -   submatrix offset
+    IsUpper -   whether matrix is upper triangular
+    IsUnit  -   whether matrix is unitriangular
+    OpType  -   transformation type:
+                * 0 - no transformation
+                * 1 - transposition
+    X   -   matrix, actial matrix is stored in X[I2:I2+M-1,J2:J2+N-1]
+    I2  -   submatrix offset
+    J2  -   submatrix offset
 
   -- ALGLIB routine --
      15.12.2009
@@ -7805,9 +9214,33 @@ void cmatrixsyrk(ae_int_t n,
 
 
 /*************************************************************************
-Same as CMatrixSYRK, but for real matrices
+This subroutine calculates  C=alpha*A*A^T+beta*C  or  C=alpha*A^T*A+beta*C
+where:
+* C is NxN symmetric matrix given by its upper/lower triangle
+* A is NxK matrix when A*A^T is calculated, KxN matrix otherwise
 
-OpType may be only 0 or 1.
+Additional info:
+* cache-oblivious algorithm is used.
+* multiplication result replaces C. If Beta=0, C elements are not used in
+  calculations (not multiplied by zero - just not referenced)
+* if Alpha=0, A is not used (not multiplied by zero - just not referenced)
+* if both Beta and Alpha are zero, C is filled by zeros.
+
+INPUT PARAMETERS
+    N       -   matrix size, N>=0
+    K       -   matrix size, K>=0
+    Alpha   -   coefficient
+    A       -   matrix
+    IA      -   submatrix offset
+    JA      -   submatrix offset
+    OpTypeA -   multiplication type:
+                * 0 - A*A^T is calculated
+                * 2 - A^T*A is calculated
+    Beta    -   coefficient
+    C       -   matrix
+    IC      -   submatrix offset
+    JC      -   submatrix offset
+    IsUpper -   whether C is upper triangular or lower triangular
 
   -- ALGLIB routine --
      16.12.2009
@@ -7910,8 +9343,8 @@ Additional info:
 * if both Beta and Alpha are zero, C is filled by zeros.
 
 INPUT PARAMETERS
+    M       -   matrix size, M>0
     N       -   matrix size, N>0
-    M       -   matrix size, N>0
     K       -   matrix size, K>0
     Alpha   -   coefficient
     A       -   matrix
@@ -8036,8 +9469,40 @@ void cmatrixgemm(ae_int_t m,
 
 
 /*************************************************************************
-Same as CMatrixGEMM, but for real numbers.
-OpType may be only 0 or 1.
+This subroutine calculates C = alpha*op1(A)*op2(B) +beta*C where:
+* C is MxN general matrix
+* op1(A) is MxK matrix
+* op2(B) is KxN matrix
+* "op" may be identity transformation, transposition
+
+Additional info:
+* cache-oblivious algorithm is used.
+* multiplication result replaces C. If Beta=0, C elements are not used in
+  calculations (not multiplied by zero - just not referenced)
+* if Alpha=0, A is not used (not multiplied by zero - just not referenced)
+* if both Beta and Alpha are zero, C is filled by zeros.
+
+INPUT PARAMETERS
+    M       -   matrix size, M>0
+    N       -   matrix size, N>0
+    K       -   matrix size, K>0
+    Alpha   -   coefficient
+    A       -   matrix
+    IA      -   submatrix offset
+    JA      -   submatrix offset
+    OpTypeA -   transformation type:
+                * 0 - no transformation
+                * 1 - transposition
+    B       -   matrix
+    IB      -   submatrix offset
+    JB      -   submatrix offset
+    OpTypeB -   transformation type:
+                * 0 - no transformation
+                * 1 - transposition
+    Beta    -   coefficient
+    C       -   matrix
+    IC      -   submatrix offset
+    JC      -   submatrix offset
 
   -- ALGLIB routine --
      16.12.2009
@@ -9777,7 +11242,7 @@ void rmatrixqr(/* Real    */ ae_matrix* a,
          * access pattern.
          */
         rmatrixcopy(rowscount, blocksize, a, blockstart, blockstart, &tmpa, 0, 0, _state);
-        ortfac_rmatrixqrbasecase(&tmpa, rowscount, blocksize, &work, &t, &taubuf, _state);
+        rmatrixqrbasecase(&tmpa, rowscount, blocksize, &work, &t, &taubuf, _state);
         rmatrixcopy(rowscount, blocksize, &tmpa, 0, 0, a, blockstart, blockstart, _state);
         ae_v_move(&tau->ptr.p_double[blockstart], 1, &taubuf.ptr.p_double[0], 1, ae_v_len(blockstart,blockstart+blocksize-1));
         
@@ -9933,7 +11398,7 @@ void rmatrixlq(/* Real    */ ae_matrix* a,
          * access pattern.
          */
         rmatrixcopy(blocksize, columnscount, a, blockstart, blockstart, &tmpa, 0, 0, _state);
-        ortfac_rmatrixlqbasecase(&tmpa, blocksize, columnscount, &work, &t, &taubuf, _state);
+        rmatrixlqbasecase(&tmpa, blocksize, columnscount, &work, &t, &taubuf, _state);
         rmatrixcopy(blocksize, columnscount, &tmpa, 0, 0, a, blockstart, blockstart, _state);
         ae_v_move(&tau->ptr.p_double[blockstart], 1, &taubuf.ptr.p_double[0], 1, ae_v_len(blockstart,blockstart+blocksize-1));
         
@@ -10365,48 +11830,51 @@ void rmatrixqrunpackq(/* Real    */ ae_matrix* a,
     while(blockstart>=0)
     {
         rowscount = m-blockstart;
-        
-        /*
-         * Copy current block
-         */
-        rmatrixcopy(rowscount, blocksize, a, blockstart, blockstart, &tmpa, 0, 0, _state);
-        ae_v_move(&taubuf.ptr.p_double[0], 1, &tau->ptr.p_double[blockstart], 1, ae_v_len(0,blocksize-1));
-        
-        /*
-         * Update, choose between:
-         * a) Level 2 algorithm (when the rest of the matrix is small enough)
-         * b) blocked algorithm, see algorithm 5 from  'A storage efficient WY
-         *    representation for products of Householder transformations',
-         *    by R. Schreiber and C. Van Loan.
-         */
-        if( qcolumns>=2*ablasblocksize(a, _state) )
+        if( blocksize>0 )
         {
             
             /*
-             * Prepare block reflector
+             * Copy current block
              */
-            ortfac_rmatrixblockreflector(&tmpa, &taubuf, ae_true, rowscount, blocksize, &tmpt, &work, _state);
+            rmatrixcopy(rowscount, blocksize, a, blockstart, blockstart, &tmpa, 0, 0, _state);
+            ae_v_move(&taubuf.ptr.p_double[0], 1, &tau->ptr.p_double[blockstart], 1, ae_v_len(0,blocksize-1));
             
             /*
-             * Multiply matrix by Q.
-             *
-             * Q  = E + Y*T*Y'  = E + TmpA*TmpT*TmpA'
+             * Update, choose between:
+             * a) Level 2 algorithm (when the rest of the matrix is small enough)
+             * b) blocked algorithm, see algorithm 5 from  'A storage efficient WY
+             *    representation for products of Householder transformations',
+             *    by R. Schreiber and C. Van Loan.
              */
-            rmatrixgemm(blocksize, qcolumns, rowscount, 1.0, &tmpa, 0, 0, 1, q, blockstart, 0, 0, 0.0, &tmpr, 0, 0, _state);
-            rmatrixgemm(blocksize, qcolumns, blocksize, 1.0, &tmpt, 0, 0, 0, &tmpr, 0, 0, 0, 0.0, &tmpr, blocksize, 0, _state);
-            rmatrixgemm(rowscount, qcolumns, blocksize, 1.0, &tmpa, 0, 0, 0, &tmpr, blocksize, 0, 0, 1.0, q, blockstart, 0, _state);
-        }
-        else
-        {
-            
-            /*
-             * Level 2 algorithm
-             */
-            for(i=blocksize-1; i>=0; i--)
+            if( qcolumns>=2*ablasblocksize(a, _state) )
             {
-                ae_v_move(&t.ptr.p_double[1], 1, &tmpa.ptr.pp_double[i][i], tmpa.stride, ae_v_len(1,rowscount-i));
-                t.ptr.p_double[1] = 1;
-                applyreflectionfromtheleft(q, taubuf.ptr.p_double[i], &t, blockstart+i, m-1, 0, qcolumns-1, &work, _state);
+                
+                /*
+                 * Prepare block reflector
+                 */
+                ortfac_rmatrixblockreflector(&tmpa, &taubuf, ae_true, rowscount, blocksize, &tmpt, &work, _state);
+                
+                /*
+                 * Multiply matrix by Q.
+                 *
+                 * Q  = E + Y*T*Y'  = E + TmpA*TmpT*TmpA'
+                 */
+                rmatrixgemm(blocksize, qcolumns, rowscount, 1.0, &tmpa, 0, 0, 1, q, blockstart, 0, 0, 0.0, &tmpr, 0, 0, _state);
+                rmatrixgemm(blocksize, qcolumns, blocksize, 1.0, &tmpt, 0, 0, 0, &tmpr, 0, 0, 0, 0.0, &tmpr, blocksize, 0, _state);
+                rmatrixgemm(rowscount, qcolumns, blocksize, 1.0, &tmpa, 0, 0, 0, &tmpr, blocksize, 0, 0, 1.0, q, blockstart, 0, _state);
+            }
+            else
+            {
+                
+                /*
+                 * Level 2 algorithm
+                 */
+                for(i=blocksize-1; i>=0; i--)
+                {
+                    ae_v_move(&t.ptr.p_double[1], 1, &tmpa.ptr.pp_double[i][i], tmpa.stride, ae_v_len(1,rowscount-i));
+                    t.ptr.p_double[1] = 1;
+                    applyreflectionfromtheleft(q, taubuf.ptr.p_double[i], &t, blockstart+i, m-1, 0, qcolumns-1, &work, _state);
+                }
             }
         }
         
@@ -10563,48 +12031,51 @@ void rmatrixlqunpackq(/* Real    */ ae_matrix* a,
     while(blockstart>=0)
     {
         columnscount = n-blockstart;
-        
-        /*
-         * Copy submatrix
-         */
-        rmatrixcopy(blocksize, columnscount, a, blockstart, blockstart, &tmpa, 0, 0, _state);
-        ae_v_move(&taubuf.ptr.p_double[0], 1, &tau->ptr.p_double[blockstart], 1, ae_v_len(0,blocksize-1));
-        
-        /*
-         * Update matrix, choose between:
-         * a) Level 2 algorithm (when the rest of the matrix is small enough)
-         * b) blocked algorithm, see algorithm 5 from  'A storage efficient WY
-         *    representation for products of Householder transformations',
-         *    by R. Schreiber and C. Van Loan.
-         */
-        if( qrows>=2*ablasblocksize(a, _state) )
+        if( blocksize>0 )
         {
             
             /*
-             * Prepare block reflector
+             * Copy submatrix
              */
-            ortfac_rmatrixblockreflector(&tmpa, &taubuf, ae_false, columnscount, blocksize, &tmpt, &work, _state);
+            rmatrixcopy(blocksize, columnscount, a, blockstart, blockstart, &tmpa, 0, 0, _state);
+            ae_v_move(&taubuf.ptr.p_double[0], 1, &tau->ptr.p_double[blockstart], 1, ae_v_len(0,blocksize-1));
             
             /*
-             * Multiply the rest of A by Q'.
-             *
-             * Q'  = E + Y*T'*Y'  = E + TmpA'*TmpT'*TmpA
+             * Update matrix, choose between:
+             * a) Level 2 algorithm (when the rest of the matrix is small enough)
+             * b) blocked algorithm, see algorithm 5 from  'A storage efficient WY
+             *    representation for products of Householder transformations',
+             *    by R. Schreiber and C. Van Loan.
              */
-            rmatrixgemm(qrows, blocksize, columnscount, 1.0, q, 0, blockstart, 0, &tmpa, 0, 0, 1, 0.0, &tmpr, 0, 0, _state);
-            rmatrixgemm(qrows, blocksize, blocksize, 1.0, &tmpr, 0, 0, 0, &tmpt, 0, 0, 1, 0.0, &tmpr, 0, blocksize, _state);
-            rmatrixgemm(qrows, columnscount, blocksize, 1.0, &tmpr, 0, blocksize, 0, &tmpa, 0, 0, 0, 1.0, q, 0, blockstart, _state);
-        }
-        else
-        {
-            
-            /*
-             * Level 2 algorithm
-             */
-            for(i=blocksize-1; i>=0; i--)
+            if( qrows>=2*ablasblocksize(a, _state) )
             {
-                ae_v_move(&t.ptr.p_double[1], 1, &tmpa.ptr.pp_double[i][i], 1, ae_v_len(1,columnscount-i));
-                t.ptr.p_double[1] = 1;
-                applyreflectionfromtheright(q, taubuf.ptr.p_double[i], &t, 0, qrows-1, blockstart+i, n-1, &work, _state);
+                
+                /*
+                 * Prepare block reflector
+                 */
+                ortfac_rmatrixblockreflector(&tmpa, &taubuf, ae_false, columnscount, blocksize, &tmpt, &work, _state);
+                
+                /*
+                 * Multiply the rest of A by Q'.
+                 *
+                 * Q'  = E + Y*T'*Y'  = E + TmpA'*TmpT'*TmpA
+                 */
+                rmatrixgemm(qrows, blocksize, columnscount, 1.0, q, 0, blockstart, 0, &tmpa, 0, 0, 1, 0.0, &tmpr, 0, 0, _state);
+                rmatrixgemm(qrows, blocksize, blocksize, 1.0, &tmpr, 0, 0, 0, &tmpt, 0, 0, 1, 0.0, &tmpr, 0, blocksize, _state);
+                rmatrixgemm(qrows, columnscount, blocksize, 1.0, &tmpr, 0, blocksize, 0, &tmpa, 0, 0, 0, 1.0, q, 0, blockstart, _state);
+            }
+            else
+            {
+                
+                /*
+                 * Level 2 algorithm
+                 */
+                for(i=blocksize-1; i>=0; i--)
+                {
+                    ae_v_move(&t.ptr.p_double[1], 1, &tmpa.ptr.pp_double[i][i], 1, ae_v_len(1,columnscount-i));
+                    t.ptr.p_double[1] = 1;
+                    applyreflectionfromtheright(q, taubuf.ptr.p_double[i], &t, 0, qrows-1, blockstart+i, n-1, &work, _state);
+                }
             }
         }
         
@@ -10761,51 +12232,54 @@ void cmatrixqrunpackq(/* Complex */ ae_matrix* a,
     while(blockstart>=0)
     {
         rowscount = m-blockstart;
-        
-        /*
-         * QR decomposition of submatrix.
-         * Matrix is copied to temporary storage to solve
-         * some TLB issues arising from non-contiguous memory
-         * access pattern.
-         */
-        cmatrixcopy(rowscount, blocksize, a, blockstart, blockstart, &tmpa, 0, 0, _state);
-        ae_v_cmove(&taubuf.ptr.p_complex[0], 1, &tau->ptr.p_complex[blockstart], 1, "N", ae_v_len(0,blocksize-1));
-        
-        /*
-         * Update matrix, choose between:
-         * a) Level 2 algorithm (when the rest of the matrix is small enough)
-         * b) blocked algorithm, see algorithm 5 from  'A storage efficient WY
-         *    representation for products of Householder transformations',
-         *    by R. Schreiber and C. Van Loan.
-         */
-        if( qcolumns>=2*ablascomplexblocksize(a, _state) )
+        if( blocksize>0 )
         {
             
             /*
-             * Prepare block reflector
+             * QR decomposition of submatrix.
+             * Matrix is copied to temporary storage to solve
+             * some TLB issues arising from non-contiguous memory
+             * access pattern.
              */
-            ortfac_cmatrixblockreflector(&tmpa, &taubuf, ae_true, rowscount, blocksize, &tmpt, &work, _state);
+            cmatrixcopy(rowscount, blocksize, a, blockstart, blockstart, &tmpa, 0, 0, _state);
+            ae_v_cmove(&taubuf.ptr.p_complex[0], 1, &tau->ptr.p_complex[blockstart], 1, "N", ae_v_len(0,blocksize-1));
             
             /*
-             * Multiply the rest of A by Q.
-             *
-             * Q  = E + Y*T*Y'  = E + TmpA*TmpT*TmpA'
+             * Update matrix, choose between:
+             * a) Level 2 algorithm (when the rest of the matrix is small enough)
+             * b) blocked algorithm, see algorithm 5 from  'A storage efficient WY
+             *    representation for products of Householder transformations',
+             *    by R. Schreiber and C. Van Loan.
              */
-            cmatrixgemm(blocksize, qcolumns, rowscount, ae_complex_from_d(1.0), &tmpa, 0, 0, 2, q, blockstart, 0, 0, ae_complex_from_d(0.0), &tmpr, 0, 0, _state);
-            cmatrixgemm(blocksize, qcolumns, blocksize, ae_complex_from_d(1.0), &tmpt, 0, 0, 0, &tmpr, 0, 0, 0, ae_complex_from_d(0.0), &tmpr, blocksize, 0, _state);
-            cmatrixgemm(rowscount, qcolumns, blocksize, ae_complex_from_d(1.0), &tmpa, 0, 0, 0, &tmpr, blocksize, 0, 0, ae_complex_from_d(1.0), q, blockstart, 0, _state);
-        }
-        else
-        {
-            
-            /*
-             * Level 2 algorithm
-             */
-            for(i=blocksize-1; i>=0; i--)
+            if( qcolumns>=2*ablascomplexblocksize(a, _state) )
             {
-                ae_v_cmove(&t.ptr.p_complex[1], 1, &tmpa.ptr.pp_complex[i][i], tmpa.stride, "N", ae_v_len(1,rowscount-i));
-                t.ptr.p_complex[1] = ae_complex_from_d(1);
-                complexapplyreflectionfromtheleft(q, taubuf.ptr.p_complex[i], &t, blockstart+i, m-1, 0, qcolumns-1, &work, _state);
+                
+                /*
+                 * Prepare block reflector
+                 */
+                ortfac_cmatrixblockreflector(&tmpa, &taubuf, ae_true, rowscount, blocksize, &tmpt, &work, _state);
+                
+                /*
+                 * Multiply the rest of A by Q.
+                 *
+                 * Q  = E + Y*T*Y'  = E + TmpA*TmpT*TmpA'
+                 */
+                cmatrixgemm(blocksize, qcolumns, rowscount, ae_complex_from_d(1.0), &tmpa, 0, 0, 2, q, blockstart, 0, 0, ae_complex_from_d(0.0), &tmpr, 0, 0, _state);
+                cmatrixgemm(blocksize, qcolumns, blocksize, ae_complex_from_d(1.0), &tmpt, 0, 0, 0, &tmpr, 0, 0, 0, ae_complex_from_d(0.0), &tmpr, blocksize, 0, _state);
+                cmatrixgemm(rowscount, qcolumns, blocksize, ae_complex_from_d(1.0), &tmpa, 0, 0, 0, &tmpr, blocksize, 0, 0, ae_complex_from_d(1.0), q, blockstart, 0, _state);
+            }
+            else
+            {
+                
+                /*
+                 * Level 2 algorithm
+                 */
+                for(i=blocksize-1; i>=0; i--)
+                {
+                    ae_v_cmove(&t.ptr.p_complex[1], 1, &tmpa.ptr.pp_complex[i][i], tmpa.stride, "N", ae_v_len(1,rowscount-i));
+                    t.ptr.p_complex[1] = ae_complex_from_d(1);
+                    complexapplyreflectionfromtheleft(q, taubuf.ptr.p_complex[i], &t, blockstart+i, m-1, 0, qcolumns-1, &work, _state);
+                }
             }
         }
         
@@ -10961,51 +12435,54 @@ void cmatrixlqunpackq(/* Complex */ ae_matrix* a,
     while(blockstart>=0)
     {
         columnscount = n-blockstart;
-        
-        /*
-         * LQ decomposition of submatrix.
-         * Matrix is copied to temporary storage to solve
-         * some TLB issues arising from non-contiguous memory
-         * access pattern.
-         */
-        cmatrixcopy(blocksize, columnscount, a, blockstart, blockstart, &tmpa, 0, 0, _state);
-        ae_v_cmove(&taubuf.ptr.p_complex[0], 1, &tau->ptr.p_complex[blockstart], 1, "N", ae_v_len(0,blocksize-1));
-        
-        /*
-         * Update matrix, choose between:
-         * a) Level 2 algorithm (when the rest of the matrix is small enough)
-         * b) blocked algorithm, see algorithm 5 from  'A storage efficient WY
-         *    representation for products of Householder transformations',
-         *    by R. Schreiber and C. Van Loan.
-         */
-        if( qrows>=2*ablascomplexblocksize(a, _state) )
+        if( blocksize>0 )
         {
             
             /*
-             * Prepare block reflector
+             * LQ decomposition of submatrix.
+             * Matrix is copied to temporary storage to solve
+             * some TLB issues arising from non-contiguous memory
+             * access pattern.
              */
-            ortfac_cmatrixblockreflector(&tmpa, &taubuf, ae_false, columnscount, blocksize, &tmpt, &work, _state);
+            cmatrixcopy(blocksize, columnscount, a, blockstart, blockstart, &tmpa, 0, 0, _state);
+            ae_v_cmove(&taubuf.ptr.p_complex[0], 1, &tau->ptr.p_complex[blockstart], 1, "N", ae_v_len(0,blocksize-1));
             
             /*
-             * Multiply the rest of A by Q'.
-             *
-             * Q'  = E + Y*T'*Y'  = E + TmpA'*TmpT'*TmpA
+             * Update matrix, choose between:
+             * a) Level 2 algorithm (when the rest of the matrix is small enough)
+             * b) blocked algorithm, see algorithm 5 from  'A storage efficient WY
+             *    representation for products of Householder transformations',
+             *    by R. Schreiber and C. Van Loan.
              */
-            cmatrixgemm(qrows, blocksize, columnscount, ae_complex_from_d(1.0), q, 0, blockstart, 0, &tmpa, 0, 0, 2, ae_complex_from_d(0.0), &tmpr, 0, 0, _state);
-            cmatrixgemm(qrows, blocksize, blocksize, ae_complex_from_d(1.0), &tmpr, 0, 0, 0, &tmpt, 0, 0, 2, ae_complex_from_d(0.0), &tmpr, 0, blocksize, _state);
-            cmatrixgemm(qrows, columnscount, blocksize, ae_complex_from_d(1.0), &tmpr, 0, blocksize, 0, &tmpa, 0, 0, 0, ae_complex_from_d(1.0), q, 0, blockstart, _state);
-        }
-        else
-        {
-            
-            /*
-             * Level 2 algorithm
-             */
-            for(i=blocksize-1; i>=0; i--)
+            if( qrows>=2*ablascomplexblocksize(a, _state) )
             {
-                ae_v_cmove(&t.ptr.p_complex[1], 1, &tmpa.ptr.pp_complex[i][i], 1, "Conj", ae_v_len(1,columnscount-i));
-                t.ptr.p_complex[1] = ae_complex_from_d(1);
-                complexapplyreflectionfromtheright(q, ae_c_conj(taubuf.ptr.p_complex[i], _state), &t, 0, qrows-1, blockstart+i, n-1, &work, _state);
+                
+                /*
+                 * Prepare block reflector
+                 */
+                ortfac_cmatrixblockreflector(&tmpa, &taubuf, ae_false, columnscount, blocksize, &tmpt, &work, _state);
+                
+                /*
+                 * Multiply the rest of A by Q'.
+                 *
+                 * Q'  = E + Y*T'*Y'  = E + TmpA'*TmpT'*TmpA
+                 */
+                cmatrixgemm(qrows, blocksize, columnscount, ae_complex_from_d(1.0), q, 0, blockstart, 0, &tmpa, 0, 0, 2, ae_complex_from_d(0.0), &tmpr, 0, 0, _state);
+                cmatrixgemm(qrows, blocksize, blocksize, ae_complex_from_d(1.0), &tmpr, 0, 0, 0, &tmpt, 0, 0, 2, ae_complex_from_d(0.0), &tmpr, 0, blocksize, _state);
+                cmatrixgemm(qrows, columnscount, blocksize, ae_complex_from_d(1.0), &tmpr, 0, blocksize, 0, &tmpa, 0, 0, 0, ae_complex_from_d(1.0), q, 0, blockstart, _state);
+            }
+            else
+            {
+                
+                /*
+                 * Level 2 algorithm
+                 */
+                for(i=blocksize-1; i>=0; i--)
+                {
+                    ae_v_cmove(&t.ptr.p_complex[1], 1, &tmpa.ptr.pp_complex[i][i], 1, "Conj", ae_v_len(1,columnscount-i));
+                    t.ptr.p_complex[1] = ae_complex_from_d(1);
+                    complexapplyreflectionfromtheright(q, ae_c_conj(taubuf.ptr.p_complex[i], _state), &t, 0, qrows-1, blockstart+i, n-1, &work, _state);
+                }
             }
         }
         
@@ -11063,6 +12540,108 @@ void cmatrixlqunpackl(/* Complex */ ae_matrix* a,
     {
         k = ae_minint(i, n-1, _state);
         ae_v_cmove(&l->ptr.pp_complex[i][0], 1, &a->ptr.pp_complex[i][0], 1, "N", ae_v_len(0,k));
+    }
+}
+
+
+/*************************************************************************
+Base case for real QR
+
+  -- LAPACK routine (version 3.0) --
+     Univ. of Tennessee, Univ. of California Berkeley, NAG Ltd.,
+     Courant Institute, Argonne National Lab, and Rice University
+     September 30, 1994.
+     Sergey Bochkanov, ALGLIB project, translation from FORTRAN to
+     pseudocode, 2007-2010.
+*************************************************************************/
+void rmatrixqrbasecase(/* Real    */ ae_matrix* a,
+     ae_int_t m,
+     ae_int_t n,
+     /* Real    */ ae_vector* work,
+     /* Real    */ ae_vector* t,
+     /* Real    */ ae_vector* tau,
+     ae_state *_state)
+{
+    ae_int_t i;
+    ae_int_t k;
+    ae_int_t minmn;
+    double tmp;
+
+
+    minmn = ae_minint(m, n, _state);
+    
+    /*
+     * Test the input arguments
+     */
+    k = minmn;
+    for(i=0; i<=k-1; i++)
+    {
+        
+        /*
+         * Generate elementary reflector H(i) to annihilate A(i+1:m,i)
+         */
+        ae_v_move(&t->ptr.p_double[1], 1, &a->ptr.pp_double[i][i], a->stride, ae_v_len(1,m-i));
+        generatereflection(t, m-i, &tmp, _state);
+        tau->ptr.p_double[i] = tmp;
+        ae_v_move(&a->ptr.pp_double[i][i], a->stride, &t->ptr.p_double[1], 1, ae_v_len(i,m-1));
+        t->ptr.p_double[1] = 1;
+        if( i<n )
+        {
+            
+            /*
+             * Apply H(i) to A(i:m-1,i+1:n-1) from the left
+             */
+            applyreflectionfromtheleft(a, tau->ptr.p_double[i], t, i, m-1, i+1, n-1, work, _state);
+        }
+    }
+}
+
+
+/*************************************************************************
+Base case for real LQ
+
+  -- LAPACK routine (version 3.0) --
+     Univ. of Tennessee, Univ. of California Berkeley, NAG Ltd.,
+     Courant Institute, Argonne National Lab, and Rice University
+     September 30, 1994.
+     Sergey Bochkanov, ALGLIB project, translation from FORTRAN to
+     pseudocode, 2007-2010.
+*************************************************************************/
+void rmatrixlqbasecase(/* Real    */ ae_matrix* a,
+     ae_int_t m,
+     ae_int_t n,
+     /* Real    */ ae_vector* work,
+     /* Real    */ ae_vector* t,
+     /* Real    */ ae_vector* tau,
+     ae_state *_state)
+{
+    ae_int_t i;
+    ae_int_t k;
+    ae_int_t minmn;
+    double tmp;
+
+
+    minmn = ae_minint(m, n, _state);
+    k = ae_minint(m, n, _state);
+    for(i=0; i<=k-1; i++)
+    {
+        
+        /*
+         * Generate elementary reflector H(i) to annihilate A(i,i+1:n-1)
+         */
+        ae_v_move(&t->ptr.p_double[1], 1, &a->ptr.pp_double[i][i], 1, ae_v_len(1,n-i));
+        generatereflection(t, n-i, &tmp, _state);
+        tau->ptr.p_double[i] = tmp;
+        ae_v_move(&a->ptr.pp_double[i][i], 1, &t->ptr.p_double[1], 1, ae_v_len(i,n-1));
+        t->ptr.p_double[1] = 1;
+        if( i<n )
+        {
+            
+            /*
+             * Apply H(i) to A(i+1:m,i:n) from the right
+             */
+            applyreflectionfromtheright(a, tau->ptr.p_double[i], t, i+1, m-1, i, n-1, work, _state);
+        }
     }
 }
 
@@ -12677,108 +14256,6 @@ void hmatrixtdunpackq(/* Complex */ ae_matrix* a,
 
 
 /*************************************************************************
-Base case for real QR
-
-  -- LAPACK routine (version 3.0) --
-     Univ. of Tennessee, Univ. of California Berkeley, NAG Ltd.,
-     Courant Institute, Argonne National Lab, and Rice University
-     September 30, 1994.
-     Sergey Bochkanov, ALGLIB project, translation from FORTRAN to
-     pseudocode, 2007-2010.
-*************************************************************************/
-static void ortfac_rmatrixqrbasecase(/* Real    */ ae_matrix* a,
-     ae_int_t m,
-     ae_int_t n,
-     /* Real    */ ae_vector* work,
-     /* Real    */ ae_vector* t,
-     /* Real    */ ae_vector* tau,
-     ae_state *_state)
-{
-    ae_int_t i;
-    ae_int_t k;
-    ae_int_t minmn;
-    double tmp;
-
-
-    minmn = ae_minint(m, n, _state);
-    
-    /*
-     * Test the input arguments
-     */
-    k = minmn;
-    for(i=0; i<=k-1; i++)
-    {
-        
-        /*
-         * Generate elementary reflector H(i) to annihilate A(i+1:m,i)
-         */
-        ae_v_move(&t->ptr.p_double[1], 1, &a->ptr.pp_double[i][i], a->stride, ae_v_len(1,m-i));
-        generatereflection(t, m-i, &tmp, _state);
-        tau->ptr.p_double[i] = tmp;
-        ae_v_move(&a->ptr.pp_double[i][i], a->stride, &t->ptr.p_double[1], 1, ae_v_len(i,m-1));
-        t->ptr.p_double[1] = 1;
-        if( i<n )
-        {
-            
-            /*
-             * Apply H(i) to A(i:m-1,i+1:n-1) from the left
-             */
-            applyreflectionfromtheleft(a, tau->ptr.p_double[i], t, i, m-1, i+1, n-1, work, _state);
-        }
-    }
-}
-
-
-/*************************************************************************
-Base case for real LQ
-
-  -- LAPACK routine (version 3.0) --
-     Univ. of Tennessee, Univ. of California Berkeley, NAG Ltd.,
-     Courant Institute, Argonne National Lab, and Rice University
-     September 30, 1994.
-     Sergey Bochkanov, ALGLIB project, translation from FORTRAN to
-     pseudocode, 2007-2010.
-*************************************************************************/
-static void ortfac_rmatrixlqbasecase(/* Real    */ ae_matrix* a,
-     ae_int_t m,
-     ae_int_t n,
-     /* Real    */ ae_vector* work,
-     /* Real    */ ae_vector* t,
-     /* Real    */ ae_vector* tau,
-     ae_state *_state)
-{
-    ae_int_t i;
-    ae_int_t k;
-    ae_int_t minmn;
-    double tmp;
-
-
-    minmn = ae_minint(m, n, _state);
-    k = ae_minint(m, n, _state);
-    for(i=0; i<=k-1; i++)
-    {
-        
-        /*
-         * Generate elementary reflector H(i) to annihilate A(i,i+1:n-1)
-         */
-        ae_v_move(&t->ptr.p_double[1], 1, &a->ptr.pp_double[i][i], 1, ae_v_len(1,n-i));
-        generatereflection(t, n-i, &tmp, _state);
-        tau->ptr.p_double[i] = tmp;
-        ae_v_move(&a->ptr.pp_double[i][i], 1, &t->ptr.p_double[1], 1, ae_v_len(i,n-1));
-        t->ptr.p_double[1] = 1;
-        if( i<n )
-        {
-            
-            /*
-             * Apply H(i) to A(i+1:m,i:n) from the right
-             */
-            applyreflectionfromtheright(a, tau->ptr.p_double[i], t, i+1, m-1, i, n-1, work, _state);
-        }
-    }
-}
-
-
-/*************************************************************************
 Base case for complex QR
 
   -- LAPACK routine (version 3.0) --
@@ -13102,6 +14579,1668 @@ static void ortfac_cmatrixblockreflector(/* Complex */ ae_matrix* a,
             t->ptr.pp_complex[i][k] = ae_complex_from_d(0);
         }
     }
+}
+
+
+
+
+/*************************************************************************
+Singular value decomposition of a bidiagonal matrix (extended algorithm)
+
+The algorithm performs the singular value decomposition  of  a  bidiagonal
+matrix B (upper or lower) representing it as B = Q*S*P^T, where Q and  P -
+orthogonal matrices, S - diagonal matrix with non-negative elements on the
+main diagonal, in descending order.
+
+The  algorithm  finds  singular  values.  In  addition,  the algorithm can
+calculate  matrices  Q  and P (more precisely, not the matrices, but their
+product  with  given  matrices U and VT - U*Q and (P^T)*VT)).  Of  course,
+matrices U and VT can be of any type, including identity. Furthermore, the
+algorithm can calculate Q'*C (this product is calculated more  effectively
+than U*Q,  because  this calculation operates with rows instead  of matrix
+columns).
+
+The feature of the algorithm is its ability to find  all  singular  values
+including those which are arbitrarily close to 0  with  relative  accuracy
+close to  machine precision. If the parameter IsFractionalAccuracyRequired
+is set to True, all singular values will have high relative accuracy close
+to machine precision. If the parameter is set to False, only  the  biggest
+singular value will have relative accuracy  close  to  machine  precision.
+The absolute error of other singular values is equal to the absolute error
+of the biggest singular value.
+
+Input parameters:
+    D       -   main diagonal of matrix B.
+                Array whose index ranges within [0..N-1].
+    E       -   superdiagonal (or subdiagonal) of matrix B.
+                Array whose index ranges within [0..N-2].
+    N       -   size of matrix B.
+    IsUpper -   True, if the matrix is upper bidiagonal.
+    IsFractionalAccuracyRequired -
+                THIS PARAMETER IS IGNORED SINCE ALGLIB 3.5.0
+                SINGULAR VALUES ARE ALWAYS SEARCHED WITH HIGH ACCURACY.
+    U       -   matrix to be multiplied by Q.
+                Array whose indexes range within [0..NRU-1, 0..N-1].
+                The matrix can be bigger, in that case only the  submatrix
+                [0..NRU-1, 0..N-1] will be multiplied by Q.
+    NRU     -   number of rows in matrix U.
+    C       -   matrix to be multiplied by Q'.
+                Array whose indexes range within [0..N-1, 0..NCC-1].
+                The matrix can be bigger, in that case only the  submatrix
+                [0..N-1, 0..NCC-1] will be multiplied by Q'.
+    NCC     -   number of columns in matrix C.
+    VT      -   matrix to be multiplied by P^T.
+                Array whose indexes range within [0..N-1, 0..NCVT-1].
+                The matrix can be bigger, in that case only the  submatrix
+                [0..N-1, 0..NCVT-1] will be multiplied by P^T.
+    NCVT    -   number of columns in matrix VT.
+
+Output parameters:
+    D       -   singular values of matrix B in descending order.
+    U       -   if NRU>0, contains matrix U*Q.
+    VT      -   if NCVT>0, contains matrix (P^T)*VT.
+    C       -   if NCC>0, contains matrix Q'*C.
+
+Result:
+    True, if the algorithm has converged.
+    False, if the algorithm hasn't converged (rare case).
+
+Additional information:
+    The type of convergence is controlled by the internal  parameter  TOL.
+    If the parameter is greater than 0, the singular values will have
+    relative accuracy TOL. If TOL<0, the singular values will have
+    absolute accuracy ABS(TOL)*norm(B).
+    By default, |TOL| falls within the range of 10*Epsilon and 100*Epsilon,
+    where Epsilon is the machine precision. It is not  recommended  to  use
+    TOL less than 10*Epsilon since this will  considerably  slow  down  the
+    algorithm and may not lead to error decreasing.
+History:
+    * 31 March, 2007.
+        changed MAXITR from 6 to 12.
+
+  -- LAPACK routine (version 3.0) --
+     Univ. of Tennessee, Univ. of California Berkeley, NAG Ltd.,
+     Courant Institute, Argonne National Lab, and Rice University
+     October 31, 1999.
+*************************************************************************/
+ae_bool rmatrixbdsvd(/* Real    */ ae_vector* d,
+     /* Real    */ ae_vector* e,
+     ae_int_t n,
+     ae_bool isupper,
+     ae_bool isfractionalaccuracyrequired,
+     /* Real    */ ae_matrix* u,
+     ae_int_t nru,
+     /* Real    */ ae_matrix* c,
+     ae_int_t ncc,
+     /* Real    */ ae_matrix* vt,
+     ae_int_t ncvt,
+     ae_state *_state)
+{
+    ae_frame _frame_block;
+    ae_vector _e;
+    ae_vector d1;
+    ae_vector e1;
+    ae_bool result;
+
+    ae_frame_make(_state, &_frame_block);
+    ae_vector_init_copy(&_e, e, _state, ae_true);
+    e = &_e;
+    ae_vector_init(&d1, 0, DT_REAL, _state, ae_true);
+    ae_vector_init(&e1, 0, DT_REAL, _state, ae_true);
+
+    ae_vector_set_length(&d1, n+1, _state);
+    ae_v_move(&d1.ptr.p_double[1], 1, &d->ptr.p_double[0], 1, ae_v_len(1,n));
+    if( n>1 )
+    {
+        ae_vector_set_length(&e1, n-1+1, _state);
+        ae_v_move(&e1.ptr.p_double[1], 1, &e->ptr.p_double[0], 1, ae_v_len(1,n-1));
+    }
+    result = bdsvd_bidiagonalsvddecompositioninternal(&d1, &e1, n, isupper, isfractionalaccuracyrequired, u, 0, nru, c, 0, ncc, vt, 0, ncvt, _state);
+    ae_v_move(&d->ptr.p_double[0], 1, &d1.ptr.p_double[1], 1, ae_v_len(0,n-1));
+    ae_frame_leave(_state);
+    return result;
+}
+
+
+ae_bool bidiagonalsvddecomposition(/* Real    */ ae_vector* d,
+     /* Real    */ ae_vector* e,
+     ae_int_t n,
+     ae_bool isupper,
+     ae_bool isfractionalaccuracyrequired,
+     /* Real    */ ae_matrix* u,
+     ae_int_t nru,
+     /* Real    */ ae_matrix* c,
+     ae_int_t ncc,
+     /* Real    */ ae_matrix* vt,
+     ae_int_t ncvt,
+     ae_state *_state)
+{
+    ae_frame _frame_block;
+    ae_vector _e;
+    ae_bool result;
+
+    ae_frame_make(_state, &_frame_block);
+    ae_vector_init_copy(&_e, e, _state, ae_true);
+    e = &_e;
+
+    result = bdsvd_bidiagonalsvddecompositioninternal(d, e, n, isupper, isfractionalaccuracyrequired, u, 1, nru, c, 1, ncc, vt, 1, ncvt, _state);
+    ae_frame_leave(_state);
+    return result;
+}
+
+
+/*************************************************************************
+Internal working subroutine for bidiagonal decomposition
+*************************************************************************/
+static ae_bool bdsvd_bidiagonalsvddecompositioninternal(/* Real    */ ae_vector* d,
+     /* Real    */ ae_vector* e,
+     ae_int_t n,
+     ae_bool isupper,
+     ae_bool isfractionalaccuracyrequired,
+     /* Real    */ ae_matrix* u,
+     ae_int_t ustart,
+     ae_int_t nru,
+     /* Real    */ ae_matrix* c,
+     ae_int_t cstart,
+     ae_int_t ncc,
+     /* Real    */ ae_matrix* vt,
+     ae_int_t vstart,
+     ae_int_t ncvt,
+     ae_state *_state)
+{
+    ae_frame _frame_block;
+    ae_vector _e;
+    ae_int_t i;
+    ae_int_t idir;
+    ae_int_t isub;
+    ae_int_t iter;
+    ae_int_t j;
+    ae_int_t ll;
+    ae_int_t lll;
+    ae_int_t m;
+    ae_int_t maxit;
+    ae_int_t oldll;
+    ae_int_t oldm;
+    double abse;
+    double abss;
+    double cosl;
+    double cosr;
+    double cs;
+    double eps;
+    double f;
+    double g;
+    double h;
+    double mu;
+    double oldcs;
+    double oldsn;
+    double r;
+    double shift;
+    double sigmn;
+    double sigmx;
+    double sinl;
+    double sinr;
+    double sll;
+    double smax;
+    double smin;
+    double sminl;
+    double sminlo;
+    double sminoa;
+    double sn;
+    double thresh;
+    double tol;
+    double tolmul;
+    double unfl;
+    ae_vector work0;
+    ae_vector work1;
+    ae_vector work2;
+    ae_vector work3;
+    ae_int_t maxitr;
+    ae_bool matrixsplitflag;
+    ae_bool iterflag;
+    ae_vector utemp;
+    ae_vector vttemp;
+    ae_vector ctemp;
+    ae_vector etemp;
+    ae_bool rightside;
+    ae_bool fwddir;
+    double tmp;
+    ae_int_t mm1;
+    ae_int_t mm0;
+    ae_bool bchangedir;
+    ae_int_t uend;
+    ae_int_t cend;
+    ae_int_t vend;
+    ae_bool result;
+
+    ae_frame_make(_state, &_frame_block);
+    ae_vector_init_copy(&_e, e, _state, ae_true);
+    e = &_e;
+    ae_vector_init(&work0, 0, DT_REAL, _state, ae_true);
+    ae_vector_init(&work1, 0, DT_REAL, _state, ae_true);
+    ae_vector_init(&work2, 0, DT_REAL, _state, ae_true);
+    ae_vector_init(&work3, 0, DT_REAL, _state, ae_true);
+    ae_vector_init(&utemp, 0, DT_REAL, _state, ae_true);
+    ae_vector_init(&vttemp, 0, DT_REAL, _state, ae_true);
+    ae_vector_init(&ctemp, 0, DT_REAL, _state, ae_true);
+    ae_vector_init(&etemp, 0, DT_REAL, _state, ae_true);
+
+    result = ae_true;
+    if( n==0 )
+    {
+        ae_frame_leave(_state);
+        return result;
+    }
+    if( n==1 )
+    {
+        if( ae_fp_less(d->ptr.p_double[1],0) )
+        {
+            d->ptr.p_double[1] = -d->ptr.p_double[1];
+            if( ncvt>0 )
+            {
+                ae_v_muld(&vt->ptr.pp_double[vstart][vstart], 1, ae_v_len(vstart,vstart+ncvt-1), -1);
+            }
+        }
+        ae_frame_leave(_state);
+        return result;
+    }
+    
+    /*
+     * these initializers are not really necessary,
+     * but without them compiler complains about uninitialized locals
+     */
+    ll = 0;
+    oldsn = 0;
+    
+    /*
+     * init
+     */
+    ae_vector_set_length(&work0, n-1+1, _state);
+    ae_vector_set_length(&work1, n-1+1, _state);
+    ae_vector_set_length(&work2, n-1+1, _state);
+    ae_vector_set_length(&work3, n-1+1, _state);
+    uend = ustart+ae_maxint(nru-1, 0, _state);
+    vend = vstart+ae_maxint(ncvt-1, 0, _state);
+    cend = cstart+ae_maxint(ncc-1, 0, _state);
+    ae_vector_set_length(&utemp, uend+1, _state);
+    ae_vector_set_length(&vttemp, vend+1, _state);
+    ae_vector_set_length(&ctemp, cend+1, _state);
+    maxitr = 12;
+    rightside = ae_true;
+    fwddir = ae_true;
+    
+    /*
+     * resize E from N-1 to N
+     */
+    ae_vector_set_length(&etemp, n+1, _state);
+    for(i=1; i<=n-1; i++)
+    {
+        etemp.ptr.p_double[i] = e->ptr.p_double[i];
+    }
+    ae_vector_set_length(e, n+1, _state);
+    for(i=1; i<=n-1; i++)
+    {
+        e->ptr.p_double[i] = etemp.ptr.p_double[i];
+    }
+    e->ptr.p_double[n] = 0;
+    idir = 0;
+    
+    /*
+     * Get machine constants
+     */
+    eps = ae_machineepsilon;
+    unfl = ae_minrealnumber;
+    
+    /*
+     * If matrix lower bidiagonal, rotate to be upper bidiagonal
+     * by applying Givens rotations on the left
+     */
+    if( !isupper )
+    {
+        for(i=1; i<=n-1; i++)
+        {
+            generaterotation(d->ptr.p_double[i], e->ptr.p_double[i], &cs, &sn, &r, _state);
+            d->ptr.p_double[i] = r;
+            e->ptr.p_double[i] = sn*d->ptr.p_double[i+1];
+            d->ptr.p_double[i+1] = cs*d->ptr.p_double[i+1];
+            work0.ptr.p_double[i] = cs;
+            work1.ptr.p_double[i] = sn;
+        }
+        
+        /*
+         * Update singular vectors if desired
+         */
+        if( nru>0 )
+        {
+            applyrotationsfromtheright(fwddir, ustart, uend, 1+ustart-1, n+ustart-1, &work0, &work1, u, &utemp, _state);
+        }
+        if( ncc>0 )
+        {
+            applyrotationsfromtheleft(fwddir, 1+cstart-1, n+cstart-1, cstart, cend, &work0, &work1, c, &ctemp, _state);
+        }
+    }
+    
+    /*
+     * Compute singular values to relative accuracy TOL
+     * (By setting TOL to be negative, algorithm will compute
+     * singular values to absolute accuracy ABS(TOL)*norm(input matrix))
+     */
+    tolmul = ae_maxreal(10, ae_minreal(100, ae_pow(eps, -0.125, _state), _state), _state);
+    tol = tolmul*eps;
+    
+    /*
+     * Compute approximate maximum, minimum singular values
+     */
+    smax = 0;
+    for(i=1; i<=n; i++)
+    {
+        smax = ae_maxreal(smax, ae_fabs(d->ptr.p_double[i], _state), _state);
+    }
+    for(i=1; i<=n-1; i++)
+    {
+        smax = ae_maxreal(smax, ae_fabs(e->ptr.p_double[i], _state), _state);
+    }
+    sminl = 0;
+    if( ae_fp_greater_eq(tol,0) )
+    {
+        
+        /*
+         * Relative accuracy desired
+         */
+        sminoa = ae_fabs(d->ptr.p_double[1], _state);
+        if( ae_fp_neq(sminoa,0) )
+        {
+            mu = sminoa;
+            for(i=2; i<=n; i++)
+            {
+                mu = ae_fabs(d->ptr.p_double[i], _state)*(mu/(mu+ae_fabs(e->ptr.p_double[i-1], _state)));
+                sminoa = ae_minreal(sminoa, mu, _state);
+                if( ae_fp_eq(sminoa,0) )
+                {
+                    break;
+                }
+            }
+        }
+        sminoa = sminoa/ae_sqrt(n, _state);
+        thresh = ae_maxreal(tol*sminoa, maxitr*n*n*unfl, _state);
+    }
+    else
+    {
+        
+        /*
+         * Absolute accuracy desired
+         */
+        thresh = ae_maxreal(ae_fabs(tol, _state)*smax, maxitr*n*n*unfl, _state);
+    }
+    
+    /*
+     * Prepare for main iteration loop for the singular values
+     * (MAXIT is the maximum number of passes through the inner
+     * loop permitted before nonconvergence signalled.)
+     */
+    maxit = maxitr*n*n;
+    iter = 0;
+    oldll = -1;
+    oldm = -1;
+    
+    /*
+     * M points to last element of unconverged part of matrix
+     */
+    m = n;
+    
+    /*
+     * Begin main iteration loop
+     */
+    for(;;)
+    {
+        
+        /*
+         * Check for convergence or exceeding iteration count
+         */
+        if( m<=1 )
+        {
+            break;
+        }
+        if( iter>maxit )
+        {
+            result = ae_false;
+            ae_frame_leave(_state);
+            return result;
+        }
+        
+        /*
+         * Find diagonal block of matrix to work on
+         */
+        if( ae_fp_less(tol,0)&&ae_fp_less_eq(ae_fabs(d->ptr.p_double[m], _state),thresh) )
+        {
+            d->ptr.p_double[m] = 0;
+        }
+        smax = ae_fabs(d->ptr.p_double[m], _state);
+        smin = smax;
+        matrixsplitflag = ae_false;
+        for(lll=1; lll<=m-1; lll++)
+        {
+            ll = m-lll;
+            abss = ae_fabs(d->ptr.p_double[ll], _state);
+            abse = ae_fabs(e->ptr.p_double[ll], _state);
+            if( ae_fp_less(tol,0)&&ae_fp_less_eq(abss,thresh) )
+            {
+                d->ptr.p_double[ll] = 0;
+            }
+            if( ae_fp_less_eq(abse,thresh) )
+            {
+                matrixsplitflag = ae_true;
+                break;
+            }
+            smin = ae_minreal(smin, abss, _state);
+            smax = ae_maxreal(smax, ae_maxreal(abss, abse, _state), _state);
+        }
+        if( !matrixsplitflag )
+        {
+            ll = 0;
+        }
+        else
+        {
+            
+            /*
+             * Matrix splits since E(LL) = 0
+             */
+            e->ptr.p_double[ll] = 0;
+            if( ll==m-1 )
+            {
+                
+                /*
+                 * Convergence of bottom singular value, return to top of loop
+                 */
+                m = m-1;
+                continue;
+            }
+        }
+        ll = ll+1;
+        
+        /*
+         * E(LL) through E(M-1) are nonzero, E(LL-1) is zero
+         */
+        if( ll==m-1 )
+        {
+            
+            /*
+             * 2 by 2 block, handle separately
+             */
+            bdsvd_svdv2x2(d->ptr.p_double[m-1], e->ptr.p_double[m-1], d->ptr.p_double[m], &sigmn, &sigmx, &sinr, &cosr, &sinl, &cosl, _state);
+            d->ptr.p_double[m-1] = sigmx;
+            e->ptr.p_double[m-1] = 0;
+            d->ptr.p_double[m] = sigmn;
+            
+            /*
+             * Compute singular vectors, if desired
+             */
+            if( ncvt>0 )
+            {
+                mm0 = m+(vstart-1);
+                mm1 = m-1+(vstart-1);
+                ae_v_moved(&vttemp.ptr.p_double[vstart], 1, &vt->ptr.pp_double[mm1][vstart], 1, ae_v_len(vstart,vend), cosr);
+                ae_v_addd(&vttemp.ptr.p_double[vstart], 1, &vt->ptr.pp_double[mm0][vstart], 1, ae_v_len(vstart,vend), sinr);
+                ae_v_muld(&vt->ptr.pp_double[mm0][vstart], 1, ae_v_len(vstart,vend), cosr);
+                ae_v_subd(&vt->ptr.pp_double[mm0][vstart], 1, &vt->ptr.pp_double[mm1][vstart], 1, ae_v_len(vstart,vend), sinr);
+                ae_v_move(&vt->ptr.pp_double[mm1][vstart], 1, &vttemp.ptr.p_double[vstart], 1, ae_v_len(vstart,vend));
+            }
+            if( nru>0 )
+            {
+                mm0 = m+ustart-1;
+                mm1 = m-1+ustart-1;
+                ae_v_moved(&utemp.ptr.p_double[ustart], 1, &u->ptr.pp_double[ustart][mm1], u->stride, ae_v_len(ustart,uend), cosl);
+                ae_v_addd(&utemp.ptr.p_double[ustart], 1, &u->ptr.pp_double[ustart][mm0], u->stride, ae_v_len(ustart,uend), sinl);
+                ae_v_muld(&u->ptr.pp_double[ustart][mm0], u->stride, ae_v_len(ustart,uend), cosl);
+                ae_v_subd(&u->ptr.pp_double[ustart][mm0], u->stride, &u->ptr.pp_double[ustart][mm1], u->stride, ae_v_len(ustart,uend), sinl);
+                ae_v_move(&u->ptr.pp_double[ustart][mm1], u->stride, &utemp.ptr.p_double[ustart], 1, ae_v_len(ustart,uend));
+            }
+            if( ncc>0 )
+            {
+                mm0 = m+cstart-1;
+                mm1 = m-1+cstart-1;
+                ae_v_moved(&ctemp.ptr.p_double[cstart], 1, &c->ptr.pp_double[mm1][cstart], 1, ae_v_len(cstart,cend), cosl);
+                ae_v_addd(&ctemp.ptr.p_double[cstart], 1, &c->ptr.pp_double[mm0][cstart], 1, ae_v_len(cstart,cend), sinl);
+                ae_v_muld(&c->ptr.pp_double[mm0][cstart], 1, ae_v_len(cstart,cend), cosl);
+                ae_v_subd(&c->ptr.pp_double[mm0][cstart], 1, &c->ptr.pp_double[mm1][cstart], 1, ae_v_len(cstart,cend), sinl);
+                ae_v_move(&c->ptr.pp_double[mm1][cstart], 1, &ctemp.ptr.p_double[cstart], 1, ae_v_len(cstart,cend));
+            }
+            m = m-2;
+            continue;
+        }
+        
+        /*
+         * If working on new submatrix, choose shift direction
+         * (from larger end diagonal element towards smaller)
+         *
+         * Previously was
+         *     "if (LL>OLDM) or (M<OLDLL) then"
+         * fixed thanks to Michael Rolle < m@rolle.name >
+         * Very strange that LAPACK still contains it.
+         */
+        bchangedir = ae_false;
+        if( idir==1&&ae_fp_less(ae_fabs(d->ptr.p_double[ll], _state),1.0E-3*ae_fabs(d->ptr.p_double[m], _state)) )
+        {
+            bchangedir = ae_true;
+        }
+        if( idir==2&&ae_fp_less(ae_fabs(d->ptr.p_double[m], _state),1.0E-3*ae_fabs(d->ptr.p_double[ll], _state)) )
+        {
+            bchangedir = ae_true;
+        }
+        if( (ll!=oldll||m!=oldm)||bchangedir )
+        {
+            if( ae_fp_greater_eq(ae_fabs(d->ptr.p_double[ll], _state),ae_fabs(d->ptr.p_double[m], _state)) )
+            {
+                
+                /*
+                 * Chase bulge from top (big end) to bottom (small end)
+                 */
+                idir = 1;
+            }
+            else
+            {
+                
+                /*
+                 * Chase bulge from bottom (big end) to top (small end)
+                 */
+                idir = 2;
+            }
+        }
+        
+        /*
+         * Apply convergence tests
+         */
+        if( idir==1 )
+        {
+            
+            /*
+             * Run convergence test in forward direction
+             * First apply standard test to bottom of matrix
+             */
+            if( ae_fp_less_eq(ae_fabs(e->ptr.p_double[m-1], _state),ae_fabs(tol, _state)*ae_fabs(d->ptr.p_double[m], _state))||(ae_fp_less(tol,0)&&ae_fp_less_eq(ae_fabs(e->ptr.p_double[m-1], _state),thresh)) )
+            {
+                e->ptr.p_double[m-1] = 0;
+                continue;
+            }
+            if( ae_fp_greater_eq(tol,0) )
+            {
+                
+                /*
+                 * If relative accuracy desired,
+                 * apply convergence criterion forward
+                 */
+                mu = ae_fabs(d->ptr.p_double[ll], _state);
+                sminl = mu;
+                iterflag = ae_false;
+                for(lll=ll; lll<=m-1; lll++)
+                {
+                    if( ae_fp_less_eq(ae_fabs(e->ptr.p_double[lll], _state),tol*mu) )
+                    {
+                        e->ptr.p_double[lll] = 0;
+                        iterflag = ae_true;
+                        break;
+                    }
+                    sminlo = sminl;
+                    mu = ae_fabs(d->ptr.p_double[lll+1], _state)*(mu/(mu+ae_fabs(e->ptr.p_double[lll], _state)));
+                    sminl = ae_minreal(sminl, mu, _state);
+                }
+                if( iterflag )
+                {
+                    continue;
+                }
+            }
+        }
+        else
+        {
+            
+            /*
+             * Run convergence test in backward direction
+             * First apply standard test to top of matrix
+             */
+            if( ae_fp_less_eq(ae_fabs(e->ptr.p_double[ll], _state),ae_fabs(tol, _state)*ae_fabs(d->ptr.p_double[ll], _state))||(ae_fp_less(tol,0)&&ae_fp_less_eq(ae_fabs(e->ptr.p_double[ll], _state),thresh)) )
+            {
+                e->ptr.p_double[ll] = 0;
+                continue;
+            }
+            if( ae_fp_greater_eq(tol,0) )
+            {
+                
+                /*
+                 * If relative accuracy desired,
+                 * apply convergence criterion backward
+                 */
+                mu = ae_fabs(d->ptr.p_double[m], _state);
+                sminl = mu;
+                iterflag = ae_false;
+                for(lll=m-1; lll>=ll; lll--)
+                {
+                    if( ae_fp_less_eq(ae_fabs(e->ptr.p_double[lll], _state),tol*mu) )
+                    {
+                        e->ptr.p_double[lll] = 0;
+                        iterflag = ae_true;
+                        break;
+                    }
+                    sminlo = sminl;
+                    mu = ae_fabs(d->ptr.p_double[lll], _state)*(mu/(mu+ae_fabs(e->ptr.p_double[lll], _state)));
+                    sminl = ae_minreal(sminl, mu, _state);
+                }
+                if( iterflag )
+                {
+                    continue;
+                }
+            }
+        }
+        oldll = ll;
+        oldm = m;
+        
+        /*
+         * Compute shift.  First, test if shifting would ruin relative
+         * accuracy, and if so set the shift to zero.
+         */
+        if( ae_fp_greater_eq(tol,0)&&ae_fp_less_eq(n*tol*(sminl/smax),ae_maxreal(eps, 0.01*tol, _state)) )
+        {
+            
+            /*
+             * Use a zero shift to avoid loss of relative accuracy
+             */
+            shift = 0;
+        }
+        else
+        {
+            
+            /*
+             * Compute the shift from 2-by-2 block at end of matrix
+             */
+            if( idir==1 )
+            {
+                sll = ae_fabs(d->ptr.p_double[ll], _state);
+                bdsvd_svd2x2(d->ptr.p_double[m-1], e->ptr.p_double[m-1], d->ptr.p_double[m], &shift, &r, _state);
+            }
+            else
+            {
+                sll = ae_fabs(d->ptr.p_double[m], _state);
+                bdsvd_svd2x2(d->ptr.p_double[ll], e->ptr.p_double[ll], d->ptr.p_double[ll+1], &shift, &r, _state);
+            }
+            
+            /*
+             * Test if shift negligible, and if so set to zero
+             */
+            if( ae_fp_greater(sll,0) )
+            {
+                if( ae_fp_less(ae_sqr(shift/sll, _state),eps) )
+                {
+                    shift = 0;
+                }
+            }
+        }
+        
+        /*
+         * Increment iteration count
+         */
+        iter = iter+m-ll;
+        
+        /*
+         * If SHIFT = 0, do simplified QR iteration
+         */
+        if( ae_fp_eq(shift,0) )
+        {
+            if( idir==1 )
+            {
+                
+                /*
+                 * Chase bulge from top to bottom
+                 * Save cosines and sines for later singular vector updates
+                 */
+                cs = 1;
+                oldcs = 1;
+                for(i=ll; i<=m-1; i++)
+                {
+                    generaterotation(d->ptr.p_double[i]*cs, e->ptr.p_double[i], &cs, &sn, &r, _state);
+                    if( i>ll )
+                    {
+                        e->ptr.p_double[i-1] = oldsn*r;
+                    }
+                    generaterotation(oldcs*r, d->ptr.p_double[i+1]*sn, &oldcs, &oldsn, &tmp, _state);
+                    d->ptr.p_double[i] = tmp;
+                    work0.ptr.p_double[i-ll+1] = cs;
+                    work1.ptr.p_double[i-ll+1] = sn;
+                    work2.ptr.p_double[i-ll+1] = oldcs;
+                    work3.ptr.p_double[i-ll+1] = oldsn;
+                }
+                h = d->ptr.p_double[m]*cs;
+                d->ptr.p_double[m] = h*oldcs;
+                e->ptr.p_double[m-1] = h*oldsn;
+                
+                /*
+                 * Update singular vectors
+                 */
+                if( ncvt>0 )
+                {
+                    applyrotationsfromtheleft(fwddir, ll+vstart-1, m+vstart-1, vstart, vend, &work0, &work1, vt, &vttemp, _state);
+                }
+                if( nru>0 )
+                {
+                    applyrotationsfromtheright(fwddir, ustart, uend, ll+ustart-1, m+ustart-1, &work2, &work3, u, &utemp, _state);
+                }
+                if( ncc>0 )
+                {
+                    applyrotationsfromtheleft(fwddir, ll+cstart-1, m+cstart-1, cstart, cend, &work2, &work3, c, &ctemp, _state);
+                }
+                
+                /*
+                 * Test convergence
+                 */
+                if( ae_fp_less_eq(ae_fabs(e->ptr.p_double[m-1], _state),thresh) )
+                {
+                    e->ptr.p_double[m-1] = 0;
+                }
+            }
+            else
+            {
+                
+                /*
+                 * Chase bulge from bottom to top
+                 * Save cosines and sines for later singular vector updates
+                 */
+                cs = 1;
+                oldcs = 1;
+                for(i=m; i>=ll+1; i--)
+                {
+                    generaterotation(d->ptr.p_double[i]*cs, e->ptr.p_double[i-1], &cs, &sn, &r, _state);
+                    if( i<m )
+                    {
+                        e->ptr.p_double[i] = oldsn*r;
+                    }
+                    generaterotation(oldcs*r, d->ptr.p_double[i-1]*sn, &oldcs, &oldsn, &tmp, _state);
+                    d->ptr.p_double[i] = tmp;
+                    work0.ptr.p_double[i-ll] = cs;
+                    work1.ptr.p_double[i-ll] = -sn;
+                    work2.ptr.p_double[i-ll] = oldcs;
+                    work3.ptr.p_double[i-ll] = -oldsn;
+                }
+                h = d->ptr.p_double[ll]*cs;
+                d->ptr.p_double[ll] = h*oldcs;
+                e->ptr.p_double[ll] = h*oldsn;
+                
+                /*
+                 * Update singular vectors
+                 */
+                if( ncvt>0 )
+                {
+                    applyrotationsfromtheleft(!fwddir, ll+vstart-1, m+vstart-1, vstart, vend, &work2, &work3, vt, &vttemp, _state);
+                }
+                if( nru>0 )
+                {
+                    applyrotationsfromtheright(!fwddir, ustart, uend, ll+ustart-1, m+ustart-1, &work0, &work1, u, &utemp, _state);
+                }
+                if( ncc>0 )
+                {
+                    applyrotationsfromtheleft(!fwddir, ll+cstart-1, m+cstart-1, cstart, cend, &work0, &work1, c, &ctemp, _state);
+                }
+                
+                /*
+                 * Test convergence
+                 */
+                if( ae_fp_less_eq(ae_fabs(e->ptr.p_double[ll], _state),thresh) )
+                {
+                    e->ptr.p_double[ll] = 0;
+                }
+            }
+        }
+        else
+        {
+            
+            /*
+             * Use nonzero shift
+             */
+            if( idir==1 )
+            {
+                
+                /*
+                 * Chase bulge from top to bottom
+                 * Save cosines and sines for later singular vector updates
+                 */
+                f = (ae_fabs(d->ptr.p_double[ll], _state)-shift)*(bdsvd_extsignbdsqr(1, d->ptr.p_double[ll], _state)+shift/d->ptr.p_double[ll]);
+                g = e->ptr.p_double[ll];
+                for(i=ll; i<=m-1; i++)
+                {
+                    generaterotation(f, g, &cosr, &sinr, &r, _state);
+                    if( i>ll )
+                    {
+                        e->ptr.p_double[i-1] = r;
+                    }
+                    f = cosr*d->ptr.p_double[i]+sinr*e->ptr.p_double[i];
+                    e->ptr.p_double[i] = cosr*e->ptr.p_double[i]-sinr*d->ptr.p_double[i];
+                    g = sinr*d->ptr.p_double[i+1];
+                    d->ptr.p_double[i+1] = cosr*d->ptr.p_double[i+1];
+                    generaterotation(f, g, &cosl, &sinl, &r, _state);
+                    d->ptr.p_double[i] = r;
+                    f = cosl*e->ptr.p_double[i]+sinl*d->ptr.p_double[i+1];
+                    d->ptr.p_double[i+1] = cosl*d->ptr.p_double[i+1]-sinl*e->ptr.p_double[i];
+                    if( i<m-1 )
+                    {
+                        g = sinl*e->ptr.p_double[i+1];
+                        e->ptr.p_double[i+1] = cosl*e->ptr.p_double[i+1];
+                    }
+                    work0.ptr.p_double[i-ll+1] = cosr;
+                    work1.ptr.p_double[i-ll+1] = sinr;
+                    work2.ptr.p_double[i-ll+1] = cosl;
+                    work3.ptr.p_double[i-ll+1] = sinl;
+                }
+                e->ptr.p_double[m-1] = f;
+                
+                /*
+                 * Update singular vectors
+                 */
+                if( ncvt>0 )
+                {
+                    applyrotationsfromtheleft(fwddir, ll+vstart-1, m+vstart-1, vstart, vend, &work0, &work1, vt, &vttemp, _state);
+                }
+                if( nru>0 )
+                {
+                    applyrotationsfromtheright(fwddir, ustart, uend, ll+ustart-1, m+ustart-1, &work2, &work3, u, &utemp, _state);
+                }
+                if( ncc>0 )
+                {
+                    applyrotationsfromtheleft(fwddir, ll+cstart-1, m+cstart-1, cstart, cend, &work2, &work3, c, &ctemp, _state);
+                }
+                
+                /*
+                 * Test convergence
+                 */
+                if( ae_fp_less_eq(ae_fabs(e->ptr.p_double[m-1], _state),thresh) )
+                {
+                    e->ptr.p_double[m-1] = 0;
+                }
+            }
+            else
+            {
+                
+                /*
+                 * Chase bulge from bottom to top
+                 * Save cosines and sines for later singular vector updates
+                 */
+                f = (ae_fabs(d->ptr.p_double[m], _state)-shift)*(bdsvd_extsignbdsqr(1, d->ptr.p_double[m], _state)+shift/d->ptr.p_double[m]);
+                g = e->ptr.p_double[m-1];
+                for(i=m; i>=ll+1; i--)
+                {
+                    generaterotation(f, g, &cosr, &sinr, &r, _state);
+                    if( i<m )
+                    {
+                        e->ptr.p_double[i] = r;
+                    }
+                    f = cosr*d->ptr.p_double[i]+sinr*e->ptr.p_double[i-1];
+                    e->ptr.p_double[i-1] = cosr*e->ptr.p_double[i-1]-sinr*d->ptr.p_double[i];
+                    g = sinr*d->ptr.p_double[i-1];
+                    d->ptr.p_double[i-1] = cosr*d->ptr.p_double[i-1];
+                    generaterotation(f, g, &cosl, &sinl, &r, _state);
+                    d->ptr.p_double[i] = r;
+                    f = cosl*e->ptr.p_double[i-1]+sinl*d->ptr.p_double[i-1];
+                    d->ptr.p_double[i-1] = cosl*d->ptr.p_double[i-1]-sinl*e->ptr.p_double[i-1];
+                    if( i>ll+1 )
+                    {
+                        g = sinl*e->ptr.p_double[i-2];
+                        e->ptr.p_double[i-2] = cosl*e->ptr.p_double[i-2];
+                    }
+                    work0.ptr.p_double[i-ll] = cosr;
+                    work1.ptr.p_double[i-ll] = -sinr;
+                    work2.ptr.p_double[i-ll] = cosl;
+                    work3.ptr.p_double[i-ll] = -sinl;
+                }
+                e->ptr.p_double[ll] = f;
+                
+                /*
+                 * Test convergence
+                 */
+                if( ae_fp_less_eq(ae_fabs(e->ptr.p_double[ll], _state),thresh) )
+                {
+                    e->ptr.p_double[ll] = 0;
+                }
+                
+                /*
+                 * Update singular vectors if desired
+                 */
+                if( ncvt>0 )
+                {
+                    applyrotationsfromtheleft(!fwddir, ll+vstart-1, m+vstart-1, vstart, vend, &work2, &work3, vt, &vttemp, _state);
+                }
+                if( nru>0 )
+                {
+                    applyrotationsfromtheright(!fwddir, ustart, uend, ll+ustart-1, m+ustart-1, &work0, &work1, u, &utemp, _state);
+                }
+                if( ncc>0 )
+                {
+                    applyrotationsfromtheleft(!fwddir, ll+cstart-1, m+cstart-1, cstart, cend, &work0, &work1, c, &ctemp, _state);
+                }
+            }
+        }
+        
+        /*
+         * QR iteration finished, go back and check convergence
+         */
+        continue;
+    }
+    
+    /*
+     * All singular values converged, so make them positive
+     */
+    for(i=1; i<=n; i++)
+    {
+        if( ae_fp_less(d->ptr.p_double[i],0) )
+        {
+            d->ptr.p_double[i] = -d->ptr.p_double[i];
+            
+            /*
+             * Change sign of singular vectors, if desired
+             */
+            if( ncvt>0 )
+            {
+                ae_v_muld(&vt->ptr.pp_double[i+vstart-1][vstart], 1, ae_v_len(vstart,vend), -1);
+            }
+        }
+    }
+    
+    /*
+     * Sort the singular values into decreasing order (insertion sort on
+     * singular values, but only one transposition per singular vector)
+     */
+    for(i=1; i<=n-1; i++)
+    {
+        
+        /*
+         * Scan for smallest D(I)
+         */
+        isub = 1;
+        smin = d->ptr.p_double[1];
+        for(j=2; j<=n+1-i; j++)
+        {
+            if( ae_fp_less_eq(d->ptr.p_double[j],smin) )
+            {
+                isub = j;
+                smin = d->ptr.p_double[j];
+            }
+        }
+        if( isub!=n+1-i )
+        {
+            
+            /*
+             * Swap singular values and vectors
+             */
+            d->ptr.p_double[isub] = d->ptr.p_double[n+1-i];
+            d->ptr.p_double[n+1-i] = smin;
+            if( ncvt>0 )
+            {
+                j = n+1-i;
+                ae_v_move(&vttemp.ptr.p_double[vstart], 1, &vt->ptr.pp_double[isub+vstart-1][vstart], 1, ae_v_len(vstart,vend));
+                ae_v_move(&vt->ptr.pp_double[isub+vstart-1][vstart], 1, &vt->ptr.pp_double[j+vstart-1][vstart], 1, ae_v_len(vstart,vend));
+                ae_v_move(&vt->ptr.pp_double[j+vstart-1][vstart], 1, &vttemp.ptr.p_double[vstart], 1, ae_v_len(vstart,vend));
+            }
+            if( nru>0 )
+            {
+                j = n+1-i;
+                ae_v_move(&utemp.ptr.p_double[ustart], 1, &u->ptr.pp_double[ustart][isub+ustart-1], u->stride, ae_v_len(ustart,uend));
+                ae_v_move(&u->ptr.pp_double[ustart][isub+ustart-1], u->stride, &u->ptr.pp_double[ustart][j+ustart-1], u->stride, ae_v_len(ustart,uend));
+                ae_v_move(&u->ptr.pp_double[ustart][j+ustart-1], u->stride, &utemp.ptr.p_double[ustart], 1, ae_v_len(ustart,uend));
+            }
+            if( ncc>0 )
+            {
+                j = n+1-i;
+                ae_v_move(&ctemp.ptr.p_double[cstart], 1, &c->ptr.pp_double[isub+cstart-1][cstart], 1, ae_v_len(cstart,cend));
+                ae_v_move(&c->ptr.pp_double[isub+cstart-1][cstart], 1, &c->ptr.pp_double[j+cstart-1][cstart], 1, ae_v_len(cstart,cend));
+                ae_v_move(&c->ptr.pp_double[j+cstart-1][cstart], 1, &ctemp.ptr.p_double[cstart], 1, ae_v_len(cstart,cend));
+            }
+        }
+    }
+    ae_frame_leave(_state);
+    return result;
+}
+
+
+static double bdsvd_extsignbdsqr(double a, double b, ae_state *_state)
+{
+    double result;
+
+
+    if( ae_fp_greater_eq(b,0) )
+    {
+        result = ae_fabs(a, _state);
+    }
+    else
+    {
+        result = -ae_fabs(a, _state);
+    }
+    return result;
+}
+
+
+static void bdsvd_svd2x2(double f,
+     double g,
+     double h,
+     double* ssmin,
+     double* ssmax,
+     ae_state *_state)
+{
+    double aas;
+    double at;
+    double au;
+    double c;
+    double fa;
+    double fhmn;
+    double fhmx;
+    double ga;
+    double ha;
+
+    *ssmin = 0;
+    *ssmax = 0;
+
+    fa = ae_fabs(f, _state);
+    ga = ae_fabs(g, _state);
+    ha = ae_fabs(h, _state);
+    fhmn = ae_minreal(fa, ha, _state);
+    fhmx = ae_maxreal(fa, ha, _state);
+    if( ae_fp_eq(fhmn,0) )
+    {
+        *ssmin = 0;
+        if( ae_fp_eq(fhmx,0) )
+        {
+            *ssmax = ga;
+        }
+        else
+        {
+            *ssmax = ae_maxreal(fhmx, ga, _state)*ae_sqrt(1+ae_sqr(ae_minreal(fhmx, ga, _state)/ae_maxreal(fhmx, ga, _state), _state), _state);
+        }
+    }
+    else
+    {
+        if( ae_fp_less(ga,fhmx) )
+        {
+            aas = 1+fhmn/fhmx;
+            at = (fhmx-fhmn)/fhmx;
+            au = ae_sqr(ga/fhmx, _state);
+            c = 2/(ae_sqrt(aas*aas+au, _state)+ae_sqrt(at*at+au, _state));
+            *ssmin = fhmn*c;
+            *ssmax = fhmx/c;
+        }
+        else
+        {
+            au = fhmx/ga;
+            if( ae_fp_eq(au,0) )
+            {
+                
+                /*
+                 * Avoid possible harmful underflow if exponent range
+                 * asymmetric (true SSMIN may not underflow even if
+                 * AU underflows)
+                 */
+                *ssmin = fhmn*fhmx/ga;
+                *ssmax = ga;
+            }
+            else
+            {
+                aas = 1+fhmn/fhmx;
+                at = (fhmx-fhmn)/fhmx;
+                c = 1/(ae_sqrt(1+ae_sqr(aas*au, _state), _state)+ae_sqrt(1+ae_sqr(at*au, _state), _state));
+                *ssmin = fhmn*c*au;
+                *ssmin = *ssmin+(*ssmin);
+                *ssmax = ga/(c+c);
+            }
+        }
+    }
+}
+
+
+static void bdsvd_svdv2x2(double f,
+     double g,
+     double h,
+     double* ssmin,
+     double* ssmax,
+     double* snr,
+     double* csr,
+     double* snl,
+     double* csl,
+     ae_state *_state)
+{
+    ae_bool gasmal;
+    ae_bool swp;
+    ae_int_t pmax;
+    double a;
+    double clt;
+    double crt;
+    double d;
+    double fa;
+    double ft;
+    double ga;
+    double gt;
+    double ha;
+    double ht;
+    double l;
+    double m;
+    double mm;
+    double r;
+    double s;
+    double slt;
+    double srt;
+    double t;
+    double temp;
+    double tsign;
+    double tt;
+    double v;
+
+    *ssmin = 0;
+    *ssmax = 0;
+    *snr = 0;
+    *csr = 0;
+    *snl = 0;
+    *csl = 0;
+
+    ft = f;
+    fa = ae_fabs(ft, _state);
+    ht = h;
+    ha = ae_fabs(h, _state);
+    
+    /*
+     * these initializers are not really necessary,
+     * but without them compiler complains about uninitialized locals
+     */
+    clt = 0;
+    crt = 0;
+    slt = 0;
+    srt = 0;
+    tsign = 0;
+    
+    /*
+     * PMAX points to the maximum absolute element of matrix
+     *  PMAX = 1 if F largest in absolute values
+     *  PMAX = 2 if G largest in absolute values
+     *  PMAX = 3 if H largest in absolute values
+     */
+    pmax = 1;
+    swp = ae_fp_greater(ha,fa);
+    if( swp )
+    {
+        
+        /*
+         * Now FA .ge. HA
+         */
+        pmax = 3;
+        temp = ft;
+        ft = ht;
+        ht = temp;
+        temp = fa;
+        fa = ha;
+        ha = temp;
+    }
+    gt = g;
+    ga = ae_fabs(gt, _state);
+    if( ae_fp_eq(ga,0) )
+    {
+        
+        /*
+         * Diagonal matrix
+         */
+        *ssmin = ha;
+        *ssmax = fa;
+        clt = 1;
+        crt = 1;
+        slt = 0;
+        srt = 0;
+    }
+    else
+    {
+        gasmal = ae_true;
+        if( ae_fp_greater(ga,fa) )
+        {
+            pmax = 2;
+            if( ae_fp_less(fa/ga,ae_machineepsilon) )
+            {
+                
+                /*
+                 * Case of very large GA
+                 */
+                gasmal = ae_false;
+                *ssmax = ga;
+                if( ae_fp_greater(ha,1) )
+                {
+                    v = ga/ha;
+                    *ssmin = fa/v;
+                }
+                else
+                {
+                    v = fa/ga;
+                    *ssmin = v*ha;
+                }
+                clt = 1;
+                slt = ht/gt;
+                srt = 1;
+                crt = ft/gt;
+            }
+        }
+        if( gasmal )
+        {
+            
+            /*
+             * Normal case
+             */
+            d = fa-ha;
+            if( ae_fp_eq(d,fa) )
+            {
+                l = 1;
+            }
+            else
+            {
+                l = d/fa;
+            }
+            m = gt/ft;
+            t = 2-l;
+            mm = m*m;
+            tt = t*t;
+            s = ae_sqrt(tt+mm, _state);
+            if( ae_fp_eq(l,0) )
+            {
+                r = ae_fabs(m, _state);
+            }
+            else
+            {
+                r = ae_sqrt(l*l+mm, _state);
+            }
+            a = 0.5*(s+r);
+            *ssmin = ha/a;
+            *ssmax = fa*a;
+            if( ae_fp_eq(mm,0) )
+            {
+                
+                /*
+                 * Note that M is very tiny
+                 */
+                if( ae_fp_eq(l,0) )
+                {
+                    t = bdsvd_extsignbdsqr(2, ft, _state)*bdsvd_extsignbdsqr(1, gt, _state);
+                }
+                else
+                {
+                    t = gt/bdsvd_extsignbdsqr(d, ft, _state)+m/t;
+                }
+            }
+            else
+            {
+                t = (m/(s+t)+m/(r+l))*(1+a);
+            }
+            l = ae_sqrt(t*t+4, _state);
+            crt = 2/l;
+            srt = t/l;
+            clt = (crt+srt*m)/a;
+            v = ht/ft;
+            slt = v*srt/a;
+        }
+    }
+    if( swp )
+    {
+        *csl = srt;
+        *snl = crt;
+        *csr = slt;
+        *snr = clt;
+    }
+    else
+    {
+        *csl = clt;
+        *snl = slt;
+        *csr = crt;
+        *snr = srt;
+    }
+    
+    /*
+     * Correct signs of SSMAX and SSMIN
+     */
+    if( pmax==1 )
+    {
+        tsign = bdsvd_extsignbdsqr(1, *csr, _state)*bdsvd_extsignbdsqr(1, *csl, _state)*bdsvd_extsignbdsqr(1, f, _state);
+    }
+    if( pmax==2 )
+    {
+        tsign = bdsvd_extsignbdsqr(1, *snr, _state)*bdsvd_extsignbdsqr(1, *csl, _state)*bdsvd_extsignbdsqr(1, g, _state);
+    }
+    if( pmax==3 )
+    {
+        tsign = bdsvd_extsignbdsqr(1, *snr, _state)*bdsvd_extsignbdsqr(1, *snl, _state)*bdsvd_extsignbdsqr(1, h, _state);
+    }
+    *ssmax = bdsvd_extsignbdsqr(*ssmax, tsign, _state);
+    *ssmin = bdsvd_extsignbdsqr(*ssmin, tsign*bdsvd_extsignbdsqr(1, f, _state)*bdsvd_extsignbdsqr(1, h, _state), _state);
+}
+
+
+
+
+/*************************************************************************
+Singular value decomposition of a rectangular matrix.
+
+The algorithm calculates the singular value decomposition of a matrix of
+size MxN: A = U * S * V^T
+
+The algorithm finds the singular values and, optionally, matrices U and V^T.
+The algorithm can find both first min(M,N) columns of matrix U and rows of
+matrix V^T (singular vectors), and matrices U and V^T wholly (of sizes MxM
+and NxN respectively).
+
+Take into account that the subroutine does not return matrix V but V^T.
+
+Input parameters:
+    A           -   matrix to be decomposed.
+                    Array whose indexes range within [0..M-1, 0..N-1].
+    M           -   number of rows in matrix A.
+    N           -   number of columns in matrix A.
+    UNeeded     -   0, 1 or 2. See the description of the parameter U.
+    VTNeeded    -   0, 1 or 2. See the description of the parameter VT.
+    AdditionalMemory -
+                    If the parameter:
+                     * equals 0, the algorithm doesn’t use additional
+                       memory (lower requirements, lower performance).
+                     * equals 1, the algorithm uses additional
+                       memory of size min(M,N)*min(M,N) of real numbers.
+                       It often speeds up the algorithm.
+                     * equals 2, the algorithm uses additional
+                       memory of size M*min(M,N) of real numbers.
+                       It allows to get a maximum performance.
+                    The recommended value of the parameter is 2.
+
+Output parameters:
+    W           -   contains singular values in descending order.
+    U           -   if UNeeded=0, U isn't changed, the left singular vectors
+                    are not calculated.
+                    if Uneeded=1, U contains left singular vectors (first
+                    min(M,N) columns of matrix U). Array whose indexes range
+                    within [0..M-1, 0..Min(M,N)-1].
+                    if UNeeded=2, U contains matrix U wholly. Array whose
+                    indexes range within [0..M-1, 0..M-1].
+    VT          -   if VTNeeded=0, VT isn’t changed, the right singular vectors
+                    are not calculated.
+                    if VTNeeded=1, VT contains right singular vectors (first
+                    min(M,N) rows of matrix V^T). Array whose indexes range
+                    within [0..min(M,N)-1, 0..N-1].
+                    if VTNeeded=2, VT contains matrix V^T wholly. Array whose
+                    indexes range within [0..N-1, 0..N-1].
+
+  -- ALGLIB --
+     Copyright 2005 by Bochkanov Sergey
+*************************************************************************/
+ae_bool rmatrixsvd(/* Real    */ ae_matrix* a,
+     ae_int_t m,
+     ae_int_t n,
+     ae_int_t uneeded,
+     ae_int_t vtneeded,
+     ae_int_t additionalmemory,
+     /* Real    */ ae_vector* w,
+     /* Real    */ ae_matrix* u,
+     /* Real    */ ae_matrix* vt,
+     ae_state *_state)
+{
+    ae_frame _frame_block;
+    ae_matrix _a;
+    ae_vector tauq;
+    ae_vector taup;
+    ae_vector tau;
+    ae_vector e;
+    ae_vector work;
+    ae_matrix t2;
+    ae_bool isupper;
+    ae_int_t minmn;
+    ae_int_t ncu;
+    ae_int_t nrvt;
+    ae_int_t nru;
+    ae_int_t ncvt;
+    ae_int_t i;
+    ae_int_t j;
+    ae_bool result;
+
+    ae_frame_make(_state, &_frame_block);
+    ae_matrix_init_copy(&_a, a, _state, ae_true);
+    a = &_a;
+    ae_vector_clear(w);
+    ae_matrix_clear(u);
+    ae_matrix_clear(vt);
+    ae_vector_init(&tauq, 0, DT_REAL, _state, ae_true);
+    ae_vector_init(&taup, 0, DT_REAL, _state, ae_true);
+    ae_vector_init(&tau, 0, DT_REAL, _state, ae_true);
+    ae_vector_init(&e, 0, DT_REAL, _state, ae_true);
+    ae_vector_init(&work, 0, DT_REAL, _state, ae_true);
+    ae_matrix_init(&t2, 0, 0, DT_REAL, _state, ae_true);
+
+    result = ae_true;
+    if( m==0||n==0 )
+    {
+        ae_frame_leave(_state);
+        return result;
+    }
+    ae_assert(uneeded>=0&&uneeded<=2, "SVDDecomposition: wrong parameters!", _state);
+    ae_assert(vtneeded>=0&&vtneeded<=2, "SVDDecomposition: wrong parameters!", _state);
+    ae_assert(additionalmemory>=0&&additionalmemory<=2, "SVDDecomposition: wrong parameters!", _state);
+    
+    /*
+     * initialize
+     */
+    minmn = ae_minint(m, n, _state);
+    ae_vector_set_length(w, minmn+1, _state);
+    ncu = 0;
+    nru = 0;
+    if( uneeded==1 )
+    {
+        nru = m;
+        ncu = minmn;
+        ae_matrix_set_length(u, nru-1+1, ncu-1+1, _state);
+    }
+    if( uneeded==2 )
+    {
+        nru = m;
+        ncu = m;
+        ae_matrix_set_length(u, nru-1+1, ncu-1+1, _state);
+    }
+    nrvt = 0;
+    ncvt = 0;
+    if( vtneeded==1 )
+    {
+        nrvt = minmn;
+        ncvt = n;
+        ae_matrix_set_length(vt, nrvt-1+1, ncvt-1+1, _state);
+    }
+    if( vtneeded==2 )
+    {
+        nrvt = n;
+        ncvt = n;
+        ae_matrix_set_length(vt, nrvt-1+1, ncvt-1+1, _state);
+    }
+    
+    /*
+     * M much larger than N
+     * Use bidiagonal reduction with QR-decomposition
+     */
+    if( ae_fp_greater(m,1.6*n) )
+    {
+        if( uneeded==0 )
+        {
+            
+            /*
+             * No left singular vectors to be computed
+             */
+            rmatrixqr(a, m, n, &tau, _state);
+            for(i=0; i<=n-1; i++)
+            {
+                for(j=0; j<=i-1; j++)
+                {
+                    a->ptr.pp_double[i][j] = 0;
+                }
+            }
+            rmatrixbd(a, n, n, &tauq, &taup, _state);
+            rmatrixbdunpackpt(a, n, n, &taup, nrvt, vt, _state);
+            rmatrixbdunpackdiagonals(a, n, n, &isupper, w, &e, _state);
+            result = rmatrixbdsvd(w, &e, n, isupper, ae_false, u, 0, a, 0, vt, ncvt, _state);
+            ae_frame_leave(_state);
+            return result;
+        }
+        else
+        {
+            
+            /*
+             * Left singular vectors (may be full matrix U) to be computed
+             */
+            rmatrixqr(a, m, n, &tau, _state);
+            rmatrixqrunpackq(a, m, n, &tau, ncu, u, _state);
+            for(i=0; i<=n-1; i++)
+            {
+                for(j=0; j<=i-1; j++)
+                {
+                    a->ptr.pp_double[i][j] = 0;
+                }
+            }
+            rmatrixbd(a, n, n, &tauq, &taup, _state);
+            rmatrixbdunpackpt(a, n, n, &taup, nrvt, vt, _state);
+            rmatrixbdunpackdiagonals(a, n, n, &isupper, w, &e, _state);
+            if( additionalmemory<1 )
+            {
+                
+                /*
+                 * No additional memory can be used
+                 */
+                rmatrixbdmultiplybyq(a, n, n, &tauq, u, m, n, ae_true, ae_false, _state);
+                result = rmatrixbdsvd(w, &e, n, isupper, ae_false, u, m, a, 0, vt, ncvt, _state);
+            }
+            else
+            {
+                
+                /*
+                 * Large U. Transforming intermediate matrix T2
+                 */
+                ae_vector_set_length(&work, ae_maxint(m, n, _state)+1, _state);
+                rmatrixbdunpackq(a, n, n, &tauq, n, &t2, _state);
+                copymatrix(u, 0, m-1, 0, n-1, a, 0, m-1, 0, n-1, _state);
+                inplacetranspose(&t2, 0, n-1, 0, n-1, &work, _state);
+                result = rmatrixbdsvd(w, &e, n, isupper, ae_false, u, 0, &t2, n, vt, ncvt, _state);
+                matrixmatrixmultiply(a, 0, m-1, 0, n-1, ae_false, &t2, 0, n-1, 0, n-1, ae_true, 1.0, u, 0, m-1, 0, n-1, 0.0, &work, _state);
+            }
+            ae_frame_leave(_state);
+            return result;
+        }
+    }
+    
+    /*
+     * N much larger than M
+     * Use bidiagonal reduction with LQ-decomposition
+     */
+    if( ae_fp_greater(n,1.6*m) )
+    {
+        if( vtneeded==0 )
+        {
+            
+            /*
+             * No right singular vectors to be computed
+             */
+            rmatrixlq(a, m, n, &tau, _state);
+            for(i=0; i<=m-1; i++)
+            {
+                for(j=i+1; j<=m-1; j++)
+                {
+                    a->ptr.pp_double[i][j] = 0;
+                }
+            }
+            rmatrixbd(a, m, m, &tauq, &taup, _state);
+            rmatrixbdunpackq(a, m, m, &tauq, ncu, u, _state);
+            rmatrixbdunpackdiagonals(a, m, m, &isupper, w, &e, _state);
+            ae_vector_set_length(&work, m+1, _state);
+            inplacetranspose(u, 0, nru-1, 0, ncu-1, &work, _state);
+            result = rmatrixbdsvd(w, &e, m, isupper, ae_false, a, 0, u, nru, vt, 0, _state);
+            inplacetranspose(u, 0, nru-1, 0, ncu-1, &work, _state);
+            ae_frame_leave(_state);
+            return result;
+        }
+        else
+        {
+            
+            /*
+             * Right singular vectors (may be full matrix VT) to be computed
+             */
+            rmatrixlq(a, m, n, &tau, _state);
+            rmatrixlqunpackq(a, m, n, &tau, nrvt, vt, _state);
+            for(i=0; i<=m-1; i++)
+            {
+                for(j=i+1; j<=m-1; j++)
+                {
+                    a->ptr.pp_double[i][j] = 0;
+                }
+            }
+            rmatrixbd(a, m, m, &tauq, &taup, _state);
+            rmatrixbdunpackq(a, m, m, &tauq, ncu, u, _state);
+            rmatrixbdunpackdiagonals(a, m, m, &isupper, w, &e, _state);
+            ae_vector_set_length(&work, ae_maxint(m, n, _state)+1, _state);
+            inplacetranspose(u, 0, nru-1, 0, ncu-1, &work, _state);
+            if( additionalmemory<1 )
+            {
+                
+                /*
+                 * No additional memory available
+                 */
+                rmatrixbdmultiplybyp(a, m, m, &taup, vt, m, n, ae_false, ae_true, _state);
+                result = rmatrixbdsvd(w, &e, m, isupper, ae_false, a, 0, u, nru, vt, n, _state);
+            }
+            else
+            {
+                
+                /*
+                 * Large VT. Transforming intermediate matrix T2
+                 */
+                rmatrixbdunpackpt(a, m, m, &taup, m, &t2, _state);
+                result = rmatrixbdsvd(w, &e, m, isupper, ae_false, a, 0, u, nru, &t2, m, _state);
+                copymatrix(vt, 0, m-1, 0, n-1, a, 0, m-1, 0, n-1, _state);
+                matrixmatrixmultiply(&t2, 0, m-1, 0, m-1, ae_false, a, 0, m-1, 0, n-1, ae_false, 1.0, vt, 0, m-1, 0, n-1, 0.0, &work, _state);
+            }
+            inplacetranspose(u, 0, nru-1, 0, ncu-1, &work, _state);
+            ae_frame_leave(_state);
+            return result;
+        }
+    }
+    
+    /*
+     * M<=N
+     * We can use inplace transposition of U to get rid of columnwise operations
+     */
+    if( m<=n )
+    {
+        rmatrixbd(a, m, n, &tauq, &taup, _state);
+        rmatrixbdunpackq(a, m, n, &tauq, ncu, u, _state);
+        rmatrixbdunpackpt(a, m, n, &taup, nrvt, vt, _state);
+        rmatrixbdunpackdiagonals(a, m, n, &isupper, w, &e, _state);
+        ae_vector_set_length(&work, m+1, _state);
+        inplacetranspose(u, 0, nru-1, 0, ncu-1, &work, _state);
+        result = rmatrixbdsvd(w, &e, minmn, isupper, ae_false, a, 0, u, nru, vt, ncvt, _state);
+        inplacetranspose(u, 0, nru-1, 0, ncu-1, &work, _state);
+        ae_frame_leave(_state);
+        return result;
+    }
+    
+    /*
+     * Simple bidiagonal reduction
+     */
+    rmatrixbd(a, m, n, &tauq, &taup, _state);
+    rmatrixbdunpackq(a, m, n, &tauq, ncu, u, _state);
+    rmatrixbdunpackpt(a, m, n, &taup, nrvt, vt, _state);
+    rmatrixbdunpackdiagonals(a, m, n, &isupper, w, &e, _state);
+    if( additionalmemory<2||uneeded==0 )
+    {
+        
+        /*
+         * We cant use additional memory or there is no need in such operations
+         */
+        result = rmatrixbdsvd(w, &e, minmn, isupper, ae_false, u, nru, a, 0, vt, ncvt, _state);
+    }
+    else
+    {
+        
+        /*
+         * We can use additional memory
+         */
+        ae_matrix_set_length(&t2, minmn-1+1, m-1+1, _state);
+        copyandtranspose(u, 0, m-1, 0, minmn-1, &t2, 0, minmn-1, 0, m-1, _state);
+        result = rmatrixbdsvd(w, &e, minmn, isupper, ae_false, u, 0, &t2, m, vt, ncvt, _state);
+        copyandtranspose(&t2, 0, minmn-1, 0, m-1, u, 0, m-1, 0, minmn-1, _state);
+    }
+    ae_frame_leave(_state);
+    return result;
 }
 
 
@@ -20269,6 +23408,14 @@ void smatrixrndmultiply(/* Real    */ ae_matrix* a,
         ae_v_muld(&a->ptr.pp_double[0][i], a->stride, ae_v_len(0,n-1), tau);
         ae_v_muld(&a->ptr.pp_double[i][0], 1, ae_v_len(0,n-1), tau);
     }
+    
+    /*
+     * Copy upper triangle to lower
+     */
+    for(i=0; i<=n-2; i++)
+    {
+        ae_v_move(&a->ptr.pp_double[i+1][i], a->stride, &a->ptr.pp_double[i][i+1], 1, ae_v_len(i+1,n-1));
+    }
     ae_frame_leave(_state);
 }
 
@@ -20348,6 +23495,22 @@ void hmatrixrndmultiply(/* Complex */ ae_matrix* a,
         ae_v_cmulc(&a->ptr.pp_complex[0][i], a->stride, ae_v_len(0,n-1), tau);
         tau = ae_c_conj(tau, _state);
         ae_v_cmulc(&a->ptr.pp_complex[i][0], 1, ae_v_len(0,n-1), tau);
+    }
+    
+    /*
+     * Change all values from lower triangle by complex-conjugate values
+     * from upper one
+     */
+    for(i=0; i<=n-2; i++)
+    {
+        ae_v_cmove(&a->ptr.pp_complex[i+1][i], a->stride, &a->ptr.pp_complex[i][i+1], 1, "N", ae_v_len(i+1,n-1));
+    }
+    for(s=0; s<=n-2; s++)
+    {
+        for(i=s+1; i<=n-1; i++)
+        {
+            a->ptr.pp_complex[i][s].y = -a->ptr.pp_complex[i][s].y;
+        }
     }
     ae_frame_leave(_state);
 }
@@ -26656,1671 +29819,6 @@ void _matinvreport_clear(matinvreport* p)
 
 
 /*************************************************************************
-Singular value decomposition of a bidiagonal matrix (extended algorithm)
-
-The algorithm performs the singular value decomposition  of  a  bidiagonal
-matrix B (upper or lower) representing it as B = Q*S*P^T, where Q and  P -
-orthogonal matrices, S - diagonal matrix with non-negative elements on the
-main diagonal, in descending order.
-
-The  algorithm  finds  singular  values.  In  addition,  the algorithm can
-calculate  matrices  Q  and P (more precisely, not the matrices, but their
-product  with  given  matrices U and VT - U*Q and (P^T)*VT)).  Of  course,
-matrices U and VT can be of any type, including identity. Furthermore, the
-algorithm can calculate Q'*C (this product is calculated more  effectively
-than U*Q,  because  this calculation operates with rows instead  of matrix
-columns).
-
-The feature of the algorithm is its ability to find  all  singular  values
-including those which are arbitrarily close to 0  with  relative  accuracy
-close to  machine precision. If the parameter IsFractionalAccuracyRequired
-is set to True, all singular values will have high relative accuracy close
-to machine precision. If the parameter is set to False, only  the  biggest
-singular value will have relative accuracy  close  to  machine  precision.
-The absolute error of other singular values is equal to the absolute error
-of the biggest singular value.
-
-Input parameters:
-    D       -   main diagonal of matrix B.
-                Array whose index ranges within [0..N-1].
-    E       -   superdiagonal (or subdiagonal) of matrix B.
-                Array whose index ranges within [0..N-2].
-    N       -   size of matrix B.
-    IsUpper -   True, if the matrix is upper bidiagonal.
-    IsFractionalAccuracyRequired -
-                accuracy to search singular values with.
-    U       -   matrix to be multiplied by Q.
-                Array whose indexes range within [0..NRU-1, 0..N-1].
-                The matrix can be bigger, in that case only the  submatrix
-                [0..NRU-1, 0..N-1] will be multiplied by Q.
-    NRU     -   number of rows in matrix U.
-    C       -   matrix to be multiplied by Q'.
-                Array whose indexes range within [0..N-1, 0..NCC-1].
-                The matrix can be bigger, in that case only the  submatrix
-                [0..N-1, 0..NCC-1] will be multiplied by Q'.
-    NCC     -   number of columns in matrix C.
-    VT      -   matrix to be multiplied by P^T.
-                Array whose indexes range within [0..N-1, 0..NCVT-1].
-                The matrix can be bigger, in that case only the  submatrix
-                [0..N-1, 0..NCVT-1] will be multiplied by P^T.
-    NCVT    -   number of columns in matrix VT.
-
-Output parameters:
-    D       -   singular values of matrix B in descending order.
-    U       -   if NRU>0, contains matrix U*Q.
-    VT      -   if NCVT>0, contains matrix (P^T)*VT.
-    C       -   if NCC>0, contains matrix Q'*C.
-
-Result:
-    True, if the algorithm has converged.
-    False, if the algorithm hasn't converged (rare case).
-
-Additional information:
-    The type of convergence is controlled by the internal  parameter  TOL.
-    If the parameter is greater than 0, the singular values will have
-    relative accuracy TOL. If TOL<0, the singular values will have
-    absolute accuracy ABS(TOL)*norm(B).
-    By default, |TOL| falls within the range of 10*Epsilon and 100*Epsilon,
-    where Epsilon is the machine precision. It is not  recommended  to  use
-    TOL less than 10*Epsilon since this will  considerably  slow  down  the
-    algorithm and may not lead to error decreasing.
-History:
-    * 31 March, 2007.
-        changed MAXITR from 6 to 12.
-
-  -- LAPACK routine (version 3.0) --
-     Univ. of Tennessee, Univ. of California Berkeley, NAG Ltd.,
-     Courant Institute, Argonne National Lab, and Rice University
-     October 31, 1999.
-*************************************************************************/
-ae_bool rmatrixbdsvd(/* Real    */ ae_vector* d,
-     /* Real    */ ae_vector* e,
-     ae_int_t n,
-     ae_bool isupper,
-     ae_bool isfractionalaccuracyrequired,
-     /* Real    */ ae_matrix* u,
-     ae_int_t nru,
-     /* Real    */ ae_matrix* c,
-     ae_int_t ncc,
-     /* Real    */ ae_matrix* vt,
-     ae_int_t ncvt,
-     ae_state *_state)
-{
-    ae_frame _frame_block;
-    ae_vector _e;
-    ae_vector d1;
-    ae_vector e1;
-    ae_bool result;
-
-    ae_frame_make(_state, &_frame_block);
-    ae_vector_init_copy(&_e, e, _state, ae_true);
-    e = &_e;
-    ae_vector_init(&d1, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&e1, 0, DT_REAL, _state, ae_true);
-
-    ae_vector_set_length(&d1, n+1, _state);
-    ae_v_move(&d1.ptr.p_double[1], 1, &d->ptr.p_double[0], 1, ae_v_len(1,n));
-    if( n>1 )
-    {
-        ae_vector_set_length(&e1, n-1+1, _state);
-        ae_v_move(&e1.ptr.p_double[1], 1, &e->ptr.p_double[0], 1, ae_v_len(1,n-1));
-    }
-    result = bdsvd_bidiagonalsvddecompositioninternal(&d1, &e1, n, isupper, isfractionalaccuracyrequired, u, 0, nru, c, 0, ncc, vt, 0, ncvt, _state);
-    ae_v_move(&d->ptr.p_double[0], 1, &d1.ptr.p_double[1], 1, ae_v_len(0,n-1));
-    ae_frame_leave(_state);
-    return result;
-}
-
-
-ae_bool bidiagonalsvddecomposition(/* Real    */ ae_vector* d,
-     /* Real    */ ae_vector* e,
-     ae_int_t n,
-     ae_bool isupper,
-     ae_bool isfractionalaccuracyrequired,
-     /* Real    */ ae_matrix* u,
-     ae_int_t nru,
-     /* Real    */ ae_matrix* c,
-     ae_int_t ncc,
-     /* Real    */ ae_matrix* vt,
-     ae_int_t ncvt,
-     ae_state *_state)
-{
-    ae_frame _frame_block;
-    ae_vector _e;
-    ae_bool result;
-
-    ae_frame_make(_state, &_frame_block);
-    ae_vector_init_copy(&_e, e, _state, ae_true);
-    e = &_e;
-
-    result = bdsvd_bidiagonalsvddecompositioninternal(d, e, n, isupper, isfractionalaccuracyrequired, u, 1, nru, c, 1, ncc, vt, 1, ncvt, _state);
-    ae_frame_leave(_state);
-    return result;
-}
-
-
-/*************************************************************************
-Internal working subroutine for bidiagonal decomposition
-*************************************************************************/
-static ae_bool bdsvd_bidiagonalsvddecompositioninternal(/* Real    */ ae_vector* d,
-     /* Real    */ ae_vector* e,
-     ae_int_t n,
-     ae_bool isupper,
-     ae_bool isfractionalaccuracyrequired,
-     /* Real    */ ae_matrix* u,
-     ae_int_t ustart,
-     ae_int_t nru,
-     /* Real    */ ae_matrix* c,
-     ae_int_t cstart,
-     ae_int_t ncc,
-     /* Real    */ ae_matrix* vt,
-     ae_int_t vstart,
-     ae_int_t ncvt,
-     ae_state *_state)
-{
-    ae_frame _frame_block;
-    ae_vector _e;
-    ae_int_t i;
-    ae_int_t idir;
-    ae_int_t isub;
-    ae_int_t iter;
-    ae_int_t j;
-    ae_int_t ll;
-    ae_int_t lll;
-    ae_int_t m;
-    ae_int_t maxit;
-    ae_int_t oldll;
-    ae_int_t oldm;
-    double abse;
-    double abss;
-    double cosl;
-    double cosr;
-    double cs;
-    double eps;
-    double f;
-    double g;
-    double h;
-    double mu;
-    double oldcs;
-    double oldsn;
-    double r;
-    double shift;
-    double sigmn;
-    double sigmx;
-    double sinl;
-    double sinr;
-    double sll;
-    double smax;
-    double smin;
-    double sminl;
-    double sminlo;
-    double sminoa;
-    double sn;
-    double thresh;
-    double tol;
-    double tolmul;
-    double unfl;
-    ae_vector work0;
-    ae_vector work1;
-    ae_vector work2;
-    ae_vector work3;
-    ae_int_t maxitr;
-    ae_bool matrixsplitflag;
-    ae_bool iterflag;
-    ae_vector utemp;
-    ae_vector vttemp;
-    ae_vector ctemp;
-    ae_vector etemp;
-    ae_bool rightside;
-    ae_bool fwddir;
-    double tmp;
-    ae_int_t mm1;
-    ae_int_t mm0;
-    ae_bool bchangedir;
-    ae_int_t uend;
-    ae_int_t cend;
-    ae_int_t vend;
-    ae_bool result;
-
-    ae_frame_make(_state, &_frame_block);
-    ae_vector_init_copy(&_e, e, _state, ae_true);
-    e = &_e;
-    ae_vector_init(&work0, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&work1, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&work2, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&work3, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&utemp, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&vttemp, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&ctemp, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&etemp, 0, DT_REAL, _state, ae_true);
-
-    result = ae_true;
-    if( n==0 )
-    {
-        ae_frame_leave(_state);
-        return result;
-    }
-    if( n==1 )
-    {
-        if( ae_fp_less(d->ptr.p_double[1],0) )
-        {
-            d->ptr.p_double[1] = -d->ptr.p_double[1];
-            if( ncvt>0 )
-            {
-                ae_v_muld(&vt->ptr.pp_double[vstart][vstart], 1, ae_v_len(vstart,vstart+ncvt-1), -1);
-            }
-        }
-        ae_frame_leave(_state);
-        return result;
-    }
-    
-    /*
-     * these initializers are not really necessary,
-     * but without them compiler complains about uninitialized locals
-     */
-    ll = 0;
-    oldsn = 0;
-    
-    /*
-     * init
-     */
-    ae_vector_set_length(&work0, n-1+1, _state);
-    ae_vector_set_length(&work1, n-1+1, _state);
-    ae_vector_set_length(&work2, n-1+1, _state);
-    ae_vector_set_length(&work3, n-1+1, _state);
-    uend = ustart+ae_maxint(nru-1, 0, _state);
-    vend = vstart+ae_maxint(ncvt-1, 0, _state);
-    cend = cstart+ae_maxint(ncc-1, 0, _state);
-    ae_vector_set_length(&utemp, uend+1, _state);
-    ae_vector_set_length(&vttemp, vend+1, _state);
-    ae_vector_set_length(&ctemp, cend+1, _state);
-    maxitr = 12;
-    rightside = ae_true;
-    fwddir = ae_true;
-    
-    /*
-     * resize E from N-1 to N
-     */
-    ae_vector_set_length(&etemp, n+1, _state);
-    for(i=1; i<=n-1; i++)
-    {
-        etemp.ptr.p_double[i] = e->ptr.p_double[i];
-    }
-    ae_vector_set_length(e, n+1, _state);
-    for(i=1; i<=n-1; i++)
-    {
-        e->ptr.p_double[i] = etemp.ptr.p_double[i];
-    }
-    e->ptr.p_double[n] = 0;
-    idir = 0;
-    
-    /*
-     * Get machine constants
-     */
-    eps = ae_machineepsilon;
-    unfl = ae_minrealnumber;
-    
-    /*
-     * If matrix lower bidiagonal, rotate to be upper bidiagonal
-     * by applying Givens rotations on the left
-     */
-    if( !isupper )
-    {
-        for(i=1; i<=n-1; i++)
-        {
-            generaterotation(d->ptr.p_double[i], e->ptr.p_double[i], &cs, &sn, &r, _state);
-            d->ptr.p_double[i] = r;
-            e->ptr.p_double[i] = sn*d->ptr.p_double[i+1];
-            d->ptr.p_double[i+1] = cs*d->ptr.p_double[i+1];
-            work0.ptr.p_double[i] = cs;
-            work1.ptr.p_double[i] = sn;
-        }
-        
-        /*
-         * Update singular vectors if desired
-         */
-        if( nru>0 )
-        {
-            applyrotationsfromtheright(fwddir, ustart, uend, 1+ustart-1, n+ustart-1, &work0, &work1, u, &utemp, _state);
-        }
-        if( ncc>0 )
-        {
-            applyrotationsfromtheleft(fwddir, 1+cstart-1, n+cstart-1, cstart, cend, &work0, &work1, c, &ctemp, _state);
-        }
-    }
-    
-    /*
-     * Compute singular values to relative accuracy TOL
-     * (By setting TOL to be negative, algorithm will compute
-     * singular values to absolute accuracy ABS(TOL)*norm(input matrix))
-     */
-    tolmul = ae_maxreal(10, ae_minreal(100, ae_pow(eps, -0.125, _state), _state), _state);
-    tol = tolmul*eps;
-    if( !isfractionalaccuracyrequired )
-    {
-        tol = -tol;
-    }
-    
-    /*
-     * Compute approximate maximum, minimum singular values
-     */
-    smax = 0;
-    for(i=1; i<=n; i++)
-    {
-        smax = ae_maxreal(smax, ae_fabs(d->ptr.p_double[i], _state), _state);
-    }
-    for(i=1; i<=n-1; i++)
-    {
-        smax = ae_maxreal(smax, ae_fabs(e->ptr.p_double[i], _state), _state);
-    }
-    sminl = 0;
-    if( ae_fp_greater_eq(tol,0) )
-    {
-        
-        /*
-         * Relative accuracy desired
-         */
-        sminoa = ae_fabs(d->ptr.p_double[1], _state);
-        if( ae_fp_neq(sminoa,0) )
-        {
-            mu = sminoa;
-            for(i=2; i<=n; i++)
-            {
-                mu = ae_fabs(d->ptr.p_double[i], _state)*(mu/(mu+ae_fabs(e->ptr.p_double[i-1], _state)));
-                sminoa = ae_minreal(sminoa, mu, _state);
-                if( ae_fp_eq(sminoa,0) )
-                {
-                    break;
-                }
-            }
-        }
-        sminoa = sminoa/ae_sqrt(n, _state);
-        thresh = ae_maxreal(tol*sminoa, maxitr*n*n*unfl, _state);
-    }
-    else
-    {
-        
-        /*
-         * Absolute accuracy desired
-         */
-        thresh = ae_maxreal(ae_fabs(tol, _state)*smax, maxitr*n*n*unfl, _state);
-    }
-    
-    /*
-     * Prepare for main iteration loop for the singular values
-     * (MAXIT is the maximum number of passes through the inner
-     * loop permitted before nonconvergence signalled.)
-     */
-    maxit = maxitr*n*n;
-    iter = 0;
-    oldll = -1;
-    oldm = -1;
-    
-    /*
-     * M points to last element of unconverged part of matrix
-     */
-    m = n;
-    
-    /*
-     * Begin main iteration loop
-     */
-    for(;;)
-    {
-        
-        /*
-         * Check for convergence or exceeding iteration count
-         */
-        if( m<=1 )
-        {
-            break;
-        }
-        if( iter>maxit )
-        {
-            result = ae_false;
-            ae_frame_leave(_state);
-            return result;
-        }
-        
-        /*
-         * Find diagonal block of matrix to work on
-         */
-        if( ae_fp_less(tol,0)&&ae_fp_less_eq(ae_fabs(d->ptr.p_double[m], _state),thresh) )
-        {
-            d->ptr.p_double[m] = 0;
-        }
-        smax = ae_fabs(d->ptr.p_double[m], _state);
-        smin = smax;
-        matrixsplitflag = ae_false;
-        for(lll=1; lll<=m-1; lll++)
-        {
-            ll = m-lll;
-            abss = ae_fabs(d->ptr.p_double[ll], _state);
-            abse = ae_fabs(e->ptr.p_double[ll], _state);
-            if( ae_fp_less(tol,0)&&ae_fp_less_eq(abss,thresh) )
-            {
-                d->ptr.p_double[ll] = 0;
-            }
-            if( ae_fp_less_eq(abse,thresh) )
-            {
-                matrixsplitflag = ae_true;
-                break;
-            }
-            smin = ae_minreal(smin, abss, _state);
-            smax = ae_maxreal(smax, ae_maxreal(abss, abse, _state), _state);
-        }
-        if( !matrixsplitflag )
-        {
-            ll = 0;
-        }
-        else
-        {
-            
-            /*
-             * Matrix splits since E(LL) = 0
-             */
-            e->ptr.p_double[ll] = 0;
-            if( ll==m-1 )
-            {
-                
-                /*
-                 * Convergence of bottom singular value, return to top of loop
-                 */
-                m = m-1;
-                continue;
-            }
-        }
-        ll = ll+1;
-        
-        /*
-         * E(LL) through E(M-1) are nonzero, E(LL-1) is zero
-         */
-        if( ll==m-1 )
-        {
-            
-            /*
-             * 2 by 2 block, handle separately
-             */
-            bdsvd_svdv2x2(d->ptr.p_double[m-1], e->ptr.p_double[m-1], d->ptr.p_double[m], &sigmn, &sigmx, &sinr, &cosr, &sinl, &cosl, _state);
-            d->ptr.p_double[m-1] = sigmx;
-            e->ptr.p_double[m-1] = 0;
-            d->ptr.p_double[m] = sigmn;
-            
-            /*
-             * Compute singular vectors, if desired
-             */
-            if( ncvt>0 )
-            {
-                mm0 = m+(vstart-1);
-                mm1 = m-1+(vstart-1);
-                ae_v_moved(&vttemp.ptr.p_double[vstart], 1, &vt->ptr.pp_double[mm1][vstart], 1, ae_v_len(vstart,vend), cosr);
-                ae_v_addd(&vttemp.ptr.p_double[vstart], 1, &vt->ptr.pp_double[mm0][vstart], 1, ae_v_len(vstart,vend), sinr);
-                ae_v_muld(&vt->ptr.pp_double[mm0][vstart], 1, ae_v_len(vstart,vend), cosr);
-                ae_v_subd(&vt->ptr.pp_double[mm0][vstart], 1, &vt->ptr.pp_double[mm1][vstart], 1, ae_v_len(vstart,vend), sinr);
-                ae_v_move(&vt->ptr.pp_double[mm1][vstart], 1, &vttemp.ptr.p_double[vstart], 1, ae_v_len(vstart,vend));
-            }
-            if( nru>0 )
-            {
-                mm0 = m+ustart-1;
-                mm1 = m-1+ustart-1;
-                ae_v_moved(&utemp.ptr.p_double[ustart], 1, &u->ptr.pp_double[ustart][mm1], u->stride, ae_v_len(ustart,uend), cosl);
-                ae_v_addd(&utemp.ptr.p_double[ustart], 1, &u->ptr.pp_double[ustart][mm0], u->stride, ae_v_len(ustart,uend), sinl);
-                ae_v_muld(&u->ptr.pp_double[ustart][mm0], u->stride, ae_v_len(ustart,uend), cosl);
-                ae_v_subd(&u->ptr.pp_double[ustart][mm0], u->stride, &u->ptr.pp_double[ustart][mm1], u->stride, ae_v_len(ustart,uend), sinl);
-                ae_v_move(&u->ptr.pp_double[ustart][mm1], u->stride, &utemp.ptr.p_double[ustart], 1, ae_v_len(ustart,uend));
-            }
-            if( ncc>0 )
-            {
-                mm0 = m+cstart-1;
-                mm1 = m-1+cstart-1;
-                ae_v_moved(&ctemp.ptr.p_double[cstart], 1, &c->ptr.pp_double[mm1][cstart], 1, ae_v_len(cstart,cend), cosl);
-                ae_v_addd(&ctemp.ptr.p_double[cstart], 1, &c->ptr.pp_double[mm0][cstart], 1, ae_v_len(cstart,cend), sinl);
-                ae_v_muld(&c->ptr.pp_double[mm0][cstart], 1, ae_v_len(cstart,cend), cosl);
-                ae_v_subd(&c->ptr.pp_double[mm0][cstart], 1, &c->ptr.pp_double[mm1][cstart], 1, ae_v_len(cstart,cend), sinl);
-                ae_v_move(&c->ptr.pp_double[mm1][cstart], 1, &ctemp.ptr.p_double[cstart], 1, ae_v_len(cstart,cend));
-            }
-            m = m-2;
-            continue;
-        }
-        
-        /*
-         * If working on new submatrix, choose shift direction
-         * (from larger end diagonal element towards smaller)
-         *
-         * Previously was
-         *     "if (LL>OLDM) or (M<OLDLL) then"
-         * fixed thanks to Michael Rolle < m@rolle.name >
-         * Very strange that LAPACK still contains it.
-         */
-        bchangedir = ae_false;
-        if( idir==1&&ae_fp_less(ae_fabs(d->ptr.p_double[ll], _state),1.0E-3*ae_fabs(d->ptr.p_double[m], _state)) )
-        {
-            bchangedir = ae_true;
-        }
-        if( idir==2&&ae_fp_less(ae_fabs(d->ptr.p_double[m], _state),1.0E-3*ae_fabs(d->ptr.p_double[ll], _state)) )
-        {
-            bchangedir = ae_true;
-        }
-        if( (ll!=oldll||m!=oldm)||bchangedir )
-        {
-            if( ae_fp_greater_eq(ae_fabs(d->ptr.p_double[ll], _state),ae_fabs(d->ptr.p_double[m], _state)) )
-            {
-                
-                /*
-                 * Chase bulge from top (big end) to bottom (small end)
-                 */
-                idir = 1;
-            }
-            else
-            {
-                
-                /*
-                 * Chase bulge from bottom (big end) to top (small end)
-                 */
-                idir = 2;
-            }
-        }
-        
-        /*
-         * Apply convergence tests
-         */
-        if( idir==1 )
-        {
-            
-            /*
-             * Run convergence test in forward direction
-             * First apply standard test to bottom of matrix
-             */
-            if( ae_fp_less_eq(ae_fabs(e->ptr.p_double[m-1], _state),ae_fabs(tol, _state)*ae_fabs(d->ptr.p_double[m], _state))||(ae_fp_less(tol,0)&&ae_fp_less_eq(ae_fabs(e->ptr.p_double[m-1], _state),thresh)) )
-            {
-                e->ptr.p_double[m-1] = 0;
-                continue;
-            }
-            if( ae_fp_greater_eq(tol,0) )
-            {
-                
-                /*
-                 * If relative accuracy desired,
-                 * apply convergence criterion forward
-                 */
-                mu = ae_fabs(d->ptr.p_double[ll], _state);
-                sminl = mu;
-                iterflag = ae_false;
-                for(lll=ll; lll<=m-1; lll++)
-                {
-                    if( ae_fp_less_eq(ae_fabs(e->ptr.p_double[lll], _state),tol*mu) )
-                    {
-                        e->ptr.p_double[lll] = 0;
-                        iterflag = ae_true;
-                        break;
-                    }
-                    sminlo = sminl;
-                    mu = ae_fabs(d->ptr.p_double[lll+1], _state)*(mu/(mu+ae_fabs(e->ptr.p_double[lll], _state)));
-                    sminl = ae_minreal(sminl, mu, _state);
-                }
-                if( iterflag )
-                {
-                    continue;
-                }
-            }
-        }
-        else
-        {
-            
-            /*
-             * Run convergence test in backward direction
-             * First apply standard test to top of matrix
-             */
-            if( ae_fp_less_eq(ae_fabs(e->ptr.p_double[ll], _state),ae_fabs(tol, _state)*ae_fabs(d->ptr.p_double[ll], _state))||(ae_fp_less(tol,0)&&ae_fp_less_eq(ae_fabs(e->ptr.p_double[ll], _state),thresh)) )
-            {
-                e->ptr.p_double[ll] = 0;
-                continue;
-            }
-            if( ae_fp_greater_eq(tol,0) )
-            {
-                
-                /*
-                 * If relative accuracy desired,
-                 * apply convergence criterion backward
-                 */
-                mu = ae_fabs(d->ptr.p_double[m], _state);
-                sminl = mu;
-                iterflag = ae_false;
-                for(lll=m-1; lll>=ll; lll--)
-                {
-                    if( ae_fp_less_eq(ae_fabs(e->ptr.p_double[lll], _state),tol*mu) )
-                    {
-                        e->ptr.p_double[lll] = 0;
-                        iterflag = ae_true;
-                        break;
-                    }
-                    sminlo = sminl;
-                    mu = ae_fabs(d->ptr.p_double[lll], _state)*(mu/(mu+ae_fabs(e->ptr.p_double[lll], _state)));
-                    sminl = ae_minreal(sminl, mu, _state);
-                }
-                if( iterflag )
-                {
-                    continue;
-                }
-            }
-        }
-        oldll = ll;
-        oldm = m;
-        
-        /*
-         * Compute shift.  First, test if shifting would ruin relative
-         * accuracy, and if so set the shift to zero.
-         */
-        if( ae_fp_greater_eq(tol,0)&&ae_fp_less_eq(n*tol*(sminl/smax),ae_maxreal(eps, 0.01*tol, _state)) )
-        {
-            
-            /*
-             * Use a zero shift to avoid loss of relative accuracy
-             */
-            shift = 0;
-        }
-        else
-        {
-            
-            /*
-             * Compute the shift from 2-by-2 block at end of matrix
-             */
-            if( idir==1 )
-            {
-                sll = ae_fabs(d->ptr.p_double[ll], _state);
-                bdsvd_svd2x2(d->ptr.p_double[m-1], e->ptr.p_double[m-1], d->ptr.p_double[m], &shift, &r, _state);
-            }
-            else
-            {
-                sll = ae_fabs(d->ptr.p_double[m], _state);
-                bdsvd_svd2x2(d->ptr.p_double[ll], e->ptr.p_double[ll], d->ptr.p_double[ll+1], &shift, &r, _state);
-            }
-            
-            /*
-             * Test if shift negligible, and if so set to zero
-             */
-            if( ae_fp_greater(sll,0) )
-            {
-                if( ae_fp_less(ae_sqr(shift/sll, _state),eps) )
-                {
-                    shift = 0;
-                }
-            }
-        }
-        
-        /*
-         * Increment iteration count
-         */
-        iter = iter+m-ll;
-        
-        /*
-         * If SHIFT = 0, do simplified QR iteration
-         */
-        if( ae_fp_eq(shift,0) )
-        {
-            if( idir==1 )
-            {
-                
-                /*
-                 * Chase bulge from top to bottom
-                 * Save cosines and sines for later singular vector updates
-                 */
-                cs = 1;
-                oldcs = 1;
-                for(i=ll; i<=m-1; i++)
-                {
-                    generaterotation(d->ptr.p_double[i]*cs, e->ptr.p_double[i], &cs, &sn, &r, _state);
-                    if( i>ll )
-                    {
-                        e->ptr.p_double[i-1] = oldsn*r;
-                    }
-                    generaterotation(oldcs*r, d->ptr.p_double[i+1]*sn, &oldcs, &oldsn, &tmp, _state);
-                    d->ptr.p_double[i] = tmp;
-                    work0.ptr.p_double[i-ll+1] = cs;
-                    work1.ptr.p_double[i-ll+1] = sn;
-                    work2.ptr.p_double[i-ll+1] = oldcs;
-                    work3.ptr.p_double[i-ll+1] = oldsn;
-                }
-                h = d->ptr.p_double[m]*cs;
-                d->ptr.p_double[m] = h*oldcs;
-                e->ptr.p_double[m-1] = h*oldsn;
-                
-                /*
-                 * Update singular vectors
-                 */
-                if( ncvt>0 )
-                {
-                    applyrotationsfromtheleft(fwddir, ll+vstart-1, m+vstart-1, vstart, vend, &work0, &work1, vt, &vttemp, _state);
-                }
-                if( nru>0 )
-                {
-                    applyrotationsfromtheright(fwddir, ustart, uend, ll+ustart-1, m+ustart-1, &work2, &work3, u, &utemp, _state);
-                }
-                if( ncc>0 )
-                {
-                    applyrotationsfromtheleft(fwddir, ll+cstart-1, m+cstart-1, cstart, cend, &work2, &work3, c, &ctemp, _state);
-                }
-                
-                /*
-                 * Test convergence
-                 */
-                if( ae_fp_less_eq(ae_fabs(e->ptr.p_double[m-1], _state),thresh) )
-                {
-                    e->ptr.p_double[m-1] = 0;
-                }
-            }
-            else
-            {
-                
-                /*
-                 * Chase bulge from bottom to top
-                 * Save cosines and sines for later singular vector updates
-                 */
-                cs = 1;
-                oldcs = 1;
-                for(i=m; i>=ll+1; i--)
-                {
-                    generaterotation(d->ptr.p_double[i]*cs, e->ptr.p_double[i-1], &cs, &sn, &r, _state);
-                    if( i<m )
-                    {
-                        e->ptr.p_double[i] = oldsn*r;
-                    }
-                    generaterotation(oldcs*r, d->ptr.p_double[i-1]*sn, &oldcs, &oldsn, &tmp, _state);
-                    d->ptr.p_double[i] = tmp;
-                    work0.ptr.p_double[i-ll] = cs;
-                    work1.ptr.p_double[i-ll] = -sn;
-                    work2.ptr.p_double[i-ll] = oldcs;
-                    work3.ptr.p_double[i-ll] = -oldsn;
-                }
-                h = d->ptr.p_double[ll]*cs;
-                d->ptr.p_double[ll] = h*oldcs;
-                e->ptr.p_double[ll] = h*oldsn;
-                
-                /*
-                 * Update singular vectors
-                 */
-                if( ncvt>0 )
-                {
-                    applyrotationsfromtheleft(!fwddir, ll+vstart-1, m+vstart-1, vstart, vend, &work2, &work3, vt, &vttemp, _state);
-                }
-                if( nru>0 )
-                {
-                    applyrotationsfromtheright(!fwddir, ustart, uend, ll+ustart-1, m+ustart-1, &work0, &work1, u, &utemp, _state);
-                }
-                if( ncc>0 )
-                {
-                    applyrotationsfromtheleft(!fwddir, ll+cstart-1, m+cstart-1, cstart, cend, &work0, &work1, c, &ctemp, _state);
-                }
-                
-                /*
-                 * Test convergence
-                 */
-                if( ae_fp_less_eq(ae_fabs(e->ptr.p_double[ll], _state),thresh) )
-                {
-                    e->ptr.p_double[ll] = 0;
-                }
-            }
-        }
-        else
-        {
-            
-            /*
-             * Use nonzero shift
-             */
-            if( idir==1 )
-            {
-                
-                /*
-                 * Chase bulge from top to bottom
-                 * Save cosines and sines for later singular vector updates
-                 */
-                f = (ae_fabs(d->ptr.p_double[ll], _state)-shift)*(bdsvd_extsignbdsqr(1, d->ptr.p_double[ll], _state)+shift/d->ptr.p_double[ll]);
-                g = e->ptr.p_double[ll];
-                for(i=ll; i<=m-1; i++)
-                {
-                    generaterotation(f, g, &cosr, &sinr, &r, _state);
-                    if( i>ll )
-                    {
-                        e->ptr.p_double[i-1] = r;
-                    }
-                    f = cosr*d->ptr.p_double[i]+sinr*e->ptr.p_double[i];
-                    e->ptr.p_double[i] = cosr*e->ptr.p_double[i]-sinr*d->ptr.p_double[i];
-                    g = sinr*d->ptr.p_double[i+1];
-                    d->ptr.p_double[i+1] = cosr*d->ptr.p_double[i+1];
-                    generaterotation(f, g, &cosl, &sinl, &r, _state);
-                    d->ptr.p_double[i] = r;
-                    f = cosl*e->ptr.p_double[i]+sinl*d->ptr.p_double[i+1];
-                    d->ptr.p_double[i+1] = cosl*d->ptr.p_double[i+1]-sinl*e->ptr.p_double[i];
-                    if( i<m-1 )
-                    {
-                        g = sinl*e->ptr.p_double[i+1];
-                        e->ptr.p_double[i+1] = cosl*e->ptr.p_double[i+1];
-                    }
-                    work0.ptr.p_double[i-ll+1] = cosr;
-                    work1.ptr.p_double[i-ll+1] = sinr;
-                    work2.ptr.p_double[i-ll+1] = cosl;
-                    work3.ptr.p_double[i-ll+1] = sinl;
-                }
-                e->ptr.p_double[m-1] = f;
-                
-                /*
-                 * Update singular vectors
-                 */
-                if( ncvt>0 )
-                {
-                    applyrotationsfromtheleft(fwddir, ll+vstart-1, m+vstart-1, vstart, vend, &work0, &work1, vt, &vttemp, _state);
-                }
-                if( nru>0 )
-                {
-                    applyrotationsfromtheright(fwddir, ustart, uend, ll+ustart-1, m+ustart-1, &work2, &work3, u, &utemp, _state);
-                }
-                if( ncc>0 )
-                {
-                    applyrotationsfromtheleft(fwddir, ll+cstart-1, m+cstart-1, cstart, cend, &work2, &work3, c, &ctemp, _state);
-                }
-                
-                /*
-                 * Test convergence
-                 */
-                if( ae_fp_less_eq(ae_fabs(e->ptr.p_double[m-1], _state),thresh) )
-                {
-                    e->ptr.p_double[m-1] = 0;
-                }
-            }
-            else
-            {
-                
-                /*
-                 * Chase bulge from bottom to top
-                 * Save cosines and sines for later singular vector updates
-                 */
-                f = (ae_fabs(d->ptr.p_double[m], _state)-shift)*(bdsvd_extsignbdsqr(1, d->ptr.p_double[m], _state)+shift/d->ptr.p_double[m]);
-                g = e->ptr.p_double[m-1];
-                for(i=m; i>=ll+1; i--)
-                {
-                    generaterotation(f, g, &cosr, &sinr, &r, _state);
-                    if( i<m )
-                    {
-                        e->ptr.p_double[i] = r;
-                    }
-                    f = cosr*d->ptr.p_double[i]+sinr*e->ptr.p_double[i-1];
-                    e->ptr.p_double[i-1] = cosr*e->ptr.p_double[i-1]-sinr*d->ptr.p_double[i];
-                    g = sinr*d->ptr.p_double[i-1];
-                    d->ptr.p_double[i-1] = cosr*d->ptr.p_double[i-1];
-                    generaterotation(f, g, &cosl, &sinl, &r, _state);
-                    d->ptr.p_double[i] = r;
-                    f = cosl*e->ptr.p_double[i-1]+sinl*d->ptr.p_double[i-1];
-                    d->ptr.p_double[i-1] = cosl*d->ptr.p_double[i-1]-sinl*e->ptr.p_double[i-1];
-                    if( i>ll+1 )
-                    {
-                        g = sinl*e->ptr.p_double[i-2];
-                        e->ptr.p_double[i-2] = cosl*e->ptr.p_double[i-2];
-                    }
-                    work0.ptr.p_double[i-ll] = cosr;
-                    work1.ptr.p_double[i-ll] = -sinr;
-                    work2.ptr.p_double[i-ll] = cosl;
-                    work3.ptr.p_double[i-ll] = -sinl;
-                }
-                e->ptr.p_double[ll] = f;
-                
-                /*
-                 * Test convergence
-                 */
-                if( ae_fp_less_eq(ae_fabs(e->ptr.p_double[ll], _state),thresh) )
-                {
-                    e->ptr.p_double[ll] = 0;
-                }
-                
-                /*
-                 * Update singular vectors if desired
-                 */
-                if( ncvt>0 )
-                {
-                    applyrotationsfromtheleft(!fwddir, ll+vstart-1, m+vstart-1, vstart, vend, &work2, &work3, vt, &vttemp, _state);
-                }
-                if( nru>0 )
-                {
-                    applyrotationsfromtheright(!fwddir, ustart, uend, ll+ustart-1, m+ustart-1, &work0, &work1, u, &utemp, _state);
-                }
-                if( ncc>0 )
-                {
-                    applyrotationsfromtheleft(!fwddir, ll+cstart-1, m+cstart-1, cstart, cend, &work0, &work1, c, &ctemp, _state);
-                }
-            }
-        }
-        
-        /*
-         * QR iteration finished, go back and check convergence
-         */
-        continue;
-    }
-    
-    /*
-     * All singular values converged, so make them positive
-     */
-    for(i=1; i<=n; i++)
-    {
-        if( ae_fp_less(d->ptr.p_double[i],0) )
-        {
-            d->ptr.p_double[i] = -d->ptr.p_double[i];
-            
-            /*
-             * Change sign of singular vectors, if desired
-             */
-            if( ncvt>0 )
-            {
-                ae_v_muld(&vt->ptr.pp_double[i+vstart-1][vstart], 1, ae_v_len(vstart,vend), -1);
-            }
-        }
-    }
-    
-    /*
-     * Sort the singular values into decreasing order (insertion sort on
-     * singular values, but only one transposition per singular vector)
-     */
-    for(i=1; i<=n-1; i++)
-    {
-        
-        /*
-         * Scan for smallest D(I)
-         */
-        isub = 1;
-        smin = d->ptr.p_double[1];
-        for(j=2; j<=n+1-i; j++)
-        {
-            if( ae_fp_less_eq(d->ptr.p_double[j],smin) )
-            {
-                isub = j;
-                smin = d->ptr.p_double[j];
-            }
-        }
-        if( isub!=n+1-i )
-        {
-            
-            /*
-             * Swap singular values and vectors
-             */
-            d->ptr.p_double[isub] = d->ptr.p_double[n+1-i];
-            d->ptr.p_double[n+1-i] = smin;
-            if( ncvt>0 )
-            {
-                j = n+1-i;
-                ae_v_move(&vttemp.ptr.p_double[vstart], 1, &vt->ptr.pp_double[isub+vstart-1][vstart], 1, ae_v_len(vstart,vend));
-                ae_v_move(&vt->ptr.pp_double[isub+vstart-1][vstart], 1, &vt->ptr.pp_double[j+vstart-1][vstart], 1, ae_v_len(vstart,vend));
-                ae_v_move(&vt->ptr.pp_double[j+vstart-1][vstart], 1, &vttemp.ptr.p_double[vstart], 1, ae_v_len(vstart,vend));
-            }
-            if( nru>0 )
-            {
-                j = n+1-i;
-                ae_v_move(&utemp.ptr.p_double[ustart], 1, &u->ptr.pp_double[ustart][isub+ustart-1], u->stride, ae_v_len(ustart,uend));
-                ae_v_move(&u->ptr.pp_double[ustart][isub+ustart-1], u->stride, &u->ptr.pp_double[ustart][j+ustart-1], u->stride, ae_v_len(ustart,uend));
-                ae_v_move(&u->ptr.pp_double[ustart][j+ustart-1], u->stride, &utemp.ptr.p_double[ustart], 1, ae_v_len(ustart,uend));
-            }
-            if( ncc>0 )
-            {
-                j = n+1-i;
-                ae_v_move(&ctemp.ptr.p_double[cstart], 1, &c->ptr.pp_double[isub+cstart-1][cstart], 1, ae_v_len(cstart,cend));
-                ae_v_move(&c->ptr.pp_double[isub+cstart-1][cstart], 1, &c->ptr.pp_double[j+cstart-1][cstart], 1, ae_v_len(cstart,cend));
-                ae_v_move(&c->ptr.pp_double[j+cstart-1][cstart], 1, &ctemp.ptr.p_double[cstart], 1, ae_v_len(cstart,cend));
-            }
-        }
-    }
-    ae_frame_leave(_state);
-    return result;
-}
-
-
-static double bdsvd_extsignbdsqr(double a, double b, ae_state *_state)
-{
-    double result;
-
-
-    if( ae_fp_greater_eq(b,0) )
-    {
-        result = ae_fabs(a, _state);
-    }
-    else
-    {
-        result = -ae_fabs(a, _state);
-    }
-    return result;
-}
-
-
-static void bdsvd_svd2x2(double f,
-     double g,
-     double h,
-     double* ssmin,
-     double* ssmax,
-     ae_state *_state)
-{
-    double aas;
-    double at;
-    double au;
-    double c;
-    double fa;
-    double fhmn;
-    double fhmx;
-    double ga;
-    double ha;
-
-    *ssmin = 0;
-    *ssmax = 0;
-
-    fa = ae_fabs(f, _state);
-    ga = ae_fabs(g, _state);
-    ha = ae_fabs(h, _state);
-    fhmn = ae_minreal(fa, ha, _state);
-    fhmx = ae_maxreal(fa, ha, _state);
-    if( ae_fp_eq(fhmn,0) )
-    {
-        *ssmin = 0;
-        if( ae_fp_eq(fhmx,0) )
-        {
-            *ssmax = ga;
-        }
-        else
-        {
-            *ssmax = ae_maxreal(fhmx, ga, _state)*ae_sqrt(1+ae_sqr(ae_minreal(fhmx, ga, _state)/ae_maxreal(fhmx, ga, _state), _state), _state);
-        }
-    }
-    else
-    {
-        if( ae_fp_less(ga,fhmx) )
-        {
-            aas = 1+fhmn/fhmx;
-            at = (fhmx-fhmn)/fhmx;
-            au = ae_sqr(ga/fhmx, _state);
-            c = 2/(ae_sqrt(aas*aas+au, _state)+ae_sqrt(at*at+au, _state));
-            *ssmin = fhmn*c;
-            *ssmax = fhmx/c;
-        }
-        else
-        {
-            au = fhmx/ga;
-            if( ae_fp_eq(au,0) )
-            {
-                
-                /*
-                 * Avoid possible harmful underflow if exponent range
-                 * asymmetric (true SSMIN may not underflow even if
-                 * AU underflows)
-                 */
-                *ssmin = fhmn*fhmx/ga;
-                *ssmax = ga;
-            }
-            else
-            {
-                aas = 1+fhmn/fhmx;
-                at = (fhmx-fhmn)/fhmx;
-                c = 1/(ae_sqrt(1+ae_sqr(aas*au, _state), _state)+ae_sqrt(1+ae_sqr(at*au, _state), _state));
-                *ssmin = fhmn*c*au;
-                *ssmin = *ssmin+(*ssmin);
-                *ssmax = ga/(c+c);
-            }
-        }
-    }
-}
-
-
-static void bdsvd_svdv2x2(double f,
-     double g,
-     double h,
-     double* ssmin,
-     double* ssmax,
-     double* snr,
-     double* csr,
-     double* snl,
-     double* csl,
-     ae_state *_state)
-{
-    ae_bool gasmal;
-    ae_bool swp;
-    ae_int_t pmax;
-    double a;
-    double clt;
-    double crt;
-    double d;
-    double fa;
-    double ft;
-    double ga;
-    double gt;
-    double ha;
-    double ht;
-    double l;
-    double m;
-    double mm;
-    double r;
-    double s;
-    double slt;
-    double srt;
-    double t;
-    double temp;
-    double tsign;
-    double tt;
-    double v;
-
-    *ssmin = 0;
-    *ssmax = 0;
-    *snr = 0;
-    *csr = 0;
-    *snl = 0;
-    *csl = 0;
-
-    ft = f;
-    fa = ae_fabs(ft, _state);
-    ht = h;
-    ha = ae_fabs(h, _state);
-    
-    /*
-     * these initializers are not really necessary,
-     * but without them compiler complains about uninitialized locals
-     */
-    clt = 0;
-    crt = 0;
-    slt = 0;
-    srt = 0;
-    tsign = 0;
-    
-    /*
-     * PMAX points to the maximum absolute element of matrix
-     *  PMAX = 1 if F largest in absolute values
-     *  PMAX = 2 if G largest in absolute values
-     *  PMAX = 3 if H largest in absolute values
-     */
-    pmax = 1;
-    swp = ae_fp_greater(ha,fa);
-    if( swp )
-    {
-        
-        /*
-         * Now FA .ge. HA
-         */
-        pmax = 3;
-        temp = ft;
-        ft = ht;
-        ht = temp;
-        temp = fa;
-        fa = ha;
-        ha = temp;
-    }
-    gt = g;
-    ga = ae_fabs(gt, _state);
-    if( ae_fp_eq(ga,0) )
-    {
-        
-        /*
-         * Diagonal matrix
-         */
-        *ssmin = ha;
-        *ssmax = fa;
-        clt = 1;
-        crt = 1;
-        slt = 0;
-        srt = 0;
-    }
-    else
-    {
-        gasmal = ae_true;
-        if( ae_fp_greater(ga,fa) )
-        {
-            pmax = 2;
-            if( ae_fp_less(fa/ga,ae_machineepsilon) )
-            {
-                
-                /*
-                 * Case of very large GA
-                 */
-                gasmal = ae_false;
-                *ssmax = ga;
-                if( ae_fp_greater(ha,1) )
-                {
-                    v = ga/ha;
-                    *ssmin = fa/v;
-                }
-                else
-                {
-                    v = fa/ga;
-                    *ssmin = v*ha;
-                }
-                clt = 1;
-                slt = ht/gt;
-                srt = 1;
-                crt = ft/gt;
-            }
-        }
-        if( gasmal )
-        {
-            
-            /*
-             * Normal case
-             */
-            d = fa-ha;
-            if( ae_fp_eq(d,fa) )
-            {
-                l = 1;
-            }
-            else
-            {
-                l = d/fa;
-            }
-            m = gt/ft;
-            t = 2-l;
-            mm = m*m;
-            tt = t*t;
-            s = ae_sqrt(tt+mm, _state);
-            if( ae_fp_eq(l,0) )
-            {
-                r = ae_fabs(m, _state);
-            }
-            else
-            {
-                r = ae_sqrt(l*l+mm, _state);
-            }
-            a = 0.5*(s+r);
-            *ssmin = ha/a;
-            *ssmax = fa*a;
-            if( ae_fp_eq(mm,0) )
-            {
-                
-                /*
-                 * Note that M is very tiny
-                 */
-                if( ae_fp_eq(l,0) )
-                {
-                    t = bdsvd_extsignbdsqr(2, ft, _state)*bdsvd_extsignbdsqr(1, gt, _state);
-                }
-                else
-                {
-                    t = gt/bdsvd_extsignbdsqr(d, ft, _state)+m/t;
-                }
-            }
-            else
-            {
-                t = (m/(s+t)+m/(r+l))*(1+a);
-            }
-            l = ae_sqrt(t*t+4, _state);
-            crt = 2/l;
-            srt = t/l;
-            clt = (crt+srt*m)/a;
-            v = ht/ft;
-            slt = v*srt/a;
-        }
-    }
-    if( swp )
-    {
-        *csl = srt;
-        *snl = crt;
-        *csr = slt;
-        *snr = clt;
-    }
-    else
-    {
-        *csl = clt;
-        *snl = slt;
-        *csr = crt;
-        *snr = srt;
-    }
-    
-    /*
-     * Correct signs of SSMAX and SSMIN
-     */
-    if( pmax==1 )
-    {
-        tsign = bdsvd_extsignbdsqr(1, *csr, _state)*bdsvd_extsignbdsqr(1, *csl, _state)*bdsvd_extsignbdsqr(1, f, _state);
-    }
-    if( pmax==2 )
-    {
-        tsign = bdsvd_extsignbdsqr(1, *snr, _state)*bdsvd_extsignbdsqr(1, *csl, _state)*bdsvd_extsignbdsqr(1, g, _state);
-    }
-    if( pmax==3 )
-    {
-        tsign = bdsvd_extsignbdsqr(1, *snr, _state)*bdsvd_extsignbdsqr(1, *snl, _state)*bdsvd_extsignbdsqr(1, h, _state);
-    }
-    *ssmax = bdsvd_extsignbdsqr(*ssmax, tsign, _state);
-    *ssmin = bdsvd_extsignbdsqr(*ssmin, tsign*bdsvd_extsignbdsqr(1, f, _state)*bdsvd_extsignbdsqr(1, h, _state), _state);
-}
-
-
-
-
-/*************************************************************************
-Singular value decomposition of a rectangular matrix.
-
-The algorithm calculates the singular value decomposition of a matrix of
-size MxN: A = U * S * V^T
-
-The algorithm finds the singular values and, optionally, matrices U and V^T.
-The algorithm can find both first min(M,N) columns of matrix U and rows of
-matrix V^T (singular vectors), and matrices U and V^T wholly (of sizes MxM
-and NxN respectively).
-
-Take into account that the subroutine does not return matrix V but V^T.
-
-Input parameters:
-    A           -   matrix to be decomposed.
-                    Array whose indexes range within [0..M-1, 0..N-1].
-    M           -   number of rows in matrix A.
-    N           -   number of columns in matrix A.
-    UNeeded     -   0, 1 or 2. See the description of the parameter U.
-    VTNeeded    -   0, 1 or 2. See the description of the parameter VT.
-    AdditionalMemory -
-                    If the parameter:
-                     * equals 0, the algorithm doesn’t use additional
-                       memory (lower requirements, lower performance).
-                     * equals 1, the algorithm uses additional
-                       memory of size min(M,N)*min(M,N) of real numbers.
-                       It often speeds up the algorithm.
-                     * equals 2, the algorithm uses additional
-                       memory of size M*min(M,N) of real numbers.
-                       It allows to get a maximum performance.
-                    The recommended value of the parameter is 2.
-
-Output parameters:
-    W           -   contains singular values in descending order.
-    U           -   if UNeeded=0, U isn't changed, the left singular vectors
-                    are not calculated.
-                    if Uneeded=1, U contains left singular vectors (first
-                    min(M,N) columns of matrix U). Array whose indexes range
-                    within [0..M-1, 0..Min(M,N)-1].
-                    if UNeeded=2, U contains matrix U wholly. Array whose
-                    indexes range within [0..M-1, 0..M-1].
-    VT          -   if VTNeeded=0, VT isn’t changed, the right singular vectors
-                    are not calculated.
-                    if VTNeeded=1, VT contains right singular vectors (first
-                    min(M,N) rows of matrix V^T). Array whose indexes range
-                    within [0..min(M,N)-1, 0..N-1].
-                    if VTNeeded=2, VT contains matrix V^T wholly. Array whose
-                    indexes range within [0..N-1, 0..N-1].
-
-  -- ALGLIB --
-     Copyright 2005 by Bochkanov Sergey
-*************************************************************************/
-ae_bool rmatrixsvd(/* Real    */ ae_matrix* a,
-     ae_int_t m,
-     ae_int_t n,
-     ae_int_t uneeded,
-     ae_int_t vtneeded,
-     ae_int_t additionalmemory,
-     /* Real    */ ae_vector* w,
-     /* Real    */ ae_matrix* u,
-     /* Real    */ ae_matrix* vt,
-     ae_state *_state)
-{
-    ae_frame _frame_block;
-    ae_matrix _a;
-    ae_vector tauq;
-    ae_vector taup;
-    ae_vector tau;
-    ae_vector e;
-    ae_vector work;
-    ae_matrix t2;
-    ae_bool isupper;
-    ae_int_t minmn;
-    ae_int_t ncu;
-    ae_int_t nrvt;
-    ae_int_t nru;
-    ae_int_t ncvt;
-    ae_int_t i;
-    ae_int_t j;
-    ae_bool result;
-
-    ae_frame_make(_state, &_frame_block);
-    ae_matrix_init_copy(&_a, a, _state, ae_true);
-    a = &_a;
-    ae_vector_clear(w);
-    ae_matrix_clear(u);
-    ae_matrix_clear(vt);
-    ae_vector_init(&tauq, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&taup, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&tau, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&e, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&work, 0, DT_REAL, _state, ae_true);
-    ae_matrix_init(&t2, 0, 0, DT_REAL, _state, ae_true);
-
-    result = ae_true;
-    if( m==0||n==0 )
-    {
-        ae_frame_leave(_state);
-        return result;
-    }
-    ae_assert(uneeded>=0&&uneeded<=2, "SVDDecomposition: wrong parameters!", _state);
-    ae_assert(vtneeded>=0&&vtneeded<=2, "SVDDecomposition: wrong parameters!", _state);
-    ae_assert(additionalmemory>=0&&additionalmemory<=2, "SVDDecomposition: wrong parameters!", _state);
-    
-    /*
-     * initialize
-     */
-    minmn = ae_minint(m, n, _state);
-    ae_vector_set_length(w, minmn+1, _state);
-    ncu = 0;
-    nru = 0;
-    if( uneeded==1 )
-    {
-        nru = m;
-        ncu = minmn;
-        ae_matrix_set_length(u, nru-1+1, ncu-1+1, _state);
-    }
-    if( uneeded==2 )
-    {
-        nru = m;
-        ncu = m;
-        ae_matrix_set_length(u, nru-1+1, ncu-1+1, _state);
-    }
-    nrvt = 0;
-    ncvt = 0;
-    if( vtneeded==1 )
-    {
-        nrvt = minmn;
-        ncvt = n;
-        ae_matrix_set_length(vt, nrvt-1+1, ncvt-1+1, _state);
-    }
-    if( vtneeded==2 )
-    {
-        nrvt = n;
-        ncvt = n;
-        ae_matrix_set_length(vt, nrvt-1+1, ncvt-1+1, _state);
-    }
-    
-    /*
-     * M much larger than N
-     * Use bidiagonal reduction with QR-decomposition
-     */
-    if( ae_fp_greater(m,1.6*n) )
-    {
-        if( uneeded==0 )
-        {
-            
-            /*
-             * No left singular vectors to be computed
-             */
-            rmatrixqr(a, m, n, &tau, _state);
-            for(i=0; i<=n-1; i++)
-            {
-                for(j=0; j<=i-1; j++)
-                {
-                    a->ptr.pp_double[i][j] = 0;
-                }
-            }
-            rmatrixbd(a, n, n, &tauq, &taup, _state);
-            rmatrixbdunpackpt(a, n, n, &taup, nrvt, vt, _state);
-            rmatrixbdunpackdiagonals(a, n, n, &isupper, w, &e, _state);
-            result = rmatrixbdsvd(w, &e, n, isupper, ae_false, u, 0, a, 0, vt, ncvt, _state);
-            ae_frame_leave(_state);
-            return result;
-        }
-        else
-        {
-            
-            /*
-             * Left singular vectors (may be full matrix U) to be computed
-             */
-            rmatrixqr(a, m, n, &tau, _state);
-            rmatrixqrunpackq(a, m, n, &tau, ncu, u, _state);
-            for(i=0; i<=n-1; i++)
-            {
-                for(j=0; j<=i-1; j++)
-                {
-                    a->ptr.pp_double[i][j] = 0;
-                }
-            }
-            rmatrixbd(a, n, n, &tauq, &taup, _state);
-            rmatrixbdunpackpt(a, n, n, &taup, nrvt, vt, _state);
-            rmatrixbdunpackdiagonals(a, n, n, &isupper, w, &e, _state);
-            if( additionalmemory<1 )
-            {
-                
-                /*
-                 * No additional memory can be used
-                 */
-                rmatrixbdmultiplybyq(a, n, n, &tauq, u, m, n, ae_true, ae_false, _state);
-                result = rmatrixbdsvd(w, &e, n, isupper, ae_false, u, m, a, 0, vt, ncvt, _state);
-            }
-            else
-            {
-                
-                /*
-                 * Large U. Transforming intermediate matrix T2
-                 */
-                ae_vector_set_length(&work, ae_maxint(m, n, _state)+1, _state);
-                rmatrixbdunpackq(a, n, n, &tauq, n, &t2, _state);
-                copymatrix(u, 0, m-1, 0, n-1, a, 0, m-1, 0, n-1, _state);
-                inplacetranspose(&t2, 0, n-1, 0, n-1, &work, _state);
-                result = rmatrixbdsvd(w, &e, n, isupper, ae_false, u, 0, &t2, n, vt, ncvt, _state);
-                matrixmatrixmultiply(a, 0, m-1, 0, n-1, ae_false, &t2, 0, n-1, 0, n-1, ae_true, 1.0, u, 0, m-1, 0, n-1, 0.0, &work, _state);
-            }
-            ae_frame_leave(_state);
-            return result;
-        }
-    }
-    
-    /*
-     * N much larger than M
-     * Use bidiagonal reduction with LQ-decomposition
-     */
-    if( ae_fp_greater(n,1.6*m) )
-    {
-        if( vtneeded==0 )
-        {
-            
-            /*
-             * No right singular vectors to be computed
-             */
-            rmatrixlq(a, m, n, &tau, _state);
-            for(i=0; i<=m-1; i++)
-            {
-                for(j=i+1; j<=m-1; j++)
-                {
-                    a->ptr.pp_double[i][j] = 0;
-                }
-            }
-            rmatrixbd(a, m, m, &tauq, &taup, _state);
-            rmatrixbdunpackq(a, m, m, &tauq, ncu, u, _state);
-            rmatrixbdunpackdiagonals(a, m, m, &isupper, w, &e, _state);
-            ae_vector_set_length(&work, m+1, _state);
-            inplacetranspose(u, 0, nru-1, 0, ncu-1, &work, _state);
-            result = rmatrixbdsvd(w, &e, m, isupper, ae_false, a, 0, u, nru, vt, 0, _state);
-            inplacetranspose(u, 0, nru-1, 0, ncu-1, &work, _state);
-            ae_frame_leave(_state);
-            return result;
-        }
-        else
-        {
-            
-            /*
-             * Right singular vectors (may be full matrix VT) to be computed
-             */
-            rmatrixlq(a, m, n, &tau, _state);
-            rmatrixlqunpackq(a, m, n, &tau, nrvt, vt, _state);
-            for(i=0; i<=m-1; i++)
-            {
-                for(j=i+1; j<=m-1; j++)
-                {
-                    a->ptr.pp_double[i][j] = 0;
-                }
-            }
-            rmatrixbd(a, m, m, &tauq, &taup, _state);
-            rmatrixbdunpackq(a, m, m, &tauq, ncu, u, _state);
-            rmatrixbdunpackdiagonals(a, m, m, &isupper, w, &e, _state);
-            ae_vector_set_length(&work, ae_maxint(m, n, _state)+1, _state);
-            inplacetranspose(u, 0, nru-1, 0, ncu-1, &work, _state);
-            if( additionalmemory<1 )
-            {
-                
-                /*
-                 * No additional memory available
-                 */
-                rmatrixbdmultiplybyp(a, m, m, &taup, vt, m, n, ae_false, ae_true, _state);
-                result = rmatrixbdsvd(w, &e, m, isupper, ae_false, a, 0, u, nru, vt, n, _state);
-            }
-            else
-            {
-                
-                /*
-                 * Large VT. Transforming intermediate matrix T2
-                 */
-                rmatrixbdunpackpt(a, m, m, &taup, m, &t2, _state);
-                result = rmatrixbdsvd(w, &e, m, isupper, ae_false, a, 0, u, nru, &t2, m, _state);
-                copymatrix(vt, 0, m-1, 0, n-1, a, 0, m-1, 0, n-1, _state);
-                matrixmatrixmultiply(&t2, 0, m-1, 0, m-1, ae_false, a, 0, m-1, 0, n-1, ae_false, 1.0, vt, 0, m-1, 0, n-1, 0.0, &work, _state);
-            }
-            inplacetranspose(u, 0, nru-1, 0, ncu-1, &work, _state);
-            ae_frame_leave(_state);
-            return result;
-        }
-    }
-    
-    /*
-     * M<=N
-     * We can use inplace transposition of U to get rid of columnwise operations
-     */
-    if( m<=n )
-    {
-        rmatrixbd(a, m, n, &tauq, &taup, _state);
-        rmatrixbdunpackq(a, m, n, &tauq, ncu, u, _state);
-        rmatrixbdunpackpt(a, m, n, &taup, nrvt, vt, _state);
-        rmatrixbdunpackdiagonals(a, m, n, &isupper, w, &e, _state);
-        ae_vector_set_length(&work, m+1, _state);
-        inplacetranspose(u, 0, nru-1, 0, ncu-1, &work, _state);
-        result = rmatrixbdsvd(w, &e, minmn, isupper, ae_false, a, 0, u, nru, vt, ncvt, _state);
-        inplacetranspose(u, 0, nru-1, 0, ncu-1, &work, _state);
-        ae_frame_leave(_state);
-        return result;
-    }
-    
-    /*
-     * Simple bidiagonal reduction
-     */
-    rmatrixbd(a, m, n, &tauq, &taup, _state);
-    rmatrixbdunpackq(a, m, n, &tauq, ncu, u, _state);
-    rmatrixbdunpackpt(a, m, n, &taup, nrvt, vt, _state);
-    rmatrixbdunpackdiagonals(a, m, n, &isupper, w, &e, _state);
-    if( additionalmemory<2||uneeded==0 )
-    {
-        
-        /*
-         * We cant use additional memory or there is no need in such operations
-         */
-        result = rmatrixbdsvd(w, &e, minmn, isupper, ae_false, u, nru, a, 0, vt, ncvt, _state);
-    }
-    else
-    {
-        
-        /*
-         * We can use additional memory
-         */
-        ae_matrix_set_length(&t2, minmn-1+1, m-1+1, _state);
-        copyandtranspose(u, 0, m-1, 0, minmn-1, &t2, 0, minmn-1, 0, m-1, _state);
-        result = rmatrixbdsvd(w, &e, minmn, isupper, ae_false, u, 0, &t2, m, vt, ncvt, _state);
-        copyandtranspose(&t2, 0, minmn-1, 0, m-1, u, 0, m-1, 0, minmn-1, _state);
-    }
-    ae_frame_leave(_state);
-    return result;
-}
-
-
-
-
-/*************************************************************************
 Basic Cholesky solver for ScaleA*Cholesky(A)'*x = y.
 
 This subroutine assumes that:
@@ -28330,7 +29828,7 @@ This subroutine assumes that:
 INPUT PARAMETERS:
     CHA     -   Cholesky decomposition of A
     SqrtScaleA- square root of scale factor ScaleA
-    N       -   matrix size
+    N       -   matrix size, N>=0.
     IsUpper -   storage type
     XB      -   right part
     Tmp     -   buffer; function automatically allocates it, if it is  too
@@ -28340,7 +29838,8 @@ INPUT PARAMETERS:
 OUTPUT PARAMETERS:
     XB      -   solution
 
-NOTES: no assertion or tests are done during algorithm operation
+NOTE 1: no assertion or tests are done during algorithm operation
+NOTE 2: N=0 will force algorithm to silently return
 
   -- ALGLIB --
      Copyright 13.10.2010 by Bochkanov Sergey
@@ -28357,6 +29856,10 @@ void fblscholeskysolve(/* Real    */ ae_matrix* cha,
     double v;
 
 
+    if( n==0 )
+    {
+        return;
+    }
     if( tmp->cnt<n )
     {
         ae_vector_set_length(tmp, n, _state);
@@ -28948,6 +30451,96 @@ lbl_rcomm:
 }
 
 
+/*************************************************************************
+Fast  least  squares  solver,  solves  well  conditioned  system   without
+performing  any  checks  for  degeneracy,  and using user-provided buffers
+(which are automatically reallocated if too small).
+
+This  function  is  intended  for solution of moderately sized systems. It
+uses factorization algorithms based on Level 2 BLAS  operations,  thus  it
+won't work efficiently on large scale systems.
+
+INPUT PARAMETERS:
+    A       -   array[M,N], system matrix.
+                Contents of A is destroyed during solution.
+    B       -   array[M], right part
+    M       -   number of equations
+    N       -   number of variables, N<=M
+    Tmp0, Tmp1, Tmp2-
+                buffers; function automatically allocates them, if they are
+                too  small. They can  be  reused  if  function  is   called 
+                several times.
+                
+OUTPUT PARAMETERS:
+    B       -   solution (first N components, next M-N are zero)
+
+  -- ALGLIB --
+     Copyright 20.01.2012 by Bochkanov Sergey
+*************************************************************************/
+void fblssolvels(/* Real    */ ae_matrix* a,
+     /* Real    */ ae_vector* b,
+     ae_int_t m,
+     ae_int_t n,
+     /* Real    */ ae_vector* tmp0,
+     /* Real    */ ae_vector* tmp1,
+     /* Real    */ ae_vector* tmp2,
+     ae_state *_state)
+{
+    ae_int_t i;
+    ae_int_t k;
+    double v;
+
+
+    ae_assert(n>0, "FBLSSolveLS: N<=0", _state);
+    ae_assert(m>=n, "FBLSSolveLS: M<N", _state);
+    ae_assert(a->rows>=m, "FBLSSolveLS: Rows(A)<M", _state);
+    ae_assert(a->cols>=n, "FBLSSolveLS: Cols(A)<N", _state);
+    ae_assert(b->cnt>=m, "FBLSSolveLS: Length(B)<M", _state);
+    
+    /*
+     * Allocate temporaries
+     */
+    rvectorsetlengthatleast(tmp0, ae_maxint(m, n, _state)+1, _state);
+    rvectorsetlengthatleast(tmp1, ae_maxint(m, n, _state)+1, _state);
+    rvectorsetlengthatleast(tmp2, ae_minint(m, n, _state), _state);
+    
+    /*
+     * Call basecase QR
+     */
+    rmatrixqrbasecase(a, m, n, tmp0, tmp1, tmp2, _state);
+    
+    /*
+     * Multiply B by Q'
+     */
+    for(k=0; k<=n-1; k++)
+    {
+        for(i=0; i<=k-1; i++)
+        {
+            tmp0->ptr.p_double[i] = 0;
+        }
+        ae_v_move(&tmp0->ptr.p_double[k], 1, &a->ptr.pp_double[k][k], a->stride, ae_v_len(k,m-1));
+        tmp0->ptr.p_double[k] = 1;
+        v = ae_v_dotproduct(&tmp0->ptr.p_double[k], 1, &b->ptr.p_double[k], 1, ae_v_len(k,m-1));
+        v = v*tmp2->ptr.p_double[k];
+        ae_v_subd(&b->ptr.p_double[k], 1, &tmp0->ptr.p_double[k], 1, ae_v_len(k,m-1), v);
+    }
+    
+    /*
+     * Solve triangular system
+     */
+    b->ptr.p_double[n-1] = b->ptr.p_double[n-1]/a->ptr.pp_double[n-1][n-1];
+    for(i=n-2; i>=0; i--)
+    {
+        v = ae_v_dotproduct(&a->ptr.pp_double[i][i+1], 1, &b->ptr.p_double[i+1], 1, ae_v_len(i+1,n-1));
+        b->ptr.p_double[i] = (b->ptr.p_double[i]-v)/a->ptr.pp_double[i][i];
+    }
+    for(i=n; i<=m-1; i++)
+    {
+        b->ptr.p_double[i] = 0.0;
+    }
+}
+
+
 ae_bool _fblslincgstate_init(fblslincgstate* p, ae_state *_state, ae_bool make_automatic)
 {
     if( !ae_vector_init(&p->x, 0, DT_REAL, _state, make_automatic) )
@@ -29021,6 +30614,2260 @@ void _fblslincgstate_clear(fblslincgstate* p)
     ae_vector_clear(&p->b);
     _rcommstate_clear(&p->rstate);
     ae_vector_clear(&p->tmp2);
+}
+
+
+
+
+/*************************************************************************
+This function creates sparse matrix in a Hash-Table format.
+
+This function creates Hast-Table matrix, which can be  converted  to  CRS
+format after its initialization is over. Typical  usage  scenario  for  a
+sparse matrix is:
+1. creation in a Hash-Table format
+2. insertion of the matrix elements
+3. conversion to the CRS representation
+4. matrix is passed to some linear algebra algorithm
+
+Some  information  about  different matrix formats can be found below, in
+the "NOTES" section.
+
+INPUT PARAMETERS
+    M           -   number of rows in a matrix, M>=1
+    N           -   number of columns in a matrix, N>=1
+    K           -   K>=0, expected number of non-zero elements in a matrix.
+                    K can be inexact approximation, can be less than actual
+                    number  of  elements  (table will grow when needed) or 
+                    even zero).
+                    It is important to understand that although hash-table
+                    may grow automatically, it is better to  provide  good
+                    estimate of data size.
+
+OUTPUT PARAMETERS
+    S           -   sparse M*N matrix in Hash-Table representation.
+                    All elements of the matrix are zero.
+
+NOTE 1.
+
+Sparse matrices can be stored using either Hash-Table  representation  or
+Compressed  Row  Storage  representation. Hast-table is better suited for
+querying   and   dynamic   operations   (thus,  it  is  used  for  matrix
+initialization), but it is inefficient when you want to make some  linear 
+algebra operations.
+
+From the other side, CRS is better suited for linear algebra  operations,
+but initialization is less convenient - you have to tell row sizes at the
+initialization,  and  you  can  fill matrix only row by row, from left to 
+right. CRS is also very inefficient when you want to find matrix  element 
+by its index.
+
+Thus,  Hash-Table  representation   does   not   support  linear  algebra
+operations, while CRS format does not support modification of the  table.
+Tables below outline information about these two formats:
+
+    OPERATIONS WITH MATRIX      HASH        CRS
+    create                      +           +
+    read element                +           +
+    modify element              +           
+    add value to element        +
+    A*x  (dense vector)                     +
+    A'*x (dense vector)                     +
+    A*X  (dense matrix)                     +
+    A'*X (dense matrix)                     +
+
+NOTE 2.
+
+Hash-tables use memory inefficiently, and they have to keep  some  amount
+of the "spare memory" in order to have good performance. Hash  table  for
+matrix with K non-zero elements will  need  C*K*(8+2*sizeof(int))  bytes,
+where C is a small constant, about 1.5-2 in magnitude.
+
+CRS storage, from the other side, is  more  memory-efficient,  and  needs
+just K*(8+sizeof(int))+M*sizeof(int) bytes, where M is a number  of  rows
+in a matrix.
+
+When you convert from the Hash-Table to CRS  representation, all unneeded
+memory will be freed.
+
+  -- ALGLIB PROJECT --
+     Copyright 14.10.2011 by Bochkanov Sergey
+*************************************************************************/
+void sparsecreate(ae_int_t m,
+     ae_int_t n,
+     ae_int_t k,
+     sparsematrix* s,
+     ae_state *_state)
+{
+    ae_int_t i;
+    ae_int_t sz;
+
+    _sparsematrix_clear(s);
+
+    ae_assert(m>0, "SparseCreate: M<=0", _state);
+    ae_assert(n>0, "SparseCreate: N<=0", _state);
+    ae_assert(k>=0, "SparseCreate: K<0", _state);
+    sz = ae_round(k/sparse_desiredloadfactor+sparse_additional, _state);
+    s->matrixtype = 0;
+    s->m = m;
+    s->n = n;
+    s->nfree = sz;
+    ae_vector_set_length(&s->vals, sz, _state);
+    ae_vector_set_length(&s->idx, 2*sz, _state);
+    for(i=0; i<=sz-1; i++)
+    {
+        s->idx.ptr.p_int[2*i] = -1;
+    }
+}
+
+
+/*************************************************************************
+This function creates sparse matrix in a CRS format (expert function for
+situations when you are running out of memory).
+
+This function creates CRS matrix. Typical usage scenario for a CRS matrix 
+is:
+1. creation (you have to tell number of non-zero elements at each row  at 
+   this moment)
+2. insertion of the matrix elements (row by row, from left to right) 
+3. matrix is passed to some linear algebra algorithm
+
+This function is a memory-efficient alternative to SparseCreate(), but it
+is more complex because it requires you to know in advance how large your
+matrix is. Some  information about  different matrix formats can be found 
+below, in the "NOTES" section.
+
+INPUT PARAMETERS
+    M           -   number of rows in a matrix, M>=1
+    N           -   number of columns in a matrix, N>=1
+    NER         -   number of elements at each row, array[M], NER[i]>=0
+
+OUTPUT PARAMETERS
+    S           -   sparse M*N matrix in CRS representation.
+                    You have to fill ALL non-zero elements by calling
+                    SparseSet() BEFORE you try to use this matrix.
+
+NOTE 1.
+
+Sparse matrices can be stored using either Hash-Table  representation  or
+Compressed  Row  Storage  representation. Hast-table is better suited for
+querying   and   dynamic   operations   (thus,  it  is  used  for  matrix
+initialization), but it is inefficient when you want to make some  linear 
+algebra operations.
+
+From the other side, CRS is better suited for linear algebra  operations,
+but initialization is less convenient - you have to tell row sizes at the
+initialization,  and  you  can  fill matrix only row by row, from left to 
+right. CRS is also very inefficient when you want to find matrix  element 
+by its index.
+
+Thus,  Hash-Table  representation   does   not   support  linear  algebra
+operations, while CRS format does not support modification of the  table.
+Tables below outline information about these two formats:
+
+    OPERATIONS WITH MATRIX      HASH        CRS
+    create                      +           +
+    read element                +           +
+    modify element              +           
+    add value to element        +
+    A*x  (dense vector)                     +
+    A'*x (dense vector)                     +
+    A*X  (dense matrix)                     +
+    A'*X (dense matrix)                     +
+
+NOTE 2.
+
+Hash-tables use memory inefficiently, and they have to keep  some  amount
+of the "spare memory" in order to have good performance. Hash  table  for
+matrix with K non-zero elements will  need  C*K*(8+2*sizeof(int))  bytes,
+where C is a small constant, about 1.5-2 in magnitude.
+
+CRS storage, from the other side, is  more  memory-efficient,  and  needs
+just K*(8+sizeof(int))+M*sizeof(int) bytes, where M is a number  of  rows
+in a matrix.
+
+When you convert from the Hash-Table to CRS  representation, all unneeded
+memory will be freed.
+
+  -- ALGLIB PROJECT --
+     Copyright 14.10.2011 by Bochkanov Sergey
+*************************************************************************/
+void sparsecreatecrs(ae_int_t m,
+     ae_int_t n,
+     /* Integer */ ae_vector* ner,
+     sparsematrix* s,
+     ae_state *_state)
+{
+    ae_int_t i;
+    ae_int_t noe;
+
+    _sparsematrix_clear(s);
+
+    ae_assert(m>0, "SparseCreateCRS: M<=0", _state);
+    ae_assert(n>0, "SparseCreateCRS: N<=0", _state);
+    ae_assert(ner->cnt>=m, "SparseCreateCRS: Length(NER)<M", _state);
+    noe = 0;
+    s->matrixtype = 1;
+    s->ninitialized = 0;
+    s->m = m;
+    s->n = n;
+    ae_vector_set_length(&s->ridx, s->m+1, _state);
+    s->ridx.ptr.p_int[0] = 0;
+    for(i=0; i<=s->m-1; i++)
+    {
+        ae_assert(ner->ptr.p_int[i]>=0, "SparseCreateCRS: NER[] contains negative elements", _state);
+        noe = noe+ner->ptr.p_int[i];
+        s->ridx.ptr.p_int[i+1] = s->ridx.ptr.p_int[i]+ner->ptr.p_int[i];
+    }
+    ae_vector_set_length(&s->vals, noe, _state);
+    ae_vector_set_length(&s->idx, noe, _state);
+    if( noe==0 )
+    {
+        sparse_sparseinitduidx(s, _state);
+    }
+}
+
+
+/*************************************************************************
+This function copies S0 to S1.
+
+NOTE:  this  function  does  not verify its arguments, it just copies all
+fields of the structure.
+
+  -- ALGLIB PROJECT --
+     Copyright 14.10.2011 by Bochkanov Sergey
+*************************************************************************/
+void sparsecopy(sparsematrix* s0, sparsematrix* s1, ae_state *_state)
+{
+    ae_int_t l;
+    ae_int_t i;
+
+    _sparsematrix_clear(s1);
+
+    s1->matrixtype = s0->matrixtype;
+    s1->m = s0->m;
+    s1->n = s0->n;
+    s1->nfree = s0->nfree;
+    s1->ninitialized = s0->ninitialized;
+    
+    /*
+     * initialization for arrays
+     */
+    l = s0->vals.cnt;
+    ae_vector_set_length(&s1->vals, l, _state);
+    for(i=0; i<=l-1; i++)
+    {
+        s1->vals.ptr.p_double[i] = s0->vals.ptr.p_double[i];
+    }
+    l = s0->ridx.cnt;
+    ae_vector_set_length(&s1->ridx, l, _state);
+    for(i=0; i<=l-1; i++)
+    {
+        s1->ridx.ptr.p_int[i] = s0->ridx.ptr.p_int[i];
+    }
+    l = s0->idx.cnt;
+    ae_vector_set_length(&s1->idx, l, _state);
+    for(i=0; i<=l-1; i++)
+    {
+        s1->idx.ptr.p_int[i] = s0->idx.ptr.p_int[i];
+    }
+    
+    /*
+     * initalization for CRS-parameters
+     */
+    l = s0->uidx.cnt;
+    ae_vector_set_length(&s1->uidx, l, _state);
+    for(i=0; i<=l-1; i++)
+    {
+        s1->uidx.ptr.p_int[i] = s0->uidx.ptr.p_int[i];
+    }
+    l = s0->didx.cnt;
+    ae_vector_set_length(&s1->didx, l, _state);
+    for(i=0; i<=l-1; i++)
+    {
+        s1->didx.ptr.p_int[i] = s0->didx.ptr.p_int[i];
+    }
+}
+
+
+/*************************************************************************
+This function adds value to S[i,j] - element of the sparse matrix. Matrix
+must be in a Hash-Table mode.
+
+In case S[i,j] already exists in the table, V i added to  its  value.  In
+case  S[i,j]  is  non-existent,  it  is  inserted  in  the  table.  Table
+automatically grows when necessary.
+
+INPUT PARAMETERS
+    S           -   sparse M*N matrix in Hash-Table representation.
+                    Exception will be thrown for CRS matrix.
+    I           -   row index of the element to modify, 0<=I<M
+    J           -   column index of the element to modify, 0<=J<N
+    V           -   value to add, must be finite number
+
+OUTPUT PARAMETERS
+    S           -   modified matrix
+    
+NOTE 1:  when  S[i,j]  is exactly zero after modification, it is  deleted
+from the table.
+
+  -- ALGLIB PROJECT --
+     Copyright 14.10.2011 by Bochkanov Sergey
+*************************************************************************/
+void sparseadd(sparsematrix* s,
+     ae_int_t i,
+     ae_int_t j,
+     double v,
+     ae_state *_state)
+{
+    ae_int_t hashcode;
+    ae_int_t tcode;
+    ae_int_t k;
+
+
+    ae_assert(s->matrixtype==0, "SparseAdd: matrix must be in the Hash-Table mode to do this operation", _state);
+    ae_assert(i>=0, "SparseAdd: I<0", _state);
+    ae_assert(i<s->m, "SparseAdd: I>=M", _state);
+    ae_assert(j>=0, "SparseAdd: J<0", _state);
+    ae_assert(j<s->n, "SparseAdd: J>=N", _state);
+    ae_assert(ae_isfinite(v, _state), "SparseAdd: V is not finite number", _state);
+    if( ae_fp_eq(v,0) )
+    {
+        return;
+    }
+    tcode = -1;
+    k = s->vals.cnt;
+    if( ae_fp_greater_eq((1-sparse_maxloadfactor)*k,s->nfree) )
+    {
+        sparseresizematrix(s, _state);
+        k = s->vals.cnt;
+    }
+    hashcode = sparse_hash(i, j, k, _state);
+    for(;;)
+    {
+        if( s->idx.ptr.p_int[2*hashcode]==-1 )
+        {
+            if( tcode!=-1 )
+            {
+                hashcode = tcode;
+            }
+            s->vals.ptr.p_double[hashcode] = v;
+            s->idx.ptr.p_int[2*hashcode] = i;
+            s->idx.ptr.p_int[2*hashcode+1] = j;
+            if( tcode==-1 )
+            {
+                s->nfree = s->nfree-1;
+            }
+            return;
+        }
+        else
+        {
+            if( s->idx.ptr.p_int[2*hashcode]==i&&s->idx.ptr.p_int[2*hashcode+1]==j )
+            {
+                s->vals.ptr.p_double[hashcode] = s->vals.ptr.p_double[hashcode]+v;
+                if( ae_fp_eq(s->vals.ptr.p_double[hashcode],0) )
+                {
+                    s->idx.ptr.p_int[2*hashcode] = -2;
+                }
+                return;
+            }
+            
+            /*
+             * is it deleted element?
+             */
+            if( tcode==-1&&s->idx.ptr.p_int[2*hashcode]==-2 )
+            {
+                tcode = hashcode;
+            }
+            
+            /*
+             * next step
+             */
+            hashcode = (hashcode+1)%k;
+        }
+    }
+}
+
+
+/*************************************************************************
+This function modifies S[i,j] - element of the sparse matrix. Matrix must
+be in a Hash-Table mode.
+
+In  case  new  value  of S[i,j] is zero, this element is deleted from the 
+table.
+
+INPUT PARAMETERS
+    S           -   sparse M*N matrix in Hash-Table representation.
+                    Exception will be thrown for CRS matrix.
+    I           -   row index of the element to modify, 0<=I<M
+    J           -   column index of the element to modify, 0<=J<N
+    V           -   value to set, must be finite number, can be zero
+
+OUTPUT PARAMETERS
+    S           -   modified matrix
+    
+NOTE:  this  function  has  no  effect  when  called with zero V for non-
+existent element.
+
+  -- ALGLIB PROJECT --
+     Copyright 14.10.2011 by Bochkanov Sergey
+*************************************************************************/
+void sparseset(sparsematrix* s,
+     ae_int_t i,
+     ae_int_t j,
+     double v,
+     ae_state *_state)
+{
+    ae_int_t hashcode;
+    ae_int_t tcode;
+    ae_int_t k;
+
+
+    ae_assert(i>=0, "SparseSet: I<0", _state);
+    ae_assert(i<s->m, "SparseSet: I>=M", _state);
+    ae_assert(j>=0, "SparseSet: J<0", _state);
+    ae_assert(j<s->n, "SparseSet: J>=N", _state);
+    ae_assert(ae_isfinite(v, _state), "SparseSet: V is not finite number", _state);
+    
+    /*
+     * Hash-table matrix
+     */
+    if( s->matrixtype==0 )
+    {
+        tcode = -1;
+        k = s->vals.cnt;
+        if( ae_fp_greater_eq((1-sparse_maxloadfactor)*k,s->nfree) )
+        {
+            sparseresizematrix(s, _state);
+            k = s->vals.cnt;
+        }
+        hashcode = sparse_hash(i, j, k, _state);
+        for(;;)
+        {
+            if( s->idx.ptr.p_int[2*hashcode]==-1 )
+            {
+                if( ae_fp_neq(v,0) )
+                {
+                    if( tcode!=-1 )
+                    {
+                        hashcode = tcode;
+                    }
+                    s->vals.ptr.p_double[hashcode] = v;
+                    s->idx.ptr.p_int[2*hashcode] = i;
+                    s->idx.ptr.p_int[2*hashcode+1] = j;
+                    if( tcode==-1 )
+                    {
+                        s->nfree = s->nfree-1;
+                    }
+                }
+                return;
+            }
+            else
+            {
+                if( s->idx.ptr.p_int[2*hashcode]==i&&s->idx.ptr.p_int[2*hashcode+1]==j )
+                {
+                    if( ae_fp_eq(v,0) )
+                    {
+                        s->idx.ptr.p_int[2*hashcode] = -2;
+                    }
+                    else
+                    {
+                        s->vals.ptr.p_double[hashcode] = v;
+                    }
+                    return;
+                }
+                if( tcode==-1&&s->idx.ptr.p_int[2*hashcode]==-2 )
+                {
+                    tcode = hashcode;
+                }
+                
+                /*
+                 * next step
+                 */
+                hashcode = (hashcode+1)%k;
+            }
+        }
+    }
+    
+    /*
+     * CRS matrix
+     */
+    if( s->matrixtype==1 )
+    {
+        ae_assert(ae_fp_neq(v,0), "SparseSet: CRS format does not allow you to write zero elements", _state);
+        ae_assert(s->ridx.ptr.p_int[i]<=s->ninitialized, "SparseSet: too few initialized elements at some row (you have promised more when called SparceCreateCRS)", _state);
+        ae_assert(s->ridx.ptr.p_int[i+1]>s->ninitialized, "SparseSet: too many initialized elements at some row (you have promised less when called SparceCreateCRS)", _state);
+        ae_assert(s->ninitialized==s->ridx.ptr.p_int[i]||s->idx.ptr.p_int[s->ninitialized-1]<j, "SparseSet: incorrect column order (you must fill every row from left to right)", _state);
+        s->vals.ptr.p_double[s->ninitialized] = v;
+        s->idx.ptr.p_int[s->ninitialized] = j;
+        s->ninitialized = s->ninitialized+1;
+        
+        /*
+         * if matrix has been created then
+         * initiale 'S.UIdx' and 'S.DIdx'
+         */
+        if( s->ninitialized==s->ridx.ptr.p_int[s->m] )
+        {
+            sparse_sparseinitduidx(s, _state);
+        }
+    }
+}
+
+
+/*************************************************************************
+This function returns S[i,j] - element of the sparse matrix.  Matrix  can
+be in any mode (Hash-Table or CRS), but this function is  less  efficient
+for CRS matrices.  Hash-Table  matrices can  find element  in O(1)  time, 
+while  CRS  matrices  need  O(RS) time, where RS is an number of non-zero
+elements in a row.
+
+INPUT PARAMETERS
+    S           -   sparse M*N matrix in Hash-Table representation.
+                    Exception will be thrown for CRS matrix.
+    I           -   row index of the element to modify, 0<=I<M
+    J           -   column index of the element to modify, 0<=J<N
+
+RESULT
+    value of S[I,J] or zero (in case no element with such index is found)
+
+  -- ALGLIB PROJECT --
+     Copyright 14.10.2011 by Bochkanov Sergey
+*************************************************************************/
+double sparseget(sparsematrix* s,
+     ae_int_t i,
+     ae_int_t j,
+     ae_state *_state)
+{
+    ae_int_t hashcode;
+    ae_int_t k;
+    ae_int_t k0;
+    ae_int_t k1;
+    double result;
+
+
+    ae_assert(i>=0, "SparseGet: I<0", _state);
+    ae_assert(i<s->m, "SparseGet: I>=M", _state);
+    ae_assert(j>=0, "SparseGet: J<0", _state);
+    ae_assert(j<s->n, "SparseGet: J>=N", _state);
+    k = s->vals.cnt;
+    result = 0;
+    if( s->matrixtype==0 )
+    {
+        hashcode = sparse_hash(i, j, k, _state);
+        for(;;)
+        {
+            if( s->idx.ptr.p_int[2*hashcode]==-1 )
+            {
+                return result;
+            }
+            if( s->idx.ptr.p_int[2*hashcode]==i&&s->idx.ptr.p_int[2*hashcode+1]==j )
+            {
+                result = s->vals.ptr.p_double[hashcode];
+                return result;
+            }
+            hashcode = (hashcode+1)%k;
+        }
+    }
+    if( s->matrixtype==1 )
+    {
+        ae_assert(s->ninitialized==s->ridx.ptr.p_int[s->m], "SparseGet: some rows/elements of the CRS matrix were not initialized (you must initialize everything you promised to SparseCreateCRS)", _state);
+        k0 = s->ridx.ptr.p_int[i];
+        k1 = s->ridx.ptr.p_int[i+1]-1;
+        while(k0<=k1)
+        {
+            k = (k0+k1)/2;
+            if( s->idx.ptr.p_int[k]==j )
+            {
+                result = s->vals.ptr.p_double[k];
+                return result;
+            }
+            if( s->idx.ptr.p_int[k]<j )
+            {
+                k0 = k+1;
+            }
+            else
+            {
+                k1 = k-1;
+            }
+        }
+        return result;
+    }
+    return result;
+}
+
+
+/*************************************************************************
+This function converts matrix to CRS format.
+
+Some  algorithms  (linear  algebra ones, for example) require matrices in
+CRS format.
+
+INPUT PARAMETERS
+    S           -   sparse M*N matrix.
+
+OUTPUT PARAMETERS
+    S           -   matrix in CRS format
+    
+NOTE:  this  function  has  no  effect  when  called with matrix which is 
+already in CRS mode.
+
+  -- ALGLIB PROJECT --
+     Copyright 14.10.2011 by Bochkanov Sergey
+*************************************************************************/
+void sparseconverttocrs(sparsematrix* s, ae_state *_state)
+{
+    ae_frame _frame_block;
+    ae_int_t i;
+    ae_vector tvals;
+    ae_vector tidx;
+    ae_vector temp;
+    ae_int_t nonne;
+    ae_int_t k;
+
+    ae_frame_make(_state, &_frame_block);
+    ae_vector_init(&tvals, 0, DT_REAL, _state, ae_true);
+    ae_vector_init(&tidx, 0, DT_INT, _state, ae_true);
+    ae_vector_init(&temp, 0, DT_INT, _state, ae_true);
+
+    ae_assert(s->matrixtype==0||s->matrixtype==1, "SparseConvertToCRS: invalid matrix type", _state);
+    if( s->matrixtype==1 )
+    {
+        ae_frame_leave(_state);
+        return;
+    }
+    s->matrixtype = 1;
+    nonne = 0;
+    k = s->vals.cnt;
+    ae_swap_vectors(&s->vals, &tvals);
+    ae_swap_vectors(&s->idx, &tidx);
+    ae_vector_set_length(&s->ridx, s->m+1, _state);
+    for(i=0; i<=s->m; i++)
+    {
+        s->ridx.ptr.p_int[i] = 0;
+    }
+    ae_vector_set_length(&temp, s->m, _state);
+    for(i=0; i<=s->m-1; i++)
+    {
+        temp.ptr.p_int[i] = 0;
+    }
+    
+    /*
+     * Number of elements per row
+     */
+    for(i=0; i<=k-1; i++)
+    {
+        if( tidx.ptr.p_int[2*i]>=0 )
+        {
+            s->ridx.ptr.p_int[tidx.ptr.p_int[2*i]+1] = s->ridx.ptr.p_int[tidx.ptr.p_int[2*i]+1]+1;
+            nonne = nonne+1;
+        }
+    }
+    
+    /*
+     * Fill RIdx (offsets of rows)
+     */
+    for(i=0; i<=s->m-1; i++)
+    {
+        s->ridx.ptr.p_int[i+1] = s->ridx.ptr.p_int[i+1]+s->ridx.ptr.p_int[i];
+    }
+    
+    /*
+     * Allocate memory
+     */
+    ae_vector_set_length(&s->vals, nonne, _state);
+    ae_vector_set_length(&s->idx, nonne, _state);
+    for(i=0; i<=k-1; i++)
+    {
+        if( tidx.ptr.p_int[2*i]>=0 )
+        {
+            s->vals.ptr.p_double[s->ridx.ptr.p_int[tidx.ptr.p_int[2*i]]+temp.ptr.p_int[tidx.ptr.p_int[2*i]]] = tvals.ptr.p_double[i];
+            s->idx.ptr.p_int[s->ridx.ptr.p_int[tidx.ptr.p_int[2*i]]+temp.ptr.p_int[tidx.ptr.p_int[2*i]]] = tidx.ptr.p_int[2*i+1];
+            temp.ptr.p_int[tidx.ptr.p_int[2*i]] = temp.ptr.p_int[tidx.ptr.p_int[2*i]]+1;
+        }
+    }
+    
+    /*
+     * Set NInitialized
+     */
+    s->ninitialized = s->ridx.ptr.p_int[s->m];
+    
+    /*
+     * sorting of elements
+     */
+    for(i=0; i<=s->m-1; i++)
+    {
+        tagsortmiddleir(&s->idx, &s->vals, s->ridx.ptr.p_int[i], s->ridx.ptr.p_int[i+1]-s->ridx.ptr.p_int[i], _state);
+    }
+    
+    /*
+     * initialization 'S.UIdx' and 'S.DIdx'
+     */
+    sparse_sparseinitduidx(s, _state);
+    ae_frame_leave(_state);
+}
+
+
+/*************************************************************************
+This function calculates matrix-vector product  S*x.  Matrix  S  must  be
+stored in CRS format (exception will be thrown otherwise).
+
+INPUT PARAMETERS
+    S           -   sparse M*N matrix in CRS format (you MUST convert  it
+                    to CRS before calling this function).
+    X           -   array[N], input vector. For  performance  reasons  we 
+                    make only quick checks - we check that array size  is
+                    at least N, but we do not check for NAN's or INF's.
+    Y           -   output buffer, possibly preallocated. In case  buffer
+                    size is too small to store  result,  this  buffer  is
+                    automatically resized.
+    
+OUTPUT PARAMETERS
+    Y           -   array[M], S*x
+    
+NOTE: this function throws exception when called for non-CRS matrix.  You
+must convert your matrix  with  SparseConvertToCRS()  before  using  this
+function.
+
+  -- ALGLIB PROJECT --
+     Copyright 14.10.2011 by Bochkanov Sergey
+*************************************************************************/
+void sparsemv(sparsematrix* s,
+     /* Real    */ ae_vector* x,
+     /* Real    */ ae_vector* y,
+     ae_state *_state)
+{
+    double tval;
+    ae_int_t i;
+    ae_int_t j;
+    ae_int_t lt;
+    ae_int_t rt;
+
+
+    ae_assert(s->matrixtype==1, "SparseMV: incorrect matrix type (convert your matrix to CRS)", _state);
+    ae_assert(s->ninitialized==s->ridx.ptr.p_int[s->m], "SparseMV: some rows/elements of the CRS matrix were not initialized (you must initialize everything you promised to SparseCreateCRS)", _state);
+    ae_assert(x->cnt>=s->n, "SparseMV: length(X)<N", _state);
+    rvectorsetlengthatleast(y, s->m, _state);
+    for(i=0; i<=s->m-1; i++)
+    {
+        tval = 0;
+        lt = s->ridx.ptr.p_int[i];
+        rt = s->ridx.ptr.p_int[i+1];
+        for(j=lt; j<=rt-1; j++)
+        {
+            tval = tval+x->ptr.p_double[s->idx.ptr.p_int[j]]*s->vals.ptr.p_double[j];
+        }
+        y->ptr.p_double[i] = tval;
+    }
+}
+
+
+/*************************************************************************
+This function calculates matrix-vector product  S^T*x. Matrix S  must  be
+stored in CRS format (exception will be thrown otherwise).
+
+INPUT PARAMETERS
+    S           -   sparse M*N matrix in CRS format (you MUST convert  it
+                    to CRS before calling this function).
+    X           -   array[M], input vector. For  performance  reasons  we 
+                    make only quick checks - we check that array size  is
+                    at least M, but we do not check for NAN's or INF's.
+    Y           -   output buffer, possibly preallocated. In case  buffer
+                    size is too small to store  result,  this  buffer  is
+                    automatically resized.
+    
+OUTPUT PARAMETERS
+    Y           -   array[N], S^T*x
+    
+NOTE: this function throws exception when called for non-CRS matrix.  You
+must convert your matrix  with  SparseConvertToCRS()  before  using  this
+function.
+
+  -- ALGLIB PROJECT --
+     Copyright 14.10.2011 by Bochkanov Sergey
+*************************************************************************/
+void sparsemtv(sparsematrix* s,
+     /* Real    */ ae_vector* x,
+     /* Real    */ ae_vector* y,
+     ae_state *_state)
+{
+    ae_int_t i;
+    ae_int_t j;
+    ae_int_t lt;
+    ae_int_t rt;
+    ae_int_t ct;
+    double v;
+
+
+    ae_assert(s->matrixtype==1, "SparseMTV: incorrect matrix type (convert your matrix to CRS)", _state);
+    ae_assert(s->ninitialized==s->ridx.ptr.p_int[s->m], "SparseMTV: some rows/elements of the CRS matrix were not initialized (you must initialize everything you promised to SparseCreateCRS)", _state);
+    ae_assert(x->cnt>=s->m, "SparseMTV: Length(X)<M", _state);
+    rvectorsetlengthatleast(y, s->n, _state);
+    for(i=0; i<=s->n-1; i++)
+    {
+        y->ptr.p_double[i] = 0;
+    }
+    for(i=0; i<=s->m-1; i++)
+    {
+        lt = s->ridx.ptr.p_int[i];
+        rt = s->ridx.ptr.p_int[i+1];
+        v = x->ptr.p_double[i];
+        for(j=lt; j<=rt-1; j++)
+        {
+            ct = s->idx.ptr.p_int[j];
+            y->ptr.p_double[ct] = y->ptr.p_double[ct]+v*s->vals.ptr.p_double[j];
+        }
+    }
+}
+
+
+/*************************************************************************
+This function simultaneously calculates two matrix-vector products:
+    S*x and S^T*x.
+S must be square (non-rectangular) matrix stored in CRS format (exception  
+will be thrown otherwise).
+
+INPUT PARAMETERS
+    S           -   sparse N*N matrix in CRS format (you MUST convert  it
+                    to CRS before calling this function).
+    X           -   array[N], input vector. For  performance  reasons  we 
+                    make only quick checks - we check that array size  is
+                    at least N, but we do not check for NAN's or INF's.
+    Y0          -   output buffer, possibly preallocated. In case  buffer
+                    size is too small to store  result,  this  buffer  is
+                    automatically resized.
+    Y1          -   output buffer, possibly preallocated. In case  buffer
+                    size is too small to store  result,  this  buffer  is
+                    automatically resized.
+    
+OUTPUT PARAMETERS
+    Y0          -   array[N], S*x
+    Y1          -   array[N], S^T*x
+    
+NOTE: this function throws exception when called for non-CRS matrix.  You
+must convert your matrix  with  SparseConvertToCRS()  before  using  this
+function. It also throws exception when S is non-square.
+
+  -- ALGLIB PROJECT --
+     Copyright 14.10.2011 by Bochkanov Sergey
+*************************************************************************/
+void sparsemv2(sparsematrix* s,
+     /* Real    */ ae_vector* x,
+     /* Real    */ ae_vector* y0,
+     /* Real    */ ae_vector* y1,
+     ae_state *_state)
+{
+    ae_int_t l;
+    double tval;
+    ae_int_t i;
+    ae_int_t j;
+    double vx;
+    double vs;
+    ae_int_t vi;
+    ae_int_t j0;
+    ae_int_t j1;
+
+
+    ae_assert(s->matrixtype==1, "SparseMV2: incorrect matrix type (convert your matrix to CRS)", _state);
+    ae_assert(s->ninitialized==s->ridx.ptr.p_int[s->m], "SparseMV: some rows/elements of the CRS matrix were not initialized (you must initialize everything you promised to SparseCreateCRS)", _state);
+    ae_assert(s->m==s->n, "SparseMV2: matrix is non-square", _state);
+    l = x->cnt;
+    ae_assert(l>=s->n, "SparseMV2: Length(X)<N", _state);
+    rvectorsetlengthatleast(y0, l, _state);
+    rvectorsetlengthatleast(y1, l, _state);
+    for(i=0; i<=s->n-1; i++)
+    {
+        y1->ptr.p_double[i] = 0;
+    }
+    for(i=0; i<=s->m-1; i++)
+    {
+        tval = 0;
+        vx = x->ptr.p_double[i];
+        j0 = s->ridx.ptr.p_int[i];
+        j1 = s->ridx.ptr.p_int[i+1]-1;
+        for(j=j0; j<=j1; j++)
+        {
+            vi = s->idx.ptr.p_int[j];
+            vs = s->vals.ptr.p_double[j];
+            tval = tval+x->ptr.p_double[vi]*vs;
+            y1->ptr.p_double[vi] = y1->ptr.p_double[vi]+vx*vs;
+        }
+        y0->ptr.p_double[i] = tval;
+    }
+}
+
+
+/*************************************************************************
+This function calculates matrix-vector product  S*x, when S is  symmetric
+matrix.  Matrix  S  must  be stored in  CRS  format  (exception  will  be
+thrown otherwise).
+
+INPUT PARAMETERS
+    S           -   sparse M*M matrix in CRS format (you MUST convert  it
+                    to CRS before calling this function).
+    X           -   array[N], input vector. For  performance  reasons  we 
+                    make only quick checks - we check that array size  is
+                    at least N, but we do not check for NAN's or INF's.
+    Y           -   output buffer, possibly preallocated. In case  buffer
+                    size is too small to store  result,  this  buffer  is
+                    automatically resized.
+    
+OUTPUT PARAMETERS
+    Y           -   array[M], S*x
+    
+NOTE: this function throws exception when called for non-CRS matrix.  You
+must convert your matrix  with  SparseConvertToCRS()  before  using  this
+function.
+
+  -- ALGLIB PROJECT --
+     Copyright 14.10.2011 by Bochkanov Sergey
+*************************************************************************/
+void sparsesmv(sparsematrix* s,
+     ae_bool isupper,
+     /* Real    */ ae_vector* x,
+     /* Real    */ ae_vector* y,
+     ae_state *_state)
+{
+    ae_int_t i;
+    ae_int_t j;
+    ae_int_t id;
+    ae_int_t lt;
+    ae_int_t rt;
+    double v;
+    double vy;
+    double vx;
+
+
+    ae_assert(s->matrixtype==1, "SparseSMV: incorrect matrix type (convert your matrix to CRS)", _state);
+    ae_assert(s->ninitialized==s->ridx.ptr.p_int[s->m], "SparseSMV: some rows/elements of the CRS matrix were not initialized (you must initialize everything you promised to SparseCreateCRS)", _state);
+    ae_assert(x->cnt>=s->n, "SparseSMV: length(X)<N", _state);
+    ae_assert(s->m==s->n, "SparseSMV: non-square matrix", _state);
+    rvectorsetlengthatleast(y, s->m, _state);
+    for(i=0; i<=s->m-1; i++)
+    {
+        y->ptr.p_double[i] = 0;
+    }
+    for(i=0; i<=s->m-1; i++)
+    {
+        if( s->didx.ptr.p_int[i]!=s->uidx.ptr.p_int[i] )
+        {
+            y->ptr.p_double[i] = y->ptr.p_double[i]+s->vals.ptr.p_double[s->didx.ptr.p_int[i]]*x->ptr.p_double[s->idx.ptr.p_int[s->didx.ptr.p_int[i]]];
+        }
+        if( isupper )
+        {
+            lt = s->uidx.ptr.p_int[i];
+            rt = s->ridx.ptr.p_int[i+1];
+            vy = 0;
+            vx = x->ptr.p_double[i];
+            for(j=lt; j<=rt-1; j++)
+            {
+                id = s->idx.ptr.p_int[j];
+                v = s->vals.ptr.p_double[j];
+                vy = vy+x->ptr.p_double[id]*v;
+                y->ptr.p_double[id] = y->ptr.p_double[id]+vx*v;
+            }
+            y->ptr.p_double[i] = y->ptr.p_double[i]+vy;
+        }
+        else
+        {
+            lt = s->ridx.ptr.p_int[i];
+            rt = s->didx.ptr.p_int[i];
+            vy = 0;
+            vx = x->ptr.p_double[i];
+            for(j=lt; j<=rt-1; j++)
+            {
+                id = s->idx.ptr.p_int[j];
+                v = s->vals.ptr.p_double[j];
+                vy = vy+x->ptr.p_double[id]*v;
+                y->ptr.p_double[id] = y->ptr.p_double[id]+vx*v;
+            }
+            y->ptr.p_double[i] = y->ptr.p_double[i]+vy;
+        }
+    }
+}
+
+
+/*************************************************************************
+This function calculates matrix-matrix product  S*A.  Matrix  S  must  be
+stored in CRS format (exception will be thrown otherwise).
+
+INPUT PARAMETERS
+    S           -   sparse M*N matrix in CRS format (you MUST convert  it
+                    to CRS before calling this function).
+    A           -   array[N][K], input dense matrix. For  performance reasons
+                    we make only quick checks - we check that array size  
+                    is at least N, but we do not check for NAN's or INF's.
+    K           -   number of columns of matrix (A).
+    B           -   output buffer, possibly preallocated. In case  buffer
+                    size is too small to store  result,  this  buffer  is
+                    automatically resized.
+    
+OUTPUT PARAMETERS
+    B           -   array[M][K], S*A
+    
+NOTE: this function throws exception when called for non-CRS matrix.  You
+must convert your matrix  with  SparseConvertToCRS()  before  using  this
+function.
+
+  -- ALGLIB PROJECT --
+     Copyright 14.10.2011 by Bochkanov Sergey
+*************************************************************************/
+void sparsemm(sparsematrix* s,
+     /* Real    */ ae_matrix* a,
+     ae_int_t k,
+     /* Real    */ ae_matrix* b,
+     ae_state *_state)
+{
+    double tval;
+    double v;
+    ae_int_t id;
+    ae_int_t i;
+    ae_int_t j;
+    ae_int_t k0;
+    ae_int_t lt;
+    ae_int_t rt;
+
+
+    ae_assert(s->matrixtype==1, "SparseMV: incorrect matrix type (convert your matrix to CRS)", _state);
+    ae_assert(s->ninitialized==s->ridx.ptr.p_int[s->m], "SparseMV: some rows/elements of the CRS matrix were not initialized (you must initialize everything you promised to SparseCreateCRS)", _state);
+    ae_assert(a->rows>=s->n, "SparseMV: Rows(A)<N", _state);
+    ae_assert(k>0, "SparseMV: K<=0", _state);
+    rmatrixsetlengthatleast(b, s->m, k, _state);
+    if( k<sparse_linalgswitch )
+    {
+        for(i=0; i<=s->m-1; i++)
+        {
+            for(j=0; j<=k-1; j++)
+            {
+                tval = 0;
+                lt = s->ridx.ptr.p_int[i];
+                rt = s->ridx.ptr.p_int[i+1];
+                for(k0=lt; k0<=rt-1; k0++)
+                {
+                    tval = tval+s->vals.ptr.p_double[k0]*a->ptr.pp_double[s->idx.ptr.p_int[k0]][j];
+                }
+                b->ptr.pp_double[i][j] = tval;
+            }
+        }
+    }
+    else
+    {
+        for(i=0; i<=s->m-1; i++)
+        {
+            for(j=0; j<=k-1; j++)
+            {
+                b->ptr.pp_double[i][j] = 0;
+            }
+        }
+        for(i=0; i<=s->m-1; i++)
+        {
+            lt = s->ridx.ptr.p_int[i];
+            rt = s->ridx.ptr.p_int[i+1];
+            for(j=lt; j<=rt-1; j++)
+            {
+                id = s->idx.ptr.p_int[j];
+                v = s->vals.ptr.p_double[j];
+                ae_v_addd(&b->ptr.pp_double[i][0], 1, &a->ptr.pp_double[id][0], 1, ae_v_len(0,k-1), v);
+            }
+        }
+    }
+}
+
+
+/*************************************************************************
+This function calculates matrix-matrix product  S^T*A. Matrix S  must  be
+stored in CRS format (exception will be thrown otherwise).
+
+INPUT PARAMETERS
+    S           -   sparse M*N matrix in CRS format (you MUST convert  it
+                    to CRS before calling this function).
+    A           -   array[M][K], input dense matrix. For performance reasons
+                    we make only quick checks - we check that array size  is
+                    at least M, but we do not check for NAN's or INF's.
+    K           -   number of columns of matrix (A).                    
+    B           -   output buffer, possibly preallocated. In case  buffer
+                    size is too small to store  result,  this  buffer  is
+                    automatically resized.
+    
+OUTPUT PARAMETERS
+    B           -   array[N][K], S^T*A
+    
+NOTE: this function throws exception when called for non-CRS matrix.  You
+must convert your matrix  with  SparseConvertToCRS()  before  using  this
+function.
+
+  -- ALGLIB PROJECT --
+     Copyright 14.10.2011 by Bochkanov Sergey
+*************************************************************************/
+void sparsemtm(sparsematrix* s,
+     /* Real    */ ae_matrix* a,
+     ae_int_t k,
+     /* Real    */ ae_matrix* b,
+     ae_state *_state)
+{
+    ae_int_t i;
+    ae_int_t j;
+    ae_int_t k0;
+    ae_int_t lt;
+    ae_int_t rt;
+    ae_int_t ct;
+    double v;
+
+
+    ae_assert(s->matrixtype==1, "SparseMTM: incorrect matrix type (convert your matrix to CRS)", _state);
+    ae_assert(s->ninitialized==s->ridx.ptr.p_int[s->m], "SparseMTM: some rows/elements of the CRS matrix were not initialized (you must initialize everything you promised to SparseCreateCRS)", _state);
+    ae_assert(a->rows>=s->m, "SparseMTM: Rows(A)<M", _state);
+    ae_assert(k>0, "SparseMTM: K<=0", _state);
+    rmatrixsetlengthatleast(b, s->n, k, _state);
+    for(i=0; i<=s->n-1; i++)
+    {
+        for(j=0; j<=k-1; j++)
+        {
+            b->ptr.pp_double[i][j] = 0;
+        }
+    }
+    if( k<sparse_linalgswitch )
+    {
+        for(i=0; i<=s->m-1; i++)
+        {
+            lt = s->ridx.ptr.p_int[i];
+            rt = s->ridx.ptr.p_int[i+1];
+            for(k0=lt; k0<=rt-1; k0++)
+            {
+                v = s->vals.ptr.p_double[k0];
+                ct = s->idx.ptr.p_int[k0];
+                for(j=0; j<=k-1; j++)
+                {
+                    b->ptr.pp_double[ct][j] = b->ptr.pp_double[ct][j]+v*a->ptr.pp_double[i][j];
+                }
+            }
+        }
+    }
+    else
+    {
+        for(i=0; i<=s->m-1; i++)
+        {
+            lt = s->ridx.ptr.p_int[i];
+            rt = s->ridx.ptr.p_int[i+1];
+            for(j=lt; j<=rt-1; j++)
+            {
+                v = s->vals.ptr.p_double[j];
+                ct = s->idx.ptr.p_int[j];
+                ae_v_addd(&b->ptr.pp_double[ct][0], 1, &a->ptr.pp_double[i][0], 1, ae_v_len(0,k-1), v);
+            }
+        }
+    }
+}
+
+
+/*************************************************************************
+This function simultaneously calculates two matrix-matrix products:
+    S*A and S^T*A.
+S must be square (non-rectangular) matrix stored in CRS format (exception  
+will be thrown otherwise).
+
+INPUT PARAMETERS
+    S           -   sparse N*N matrix in CRS format (you MUST convert  it
+                    to CRS before calling this function).
+    A           -   array[N][K], input dense matrix. For performance reasons
+                    we make only quick checks - we check that array size  is
+                    at least N, but we do not check for NAN's or INF's.
+    K           -   number of columns of matrix (A).                    
+    B0          -   output buffer, possibly preallocated. In case  buffer
+                    size is too small to store  result,  this  buffer  is
+                    automatically resized.
+    B1          -   output buffer, possibly preallocated. In case  buffer
+                    size is too small to store  result,  this  buffer  is
+                    automatically resized.
+    
+OUTPUT PARAMETERS
+    B0          -   array[N][K], S*A
+    B1          -   array[N][K], S^T*A
+    
+NOTE: this function throws exception when called for non-CRS matrix.  You
+must convert your matrix  with  SparseConvertToCRS()  before  using  this
+function. It also throws exception when S is non-square.
+
+  -- ALGLIB PROJECT --
+     Copyright 14.10.2011 by Bochkanov Sergey
+*************************************************************************/
+void sparsemm2(sparsematrix* s,
+     /* Real    */ ae_matrix* a,
+     ae_int_t k,
+     /* Real    */ ae_matrix* b0,
+     /* Real    */ ae_matrix* b1,
+     ae_state *_state)
+{
+    ae_int_t i;
+    ae_int_t j;
+    ae_int_t k0;
+    ae_int_t lt;
+    ae_int_t rt;
+    ae_int_t ct;
+    double v;
+    double tval;
+
+
+    ae_assert(s->matrixtype==1, "SparseMM2: incorrect matrix type (convert your matrix to CRS)", _state);
+    ae_assert(s->ninitialized==s->ridx.ptr.p_int[s->m], "SparseMM2: some rows/elements of the CRS matrix were not initialized (you must initialize everything you promised to SparseCreateCRS)", _state);
+    ae_assert(s->m==s->n, "SparseMM2: matrix is non-square", _state);
+    ae_assert(a->rows>=s->n, "SparseMM2: Rows(A)<N", _state);
+    ae_assert(k>0, "SparseMM2: K<=0", _state);
+    rmatrixsetlengthatleast(b0, s->m, k, _state);
+    rmatrixsetlengthatleast(b1, s->n, k, _state);
+    for(i=0; i<=s->n-1; i++)
+    {
+        for(j=0; j<=k-1; j++)
+        {
+            b1->ptr.pp_double[i][j] = 0;
+        }
+    }
+    if( k<sparse_linalgswitch )
+    {
+        for(i=0; i<=s->m-1; i++)
+        {
+            for(j=0; j<=k-1; j++)
+            {
+                tval = 0;
+                lt = s->ridx.ptr.p_int[i];
+                rt = s->ridx.ptr.p_int[i+1];
+                v = a->ptr.pp_double[i][j];
+                for(k0=lt; k0<=rt-1; k0++)
+                {
+                    ct = s->idx.ptr.p_int[k0];
+                    b1->ptr.pp_double[ct][j] = b1->ptr.pp_double[ct][j]+s->vals.ptr.p_double[k0]*v;
+                    tval = tval+s->vals.ptr.p_double[k0]*a->ptr.pp_double[ct][j];
+                }
+                b0->ptr.pp_double[i][j] = tval;
+            }
+        }
+    }
+    else
+    {
+        for(i=0; i<=s->m-1; i++)
+        {
+            for(j=0; j<=k-1; j++)
+            {
+                b0->ptr.pp_double[i][j] = 0;
+            }
+        }
+        for(i=0; i<=s->m-1; i++)
+        {
+            lt = s->ridx.ptr.p_int[i];
+            rt = s->ridx.ptr.p_int[i+1];
+            for(j=lt; j<=rt-1; j++)
+            {
+                v = s->vals.ptr.p_double[j];
+                ct = s->idx.ptr.p_int[j];
+                ae_v_addd(&b0->ptr.pp_double[i][0], 1, &a->ptr.pp_double[ct][0], 1, ae_v_len(0,k-1), v);
+                ae_v_addd(&b1->ptr.pp_double[ct][0], 1, &a->ptr.pp_double[i][0], 1, ae_v_len(0,k-1), v);
+            }
+        }
+    }
+}
+
+
+/*************************************************************************
+This function calculates matrix-matrix product  S*A, when S  is  symmetric
+matrix.  Matrix  S  must  be stored  in  CRS  format  (exception  will  be
+thrown otherwise).
+
+INPUT PARAMETERS
+    S           -   sparse M*M matrix in CRS format (you MUST convert  it
+                    to CRS before calling this function).
+    A           -   array[N][K], input dense matrix. For performance reasons
+                    we make only quick checks - we check that array size is
+                    at least N, but we do not check for NAN's or INF's.
+    K           -   number of columns of matrix (A).  
+    B           -   output buffer, possibly preallocated. In case  buffer
+                    size is too small to store  result,  this  buffer  is
+                    automatically resized.
+    
+OUTPUT PARAMETERS
+    B           -   array[M][K], S*A
+    
+NOTE: this function throws exception when called for non-CRS matrix.  You
+must convert your matrix  with  SparseConvertToCRS()  before  using  this
+function.
+
+  -- ALGLIB PROJECT --
+     Copyright 14.10.2011 by Bochkanov Sergey
+*************************************************************************/
+void sparsesmm(sparsematrix* s,
+     ae_bool isupper,
+     /* Real    */ ae_matrix* a,
+     ae_int_t k,
+     /* Real    */ ae_matrix* b,
+     ae_state *_state)
+{
+    ae_int_t i;
+    ae_int_t j;
+    ae_int_t k0;
+    ae_int_t id;
+    ae_int_t lt;
+    ae_int_t rt;
+    double v;
+    double vb;
+    double va;
+
+
+    ae_assert(s->matrixtype==1, "SparseSMM: incorrect matrix type (convert your matrix to CRS)", _state);
+    ae_assert(s->ninitialized==s->ridx.ptr.p_int[s->m], "SparseSMM: some rows/elements of the CRS matrix were not initialized (you must initialize everything you promised to SparseCreateCRS)", _state);
+    ae_assert(a->rows>=s->n, "SparseSMM: Rows(X)<N", _state);
+    ae_assert(s->m==s->n, "SparseSMM: matrix is non-square", _state);
+    rmatrixsetlengthatleast(b, s->m, k, _state);
+    for(i=0; i<=s->m-1; i++)
+    {
+        for(j=0; j<=k-1; j++)
+        {
+            b->ptr.pp_double[i][j] = 0;
+        }
+    }
+    if( k>sparse_linalgswitch )
+    {
+        for(i=0; i<=s->m-1; i++)
+        {
+            for(j=0; j<=k-1; j++)
+            {
+                if( s->didx.ptr.p_int[i]!=s->uidx.ptr.p_int[i] )
+                {
+                    id = s->didx.ptr.p_int[i];
+                    b->ptr.pp_double[i][j] = b->ptr.pp_double[i][j]+s->vals.ptr.p_double[id]*a->ptr.pp_double[s->idx.ptr.p_int[id]][j];
+                }
+                if( isupper )
+                {
+                    lt = s->uidx.ptr.p_int[i];
+                    rt = s->ridx.ptr.p_int[i+1];
+                    vb = 0;
+                    va = a->ptr.pp_double[i][j];
+                    for(k0=lt; k0<=rt-1; k0++)
+                    {
+                        id = s->idx.ptr.p_int[k0];
+                        v = s->vals.ptr.p_double[k0];
+                        vb = vb+a->ptr.pp_double[id][j]*v;
+                        b->ptr.pp_double[id][j] = b->ptr.pp_double[id][j]+va*v;
+                    }
+                    b->ptr.pp_double[i][j] = b->ptr.pp_double[i][j]+vb;
+                }
+                else
+                {
+                    lt = s->ridx.ptr.p_int[i];
+                    rt = s->didx.ptr.p_int[i];
+                    vb = 0;
+                    va = a->ptr.pp_double[i][j];
+                    for(k0=lt; k0<=rt-1; k0++)
+                    {
+                        id = s->idx.ptr.p_int[k0];
+                        v = s->vals.ptr.p_double[k0];
+                        vb = vb+a->ptr.pp_double[id][j]*v;
+                        b->ptr.pp_double[id][j] = b->ptr.pp_double[id][j]+va*v;
+                    }
+                    b->ptr.pp_double[i][j] = b->ptr.pp_double[i][j]+vb;
+                }
+            }
+        }
+    }
+    else
+    {
+        for(i=0; i<=s->m-1; i++)
+        {
+            if( s->didx.ptr.p_int[i]!=s->uidx.ptr.p_int[i] )
+            {
+                id = s->didx.ptr.p_int[i];
+                v = s->vals.ptr.p_double[id];
+                ae_v_addd(&b->ptr.pp_double[i][0], 1, &a->ptr.pp_double[s->idx.ptr.p_int[id]][0], 1, ae_v_len(0,k-1), v);
+            }
+            if( isupper )
+            {
+                lt = s->uidx.ptr.p_int[i];
+                rt = s->ridx.ptr.p_int[i+1];
+                for(j=lt; j<=rt-1; j++)
+                {
+                    id = s->idx.ptr.p_int[j];
+                    v = s->vals.ptr.p_double[j];
+                    ae_v_addd(&b->ptr.pp_double[i][0], 1, &a->ptr.pp_double[id][0], 1, ae_v_len(0,k-1), v);
+                    ae_v_addd(&b->ptr.pp_double[id][0], 1, &a->ptr.pp_double[i][0], 1, ae_v_len(0,k-1), v);
+                }
+            }
+            else
+            {
+                lt = s->ridx.ptr.p_int[i];
+                rt = s->didx.ptr.p_int[i];
+                for(j=lt; j<=rt-1; j++)
+                {
+                    id = s->idx.ptr.p_int[j];
+                    v = s->vals.ptr.p_double[j];
+                    ae_v_addd(&b->ptr.pp_double[i][0], 1, &a->ptr.pp_double[id][0], 1, ae_v_len(0,k-1), v);
+                    ae_v_addd(&b->ptr.pp_double[id][0], 1, &a->ptr.pp_double[i][0], 1, ae_v_len(0,k-1), v);
+                }
+            }
+        }
+    }
+}
+
+
+/*************************************************************************
+This procedure resizes Hash-Table matrix. It can be called when you  have
+deleted too many elements from the matrix, and you want to  free unneeded
+memory.
+
+  -- ALGLIB PROJECT --
+     Copyright 14.10.2011 by Bochkanov Sergey
+*************************************************************************/
+void sparseresizematrix(sparsematrix* s, ae_state *_state)
+{
+    ae_frame _frame_block;
+    ae_int_t k;
+    ae_int_t k1;
+    ae_int_t i;
+    ae_vector tvals;
+    ae_vector tidx;
+
+    ae_frame_make(_state, &_frame_block);
+    ae_vector_init(&tvals, 0, DT_REAL, _state, ae_true);
+    ae_vector_init(&tidx, 0, DT_INT, _state, ae_true);
+
+    ae_assert(s->matrixtype==0, "SparseResizeMatrix: incorrect matrix type", _state);
+    
+    /*
+     * initialization for length and number of non-null elementd
+     */
+    k = s->vals.cnt;
+    k1 = 0;
+    
+    /*
+     * calculating number of non-null elements
+     */
+    for(i=0; i<=k-1; i++)
+    {
+        if( s->idx.ptr.p_int[2*i]>=0 )
+        {
+            k1 = k1+1;
+        }
+    }
+    
+    /*
+     * initialization value for free space
+     */
+    s->nfree = ae_round(k1/sparse_desiredloadfactor*sparse_growfactor+sparse_additional, _state)-k1;
+    ae_vector_set_length(&tvals, s->nfree+k1, _state);
+    ae_vector_set_length(&tidx, 2*(s->nfree+k1), _state);
+    ae_swap_vectors(&s->vals, &tvals);
+    ae_swap_vectors(&s->idx, &tidx);
+    for(i=0; i<=s->nfree+k1-1; i++)
+    {
+        s->idx.ptr.p_int[2*i] = -1;
+    }
+    for(i=0; i<=k-1; i++)
+    {
+        if( tidx.ptr.p_int[2*i]>=0 )
+        {
+            sparseset(s, tidx.ptr.p_int[2*i], tidx.ptr.p_int[2*i+1], tvals.ptr.p_double[i], _state);
+        }
+    }
+    ae_frame_leave(_state);
+}
+
+
+/*************************************************************************
+This function return average length of chain at hash-table.
+
+  -- ALGLIB PROJECT --
+     Copyright 14.10.2011 by Bochkanov Sergey
+*************************************************************************/
+double sparsegetaveragelengthofchain(sparsematrix* s, ae_state *_state)
+{
+    ae_int_t nchains;
+    ae_int_t talc;
+    ae_int_t l;
+    ae_int_t i;
+    ae_int_t ind0;
+    ae_int_t ind1;
+    ae_int_t hashcode;
+    double result;
+
+
+    
+    /*
+     * if matrix represent in CRS then return zero and exit
+     */
+    if( s->matrixtype==1 )
+    {
+        result = 0;
+        return result;
+    }
+    nchains = 0;
+    talc = 0;
+    l = s->vals.cnt;
+    for(i=0; i<=l-1; i++)
+    {
+        ind0 = 2*i;
+        if( s->idx.ptr.p_int[ind0]!=-1 )
+        {
+            nchains = nchains+1;
+            hashcode = sparse_hash(s->idx.ptr.p_int[ind0], s->idx.ptr.p_int[ind0+1], l, _state);
+            for(;;)
+            {
+                talc = talc+1;
+                ind1 = 2*hashcode;
+                if( s->idx.ptr.p_int[ind0]==s->idx.ptr.p_int[ind1]&&s->idx.ptr.p_int[ind0+1]==s->idx.ptr.p_int[ind1+1] )
+                {
+                    break;
+                }
+                hashcode = (hashcode+1)%l;
+            }
+        }
+    }
+    if( nchains==0 )
+    {
+        result = 0;
+    }
+    else
+    {
+        result = (double)talc/(double)nchains;
+    }
+    return result;
+}
+
+
+/*************************************************************************
+This  function  is  used  to enumerate all elements of the sparse matrix.
+Before  first  call  user  initializes  T0 and T1 counters by zero. These
+counters are used to remember current position in a  matrix;  after  each
+call they are updated by the function.
+
+Subsequent calls to this function return non-zero elements of the  sparse
+matrix, one by one. If you enumerate CRS matrix, matrix is traversed from
+left to right, from top to bottom. In case you enumerate matrix stored as
+Hash table, elements are returned in random order.
+
+EXAMPLE
+    > T0=0
+    > T1=0
+    > while SparseEnumerate(S,T0,T1,I,J,V) do
+    >     ....do something with I,J,V
+
+INPUT PARAMETERS
+    S           -   sparse M*N matrix in Hash-Table or CRS representation.
+    T0          -   internal counter
+    T1          -   internal counter
+    
+OUTPUT PARAMETERS
+    T0          -   new value of the internal counter
+    T1          -   new value of the internal counter
+    I           -   row index of non-zero element, 0<=I<M.
+    J           -   column index of non-zero element, 0<=J<N
+    V           -   value of the T-th element
+    
+RESULT
+    True in case of success (next non-zero element was retrieved)
+    False in case all non-zero elements were enumerated
+
+  -- ALGLIB PROJECT --
+     Copyright 14.03.2012 by Bochkanov Sergey
+*************************************************************************/
+ae_bool sparseenumerate(sparsematrix* s,
+     ae_int_t* t0,
+     ae_int_t* t1,
+     ae_int_t* i,
+     ae_int_t* j,
+     double* v,
+     ae_state *_state)
+{
+    ae_int_t counter;
+    ae_int_t sz;
+    ae_int_t i0;
+    ae_bool result;
+
+    *i = 0;
+    *j = 0;
+    *v = 0;
+
+    if( *t0<0||(s->matrixtype==1&&*t1<0) )
+    {
+        result = ae_false;
+        return result;
+    }
+    
+    /*
+     * Hash-table matrix
+     */
+    if( s->matrixtype==0 )
+    {
+        sz = s->vals.cnt;
+        for(i0=*t0; i0<=sz-1; i0++)
+        {
+            if( s->idx.ptr.p_int[2*i0]==-1||s->idx.ptr.p_int[2*i0]==-2 )
+            {
+                continue;
+            }
+            else
+            {
+                *i = s->idx.ptr.p_int[2*i0];
+                *j = s->idx.ptr.p_int[2*i0+1];
+                *v = s->vals.ptr.p_double[i0];
+                *t0 = i0+1;
+                result = ae_true;
+                return result;
+            }
+        }
+        *t0 = 0;
+        result = ae_false;
+        return result;
+    }
+    
+    /*
+     * CRS matrix
+     */
+    if( s->matrixtype==1&&*t0<s->ninitialized )
+    {
+        ae_assert(s->ninitialized==s->ridx.ptr.p_int[s->m], "SparseEnumerate: some rows/elements of the CRS matrix were not initialized (you must initialize everything you promised to SparseCreateCRS)", _state);
+        while(*t0>s->ridx.ptr.p_int[*t1+1]-1&&*t1<s->m)
+        {
+            *t1 = *t1+1;
+        }
+        *i = *t1;
+        *j = s->idx.ptr.p_int[*t0];
+        *v = s->vals.ptr.p_double[*t0];
+        *t0 = *t0+1;
+        result = ae_true;
+        return result;
+    }
+    *t0 = 0;
+    *t1 = 0;
+    result = ae_false;
+    return result;
+}
+
+
+/*************************************************************************
+This function rewrites existing (non-zero) element. It  returns  True   if
+element  exists  or  False,  when  it  is  called for non-existing  (zero)
+element.
+
+The purpose of this function is to provide convenient thread-safe  way  to
+modify  sparse  matrix.  Such  modification  (already  existing element is
+rewritten) is guaranteed to be thread-safe without any synchronization, as
+long as different threads modify different elements.
+
+INPUT PARAMETERS
+    S           -   sparse M*N matrix in Hash-Table or CRS representation.
+    I           -   row index of non-zero element to modify, 0<=I<M
+    J           -   column index of non-zero element to modify, 0<=J<N
+    V           -   value to rewrite, must be finite number
+
+OUTPUT PARAMETERS
+    S           -   modified matrix
+
+  -- ALGLIB PROJECT --
+     Copyright 14.03.2012 by Bochkanov Sergey
+*************************************************************************/
+ae_bool sparserewriteexisting(sparsematrix* s,
+     ae_int_t i,
+     ae_int_t j,
+     double v,
+     ae_state *_state)
+{
+    ae_int_t hashcode;
+    ae_int_t k;
+    ae_int_t k0;
+    ae_int_t k1;
+    ae_bool result;
+
+
+    ae_assert(0<=i&&i<s->m, "SparseRewriteExisting: invalid argument I(either I<0 or I>=S.M)", _state);
+    ae_assert(0<=j&&j<s->n, "SparseRewriteExisting: invalid argument J(either J<0 or J>=S.N)", _state);
+    ae_assert(ae_isfinite(v, _state), "SparseRewriteExisting: invalid argument V(either V is infinite or V is NaN)", _state);
+    result = ae_false;
+    
+    /*
+     * Hash-table matrix
+     */
+    if( s->matrixtype==0 )
+    {
+        k = s->vals.cnt;
+        hashcode = sparse_hash(i, j, k, _state);
+        for(;;)
+        {
+            if( s->idx.ptr.p_int[2*hashcode]==-1 )
+            {
+                return result;
+            }
+            if( s->idx.ptr.p_int[2*hashcode]==i&&s->idx.ptr.p_int[2*hashcode+1]==j )
+            {
+                s->vals.ptr.p_double[hashcode] = v;
+                result = ae_true;
+                return result;
+            }
+            hashcode = (hashcode+1)%k;
+        }
+    }
+    
+    /*
+     * CRS matrix
+     */
+    if( s->matrixtype==1 )
+    {
+        ae_assert(s->ninitialized==s->ridx.ptr.p_int[s->m], "SparseRewriteExisting: some rows/elements of the CRS matrix were not initialized (you must initialize everything you promised to SparseCreateCRS)", _state);
+        k0 = s->ridx.ptr.p_int[i];
+        k1 = s->ridx.ptr.p_int[i+1]-1;
+        for(k=k0; k<=k1; k++)
+        {
+            if( s->idx.ptr.p_int[k]==j )
+            {
+                s->vals.ptr.p_double[k] = v;
+                result = ae_true;
+                return result;
+            }
+        }
+        return result;
+    }
+    return result;
+}
+
+
+/*************************************************************************
+Procedure for initialization 'S.DIdx' and 'S.UIdx'
+
+
+  -- ALGLIB PROJECT --
+     Copyright 14.10.2011 by Bochkanov Sergey
+*************************************************************************/
+static void sparse_sparseinitduidx(sparsematrix* s, ae_state *_state)
+{
+    ae_int_t i;
+    ae_int_t j;
+    ae_int_t lt;
+    ae_int_t rt;
+
+
+    ae_vector_set_length(&s->didx, s->m, _state);
+    ae_vector_set_length(&s->uidx, s->m, _state);
+    for(i=0; i<=s->m-1; i++)
+    {
+        s->uidx.ptr.p_int[i] = -1;
+        s->didx.ptr.p_int[i] = -1;
+        lt = s->ridx.ptr.p_int[i];
+        rt = s->ridx.ptr.p_int[i+1];
+        for(j=lt; j<=rt-1; j++)
+        {
+            if( i<s->idx.ptr.p_int[j]&&s->uidx.ptr.p_int[i]==-1 )
+            {
+                s->uidx.ptr.p_int[i] = j;
+                break;
+            }
+            else
+            {
+                if( i==s->idx.ptr.p_int[j] )
+                {
+                    s->didx.ptr.p_int[i] = j;
+                }
+            }
+        }
+        if( s->uidx.ptr.p_int[i]==-1 )
+        {
+            s->uidx.ptr.p_int[i] = s->ridx.ptr.p_int[i+1];
+        }
+        if( s->didx.ptr.p_int[i]==-1 )
+        {
+            s->didx.ptr.p_int[i] = s->uidx.ptr.p_int[i];
+        }
+    }
+}
+
+
+/*************************************************************************
+This is hash function.
+
+  -- ALGLIB PROJECT --
+     Copyright 14.10.2011 by Bochkanov Sergey
+*************************************************************************/
+static ae_int_t sparse_hash(ae_int_t i,
+     ae_int_t j,
+     ae_int_t tabsize,
+     ae_state *_state)
+{
+    ae_frame _frame_block;
+    hqrndstate r;
+    ae_int_t result;
+
+    ae_frame_make(_state, &_frame_block);
+    _hqrndstate_init(&r, _state, ae_true);
+
+    hqrndseed(i, j, &r, _state);
+    result = hqrnduniformi(&r, tabsize, _state);
+    ae_frame_leave(_state);
+    return result;
+}
+
+
+ae_bool _sparsematrix_init(sparsematrix* p, ae_state *_state, ae_bool make_automatic)
+{
+    if( !ae_vector_init(&p->vals, 0, DT_REAL, _state, make_automatic) )
+        return ae_false;
+    if( !ae_vector_init(&p->idx, 0, DT_INT, _state, make_automatic) )
+        return ae_false;
+    if( !ae_vector_init(&p->ridx, 0, DT_INT, _state, make_automatic) )
+        return ae_false;
+    if( !ae_vector_init(&p->didx, 0, DT_INT, _state, make_automatic) )
+        return ae_false;
+    if( !ae_vector_init(&p->uidx, 0, DT_INT, _state, make_automatic) )
+        return ae_false;
+    return ae_true;
+}
+
+
+ae_bool _sparsematrix_init_copy(sparsematrix* dst, sparsematrix* src, ae_state *_state, ae_bool make_automatic)
+{
+    if( !ae_vector_init_copy(&dst->vals, &src->vals, _state, make_automatic) )
+        return ae_false;
+    if( !ae_vector_init_copy(&dst->idx, &src->idx, _state, make_automatic) )
+        return ae_false;
+    if( !ae_vector_init_copy(&dst->ridx, &src->ridx, _state, make_automatic) )
+        return ae_false;
+    if( !ae_vector_init_copy(&dst->didx, &src->didx, _state, make_automatic) )
+        return ae_false;
+    if( !ae_vector_init_copy(&dst->uidx, &src->uidx, _state, make_automatic) )
+        return ae_false;
+    dst->matrixtype = src->matrixtype;
+    dst->m = src->m;
+    dst->n = src->n;
+    dst->nfree = src->nfree;
+    dst->ninitialized = src->ninitialized;
+    return ae_true;
+}
+
+
+void _sparsematrix_clear(sparsematrix* p)
+{
+    ae_vector_clear(&p->vals);
+    ae_vector_clear(&p->idx);
+    ae_vector_clear(&p->ridx);
+    ae_vector_clear(&p->didx);
+    ae_vector_clear(&p->uidx);
+}
+
+
+
+
+/*************************************************************************
+This procedure initializes matrix norm estimator.
+
+USAGE:
+1. User initializes algorithm state with NormEstimatorCreate() call
+2. User calls NormEstimatorEstimateSparse() (or NormEstimatorIteration())
+3. User calls NormEstimatorResults() to get solution.
+   
+INPUT PARAMETERS:
+    M       -   number of rows in the matrix being estimated, M>0
+    N       -   number of columns in the matrix being estimated, N>0
+    NStart  -   number of random starting vectors
+                recommended value - at least 5.
+    NIts    -   number of iterations to do with best starting vector
+                recommended value - at least 5.
+
+OUTPUT PARAMETERS:
+    State   -   structure which stores algorithm state
+
+    
+NOTE: this algorithm is effectively deterministic, i.e. it always  returns
+same result when repeatedly called for the same matrix. In fact, algorithm
+uses randomized starting vectors, but internal  random  numbers  generator
+always generates same sequence of the random values (it is a  feature, not
+bug).
+
+Algorithm can be made non-deterministic with NormEstimatorSetSeed(0) call.
+
+  -- ALGLIB --
+     Copyright 06.12.2011 by Bochkanov Sergey
+*************************************************************************/
+void normestimatorcreate(ae_int_t m,
+     ae_int_t n,
+     ae_int_t nstart,
+     ae_int_t nits,
+     normestimatorstate* state,
+     ae_state *_state)
+{
+
+    _normestimatorstate_clear(state);
+
+    ae_assert(m>0, "NormEstimatorCreate: M<=0", _state);
+    ae_assert(n>0, "NormEstimatorCreate: N<=0", _state);
+    ae_assert(nstart>0, "NormEstimatorCreate: NStart<=0", _state);
+    ae_assert(nits>0, "NormEstimatorCreate: NIts<=0", _state);
+    state->m = m;
+    state->n = n;
+    state->nstart = nstart;
+    state->nits = nits;
+    state->seedval = 11;
+    hqrndrandomize(&state->r, _state);
+    ae_vector_set_length(&state->x0, state->n, _state);
+    ae_vector_set_length(&state->t, state->m, _state);
+    ae_vector_set_length(&state->x1, state->n, _state);
+    ae_vector_set_length(&state->xbest, state->n, _state);
+    ae_vector_set_length(&state->x, ae_maxint(state->n, state->m, _state), _state);
+    ae_vector_set_length(&state->mv, state->m, _state);
+    ae_vector_set_length(&state->mtv, state->n, _state);
+    ae_vector_set_length(&state->rstate.ia, 3+1, _state);
+    ae_vector_set_length(&state->rstate.ra, 2+1, _state);
+    state->rstate.stage = -1;
+}
+
+
+/*************************************************************************
+This function changes seed value used by algorithm. In some cases we  need
+deterministic processing, i.e. subsequent calls must return equal results,
+in other cases we need non-deterministic algorithm which returns different
+results for the same matrix on every pass.
+
+Setting zero seed will lead to non-deterministic algorithm, while non-zero 
+value will make our algorithm deterministic.
+
+INPUT PARAMETERS:
+    State       -   norm estimator state, must be initialized with a  call
+                    to NormEstimatorCreate()
+    SeedVal     -   seed value, >=0. Zero value = non-deterministic algo.
+
+  -- ALGLIB --
+     Copyright 06.12.2011 by Bochkanov Sergey
+*************************************************************************/
+void normestimatorsetseed(normestimatorstate* state,
+     ae_int_t seedval,
+     ae_state *_state)
+{
+
+
+    ae_assert(seedval>=0, "NormEstimatorSetSeed: SeedVal<0", _state);
+    state->seedval = seedval;
+}
+
+
+/*************************************************************************
+
+  -- ALGLIB --
+     Copyright 06.12.2011 by Bochkanov Sergey
+*************************************************************************/
+ae_bool normestimatoriteration(normestimatorstate* state,
+     ae_state *_state)
+{
+    ae_int_t n;
+    ae_int_t m;
+    ae_int_t i;
+    ae_int_t itcnt;
+    double v;
+    double growth;
+    double bestgrowth;
+    ae_bool result;
+
+
+    
+    /*
+     * Reverse communication preparations
+     * I know it looks ugly, but it works the same way
+     * anywhere from C++ to Python.
+     *
+     * This code initializes locals by:
+     * * random values determined during code
+     *   generation - on first subroutine call
+     * * values from previous call - on subsequent calls
+     */
+    if( state->rstate.stage>=0 )
+    {
+        n = state->rstate.ia.ptr.p_int[0];
+        m = state->rstate.ia.ptr.p_int[1];
+        i = state->rstate.ia.ptr.p_int[2];
+        itcnt = state->rstate.ia.ptr.p_int[3];
+        v = state->rstate.ra.ptr.p_double[0];
+        growth = state->rstate.ra.ptr.p_double[1];
+        bestgrowth = state->rstate.ra.ptr.p_double[2];
+    }
+    else
+    {
+        n = -983;
+        m = -989;
+        i = -834;
+        itcnt = 900;
+        v = -287;
+        growth = 364;
+        bestgrowth = 214;
+    }
+    if( state->rstate.stage==0 )
+    {
+        goto lbl_0;
+    }
+    if( state->rstate.stage==1 )
+    {
+        goto lbl_1;
+    }
+    if( state->rstate.stage==2 )
+    {
+        goto lbl_2;
+    }
+    if( state->rstate.stage==3 )
+    {
+        goto lbl_3;
+    }
+    
+    /*
+     * Routine body
+     */
+    n = state->n;
+    m = state->m;
+    if( state->seedval>0 )
+    {
+        hqrndseed(state->seedval, state->seedval+2, &state->r, _state);
+    }
+    bestgrowth = 0;
+    state->xbest.ptr.p_double[0] = 1;
+    for(i=1; i<=n-1; i++)
+    {
+        state->xbest.ptr.p_double[i] = 0;
+    }
+    itcnt = 0;
+lbl_4:
+    if( itcnt>state->nstart-1 )
+    {
+        goto lbl_6;
+    }
+    do
+    {
+        v = 0;
+        for(i=0; i<=n-1; i++)
+        {
+            state->x0.ptr.p_double[i] = hqrndnormal(&state->r, _state);
+            v = v+ae_sqr(state->x0.ptr.p_double[i], _state);
+        }
+    }
+    while(ae_fp_eq(v,0));
+    v = 1/ae_sqrt(v, _state);
+    ae_v_muld(&state->x0.ptr.p_double[0], 1, ae_v_len(0,n-1), v);
+    ae_v_move(&state->x.ptr.p_double[0], 1, &state->x0.ptr.p_double[0], 1, ae_v_len(0,n-1));
+    state->needmv = ae_true;
+    state->needmtv = ae_false;
+    state->rstate.stage = 0;
+    goto lbl_rcomm;
+lbl_0:
+    ae_v_move(&state->x.ptr.p_double[0], 1, &state->mv.ptr.p_double[0], 1, ae_v_len(0,m-1));
+    state->needmv = ae_false;
+    state->needmtv = ae_true;
+    state->rstate.stage = 1;
+    goto lbl_rcomm;
+lbl_1:
+    ae_v_move(&state->x1.ptr.p_double[0], 1, &state->mtv.ptr.p_double[0], 1, ae_v_len(0,n-1));
+    v = 0;
+    for(i=0; i<=n-1; i++)
+    {
+        v = v+ae_sqr(state->x1.ptr.p_double[i], _state);
+    }
+    growth = ae_sqrt(ae_sqrt(v, _state), _state);
+    if( ae_fp_greater(growth,bestgrowth) )
+    {
+        v = 1/ae_sqrt(v, _state);
+        ae_v_moved(&state->xbest.ptr.p_double[0], 1, &state->x1.ptr.p_double[0], 1, ae_v_len(0,n-1), v);
+        bestgrowth = growth;
+    }
+    itcnt = itcnt+1;
+    goto lbl_4;
+lbl_6:
+    ae_v_move(&state->x0.ptr.p_double[0], 1, &state->xbest.ptr.p_double[0], 1, ae_v_len(0,n-1));
+    itcnt = 0;
+lbl_7:
+    if( itcnt>state->nits-1 )
+    {
+        goto lbl_9;
+    }
+    ae_v_move(&state->x.ptr.p_double[0], 1, &state->x0.ptr.p_double[0], 1, ae_v_len(0,n-1));
+    state->needmv = ae_true;
+    state->needmtv = ae_false;
+    state->rstate.stage = 2;
+    goto lbl_rcomm;
+lbl_2:
+    ae_v_move(&state->x.ptr.p_double[0], 1, &state->mv.ptr.p_double[0], 1, ae_v_len(0,m-1));
+    state->needmv = ae_false;
+    state->needmtv = ae_true;
+    state->rstate.stage = 3;
+    goto lbl_rcomm;
+lbl_3:
+    ae_v_move(&state->x1.ptr.p_double[0], 1, &state->mtv.ptr.p_double[0], 1, ae_v_len(0,n-1));
+    v = 0;
+    for(i=0; i<=n-1; i++)
+    {
+        v = v+ae_sqr(state->x1.ptr.p_double[i], _state);
+    }
+    state->repnorm = ae_sqrt(ae_sqrt(v, _state), _state);
+    if( ae_fp_neq(v,0) )
+    {
+        v = 1/ae_sqrt(v, _state);
+        ae_v_moved(&state->x0.ptr.p_double[0], 1, &state->x1.ptr.p_double[0], 1, ae_v_len(0,n-1), v);
+    }
+    itcnt = itcnt+1;
+    goto lbl_7;
+lbl_9:
+    result = ae_false;
+    return result;
+    
+    /*
+     * Saving state
+     */
+lbl_rcomm:
+    result = ae_true;
+    state->rstate.ia.ptr.p_int[0] = n;
+    state->rstate.ia.ptr.p_int[1] = m;
+    state->rstate.ia.ptr.p_int[2] = i;
+    state->rstate.ia.ptr.p_int[3] = itcnt;
+    state->rstate.ra.ptr.p_double[0] = v;
+    state->rstate.ra.ptr.p_double[1] = growth;
+    state->rstate.ra.ptr.p_double[2] = bestgrowth;
+    return result;
+}
+
+
+/*************************************************************************
+This function estimates norm of the sparse M*N matrix A.
+
+INPUT PARAMETERS:
+    State       -   norm estimator state, must be initialized with a  call
+                    to NormEstimatorCreate()
+    A           -   sparse M*N matrix, must be converted to CRS format
+                    prior to calling this function.
+
+After this function  is  over  you can call NormEstimatorResults() to get 
+estimate of the norm(A).
+
+  -- ALGLIB --
+     Copyright 06.12.2011 by Bochkanov Sergey
+*************************************************************************/
+void normestimatorestimatesparse(normestimatorstate* state,
+     sparsematrix* a,
+     ae_state *_state)
+{
+
+
+    normestimatorrestart(state, _state);
+    while(normestimatoriteration(state, _state))
+    {
+        if( state->needmv )
+        {
+            sparsemv(a, &state->x, &state->mv, _state);
+            continue;
+        }
+        if( state->needmtv )
+        {
+            sparsemtv(a, &state->x, &state->mtv, _state);
+            continue;
+        }
+    }
+}
+
+
+/*************************************************************************
+Matrix norm estimation results
+
+INPUT PARAMETERS:
+    State   -   algorithm state
+
+OUTPUT PARAMETERS:
+    Nrm     -   estimate of the matrix norm, Nrm>=0
+
+  -- ALGLIB --
+     Copyright 06.12.2011 by Bochkanov Sergey
+*************************************************************************/
+void normestimatorresults(normestimatorstate* state,
+     double* nrm,
+     ae_state *_state)
+{
+
+    *nrm = 0;
+
+    *nrm = state->repnorm;
+}
+
+
+/*************************************************************************
+This  function  restarts estimator and prepares it for the next estimation
+round.
+
+INPUT PARAMETERS:
+    State   -   algorithm state
+  -- ALGLIB --
+     Copyright 06.12.2011 by Bochkanov Sergey
+*************************************************************************/
+void normestimatorrestart(normestimatorstate* state, ae_state *_state)
+{
+
+
+    ae_vector_set_length(&state->rstate.ia, 3+1, _state);
+    ae_vector_set_length(&state->rstate.ra, 2+1, _state);
+    state->rstate.stage = -1;
+}
+
+
+ae_bool _normestimatorstate_init(normestimatorstate* p, ae_state *_state, ae_bool make_automatic)
+{
+    if( !ae_vector_init(&p->x0, 0, DT_REAL, _state, make_automatic) )
+        return ae_false;
+    if( !ae_vector_init(&p->x1, 0, DT_REAL, _state, make_automatic) )
+        return ae_false;
+    if( !ae_vector_init(&p->t, 0, DT_REAL, _state, make_automatic) )
+        return ae_false;
+    if( !ae_vector_init(&p->xbest, 0, DT_REAL, _state, make_automatic) )
+        return ae_false;
+    if( !_hqrndstate_init(&p->r, _state, make_automatic) )
+        return ae_false;
+    if( !ae_vector_init(&p->x, 0, DT_REAL, _state, make_automatic) )
+        return ae_false;
+    if( !ae_vector_init(&p->mv, 0, DT_REAL, _state, make_automatic) )
+        return ae_false;
+    if( !ae_vector_init(&p->mtv, 0, DT_REAL, _state, make_automatic) )
+        return ae_false;
+    if( !_rcommstate_init(&p->rstate, _state, make_automatic) )
+        return ae_false;
+    return ae_true;
+}
+
+
+ae_bool _normestimatorstate_init_copy(normestimatorstate* dst, normestimatorstate* src, ae_state *_state, ae_bool make_automatic)
+{
+    dst->n = src->n;
+    dst->m = src->m;
+    dst->nstart = src->nstart;
+    dst->nits = src->nits;
+    dst->seedval = src->seedval;
+    if( !ae_vector_init_copy(&dst->x0, &src->x0, _state, make_automatic) )
+        return ae_false;
+    if( !ae_vector_init_copy(&dst->x1, &src->x1, _state, make_automatic) )
+        return ae_false;
+    if( !ae_vector_init_copy(&dst->t, &src->t, _state, make_automatic) )
+        return ae_false;
+    if( !ae_vector_init_copy(&dst->xbest, &src->xbest, _state, make_automatic) )
+        return ae_false;
+    if( !_hqrndstate_init_copy(&dst->r, &src->r, _state, make_automatic) )
+        return ae_false;
+    if( !ae_vector_init_copy(&dst->x, &src->x, _state, make_automatic) )
+        return ae_false;
+    if( !ae_vector_init_copy(&dst->mv, &src->mv, _state, make_automatic) )
+        return ae_false;
+    if( !ae_vector_init_copy(&dst->mtv, &src->mtv, _state, make_automatic) )
+        return ae_false;
+    dst->needmv = src->needmv;
+    dst->needmtv = src->needmtv;
+    dst->repnorm = src->repnorm;
+    if( !_rcommstate_init_copy(&dst->rstate, &src->rstate, _state, make_automatic) )
+        return ae_false;
+    return ae_true;
+}
+
+
+void _normestimatorstate_clear(normestimatorstate* p)
+{
+    ae_vector_clear(&p->x0);
+    ae_vector_clear(&p->x1);
+    ae_vector_clear(&p->t);
+    ae_vector_clear(&p->xbest);
+    _hqrndstate_clear(&p->r);
+    ae_vector_clear(&p->x);
+    ae_vector_clear(&p->mv);
+    ae_vector_clear(&p->mtv);
+    _rcommstate_clear(&p->rstate);
 }
 
 

@@ -63,7 +63,7 @@ namespace alglib_impl
 #undef AE_COMPILER
 #define AE_COMPILER AE_GNUC
 #endif
-#ifdef __SUNPRO_C
+#if defined(__SUNPRO_C)||defined(__SUNPRO_CC)
 #undef AE_COMPILER
 #define AE_COMPILER AE_SUNC
 #endif
@@ -78,6 +78,7 @@ namespace alglib_impl
 #ifdef AE_USE_CPP
 #define AE_USE_CPP_BOOL
 #define AE_USE_CPP_ERROR_HANDLING
+#define AE_USE_CPP_SERIALIZATION
 #endif
 
 
@@ -162,8 +163,14 @@ typedef ptrdiff_t ae_int_t;
 #define AE_HAS_SSE2_INTRINSICS
 #endif
 
-#if (AE_COMPILER==AE_GNUC)||(AE_COMPILER==AE_SUNC)
+#if AE_COMPILER==AE_GNUC
 #include <xmmintrin.h>
+#define AE_HAS_SSE2_INTRINSICS
+#endif
+
+#if AE_COMPILER==AE_SUNC
+#include <xmmintrin.h>
+#include <emmintrin.h>
 #define AE_HAS_SSE2_INTRINSICS
 #endif
 
@@ -319,6 +326,9 @@ typedef struct ae_frame
     ae_dyn_block db_marker;
 } ae_frame;
 
+/************************************************************************
+ALGLIB environment state
+************************************************************************/
 typedef struct
 {
     ae_int_t endianness;
@@ -334,6 +344,24 @@ typedef struct
     ae_error_type volatile last_error;
     const char* volatile error_msg;
 } ae_state;
+
+/************************************************************************
+Serializer
+************************************************************************/
+typedef struct
+{
+    ae_int_t mode;
+    ae_int_t entries_needed;
+    ae_int_t entries_saved;
+    ae_int_t bytes_asked;
+    ae_int_t bytes_written;
+
+#ifdef AE_USE_CPP_SERIALIZATION
+    std::string     *out_cppstr;
+#endif
+    char            *out_str;
+    const char      *in_str;
+} ae_serializer;
 
 typedef void(*ae_deallocator)(void*);
 
@@ -425,6 +453,29 @@ ae_bool ae_is_hermitian(ae_matrix *a);
 ae_bool ae_force_symmetric(ae_matrix *a);
 ae_bool ae_force_hermitian(ae_matrix *a);
 
+void ae_serializer_init(ae_serializer *serializer);
+void ae_serializer_clear(ae_serializer *serializer);
+
+void ae_serializer_alloc_start(ae_serializer *serializer);
+void ae_serializer_alloc_entry(ae_serializer *serializer);
+ae_int_t ae_serializer_get_alloc_size(ae_serializer *serializer);
+
+#ifdef AE_USE_CPP_SERIALIZATION
+void ae_serializer_sstart_str(ae_serializer *serializer, std::string *buf);
+void ae_serializer_ustart_str(ae_serializer *serializer, const std::string *buf);
+#endif
+void ae_serializer_sstart_str(ae_serializer *serializer, char *buf);
+void ae_serializer_ustart_str(ae_serializer *serializer, const char *buf);
+
+void ae_serializer_serialize_bool(ae_serializer *serializer, ae_bool v, ae_state *state);
+void ae_serializer_serialize_int(ae_serializer *serializer, ae_int_t v, ae_state *state);
+void ae_serializer_serialize_double(ae_serializer *serializer, double v, ae_state *state);
+void ae_serializer_unserialize_bool(ae_serializer *serializer, ae_bool *v, ae_state *state);
+void ae_serializer_unserialize_int(ae_serializer *serializer, ae_int_t *v, ae_state *state);
+void ae_serializer_unserialize_double(ae_serializer *serializer, double *v, ae_state *state);
+
+void ae_serializer_stop(ae_serializer *serializer);
+
 /************************************************************************
 Service functions
 ************************************************************************/
@@ -484,7 +535,7 @@ double   ae_tanh(double x, ae_state *state);
 double   ae_asin(double x, ae_state *state);
 double   ae_acos(double x, ae_state *state);
 double   ae_atan(double x, ae_state *state);
-double   ae_atan2(double x, double y, ae_state *state);
+double   ae_atan2(double y, double x, ae_state *state);
 
 double   ae_log(double x, ae_state *state);
 double   ae_pow(double x, double y, ae_state *state);
@@ -585,8 +636,12 @@ extern ae_int64_t _alloc_counter;
 
 
 /************************************************************************
-debug functions (must be turned on by preprocessor definitions:
+debug functions (must be turned on by preprocessor definitions):
 * tickcount(), which is wrapper around GetTickCount()
+* flushconsole(), fluches console
+* ae_debugrng(), returns random number generated with high-quality random numbers generator
+* ae_set_seed(), sets seed of the debug RNG (NON-THREAD-SAFE!!!)
+* ae_get_seed(), returns two seed values of the debug RNG (NON-THREAD-SAFE!!!)
 ************************************************************************/
 #ifdef AE_DEBUG4WINDOWS
 #include <windows.h>
@@ -594,7 +649,11 @@ debug functions (must be turned on by preprocessor definitions:
 #define tickcount(s) GetTickCount()
 #define flushconsole(s) fflush(stdout)
 #endif
-
+#ifdef AE_DEBUGRNG
+ae_int_t ae_debugrng();
+void ae_set_seed(ae_int_t s0, ae_int_t s1);
+void ae_get_seed(ae_int_t *s0, ae_int_t *s1);
+#endif
 
 
 }
@@ -1029,7 +1088,7 @@ extern const ae_int_t endianness;
 
 int sign(double x);
 double randomreal();
-int randominteger(int maxv);
+ae_int_t randominteger(ae_int_t maxv);
 int round(double x);
 int trunc(double x);
 int ifloor(double x);

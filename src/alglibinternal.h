@@ -111,6 +111,12 @@ namespace alglib
 /////////////////////////////////////////////////////////////////////////
 namespace alglib_impl
 {
+ae_int_t getrdfserializationcode(ae_state *_state);
+ae_int_t getkdtreeserializationcode(ae_state *_state);
+ae_int_t getmlpserializationcode(ae_state *_state);
+ae_int_t getmlpeserializationcode(ae_state *_state);
+ae_int_t getrbfserializationcode(ae_state *_state);
+ae_bool approxequalrel(double a, double b, double tol, ae_state *_state);
 void taskgenint1d(double a,
      double b,
      ae_int_t n,
@@ -138,6 +144,7 @@ void taskgenint1dcheb2(double a,
 ae_bool aredistinct(/* Real    */ ae_vector* x,
      ae_int_t n,
      ae_state *_state);
+ae_bool aresameboolean(ae_bool v1, ae_bool v2, ae_state *_state);
 void bvectorsetlengthatleast(/* Boolean */ ae_vector* x,
      ae_int_t n,
      ae_state *_state);
@@ -148,6 +155,10 @@ void rvectorsetlengthatleast(/* Real    */ ae_vector* x,
      ae_int_t n,
      ae_state *_state);
 void rmatrixsetlengthatleast(/* Real    */ ae_matrix* x,
+     ae_int_t m,
+     ae_int_t n,
+     ae_state *_state);
+void rmatrixresize(/* Real    */ ae_matrix* x,
      ae_int_t m,
      ae_int_t n,
      ae_state *_state);
@@ -187,6 +198,60 @@ void apperiodicmap(double* x,
      double* k,
      ae_state *_state);
 double boundval(double x, double b1, double b2, ae_state *_state);
+void alloccomplex(ae_serializer* s, ae_complex v, ae_state *_state);
+void serializecomplex(ae_serializer* s, ae_complex v, ae_state *_state);
+ae_complex unserializecomplex(ae_serializer* s, ae_state *_state);
+void allocrealarray(ae_serializer* s,
+     /* Real    */ ae_vector* v,
+     ae_int_t n,
+     ae_state *_state);
+void serializerealarray(ae_serializer* s,
+     /* Real    */ ae_vector* v,
+     ae_int_t n,
+     ae_state *_state);
+void unserializerealarray(ae_serializer* s,
+     /* Real    */ ae_vector* v,
+     ae_state *_state);
+void allocintegerarray(ae_serializer* s,
+     /* Integer */ ae_vector* v,
+     ae_int_t n,
+     ae_state *_state);
+void serializeintegerarray(ae_serializer* s,
+     /* Integer */ ae_vector* v,
+     ae_int_t n,
+     ae_state *_state);
+void unserializeintegerarray(ae_serializer* s,
+     /* Integer */ ae_vector* v,
+     ae_state *_state);
+void allocrealmatrix(ae_serializer* s,
+     /* Real    */ ae_matrix* v,
+     ae_int_t n0,
+     ae_int_t n1,
+     ae_state *_state);
+void serializerealmatrix(ae_serializer* s,
+     /* Real    */ ae_matrix* v,
+     ae_int_t n0,
+     ae_int_t n1,
+     ae_state *_state);
+void unserializerealmatrix(ae_serializer* s,
+     /* Real    */ ae_matrix* v,
+     ae_state *_state);
+void copyintegerarray(/* Integer */ ae_vector* src,
+     /* Integer */ ae_vector* dst,
+     ae_state *_state);
+void copyrealarray(/* Real    */ ae_vector* src,
+     /* Real    */ ae_vector* dst,
+     ae_state *_state);
+void copyrealmatrix(/* Real    */ ae_matrix* src,
+     /* Real    */ ae_matrix* dst,
+     ae_state *_state);
+ae_int_t recsearch(/* Integer */ ae_vector* a,
+     ae_int_t nrec,
+     ae_int_t nheader,
+     ae_int_t i0,
+     ae_int_t i1,
+     /* Integer */ ae_vector* b,
+     ae_state *_state);
 ae_bool _apbuffers_init(apbuffers* p, ae_state *_state, ae_bool make_automatic);
 ae_bool _apbuffers_init_copy(apbuffers* dst, apbuffers* src, ae_state *_state, ae_bool make_automatic);
 void _apbuffers_clear(apbuffers* p);
@@ -217,6 +282,11 @@ void tagsortfast(/* Real    */ ae_vector* a,
      /* Real    */ ae_vector* bufa,
      ae_int_t n,
      ae_state *_state);
+void tagsortmiddleir(/* Integer */ ae_vector* a,
+     /* Real    */ ae_vector* b,
+     ae_int_t offset,
+     ae_int_t n,
+     ae_state *_state);
 void tagheappushi(/* Real    */ ae_vector* a,
      /* Integer */ ae_vector* b,
      ae_int_t* n,
@@ -232,6 +302,14 @@ void tagheapreplacetopi(/* Real    */ ae_vector* a,
 void tagheappopi(/* Real    */ ae_vector* a,
      /* Integer */ ae_vector* b,
      ae_int_t* n,
+     ae_state *_state);
+ae_int_t lowerbound(/* Real    */ ae_vector* a,
+     ae_int_t n,
+     double t,
+     ae_state *_state);
+ae_int_t upperbound(/* Real    */ ae_vector* a,
+     ae_int_t n,
+     double t,
      ae_state *_state);
 void rankx(/* Real    */ ae_vector* x,
      ae_int_t n,
@@ -387,6 +465,84 @@ ae_bool cmatrixgemmf(ae_int_t m,
      ae_int_t ic,
      ae_int_t jc,
      ae_state *_state);
+void hermitianmatrixvectormultiply(/* Complex */ ae_matrix* a,
+     ae_bool isupper,
+     ae_int_t i1,
+     ae_int_t i2,
+     /* Complex */ ae_vector* x,
+     ae_complex alpha,
+     /* Complex */ ae_vector* y,
+     ae_state *_state);
+void hermitianrank2update(/* Complex */ ae_matrix* a,
+     ae_bool isupper,
+     ae_int_t i1,
+     ae_int_t i2,
+     /* Complex */ ae_vector* x,
+     /* Complex */ ae_vector* y,
+     /* Complex */ ae_vector* t,
+     ae_complex alpha,
+     ae_state *_state);
+void generatereflection(/* Real    */ ae_vector* x,
+     ae_int_t n,
+     double* tau,
+     ae_state *_state);
+void applyreflectionfromtheleft(/* Real    */ ae_matrix* c,
+     double tau,
+     /* Real    */ ae_vector* v,
+     ae_int_t m1,
+     ae_int_t m2,
+     ae_int_t n1,
+     ae_int_t n2,
+     /* Real    */ ae_vector* work,
+     ae_state *_state);
+void applyreflectionfromtheright(/* Real    */ ae_matrix* c,
+     double tau,
+     /* Real    */ ae_vector* v,
+     ae_int_t m1,
+     ae_int_t m2,
+     ae_int_t n1,
+     ae_int_t n2,
+     /* Real    */ ae_vector* work,
+     ae_state *_state);
+void complexgeneratereflection(/* Complex */ ae_vector* x,
+     ae_int_t n,
+     ae_complex* tau,
+     ae_state *_state);
+void complexapplyreflectionfromtheleft(/* Complex */ ae_matrix* c,
+     ae_complex tau,
+     /* Complex */ ae_vector* v,
+     ae_int_t m1,
+     ae_int_t m2,
+     ae_int_t n1,
+     ae_int_t n2,
+     /* Complex */ ae_vector* work,
+     ae_state *_state);
+void complexapplyreflectionfromtheright(/* Complex */ ae_matrix* c,
+     ae_complex tau,
+     /* Complex */ ae_vector* v,
+     ae_int_t m1,
+     ae_int_t m2,
+     ae_int_t n1,
+     ae_int_t n2,
+     /* Complex */ ae_vector* work,
+     ae_state *_state);
+void symmetricmatrixvectormultiply(/* Real    */ ae_matrix* a,
+     ae_bool isupper,
+     ae_int_t i1,
+     ae_int_t i2,
+     /* Real    */ ae_vector* x,
+     double alpha,
+     /* Real    */ ae_vector* y,
+     ae_state *_state);
+void symmetricrank2update(/* Real    */ ae_matrix* a,
+     ae_bool isupper,
+     ae_int_t i1,
+     ae_int_t i2,
+     /* Real    */ ae_vector* x,
+     /* Real    */ ae_vector* y,
+     /* Real    */ ae_vector* t,
+     double alpha,
+     ae_state *_state);
 double vectornorm2(/* Real    */ ae_vector* x,
      ae_int_t i1,
      ae_int_t i2,
@@ -477,84 +633,6 @@ void matrixmatrixmultiply(/* Real    */ ae_matrix* a,
      ae_int_t cj2,
      double beta,
      /* Real    */ ae_vector* work,
-     ae_state *_state);
-void hermitianmatrixvectormultiply(/* Complex */ ae_matrix* a,
-     ae_bool isupper,
-     ae_int_t i1,
-     ae_int_t i2,
-     /* Complex */ ae_vector* x,
-     ae_complex alpha,
-     /* Complex */ ae_vector* y,
-     ae_state *_state);
-void hermitianrank2update(/* Complex */ ae_matrix* a,
-     ae_bool isupper,
-     ae_int_t i1,
-     ae_int_t i2,
-     /* Complex */ ae_vector* x,
-     /* Complex */ ae_vector* y,
-     /* Complex */ ae_vector* t,
-     ae_complex alpha,
-     ae_state *_state);
-void generatereflection(/* Real    */ ae_vector* x,
-     ae_int_t n,
-     double* tau,
-     ae_state *_state);
-void applyreflectionfromtheleft(/* Real    */ ae_matrix* c,
-     double tau,
-     /* Real    */ ae_vector* v,
-     ae_int_t m1,
-     ae_int_t m2,
-     ae_int_t n1,
-     ae_int_t n2,
-     /* Real    */ ae_vector* work,
-     ae_state *_state);
-void applyreflectionfromtheright(/* Real    */ ae_matrix* c,
-     double tau,
-     /* Real    */ ae_vector* v,
-     ae_int_t m1,
-     ae_int_t m2,
-     ae_int_t n1,
-     ae_int_t n2,
-     /* Real    */ ae_vector* work,
-     ae_state *_state);
-void complexgeneratereflection(/* Complex */ ae_vector* x,
-     ae_int_t n,
-     ae_complex* tau,
-     ae_state *_state);
-void complexapplyreflectionfromtheleft(/* Complex */ ae_matrix* c,
-     ae_complex tau,
-     /* Complex */ ae_vector* v,
-     ae_int_t m1,
-     ae_int_t m2,
-     ae_int_t n1,
-     ae_int_t n2,
-     /* Complex */ ae_vector* work,
-     ae_state *_state);
-void complexapplyreflectionfromtheright(/* Complex */ ae_matrix* c,
-     ae_complex tau,
-     /* Complex */ ae_vector* v,
-     ae_int_t m1,
-     ae_int_t m2,
-     ae_int_t n1,
-     ae_int_t n2,
-     /* Complex */ ae_vector* work,
-     ae_state *_state);
-void symmetricmatrixvectormultiply(/* Real    */ ae_matrix* a,
-     ae_bool isupper,
-     ae_int_t i1,
-     ae_int_t i2,
-     /* Real    */ ae_vector* x,
-     double alpha,
-     /* Real    */ ae_vector* y,
-     ae_state *_state);
-void symmetricrank2update(/* Real    */ ae_matrix* a,
-     ae_bool isupper,
-     ae_int_t i1,
-     ae_int_t i2,
-     /* Real    */ ae_vector* x,
-     /* Real    */ ae_vector* y,
-     /* Real    */ ae_vector* t,
-     double alpha,
      ae_state *_state);
 void applyrotationsfromtheleft(ae_bool isforward,
      ae_int_t m1,
@@ -656,6 +734,7 @@ void mcsrch(ae_int_t n,
      /* Real    */ ae_vector* s,
      double* stp,
      double stpmax,
+     double gtol,
      ae_int_t* info,
      ae_int_t* nfev,
      /* Real    */ ae_vector* wa,

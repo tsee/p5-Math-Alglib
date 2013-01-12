@@ -120,6 +120,326 @@ void samplemoments(const real_1d_array &x, double &mean, double &variance, doubl
 }
 
 /*************************************************************************
+Calculation of the mean.
+
+INPUT PARAMETERS:
+    X       -   sample
+    N       -   N>=0, sample size:
+                * if given, only leading N elements of X are processed
+                * if not given, automatically determined from size of X
+
+NOTE:
+
+This function return result  which calculated by 'SampleMoments' function
+and stored at 'Mean' variable.
+
+
+  -- ALGLIB --
+     Copyright 06.09.2006 by Bochkanov Sergey
+*************************************************************************/
+double samplemean(const real_1d_array &x, const ae_int_t n)
+{
+    alglib_impl::ae_state _alglib_env_state;
+    alglib_impl::ae_state_init(&_alglib_env_state);
+    try
+    {
+        double result = alglib_impl::samplemean(const_cast<alglib_impl::ae_vector*>(x.c_ptr()), n, &_alglib_env_state);
+        alglib_impl::ae_state_clear(&_alglib_env_state);
+        return *(reinterpret_cast<double*>(&result));
+    }
+    catch(alglib_impl::ae_error_type)
+    {
+        throw ap_error(_alglib_env_state.error_msg);
+    }
+    catch(...)
+    {
+        throw;
+    }
+}
+
+/*************************************************************************
+Calculation of the mean.
+
+INPUT PARAMETERS:
+    X       -   sample
+    N       -   N>=0, sample size:
+                * if given, only leading N elements of X are processed
+                * if not given, automatically determined from size of X
+
+NOTE:
+
+This function return result  which calculated by 'SampleMoments' function
+and stored at 'Mean' variable.
+
+
+  -- ALGLIB --
+     Copyright 06.09.2006 by Bochkanov Sergey
+*************************************************************************/
+double samplemean(const real_1d_array &x)
+{
+    alglib_impl::ae_state _alglib_env_state;    
+    ae_int_t n;
+
+    n = x.length();
+    alglib_impl::ae_state_init(&_alglib_env_state);
+    try
+    {
+        double result = alglib_impl::samplemean(const_cast<alglib_impl::ae_vector*>(x.c_ptr()), n, &_alglib_env_state);
+
+        alglib_impl::ae_state_clear(&_alglib_env_state);
+        return *(reinterpret_cast<double*>(&result));
+    }
+    catch(alglib_impl::ae_error_type)
+    {
+        throw ap_error(_alglib_env_state.error_msg);
+    }
+    catch(...)
+    {
+        throw;
+    }
+}
+
+/*************************************************************************
+Calculation of the variance.
+
+INPUT PARAMETERS:
+    X       -   sample
+    N       -   N>=0, sample size:
+                * if given, only leading N elements of X are processed
+                * if not given, automatically determined from size of X
+
+NOTE:
+
+This function return result  which calculated by 'SampleMoments' function
+and stored at 'Variance' variable.
+
+
+  -- ALGLIB --
+     Copyright 06.09.2006 by Bochkanov Sergey
+*************************************************************************/
+double samplevariance(const real_1d_array &x, const ae_int_t n)
+{
+    alglib_impl::ae_state _alglib_env_state;
+    alglib_impl::ae_state_init(&_alglib_env_state);
+    try
+    {
+        double result = alglib_impl::samplevariance(const_cast<alglib_impl::ae_vector*>(x.c_ptr()), n, &_alglib_env_state);
+        alglib_impl::ae_state_clear(&_alglib_env_state);
+        return *(reinterpret_cast<double*>(&result));
+    }
+    catch(alglib_impl::ae_error_type)
+    {
+        throw ap_error(_alglib_env_state.error_msg);
+    }
+    catch(...)
+    {
+        throw;
+    }
+}
+
+/*************************************************************************
+Calculation of the variance.
+
+INPUT PARAMETERS:
+    X       -   sample
+    N       -   N>=0, sample size:
+                * if given, only leading N elements of X are processed
+                * if not given, automatically determined from size of X
+
+NOTE:
+
+This function return result  which calculated by 'SampleMoments' function
+and stored at 'Variance' variable.
+
+
+  -- ALGLIB --
+     Copyright 06.09.2006 by Bochkanov Sergey
+*************************************************************************/
+double samplevariance(const real_1d_array &x)
+{
+    alglib_impl::ae_state _alglib_env_state;    
+    ae_int_t n;
+
+    n = x.length();
+    alglib_impl::ae_state_init(&_alglib_env_state);
+    try
+    {
+        double result = alglib_impl::samplevariance(const_cast<alglib_impl::ae_vector*>(x.c_ptr()), n, &_alglib_env_state);
+
+        alglib_impl::ae_state_clear(&_alglib_env_state);
+        return *(reinterpret_cast<double*>(&result));
+    }
+    catch(alglib_impl::ae_error_type)
+    {
+        throw ap_error(_alglib_env_state.error_msg);
+    }
+    catch(...)
+    {
+        throw;
+    }
+}
+
+/*************************************************************************
+Calculation of the skewness.
+
+INPUT PARAMETERS:
+    X       -   sample
+    N       -   N>=0, sample size:
+                * if given, only leading N elements of X are processed
+                * if not given, automatically determined from size of X
+
+NOTE:
+
+This function return result  which calculated by 'SampleMoments' function
+and stored at 'Skewness' variable.
+
+
+  -- ALGLIB --
+     Copyright 06.09.2006 by Bochkanov Sergey
+*************************************************************************/
+double sampleskewness(const real_1d_array &x, const ae_int_t n)
+{
+    alglib_impl::ae_state _alglib_env_state;
+    alglib_impl::ae_state_init(&_alglib_env_state);
+    try
+    {
+        double result = alglib_impl::sampleskewness(const_cast<alglib_impl::ae_vector*>(x.c_ptr()), n, &_alglib_env_state);
+        alglib_impl::ae_state_clear(&_alglib_env_state);
+        return *(reinterpret_cast<double*>(&result));
+    }
+    catch(alglib_impl::ae_error_type)
+    {
+        throw ap_error(_alglib_env_state.error_msg);
+    }
+    catch(...)
+    {
+        throw;
+    }
+}
+
+/*************************************************************************
+Calculation of the skewness.
+
+INPUT PARAMETERS:
+    X       -   sample
+    N       -   N>=0, sample size:
+                * if given, only leading N elements of X are processed
+                * if not given, automatically determined from size of X
+
+NOTE:
+
+This function return result  which calculated by 'SampleMoments' function
+and stored at 'Skewness' variable.
+
+
+  -- ALGLIB --
+     Copyright 06.09.2006 by Bochkanov Sergey
+*************************************************************************/
+double sampleskewness(const real_1d_array &x)
+{
+    alglib_impl::ae_state _alglib_env_state;    
+    ae_int_t n;
+
+    n = x.length();
+    alglib_impl::ae_state_init(&_alglib_env_state);
+    try
+    {
+        double result = alglib_impl::sampleskewness(const_cast<alglib_impl::ae_vector*>(x.c_ptr()), n, &_alglib_env_state);
+
+        alglib_impl::ae_state_clear(&_alglib_env_state);
+        return *(reinterpret_cast<double*>(&result));
+    }
+    catch(alglib_impl::ae_error_type)
+    {
+        throw ap_error(_alglib_env_state.error_msg);
+    }
+    catch(...)
+    {
+        throw;
+    }
+}
+
+/*************************************************************************
+Calculation of the kurtosis.
+
+INPUT PARAMETERS:
+    X       -   sample
+    N       -   N>=0, sample size:
+                * if given, only leading N elements of X are processed
+                * if not given, automatically determined from size of X
+
+NOTE:
+
+This function return result  which calculated by 'SampleMoments' function
+and stored at 'Kurtosis' variable.
+
+
+  -- ALGLIB --
+     Copyright 06.09.2006 by Bochkanov Sergey
+*************************************************************************/
+double samplekurtosis(const real_1d_array &x, const ae_int_t n)
+{
+    alglib_impl::ae_state _alglib_env_state;
+    alglib_impl::ae_state_init(&_alglib_env_state);
+    try
+    {
+        double result = alglib_impl::samplekurtosis(const_cast<alglib_impl::ae_vector*>(x.c_ptr()), n, &_alglib_env_state);
+        alglib_impl::ae_state_clear(&_alglib_env_state);
+        return *(reinterpret_cast<double*>(&result));
+    }
+    catch(alglib_impl::ae_error_type)
+    {
+        throw ap_error(_alglib_env_state.error_msg);
+    }
+    catch(...)
+    {
+        throw;
+    }
+}
+
+/*************************************************************************
+Calculation of the kurtosis.
+
+INPUT PARAMETERS:
+    X       -   sample
+    N       -   N>=0, sample size:
+                * if given, only leading N elements of X are processed
+                * if not given, automatically determined from size of X
+
+NOTE:
+
+This function return result  which calculated by 'SampleMoments' function
+and stored at 'Kurtosis' variable.
+
+
+  -- ALGLIB --
+     Copyright 06.09.2006 by Bochkanov Sergey
+*************************************************************************/
+double samplekurtosis(const real_1d_array &x)
+{
+    alglib_impl::ae_state _alglib_env_state;    
+    ae_int_t n;
+
+    n = x.length();
+    alglib_impl::ae_state_init(&_alglib_env_state);
+    try
+    {
+        double result = alglib_impl::samplekurtosis(const_cast<alglib_impl::ae_vector*>(x.c_ptr()), n, &_alglib_env_state);
+
+        alglib_impl::ae_state_clear(&_alglib_env_state);
+        return *(reinterpret_cast<double*>(&result));
+    }
+    catch(alglib_impl::ae_error_type)
+    {
+        throw ap_error(_alglib_env_state.error_msg);
+    }
+    catch(...)
+    {
+        throw;
+    }
+}
+
+/*************************************************************************
 ADev
 
 Input parameters:
@@ -2205,6 +2525,146 @@ void samplemoments(/* Real    */ ae_vector* x,
         *skewness = *skewness/n;
         *kurtosis = *kurtosis/n-3;
     }
+}
+
+
+/*************************************************************************
+Calculation of the mean.
+
+INPUT PARAMETERS:
+    X       -   sample
+    N       -   N>=0, sample size:
+                * if given, only leading N elements of X are processed
+                * if not given, automatically determined from size of X
+
+NOTE:
+                
+This function return result  which calculated by 'SampleMoments' function
+and stored at 'Mean' variable.
+
+
+  -- ALGLIB --
+     Copyright 06.09.2006 by Bochkanov Sergey
+*************************************************************************/
+double samplemean(/* Real    */ ae_vector* x,
+     ae_int_t n,
+     ae_state *_state)
+{
+    double mean;
+    double tmp0;
+    double tmp1;
+    double tmp2;
+    double result;
+
+
+    samplemoments(x, n, &mean, &tmp0, &tmp1, &tmp2, _state);
+    result = mean;
+    return result;
+}
+
+
+/*************************************************************************
+Calculation of the variance.
+
+INPUT PARAMETERS:
+    X       -   sample
+    N       -   N>=0, sample size:
+                * if given, only leading N elements of X are processed
+                * if not given, automatically determined from size of X
+
+NOTE:
+                
+This function return result  which calculated by 'SampleMoments' function
+and stored at 'Variance' variable.
+
+
+  -- ALGLIB --
+     Copyright 06.09.2006 by Bochkanov Sergey
+*************************************************************************/
+double samplevariance(/* Real    */ ae_vector* x,
+     ae_int_t n,
+     ae_state *_state)
+{
+    double variance;
+    double tmp0;
+    double tmp1;
+    double tmp2;
+    double result;
+
+
+    samplemoments(x, n, &tmp0, &variance, &tmp1, &tmp2, _state);
+    result = variance;
+    return result;
+}
+
+
+/*************************************************************************
+Calculation of the skewness.
+
+INPUT PARAMETERS:
+    X       -   sample
+    N       -   N>=0, sample size:
+                * if given, only leading N elements of X are processed
+                * if not given, automatically determined from size of X
+
+NOTE:
+                
+This function return result  which calculated by 'SampleMoments' function
+and stored at 'Skewness' variable.
+
+
+  -- ALGLIB --
+     Copyright 06.09.2006 by Bochkanov Sergey
+*************************************************************************/
+double sampleskewness(/* Real    */ ae_vector* x,
+     ae_int_t n,
+     ae_state *_state)
+{
+    double skewness;
+    double tmp0;
+    double tmp1;
+    double tmp2;
+    double result;
+
+
+    samplemoments(x, n, &tmp0, &tmp1, &skewness, &tmp2, _state);
+    result = skewness;
+    return result;
+}
+
+
+/*************************************************************************
+Calculation of the kurtosis.
+
+INPUT PARAMETERS:
+    X       -   sample
+    N       -   N>=0, sample size:
+                * if given, only leading N elements of X are processed
+                * if not given, automatically determined from size of X
+
+NOTE:
+                
+This function return result  which calculated by 'SampleMoments' function
+and stored at 'Kurtosis' variable.
+
+
+  -- ALGLIB --
+     Copyright 06.09.2006 by Bochkanov Sergey
+*************************************************************************/
+double samplekurtosis(/* Real    */ ae_vector* x,
+     ae_int_t n,
+     ae_state *_state)
+{
+    double kurtosis;
+    double tmp0;
+    double tmp1;
+    double tmp2;
+    double result;
+
+
+    samplemoments(x, n, &tmp0, &tmp1, &tmp2, &kurtosis, _state);
+    result = kurtosis;
+    return result;
 }
 
 
