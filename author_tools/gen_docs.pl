@@ -1,61 +1,95 @@
 #!perl
 use strict;
 use warnings;
+use List::Util qw(min first);
 
 mkdir("lib/Math/Alglib");
-open my $fh, ">", "lib/Math/Alglib/SpecialFunctions.pod" or die $!;
 
-print $fh <<'HERE';
-=head1 NAME
+my $alglib_version = do {open my $fh, "<ALGLIB_VERSION" or die $!; my $x = <$fh>; chomp $x; $x};
 
-Math::Alglib::SpecialFunctions - Alglib special functions wrapper
+my $docs = [
+  {
+    src_file => 'src/specialfunctions.h',
+    mod_name => 'Math::Alglib::SpecialFunctions',
+  },
+];
 
-=head1 DESCRIPTION
+foreach my $doc (@$docs) {
+  my $mod_file = $doc->{mod_name};
+  $mod_file =~ s/::/\//g;
+  $doc->{mod_file} = "lib/$mod_file.pm";
+  open $doc->{mod_fh}, ">", $doc->{mod_file}
+    or die $!;
 
-Wrapping the special functions found in Alglib. This documentation is
-auto-generated from the F<specialfunctions.h> header file. If in doubt,
-refer to the header file.
+  emit_pm_boilerplate($doc);
 
-For each function, the C++ signature is included in the documentation
-below. The Perl wrappers may work slightly differently. Generally speaking:
+  emit_function_docs($doc);
 
-=over 2
+  emit_pm_footer($doc);
 
-=item *
+  close $doc->{mod_fh};
+}
 
-C<ptrdiff_t> is to be consider a (signed) integer.
+exit();
 
-=item *
+########################################
+sub emit_function_docs {
+  my $doc = shift;
+  open my $fh, "<", $doc->{src_file}
+    or die $!;
 
-Functions of the form C<void foo(double bar, double &baz)> are
-using the C++-style of passing output parameters in via references.
-The Perl calling convention for these functions becomes:
+  my @lines = map {s/[\012\015]+/\n/; $_} <$fh>;
+  close $fh;
 
-  double foo(double bar)
+  my @out;
+  # Go through file, search for end-of-function-doc line which
+  # looks like '************....*******/'. Check that the next
+  # non-empty line is a function signature.
+  foreach my $i (0..$#lines) {
+    my $line = $lines[$i];
+    next if $line !~ /\*{10,}\/\s*$/; # at least 10 * follwed by /
+    next if !$lines[$i-1] or $lines[$i-1] =~ /LICENSE/;
 
-where the return value is C<baz>. If there are multiple output
-parameters, the return value will be a reference to an array
-instead of returning a list.
+    # extract function signatures
+    my @siglines;
+    foreach my $j ($i+1..$#lines) {
+      if ($lines[$j] =~ /;\s*$/) {
+        push @siglines, $lines[$j];
+      }
+      last if @siglines and $lines[$j] !~ /\S/; 
+    }
+    my $min = min(map length($_), @siglines);
+    my $sigline;
+    $sigline = first {length($_) == $min} @siglines;
+    $sigline =~ /(\w+)\(/ or die $!;
+    my $funcname = $1;
 
-=item *
+    # backtrack to start of doc block
+    my $j = $i-1;
+    --$j while $lines[$j] !~ /^\/\*{10,}/; # look for /********s
 
-The types C<real_1d_array> and C<real_2d_array> are converted to/from
-Perl array references and nested Perl array references respectively.
+    # Generate title
+    push @out, "=head2 " . $lines[$j+1] . "\n";
+    push @out, "  $sigline\n";
+    $j++ if $lines[$j+2] !~ /\S/; # skip title for main doc block
+    push @out, map "  $_", @lines[($j+2) .. ($i-1)];
+    push @out, "\n";
+  }
 
-=back
+  my $mfh = $doc->{mod_fh};
+  print $mfh @out;
+}
 
-=head1 FUNCTIONS
+########################################
+sub emit_pm_footer {
+  my $doc = shift;
+  my $fh = $doc->{mod_fh};
 
-HERE
-
-close $fh;
-
-system(q{perl -ne 'push @l, $_;END{ for $i (0..$#l) { if ($l[$i] =~ /\*{10,}\/\s*$/ and $l[$i+1] =~ /;\s*$/){ my $j = $i-1; --$j while ($l[$j] !~ /^\/\*{10,}/); print "=head3 " . $l[$j+1] . "\n"; print "  " . $l[$i+1] . "\n"; $j++ if $l[$j+2] !~ /\S/; print map "  $_", @l[($j+2) .. ($i-1)]; print "\n"; } } }' src/specialfunctions.h >> lib/Math/Alglib/SpecialFunctions.pod});
-
-open $fh, ">>", "lib/Math/Alglib/SpecialFunctions.pod" or die $!;
-print $fh <<'HERE';
+  print $fh <<HERE;
 
 =head1 SEE ALSO
+
+L<Math::AlgLib>
 
 L<http://www.alglib.net/>
 
@@ -65,7 +99,7 @@ L<ExtUtils::XSpp>
 
 Author of the wrapper Perl module is:
 
-Steffen Mueller, E<lt>smueller@cpan.orgE<gt>
+Steffen Mueller, E<lt>smueller\@cpan.orgE<gt>
 
 But the heavy lifting is done by the C++ ALGLIB library.
 See the ALGLIB website (L<http://www.alglib.net/>)
@@ -110,3 +144,91 @@ The enclosed copy of the ALGLIB library is licensed as:
 
 =cut
 HERE
+} # end emit_pm_footer
+
+###########################################
+sub emit_pm_boilerplate {
+  my $doc = shift;
+  my $fh = $doc->{mod_fh};
+
+  print $fh <<HERE;
+package $doc->{mod_name};
+use strict;
+use warnings;
+
+use Math::Alglib;
+
+1;
+__END__
+
+=head1 NAME
+
+Math::Alglib::SpecialFunctions - Alglib special functions wrapper
+
+=head1 DESCRIPTION
+
+This module is a wrapper for the special functions found in Alglib.
+This documentation is auto-generated from the F<specialfunctions.h>
+header file of the library. If in doubt about the completeness of
+this documentation, please file a bug and refer to the header file.
+
+=head1 VERSION
+
+This module wraps Alglib version $alglib_version.
+
+=head1 FUNCTIONS
+
+For each function, the C++ signature is included in the documentation
+below. The Perl interface may have slightly different semantics.
+Generally speaking:
+
+=over 2
+
+=item *
+
+Any mention of C<ae_int_t> or  C<ptrdiff_t> is to be consider a
+(technically signed) integer.
+
+=item *
+
+Functions of the form C<void foo(double bar, double &baz)> are
+using the C++-style of passing output parameters into the function
+via references. That is equivalent to modifying C<\@_> in Perl.
+The Perl calling convention for these functions becomes:
+
+  double foo(double bar)
+
+where the return value is C<baz> in the C++ signature above.
+If there are multiple such output parameters, the return
+value will be a reference to an array containing the values
+instead of returning a list of values.
+
+If unsure about what's an input and what's an output parameter,
+check the (textual, non-code) documentation that was extracted
+from the headers.
+
+=item *
+
+The types C<real_1d_array> and C<real_2d_array> are converted to/from
+Perl array references and nested Perl array references respectively.
+
+A C<real_1d_array> is:
+
+  [1.1, 2.2, 3.3, 4.4]
+
+A C<real_2d_array> would be:
+
+  [ [1.1, 2.1, 3.1],
+    [5.2, 6.2, 7.2],
+    [4.0, 3.0, 2.0],
+    [7.3, 8.3, 9.3]
+  ]
+
+where the matrix does not necessarily have to contain the same number
+of rows and columns, but the number of columns in each row must be
+the same.
+
+=back
+
+HERE
+} # end emit_pm_boilerplate
