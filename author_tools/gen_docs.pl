@@ -11,6 +11,11 @@ my $docs = [
   {
     src_file => 'src/specialfunctions.h',
     mod_name => 'Math::Alglib::SpecialFunctions',
+    unimpl   => [qw(lngamma)],
+  },
+  {
+    src_file => 'src/statistics.h',
+    mod_name => 'Math::Alglib::Statistics',
   },
 ];
 
@@ -35,6 +40,8 @@ exit();
 ########################################
 sub emit_function_docs {
   my $doc = shift;
+  my %unimpl = ( map {$_, undef} @{$doc->{unimpl} || []} );
+
   open my $fh, "<", $doc->{src_file}
     or die $!;
 
@@ -63,6 +70,7 @@ sub emit_function_docs {
     $sigline = first {length($_) == $min} @siglines;
     $sigline =~ /(\w+)\(/ or die $!;
     my $funcname = $1;
+    next if exists $unimpl{$funcname}; # skip blacklisted
 
     # backtrack to start of doc block
     my $j = $i-1;
@@ -206,6 +214,19 @@ instead of returning a list of values.
 If unsure about what's an input and what's an output parameter,
 check the (textual, non-code) documentation that was extracted
 from the headers.
+
+=item *
+
+One exception to the pass-in style of output parameters is when
+a (typically composite type) parameter is a C++ const reference
+such as the C<const real_1d_array &x> in:
+
+  void samplemoments(const real_1d_array &x, double &mean,
+                     double &variance, double &skewness,
+                     double &kurtosis);
+
+The parameter C<x> is the only I<input> parameter here.
+See below about what the type means.
 
 =item *
 

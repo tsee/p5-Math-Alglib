@@ -55,6 +55,19 @@ from the headers.
 
 =item *
 
+One exception to the pass-in style of output parameters is when
+a (typically composite type) parameter is a C++ const reference
+such as the C<const real_1d_array &x> in:
+
+  void samplemoments(const real_1d_array &x, double &mean,
+                     double &variance, double &skewness,
+                     double &kurtosis);
+
+The parameter C<x> is the only I<input> parameter here.
+See below about what the type means.
+
+=item *
+
 The types C<real_1d_array> and C<real_2d_array> are converted to/from
 Perl array references and nested Perl array references respectively.
 
@@ -95,39 +108,6 @@ the same.
   
   Cephes Math Library Release 2.8:  June, 2000
   Original copyright 1984, 1987, 1989, 1992, 2000 by Stephen L. Moshier
-  Translated to AlgoPascal by Bochkanov Sergey (2005, 2006, 2007).
-
-=head2 Natural logarithm of gamma function
-
-  double lngamma(const double x, double &sgngam);
-
-  Input parameters:
-      X       -   argument
-  
-  Result:
-      logarithm of the absolute value of the Gamma(X).
-  
-  Output parameters:
-      SgnGam  -   sign(Gamma(X))
-  
-  Domain:
-      0 < X < 2.55e305
-      -2.55e305 < X < 0, X is not an integer.
-  
-  ACCURACY:
-  arithmetic      domain        # trials     peak         rms
-     IEEE    0, 3                 28000     5.4e-16     1.1e-16
-     IEEE    2.718, 2.556e305     40000     3.5e-16     8.3e-17
-  The error criterion was relative when the function magnitude
-  was greater than one but absolute when it was less than one.
-  
-  The following test used the relative error criterion, though
-  at certain points the relative error could be much higher than
-  indicated.
-     IEEE    -200, -4             10000     4.8e-16     1.3e-16
-  
-  Cephes Math Library Release 2.8:  June, 2000
-  Copyright 1984, 1987, 1989, 1992, 2000 by Stephen L. Moshier
   Translated to AlgoPascal by Bochkanov Sergey (2005, 2006, 2007).
 
 =head2 Error function
