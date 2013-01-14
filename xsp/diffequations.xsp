@@ -1,0 +1,48 @@
+#include <vector>
+#include <diffequations.h>
+#include <ap.h>
+
+#include <perl_myinit.h>
+
+%module{Math::Alglib};
+%package{Math::Alglib::DiffEquations};
+
+%name{Math::Alglib::DiffEquations::OdeSolverState}
+class odesolverstate
+{
+  odesolverstate();
+  ~odesolverstate();
+
+  bool
+  get_needdy()
+    %code{% RETVAL = THIS->needdy; %};
+
+  alglib::real_1d_array
+  get_y()
+    %code{% RETVAL = THIS->y; %};
+
+  alglib::real_1d_array
+  get_dy()
+    %code{% RETVAL = THIS->dy; %};
+
+  double
+  get_x()
+    %code{% RETVAL = THIS->x; %};
+
+}; // end class odesolverstate
+
+%name{Math::Alglib::DiffEquations::OdeSolverReport}
+class odesolverreport
+{
+  odesolverreport();
+  ~odesolverreport();
+
+  ptrdiff_t
+  get_nfev()
+    %code{% RETVAL = THIS->nfev; %};
+
+  ptrdiff_t
+  get_terminationtype()
+    %code{% RETVAL = THIS->terminationtype; %};
+};
+

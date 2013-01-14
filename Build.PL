@@ -5,7 +5,11 @@ use Module::Build::WithXSpp;
 my $build = Module::Build::WithXSpp->new(
   module_name     => 'Math::Alglib',
   license         => 'perl',
-  requires        => {},
+  requires        => {
+  },
+  build_requires        => {
+    'ExtUtils::ParseXS' => '3.15',
+  },
   # Provides extra C typemaps for opaque objects:
   extra_typemap_modules => {
     'ExtUtils::Typemaps::Default' => '0.01',
