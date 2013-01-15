@@ -8,7 +8,6 @@
 %package{Math::Alglib::FastTransforms};
 
 {%
-
 alglib::complex_1d_array
 fftc1d(a)
     alglib::complex_1d_array a;
@@ -16,4 +15,25 @@ fftc1d(a)
     alglib::fftc1d(a);
   OUTPUT: a
 %}
+
+{%
+alglib::complex_1d_array
+fftc1dinv(a)
+    alglib::complex_1d_array a;
+  CODE:
+    alglib::fftc1dinv(a);
+  OUTPUT: a
+%}
+
+alglib::complex_1d_array
+fftr1d(alglib::real_1d_array a)
+  %code{%
+    fftr1d(a, RETVAL);
+  %};
+
+alglib::real_1d_array
+fftr1dinv(alglib::complex_1d_array f)
+  %code{%
+    fftr1dinv(f, RETVAL);
+  %};
 
