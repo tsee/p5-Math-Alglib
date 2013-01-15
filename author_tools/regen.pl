@@ -25,12 +25,12 @@ HERE
 
 my $typemap = "xsp/mytype.map";
 my $functions = [
-  {
-    file => "src/diffequations.h",
-    struct_name => "odesolverstate",
-    struct_fq => "alglib_impl::odesolverstate",
-    c_to_perl_function => "odesolverstate_to_perl_hash",
-  },
+#  {
+#    file => "src/diffequations.h",
+#    struct_name => "odesolverstate",
+#    struct_fq => "alglib_impl::odesolverstate",
+#    c_to_perl_function => "odesolverstate_to_perl_hash",
+#  },
 ];
 
 # emit header include

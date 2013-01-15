@@ -18,8 +18,8 @@ my $docs = [
     mod_name => 'Math::Alglib::Statistics',
   },
   {
-    src_file => 'src/diffequations.h',
-    mod_name => 'Math::Alglib::DiffEquations',
+    src_file => 'src/fasttransforms.h',
+    mod_name => 'Math::Alglib::FastTransforms',
   },
 ];
 

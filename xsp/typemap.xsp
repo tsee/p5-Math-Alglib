@@ -11,6 +11,11 @@
 %typemap{const real_1d_array};
 %typemap{const alglib::real_1d_array};
 
+%typemap{complex_1d_array};
+%typemap{alglib::complex_1d_array};
+%typemap{const complex_1d_array};
+%typemap{const alglib::complex_1d_array};
+
 %typemap{real_2d_array};
 %typemap{alglib::real_2d_array};
 %typemap{const real_2d_array};
@@ -23,8 +28,8 @@
 
 %typemap{std::vector<double>};
 
-%typemap{alglib_impl::odesolverstate};
-%typemap{alglib_impl::odesolverstate*};
+// %typemap{alglib_impl::odesolverstate};
+// %typemap{alglib_impl::odesolverstate*};
 
 %exception{ApError}{alglib::ap_error}{code}{%
   croak("%s", e.msg.c_str());

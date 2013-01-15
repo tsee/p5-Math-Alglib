@@ -7,6 +7,8 @@ const ptrdiff_t			T_IV
 
 alglib::real_1d_array		AL_NV_ARRAY
 alglib::real_2d_array		AL_NV_2DARRAY
+alglib::complex_1d_array	AL_CPLXNV_ARRAY
+alglib::complex_1d_array*	AL_CPLXNV_ARRAY_PTR
 odesolverstate*			O_OBJECT
 odesolverreport*		O_OBJECT
 alglib_impl::odesolverstate*    T_HV_ODESOLVERSTATE
@@ -20,7 +22,7 @@ AL_NV_ARRAY
           const unsigned int len = av_len(av)+1;
           unsigned int i;
           SV **elem;
-          $var = alglib::real_1d_array();
+          $var = $type();
           $var.setlength(len);
           for (i = 0; i < len; i++) {
             elem = av_fetch(av, i, 0);
@@ -35,8 +37,38 @@ AL_NV_ARRAY
                      ${$ALIAS?\q[GvNAME(CvGV(cv))]:\qq[\"$pname\"]},
                      \"$var\");
 
+AL_CPLXNV_ARRAY
+        if (SvROK($arg) && SvTYPE(SvRV($arg))==SVt_PVAV) {
+          AV *av = (AV*)SvRV($arg);
+          const unsigned int len = av_len(av)+1;
+          unsigned int i;
+          SV **elem;
+          $var = $type();
+          $var.setlength(len);
+          for (i = 0; i < len; i++) {
+            elem = av_fetch(av, i, 0);
+            if (elem != NULL) {
+              if (SvROK(*elem) && SvTYPE(SvRV(*elem))==SVt_PVAV) {
+                AV *iav = (AV*)SvRV(*elem);
+                elem = av_fetch(av, 0, 0);
+                ${var}[i].x = elem ? SvNV(*elem) : 0.;
+                elem = av_fetch(av, 1, 0);
+                ${var}[i].y = elem ? SvNV(*elem) : 0.;
+              }
+            }
+            else {
+              ${var}[i].x = 0.;
+              ${var}[i].y = 0.;
+            }
+          }
+        }
+        else
+          Perl_croak(aTHX_ \"%s: %s is not an array reference\",
+                     ${$ALIAS?\q[GvNAME(CvGV(cv))]:\qq[\"$pname\"]},
+                     \"$var\");
+
 AL_NV_2DARRAY
-        $var = alglib::real_2d_array();
+        $var = $type();
         if (SvROK($arg) && SvTYPE(SvRV($arg))==SVt_PVAV) {
           AV *outer_av = (AV*)SvRV($arg);
           AV *inner_av;
@@ -88,6 +120,33 @@ AL_NV_ARRAY
         for (unsigned int i = 0; i < len; i++) {
           av_store(av, i, newSVnv(${var}[i]));
         }
+
+AL_CPLXNV_ARRAY
+        AV* av = newAV();
+        const unsigned int len = $var.length();
+        $arg = newRV_noinc((SV*)av);
+        av_extend(av, len-1);
+        for (unsigned int i = 0; i < len; i++) {
+          AV* iav = newAV();
+          const alglib::complex &c = ${var}[i];
+          av_store(iav, 1, newSVnv(c.y));
+          av_store(iav, 0, newSVnv(c.x));
+          av_store(av, i, newRV_noinc((SV *)iav));
+        }
+
+AL_CPLXNV_ARRAY_PTR
+        AV* av = newAV();
+        const unsigned int len = $var->length();
+        $arg = newRV_noinc((SV*)av);
+        av_extend(av, len-1);
+        for (unsigned int i = 0; i < len; i++) {
+          AV* iav = newAV();
+          const alglib::complex &c = (*${var})[i];
+          av_store(iav, 1, newSVnv(c.y));
+          av_store(iav, 0, newSVnv(c.x));
+          av_store(av, i, newRV_noinc((SV *)iav));
+        }
+
 
 AL_NV_2DARRAY
         AV* av = newAV();

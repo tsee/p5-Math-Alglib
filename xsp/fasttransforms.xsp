@@ -1,0 +1,19 @@
+#include <vector>
+#include <fasttransforms.h>
+#include <ap.h>
+
+#include <perl_myinit.h>
+
+%module{Math::Alglib};
+%package{Math::Alglib::FastTransforms};
+
+{%
+
+alglib::complex_1d_array
+fftc1d(a)
+    alglib::complex_1d_array a;
+  CODE:
+    alglib::fftc1d(a);
+  OUTPUT: a
+%}
+
