@@ -29,6 +29,24 @@ TODO: {
     fftc1dinv
     fftr1d
     fftr1dinv
+    convc1d
+    convc1dinv
+    convc1dcircular
+    convc1dcircularinc
+    convr1d
+    convr1dinv
+    convr1dcircular
+    convr1dcircularinc
+    corrc1d
+    corrc1dinv
+    corrc1dcircular
+    corrc1dcircularinv
+    corrr1d
+    corrr1dinv
+    corrr1dcircular
+    corrr1dcircularinv
+    fhtr1d
+    fhtr1dinv
   );
 }
 done_testing();

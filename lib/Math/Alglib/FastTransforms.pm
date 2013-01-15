@@ -202,6 +202,9 @@ the same.
 
 =head2 1-dimensional complex convolution.
 
+Note on the Perl wrapper:
+The signature for calling from Perl is C<complex_1d_array convc1d(complex_1d_array a, complex_1d_array b)>, so the parameters C<n> and C<m> of the C function (the array lengths) are inferred from the size of the input arrays.
+
   void convc1d(const complex_1d_array &a, const ae_int_t m, const complex_1d_array &b, const ae_int_t n, complex_1d_array &r);
 
   For given A/B returns conv(A,B) (non-circular). Subroutine can automatically
@@ -232,6 +235,9 @@ the same.
 
 =head2 1-dimensional complex non-circular deconvolution (inverse of ConvC1D()).
 
+Note on the Perl wrapper:
+The signature for calling from Perl is C<complex_1d_array convc1dinv(complex_1d_array a, complex_1d_array b)>, so the parameters C<n> and C<m> of the C function (the array lengths) are inferred from the size of the input arrays.
+
   void convc1dinv(const complex_1d_array &a, const ae_int_t m, const complex_1d_array &b, const ae_int_t n, complex_1d_array &r);
 
   Algorithm has M*log(M)) complexity for any M (composite or prime).
@@ -258,6 +264,9 @@ the same.
        Copyright 21.07.2009 by Bochkanov Sergey
 
 =head2 1-dimensional circular complex convolution.
+
+Note on the Perl wrapper:
+The signature for calling from Perl is C<complex_1d_array convc1dcircular(complex_1d_array s, complex_1d_array r)>, so the parameters C<n> and C<m> of the C function (the array lengths) are inferred from the size of the input arrays.
 
   void convc1dcircular(const complex_1d_array &s, const ae_int_t m, const complex_1d_array &r, const ae_int_t n, complex_1d_array &c);
 
@@ -288,6 +297,9 @@ the same.
 
 =head2 1-dimensional circular complex deconvolution (inverse of ConvC1DCircular()).
 
+Note on the Perl wrapper:
+The signature for calling from Perl is C<complex_1d_array convc1dcircularinv(complex_1d_array s, complex_1d_array r)>, so the parameters C<n> and C<m> of the C function (the array lengths) are inferred from the size of the input arrays.
+
   void convc1dcircularinv(const complex_1d_array &a, const ae_int_t m, const complex_1d_array &b, const ae_int_t n, complex_1d_array &r);
 
   Algorithm has M*log(M)) complexity for any M (composite or prime).
@@ -315,6 +327,9 @@ the same.
 
 =head2 1-dimensional real convolution.
 
+Note on the Perl wrapper:
+The signature for calling from Perl is C<real_1d_array convr1d(real_1d_array a, real_1d_array b)>, so the parameters C<n> and C<m> of the C function (the array lengths) are inferred from the size of the input arrays.
+
   void convr1d(const real_1d_array &a, const ae_int_t m, const real_1d_array &b, const ae_int_t n, real_1d_array &r);
 
   Analogous to ConvC1D(), see ConvC1D() comments for more details.
@@ -337,6 +352,9 @@ the same.
        Copyright 21.07.2009 by Bochkanov Sergey
 
 =head2 1-dimensional real deconvolution (inverse of ConvC1D()).
+
+Note on the Perl wrapper:
+The signature for calling from Perl is C<real_1d_array convr1dinv(real_1d_array a, real_1d_array b)>, so the parameters C<n> and C<m> of the C function (the array lengths) are inferred from the size of the input arrays.
 
   void convr1dinv(const real_1d_array &a, const ae_int_t m, const real_1d_array &b, const ae_int_t n, real_1d_array &r);
 
@@ -365,6 +383,9 @@ the same.
 
 =head2 1-dimensional circular real convolution.
 
+Note on the Perl wrapper:
+The signature for calling from Perl is C<real_1d_array convr1dcircular(real_1d_array s, real_1d_array r)>, so the parameters C<n> and C<m> of the C function (the array lengths) are inferred from the size of the input arrays.
+
   void convr1dcircular(const real_1d_array &s, const ae_int_t m, const real_1d_array &r, const ae_int_t n, real_1d_array &c);
 
   Analogous to ConvC1DCircular(), see ConvC1DCircular() comments for more details.
@@ -387,6 +408,9 @@ the same.
        Copyright 21.07.2009 by Bochkanov Sergey
 
 =head2 1-dimensional complex deconvolution (inverse of ConvC1D()).
+
+Note on the Perl wrapper:
+The signature for calling from Perl is C<real_1d_array convr1dcircularinv(real_1d_array s, real_1d_array r)>, so the parameters C<n> and C<m> of the C function (the array lengths) are inferred from the size of the input arrays.
 
   void convr1dcircularinv(const real_1d_array &a, const ae_int_t m, const real_1d_array &b, const ae_int_t n, real_1d_array &r);
 
@@ -414,6 +438,9 @@ the same.
        Copyright 21.07.2009 by Bochkanov Sergey
 
 =head2 1-dimensional complex cross-correlation.
+
+Note on the Perl wrapper:
+The signature for calling from Perl is C<complex_1d_array corrc1d(complex_1d_array signal, complex_1d_array pattern)>, so the parameters C<n> and C<m> of the C function (the array lengths) are inferred from the size of the input arrays.
 
   void corrc1d(const complex_1d_array &signal, const ae_int_t n, const complex_1d_array &pattern, const ae_int_t m, complex_1d_array &r);
 
@@ -452,6 +479,9 @@ the same.
 
 =head2 1-dimensional circular complex cross-correlation.
 
+Note on the Perl wrapper:
+The signature for calling from Perl is C<complex_1d_array corrc1dcircular(complex_1d_array signal, complex_1d_array pattern)>, so the parameters C<n> and C<m> of the C function (the array lengths) are inferred from the size of the input arrays.
+
   void corrc1dcircular(const complex_1d_array &signal, const ae_int_t m, const complex_1d_array &pattern, const ae_int_t n, complex_1d_array &c);
 
   For given Pattern/Signal returns corr(Pattern,Signal) (circular).
@@ -479,6 +509,9 @@ the same.
        Copyright 21.07.2009 by Bochkanov Sergey
 
 =head2 1-dimensional real cross-correlation.
+
+Note on the Perl wrapper:
+The signature for calling from Perl is C<real_1d_array corrr1d(real_1d_array signal, real_1d_array pattern)>, so the parameters C<n> and C<m> of the C function (the array lengths) are inferred from the size of the input arrays.
 
   void corrr1d(const real_1d_array &signal, const ae_int_t n, const real_1d_array &pattern, const ae_int_t m, real_1d_array &r);
 
@@ -516,6 +549,9 @@ the same.
        Copyright 21.07.2009 by Bochkanov Sergey
 
 =head2 1-dimensional circular real cross-correlation.
+
+Note on the Perl wrapper:
+The signature for calling from Perl is C<real_1d_array corrr1dcircular(real_1d_array signal, real_1d_array pattern)>, so the parameters C<n> and C<m> of the C function (the array lengths) are inferred from the size of the input arrays.
 
   void corrr1dcircular(const real_1d_array &signal, const ae_int_t m, const real_1d_array &pattern, const ae_int_t n, real_1d_array &c);
 

@@ -20,6 +20,67 @@ my $docs = [
   {
     src_file => 'src/fasttransforms.h',
     mod_name => 'Math::Alglib::FastTransforms',
+    notes => {
+      convc1d => 
+                 "The signature for calling from Perl is "
+                 . "C<complex_1d_array convc1d(complex_1d_array a, complex_1d_array b)>, "
+                 . "so the parameters C<n> and C<m> of the C function (the array lengths) "
+                 . "are inferred from the size of the input arrays.",
+      convc1dinv =>
+                 "The signature for calling from Perl is "
+                 . "C<complex_1d_array convc1dinv(complex_1d_array a, complex_1d_array b)>, "
+                 . "so the parameters C<n> and C<m> of the C function (the array lengths) "
+                 . "are inferred from the size of the input arrays.",
+      convc1dcircular =>
+                 "The signature for calling from Perl is "
+                 . "C<complex_1d_array convc1dcircular(complex_1d_array s, complex_1d_array r)>, "
+                 . "so the parameters C<n> and C<m> of the C function (the array lengths) "
+                 . "are inferred from the size of the input arrays.",
+      convc1dcircularinv =>
+                 "The signature for calling from Perl is "
+                 . "C<complex_1d_array convc1dcircularinv(complex_1d_array s, complex_1d_array r)>, "
+                 . "so the parameters C<n> and C<m> of the C function (the array lengths) "
+                 . "are inferred from the size of the input arrays.",
+      convr1d => "The signature for calling from Perl is "
+                 . "C<real_1d_array convr1d(real_1d_array a, real_1d_array b)>, "
+                 . "so the parameters C<n> and C<m> of the C function (the array lengths) "
+                 . "are inferred from the size of the input arrays.",
+      convr1dinv =>
+                 "The signature for calling from Perl is "
+                 . "C<real_1d_array convr1dinv(real_1d_array a, real_1d_array b)>, "
+                 . "so the parameters C<n> and C<m> of the C function (the array lengths) "
+                 . "are inferred from the size of the input arrays.",
+      convr1dcircular =>
+                 "The signature for calling from Perl is "
+                 . "C<real_1d_array convr1dcircular(real_1d_array s, real_1d_array r)>, "
+                 . "so the parameters C<n> and C<m> of the C function (the array lengths) "
+                 . "are inferred from the size of the input arrays.",
+      convr1dcircularinv =>
+                 "The signature for calling from Perl is "
+                 . "C<real_1d_array convr1dcircularinv(real_1d_array s, real_1d_array r)>, "
+                 . "so the parameters C<n> and C<m> of the C function (the array lengths) "
+                 . "are inferred from the size of the input arrays.",
+      corrc1d =>
+                 "The signature for calling from Perl is "
+                 . "C<complex_1d_array corrc1d(complex_1d_array signal, complex_1d_array pattern)>, "
+                 . "so the parameters C<n> and C<m> of the C function (the array lengths) "
+                 . "are inferred from the size of the input arrays.",
+      corrc1dcircular =>
+                 "The signature for calling from Perl is "
+                 . "C<complex_1d_array corrc1dcircular(complex_1d_array signal, complex_1d_array pattern)>, "
+                 . "so the parameters C<n> and C<m> of the C function (the array lengths) "
+                 . "are inferred from the size of the input arrays.",
+      corrr1d =>
+                 "The signature for calling from Perl is "
+                 . "C<real_1d_array corrr1d(real_1d_array signal, real_1d_array pattern)>, "
+                 . "so the parameters C<n> and C<m> of the C function (the array lengths) "
+                 . "are inferred from the size of the input arrays.",
+      corrr1dcircular =>
+                 "The signature for calling from Perl is "
+                 . "C<real_1d_array corrr1dcircular(real_1d_array signal, real_1d_array pattern)>, "
+                 . "so the parameters C<n> and C<m> of the C function (the array lengths) "
+                 . "are inferred from the size of the input arrays.",
+    },
   },
 ];
 
@@ -96,6 +157,9 @@ sub emit_function_docs {
 
     # Generate title
     push @out, "=head2 " . $lines[$j+1] . "\n";
+    if (exists $doc->{notes}{$funcname}) {
+      push @out, "Note on the Perl wrapper:\n" . $doc->{notes}{$funcname} . "\n\n";
+    }
     push @out, "  $sigline\n";
     $j++ if $lines[$j+2] !~ /\S/; # skip title for main doc block
     push @out, map "  $_", @lines[($j+2) .. ($i-1)];
