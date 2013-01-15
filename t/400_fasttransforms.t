@@ -22,6 +22,19 @@ SCOPE: {
   is(scalar(@{$x->[$_]}), 2, "elem is array w/ two elems($_)") for 0..$#$x;
 }
 
+SCOPE: {
+  note("convr1d");
+  my $x = Math::Alglib::FastTransforms::convr1d(
+    [1..1000],
+    [reverse 1..1000],
+  );
+
+  ok(ref($x) eq 'ARRAY');
+  ok(scalar(@$x));
+  ok($x->[0] < $x->[scalar(@$x)/2]);
+  ok((abs($x->[0] - $x->[$#$x]) / 1000 < 2));
+}
+
 
 TODO: {
   local $TODO = "Functions requiring test coverage";
@@ -33,7 +46,6 @@ TODO: {
     convc1dinv
     convc1dcircular
     convc1dcircularinc
-    convr1d
     convr1dinv
     convr1dcircular
     convr1dcircularinc
