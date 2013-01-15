@@ -17,6 +17,10 @@ my $docs = [
     src_file => 'src/statistics.h',
     mod_name => 'Math::Alglib::Statistics',
   },
+  {
+    src_file => 'src/diffequations.h',
+    mod_name => 'Math::Alglib::DiffEquations',
+  },
 ];
 
 foreach my $doc (@$docs) {
@@ -54,27 +58,41 @@ sub emit_function_docs {
   # non-empty line is a function signature.
   foreach my $i (0..$#lines) {
     my $line = $lines[$i];
-    next if $line !~ /\*{10,}\/\s*$/; # at least 10 * follwed by /
+    next unless $line =~ /\*{10,}\/\s*$/; # at least 10 * follwed by /
     next if !$lines[$i-1] or $lines[$i-1] =~ /LICENSE/;
+
+    # backtrack to start of doc block
+    my $j = $i-1;
+    --$j while $lines[$j] !~ /^\/\*{10,}/; # look for /********s
+    if (not grep /[^\s*]/, @lines[$j+1 .. $i-1]) {
+      next;
+    }
 
     # extract function signatures
     my @siglines;
     foreach my $j ($i+1..$#lines) {
-      if ($lines[$j] =~ /;\s*$/) {
+      if ($lines[$j] =~ /;\s*(?:\/\/.*|\/\*.*\*\/\s*)?$/) {
         push @siglines, $lines[$j];
+      }
+      elsif ($lines[$j] =~ /\(/ and $lines[$j] !~ /\)/) {
+        my $k = $j;
+        my $line = $lines[$k];
+        while ($lines[$k++] !~ /;\s*(?:\/\/.*|\/\*.*\*\/\s*)?$/) {
+          die "Failed to parse sig line" if $lines[$k] !~ /\S/;
+          $line .= $lines[$k];
+        }
+        push @siglines, $line;
+        $j = $k+1;
       }
       last if @siglines and $lines[$j] !~ /\S/; 
     }
     my $min = min(map length($_), @siglines);
     my $sigline;
     $sigline = first {length($_) == $min} @siglines;
-    $sigline =~ /(\w+)\(/ or die $!;
+    $sigline =~ /(\w+)\(/
+      or die "Assertion failed: naive parse of function name failed in '$sigline'";
     my $funcname = $1;
     next if exists $unimpl{$funcname}; # skip blacklisted
-
-    # backtrack to start of doc block
-    my $j = $i-1;
-    --$j while $lines[$j] !~ /^\/\*{10,}/; # look for /********s
 
     # Generate title
     push @out, "=head2 " . $lines[$j+1] . "\n";

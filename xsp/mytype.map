@@ -9,6 +9,7 @@ alglib::real_1d_array		AL_NV_ARRAY
 alglib::real_2d_array		AL_NV_2DARRAY
 odesolverstate*			O_OBJECT
 odesolverreport*		O_OBJECT
+alglib_impl::odesolverstate*    T_HV_ODESOLVERSTATE
 
 
 INPUT
@@ -103,3 +104,6 @@ AL_NV_2DARRAY
             av_store(iav, j, newSVnv(row[j]));
           }
         }
+
+T_HV_ODESOLVERSTATE
+        $arg = odesolverstate_to_perl_hash(aTHX_ $var);

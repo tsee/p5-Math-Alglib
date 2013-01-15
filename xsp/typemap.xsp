@@ -23,6 +23,9 @@
 
 %typemap{std::vector<double>};
 
+%typemap{alglib_impl::odesolverstate};
+%typemap{alglib_impl::odesolverstate*};
+
 %exception{ApError}{alglib::ap_error}{code}{%
   croak("%s", e.msg.c_str());
 %};

@@ -29,6 +29,10 @@ class odesolverstate
   get_x()
     %code{% RETVAL = THIS->x; %};
 
+  %name{get_internal_state}
+  alglib_impl::odesolverstate*
+  c_ptr();
+
 }; // end class odesolverstate
 
 %name{Math::Alglib::DiffEquations::OdeSolverReport}
