@@ -126,3 +126,24 @@ gkqgenerategaussjacobi(ae_int_t n, double alpha, double beta)
   OUTPUT: RETVAL
 %}
 
+{%
+SV *
+gkqlegendretbl(ae_int_t n)
+  PREINIT:
+    ae_int_t info;
+    real_1d_array x, wkronrod, wgauss;
+    double eps;
+    AV *av;
+  CODE:
+    alglib::gkqlegendretbl(n, x, wkronrod, wgauss, eps);
+    RETVAL = sv_2mortal(integration_return_status_ary_ary(aTHX_ (IV)info, x, wkronrod, &wgauss));
+    av = newAV();
+    RETVAL = newRV_noinc((SV *)av);
+    av_extend(av, 4);
+    av_store(av, 0, newRV_noinc((SV *) real_1d_array_to_av(aTHX_ x)));
+    av_store(av, 1, newRV_noinc((SV *) real_1d_array_to_av(aTHX_ wkronrod)));
+    av_store(av, 2, newRV_noinc((SV *) real_1d_array_to_av(aTHX_ wgauss)));
+    av_store(av, 3, newSVnv(eps));
+  OUTPUT: RETVAL
+%}
+

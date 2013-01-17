@@ -23,6 +23,7 @@ TODO: {
     gkqgenerategausslegendre
     gkqgenerategaussjacobi
     gkqlegendrecalc
+    gkqlegendretbl
   );
 }
 
