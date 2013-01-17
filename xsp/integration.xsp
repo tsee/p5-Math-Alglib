@@ -20,11 +20,90 @@ gqgeneraterec(alpha, beta, mu0, n)
     real_1d_array w;
   CODE:
     alglib::gqgeneraterec(alpha, beta, mu0, n, info, x, w);
-    RETVAL = (AV *)sv_2mortal((SV *)newAV());
-    av_extend(RETVAL, 2);
-    av_store(RETVAL, 0, newSViv((IV)info));
-    av_store(RETVAL, 1, newRV_noinc((SV *) real_1d_array_to_av(aTHX_ x)));
-    av_store(RETVAL, 2, newRV_noinc((SV *) real_1d_array_to_av(aTHX_ w)));
+    RETVAL = (AV *)sv_2mortal((SV *)integration_return_status_ary_ary(aTHX_ (IV)info, x, w));
+  OUTPUT: RETVAL
+%}
+
+
+{%
+AV *
+gqgenerategausslobattorec(alpha, beta, mu0, a, b, n)
+    alglib::real_1d_array alpha;
+    alglib::real_1d_array beta;
+    double mu0;
+    double a
+    double b;
+    ae_int_t n;
+  PREINIT:
+    ae_int_t info;
+    real_1d_array x;
+    real_1d_array w;
+  CODE:
+    alglib::gqgenerategausslobattorec(alpha, beta, mu0, a, b, n, info, x, w);
+    RETVAL = (AV *)sv_2mortal((SV *)integration_return_status_ary_ary(aTHX_ (IV)info, x, w));
+  OUTPUT: RETVAL
+%}
+
+{%
+AV *
+gqgenerategaussradaurec(alpha, beta, mu0, a, n)
+    alglib::real_1d_array alpha;
+    alglib::real_1d_array beta;
+    double mu0;
+    double a
+    ae_int_t n;
+  PREINIT:
+    ae_int_t info;
+    real_1d_array x;
+    real_1d_array w;
+  CODE:
+    alglib::gqgenerategaussradaurec(alpha, beta, mu0, a, n, info, x, w);
+    RETVAL = (AV *)sv_2mortal((SV *)integration_return_status_ary_ary(aTHX_ (IV)info, x, w));
+  OUTPUT: RETVAL
+%}
+
+{%
+AV *
+gqgenerategausslegendre(n)
+    ae_int_t n;
+  PREINIT:
+    ae_int_t info;
+    real_1d_array x;
+    real_1d_array w;
+  CODE:
+    alglib::gqgenerategausslegendre(n, info, x, w);
+    RETVAL = (AV *)sv_2mortal((SV *)integration_return_status_ary_ary(aTHX_ (IV)info, x, w));
+  OUTPUT: RETVAL
+%}
+
+{%
+AV *
+gqgenerategaussjacobi(n, alpha, beta)
+    ae_int_t n;
+    double alpha;
+    double beta;
+  PREINIT:
+    ae_int_t info;
+    real_1d_array x;
+    real_1d_array w;
+  CODE:
+    alglib::gqgenerategaussjacobi(n, alpha, beta, info, x, w);
+    RETVAL = (AV *)sv_2mortal((SV *)integration_return_status_ary_ary(aTHX_ (IV)info, x, w));
+  OUTPUT: RETVAL
+%}
+
+{%
+AV *
+gqgenerategausslaguerre(n, alpha)
+    ae_int_t n;
+    double alpha;
+  PREINIT:
+    ae_int_t info;
+    real_1d_array x;
+    real_1d_array w;
+  CODE:
+    alglib::gqgenerategausslaguerre(n, alpha, info, x, w);
+    RETVAL = (AV *)sv_2mortal((SV *)integration_return_status_ary_ary(aTHX_ (IV)info, x, w));
   OUTPUT: RETVAL
 %}
 

@@ -9,8 +9,10 @@
 #include <EXTERN.h>
 #include <perl.h>
 
+/* used by the real_1d_array typemap, but also usable separately */
 AV *
-real_1d_array_to_av(pTHX_ const alglib::real_1d_array &x) {
+real_1d_array_to_av(pTHX_ const alglib::real_1d_array &x)
+{
   const unsigned int len = x.length();
   AV *av = newAV();
   unsigned int i;
@@ -19,6 +21,22 @@ real_1d_array_to_av(pTHX_ const alglib::real_1d_array &x) {
     av_store(av, i, newSVnv(x[i]));
   return av;
 }
+
+/* used by integration.h to return an array of a status int
+ * followed by two real_1d_array's */
+AV *
+integration_return_status_ary_ary(pTHX_ IV info,
+                                  const alglib::real_1d_array &x,
+                                  const alglib::real_1d_array &w)
+{
+  AV *av = newAV();
+  av_extend(av, 2);
+  av_store(av, 0, newSViv(info));
+  av_store(av, 1, newRV_noinc((SV *) real_1d_array_to_av(aTHX_ x)));
+  av_store(av, 2, newRV_noinc((SV *) real_1d_array_to_av(aTHX_ w)));
+  return av;
+}
+
 
 
 using namespace alglib; /* FIXME hack */
