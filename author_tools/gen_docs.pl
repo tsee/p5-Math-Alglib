@@ -82,6 +82,12 @@ my $docs = [
                  . "are inferred from the size of the input arrays.",
     },
   },
+  {
+    src_file => 'src/integration.h',
+    mod_name => 'Math::Alglib::Integration',
+    unimpl   => [qw(autogksmooth autogksmoothw autogksingular
+                    autogkiteration autogkintegrate autogkresults)],
+  },
 ];
 
 foreach my $doc (@$docs) {
@@ -130,6 +136,7 @@ sub emit_function_docs {
     }
 
     # extract function signatures
+    next if $lines[$i+1] =~ /^class\s+/; # skip class docs for now (FIXME)
     my @siglines;
     foreach my $j ($i+1..$#lines) {
       if ($lines[$j] =~ /;\s*(?:\/\/.*|\/\*.*\*\/\s*)?$/) {
