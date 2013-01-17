@@ -2,6 +2,8 @@
 #include <statistics.h>
 #include <ap.h>
 
+#include <perl_myinit.h>
+
 %module{Math::Alglib};
 %package{Math::Alglib::Statistics};
 

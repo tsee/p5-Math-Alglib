@@ -115,11 +115,7 @@ OUTPUT
 AL_NV_ARRAY
         AV* av = newAV();
         const unsigned int len = $var.length();
-        $arg = newRV_noinc((SV*)av);
-        av_extend(av, len-1);
-        for (unsigned int i = 0; i < len; i++) {
-          av_store(av, i, newSVnv(${var}[i]));
-        }
+        $arg = newRV_noinc((SV *)real_1d_array_to_av(aTHX_ $var));
 
 AL_CPLXNV_ARRAY
         AV* av = newAV();

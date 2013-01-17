@@ -9,6 +9,17 @@
 #include <EXTERN.h>
 #include <perl.h>
 
+AV *
+real_1d_array_to_av(pTHX_ const alglib::real_1d_array &x) {
+  const unsigned int len = x.length();
+  AV *av = newAV();
+  unsigned int i;
+  av_extend(av, len-1);
+  for (i = 0; i < len; ++i)
+    av_store(av, i, newSVnv(x[i]));
+  return av;
+}
+
 
 using namespace alglib; /* FIXME hack */
 
