@@ -48,3 +48,4 @@
 \B\._
 
 ^MYMETA.yml$
+pod2htm.\.tmp$
