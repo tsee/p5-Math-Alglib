@@ -17,6 +17,10 @@ TODO: {
     gqgenerategausslegendre
     gqgenerategaussjacobi
     gqgenerategausslaguerre
+    gqgenerategausshermite
+
+    gkqgeneraterec
+    gkqgenerategausslegendre
   );
 }
 

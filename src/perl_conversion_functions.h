@@ -22,19 +22,23 @@ real_1d_array_to_av(pTHX_ const alglib::real_1d_array &x)
   return av;
 }
 
-/* used by integration.h to return an array of a status int
+/* used by integration.h to return an arrayref of a status int
  * followed by two real_1d_array's */
-AV *
+SV *
 integration_return_status_ary_ary(pTHX_ IV info,
                                   const alglib::real_1d_array &x,
-                                  const alglib::real_1d_array &w)
+                                  const alglib::real_1d_array &w,
+                                  alglib::real_1d_array *opt = NULL)
 {
   AV *av = newAV();
-  av_extend(av, 2);
+  SV *retval = newRV_noinc((SV *)av);
+  av_extend(av, opt == NULL ? 2 : 3);
   av_store(av, 0, newSViv(info));
   av_store(av, 1, newRV_noinc((SV *) real_1d_array_to_av(aTHX_ x)));
   av_store(av, 2, newRV_noinc((SV *) real_1d_array_to_av(aTHX_ w)));
-  return av;
+  if (opt != NULL)
+    av_store(av, 3, newRV_noinc((SV *) real_1d_array_to_av(aTHX_ *opt)));
+  return retval;
 }
 
 
