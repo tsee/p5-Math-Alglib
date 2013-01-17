@@ -21,6 +21,8 @@ TODO: {
 
     gkqgeneraterec
     gkqgenerategausslegendre
+    gkqgenerategaussjacobi
+    gkqlegendrecalc
   );
 }
 

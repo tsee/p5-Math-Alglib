@@ -50,8 +50,13 @@ gqgenerategausslegendre(ae_int_t n)
   PREINIT:
     ae_int_t info;
     real_1d_array x, w;
+  ALIAS:
+    gqgenerategausshermite = 1
   CODE:
-    alglib::gqgenerategausslegendre(n, info, x, w);
+    if (ix == 0)
+      alglib::gqgenerategausslegendre(n, info, x, w);
+    else
+      alglib::gqgenerategausshermite(n, info, x, w);
     RETVAL = sv_2mortal(integration_return_status_ary_ary(aTHX_ (IV)info, x, w));
   OUTPUT: RETVAL
 %}
@@ -82,19 +87,6 @@ gqgenerategausslaguerre(ae_int_t n, double alpha)
 
 {%
 SV *
-gqgenerategausshermite(ae_int_t n)
-  PREINIT:
-    ae_int_t info;
-    real_1d_array x, w;
-  CODE:
-    alglib::gqgenerategausshermite(n, info, x, w);
-    RETVAL = sv_2mortal(integration_return_status_ary_ary(aTHX_ (IV)info, x, w));
-  OUTPUT: RETVAL
-%}
-
-
-{%
-SV *
 gkqgeneraterec(alglib::real_1d_array alpha, alglib::real_1d_array beta, double mu0, ae_int_t n)
   PREINIT:
     ae_int_t info;
@@ -111,8 +103,25 @@ gkqgenerategausslegendre(ae_int_t n)
   PREINIT:
     ae_int_t info;
     real_1d_array x, wkronrod, wgauss;
+  ALIAS:
+    gkqlegendrecalc = 1
   CODE:
-    alglib::gkqgenerategausslegendre(n, info, x, wkronrod, wgauss);
+    if (ix == 0)
+      alglib::gkqgenerategausslegendre(n, info, x, wkronrod, wgauss);
+    else
+      alglib::gkqlegendrecalc(n, info, x, wkronrod, wgauss);
+    RETVAL = sv_2mortal(integration_return_status_ary_ary(aTHX_ (IV)info, x, wkronrod, &wgauss));
+  OUTPUT: RETVAL
+%}
+
+{%
+SV *
+gkqgenerategaussjacobi(ae_int_t n, double alpha, double beta)
+  PREINIT:
+    ae_int_t info;
+    real_1d_array x, wkronrod, wgauss;
+  CODE:
+    alglib::gkqgenerategaussjacobi(n, alpha, beta, info, x, wkronrod, wgauss);
     RETVAL = sv_2mortal(integration_return_status_ary_ary(aTHX_ (IV)info, x, wkronrod, &wgauss));
   OUTPUT: RETVAL
 %}
