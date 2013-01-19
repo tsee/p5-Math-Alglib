@@ -1,0 +1,38 @@
+#include <vector>
+#include <interpolation.h>
+#include <ap.h>
+
+#include <perl_myinit.h>
+
+%module{Math::Alglib};
+%package{Math::Alglib::Interpolation};
+
+%name{Math::Alglib::Interpolation::Idwinterpolant}
+class idwinterpolant {
+  double idwcalc(alglib::real_1d_array x)
+    %code{%
+      RETVAL = idwcalc(*THIS, x);
+    %};
+  ~idwinterpolant();
+
+};
+
+%package{Math::Alglib::Interpolation};
+
+idwinterpolant*
+idwbuildmodifiedshepard(alglib::real_2d_array xy, const ae_int_t n, const ae_int_t nx,
+                         const ae_int_t d, const ae_int_t nq, const ae_int_t nw)
+  %code{%
+    const char CLASS[] = "Math::Alglib::Interpolation::Idwinterpolant";
+    RETVAL = new alglib::idwinterpolant();
+    alglib::idwbuildmodifiedshepard(xy, n, nx, d, nq, nw, *RETVAL);
+  %};
+
+idwinterpolant*
+idwbuildmodifiedshepardr(alglib::real_2d_array xy, const ae_int_t n, const ae_int_t nx, const double r)
+  %code{%
+    const char CLASS[] = "Math::Alglib::Interpolation::Idwinterpolant";
+    RETVAL = new alglib::idwinterpolant();
+    alglib::idwbuildmodifiedshepardr(xy, n, nx, r, *RETVAL);
+  %};
+
