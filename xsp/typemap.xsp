@@ -33,6 +33,8 @@
 
 %typemap{alglib_impl::idwinterpolant};
 %typemap{alglib_impl::idwinterpolant*};
+%typemap{alglib_impl::barycentricinterpolant};
+%typemap{alglib_impl::barycentricinterpolant*};
 
 %exception{ApError}{alglib::ap_error}{code}{%
   croak("%s", e.msg.c_str());

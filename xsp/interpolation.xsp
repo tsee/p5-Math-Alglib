@@ -7,13 +7,62 @@
 %module{Math::Alglib};
 %package{Math::Alglib::Interpolation};
 
-%name{Math::Alglib::Interpolation::Idwinterpolant}
+%name{Math::Alglib::Interpolation::IdwInterpolant}
 class idwinterpolant {
-  double idwcalc(alglib::real_1d_array x)
-    %code{%
-      RETVAL = idwcalc(*THIS, x);
-    %};
   ~idwinterpolant();
+
+  double
+  idwcalc(alglib::real_1d_array x)
+    %code{%
+      RETVAL = alglib::idwcalc(*THIS, x);
+    %};
+};
+
+%name{Math::Alglib::Interpolation::BarycentricInterpolant}
+class barycentricinterpolant {
+  ~barycentricinterpolant();
+
+  double
+  barycentriccalc(const double t)
+    %code{%
+      RETVAL = alglib::barycentriccalc(*THIS, t);
+    %};
+
+  std::vector<double>
+  barycentricdiff1(const double t)
+    %code{%
+      RETVAL.resize(2);
+      alglib::barycentricdiff1(*THIS, t, RETVAL[0], RETVAL[1]);
+    %};
+
+  std::vector<double>
+  barycentricdiff2(const double t)
+    %code{%
+      RETVAL.resize(3);
+      alglib::barycentricdiff2(*THIS, t, RETVAL[0], RETVAL[1], RETVAL[2]);
+    %};
+
+  void
+  barycentriclintransx(const double ca, const double cb)
+    %code{% alglib::barycentriclintransx(*THIS, ca, cb); %};
+
+  void
+  barycentriclintransy(const double ca, const double cb)
+    %code{% alglib::barycentriclintransy(*THIS, ca, cb); %};
+
+  void
+  barycentricunpack()
+    %code%{
+      ae_int_t n;
+      real_1d_array x, y, w;
+      barycentricunpack(*THIS, n, x, y, w);
+      EXTEND(SP, 4);
+      mPUSHi(n);
+      mPUSHs(sv_2mortal(newRV_noinc((SV *)real_1d_array_to_av(aTHX_ x))));
+      mPUSHs(sv_2mortal(newRV_noinc((SV *)real_1d_array_to_av(aTHX_ y))));
+      mPUSHs(sv_2mortal(newRV_noinc((SV *)real_1d_array_to_av(aTHX_ w))));
+      XSRETURN(4);
+    %};
 
 };
 
@@ -23,7 +72,7 @@ idwinterpolant*
 idwbuildmodifiedshepard(alglib::real_2d_array xy, const ae_int_t n, const ae_int_t nx,
                          const ae_int_t d, const ae_int_t nq, const ae_int_t nw)
   %code{%
-    const char CLASS[] = "Math::Alglib::Interpolation::Idwinterpolant";
+    const char CLASS[] = "Math::Alglib::Interpolation::IdwInterpolant";
     RETVAL = new alglib::idwinterpolant();
     alglib::idwbuildmodifiedshepard(xy, n, nx, d, nq, nw, *RETVAL);
   %};
@@ -31,8 +80,33 @@ idwbuildmodifiedshepard(alglib::real_2d_array xy, const ae_int_t n, const ae_int
 idwinterpolant*
 idwbuildmodifiedshepardr(alglib::real_2d_array xy, const ae_int_t n, const ae_int_t nx, const double r)
   %code{%
-    const char CLASS[] = "Math::Alglib::Interpolation::Idwinterpolant";
+    const char CLASS[] = "Math::Alglib::Interpolation::IdwInterpolant";
     RETVAL = new alglib::idwinterpolant();
     alglib::idwbuildmodifiedshepardr(xy, n, nx, r, *RETVAL);
   %};
 
+idwinterpolant*
+idwbuildnoisy(alglib::real_2d_array xy, const ae_int_t n, const ae_int_t nx,
+              const ae_int_t d, const ae_int_t nq, const ae_int_t nw)
+  %code{%
+    const char CLASS[] = "Math::Alglib::Interpolation::IdwInterpolant";
+    RETVAL = new alglib::idwinterpolant();
+    alglib::idwbuildnoisy(xy, n, nx, d, nq, nw, *RETVAL);
+  %};
+
+barycentricinterpolant*
+barycentricbuildxyw(alglib::real_1d_array x, alglib::real_1d_array y, alglib::real_1d_array w, const ae_int_t n)
+  %code{%
+    const char CLASS[] = "Math::Alglib::Interpolation::BarycentricInterpolant";
+    RETVAL = new alglib::barycentricinterpolant();
+    alglib::barycentricbuildxyw(x, y, w, n, *RETVAL);
+  %};
+
+
+barycentricinterpolant*
+barycentricbuildfloaterhormann(alglib::real_1d_array x, alglib::real_1d_array y, const ae_int_t n, const ae_int_t d)
+  %code{%
+    const char CLASS[] = "Math::Alglib::Interpolation::BarycentricInterpolant";
+    RETVAL = new alglib::barycentricinterpolant();
+    alglib::barycentricbuildfloaterhormann(x, y, n, d, *RETVAL);
+  %};

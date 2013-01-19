@@ -9,9 +9,12 @@ alglib::real_1d_array		AL_NV_ARRAY
 alglib::real_2d_array		AL_NV_2DARRAY
 alglib::complex_1d_array	AL_CPLXNV_ARRAY
 alglib::complex_1d_array*	AL_CPLXNV_ARRAY_PTR
+
 idwinterpolant*			O_OBJECT
+barycentricinterpolant*		O_OBJECT
 odesolverstate*			O_OBJECT
 odesolverreport*		O_OBJECT
+
 alglib_impl::odesolverstate*    T_HV_ODESOLVERSTATE
 
 
