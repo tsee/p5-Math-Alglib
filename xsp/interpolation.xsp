@@ -68,6 +68,9 @@ class barycentricinterpolant {
   polynomialbar2cheb(const double a, const double b)
     %code{% alglib::polynomialbar2cheb(*THIS, a, b, RETVAL); %};
 
+  alglib::real_1d_array
+  polynomialbar2pow(const double c, const double s)
+    %code{% alglib::polynomialbar2pow(*THIS, c, s, RETVAL); %};
 };
 
 %package{Math::Alglib::Interpolation};
@@ -121,3 +124,20 @@ polynomialcheb2bar(alglib::real_1d_array t, const double a, const double b)
     RETVAL = new alglib::barycentricinterpolant();
     alglib::polynomialcheb2bar(t, a, b, *RETVAL);
   %};
+
+barycentricinterpolant*
+polynomialpow2bar(alglib::real_1d_array a, const ae_int_t n, const double c, const double s)
+  %code{%
+    const char CLASS[] = "Math::Alglib::Interpolation::BarycentricInterpolant";
+    RETVAL = new alglib::barycentricinterpolant();
+    alglib::polynomialpow2bar(a, n, c, s, *RETVAL);
+  %};
+
+barycentricinterpolant*
+polynomialbuild(alglib::real_1d_array x, alglib::real_1d_array y)
+  %code{%
+    const char CLASS[] = "Math::Alglib::Interpolation::BarycentricInterpolant";
+    RETVAL = new alglib::barycentricinterpolant();
+    alglib::polynomialbuild(x, y, *RETVAL);
+  %};
+

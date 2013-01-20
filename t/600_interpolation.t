@@ -53,6 +53,9 @@ TODO: {
     barycentricunpack
     polynomialbar2cheb
     polynomialcheb2bar
+    polynomialbar2pow
+    polynomialpow2bar
+    polynomialbuild
   );
 }
 

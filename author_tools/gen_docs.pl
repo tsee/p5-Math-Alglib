@@ -7,6 +7,12 @@ mkdir("lib/Math/Alglib");
 
 my $alglib_version = do {open my $fh, "<ALGLIB_VERSION" or die $!; my $x = <$fh>; chomp $x; $x};
 
+# src_file: input file
+# mod_name: Perl module output file
+# unimpl: array ref of un-wrapped function names
+# notes: hashref of function names to custom notes at beginning of per-function docs
+# sig_override: hashref of function names to custom function signature overrides
+
 my $docs = [
   {
     src_file => 'src/specialfunctions.h',
@@ -88,6 +94,15 @@ my $docs = [
     unimpl   => [qw(autogksmooth autogksmoothw autogksingular
                     autogkiteration autogkintegrate autogkresults)],
   },
+  {
+    src_file => 'src/interpolation.h',
+    mod_name => 'Math::Alglib::Interpolation',
+    unimpl   => [qw()],
+    sig_override => {
+      polynomialbar2pow => 'void polynomialbar2pow(const barycentricinterpolant &p, const double c, const double s, real_1d_array &a);',
+      polynomialpow2bar => 'void polynomialpow2bar(const real_1d_array &a, const ae_int_t n, const double c, const double s, barycentricinterpolant &p);',
+    },
+  },
 ];
 
 foreach my $doc (@$docs) {
@@ -161,6 +176,8 @@ sub emit_function_docs {
       or die "Assertion failed: naive parse of function name failed in '$sigline'";
     my $funcname = $1;
     next if exists $unimpl{$funcname}; # skip blacklisted
+    $sigline = $doc->{sig_override}{$funcname}
+      if exists $doc->{sig_override}{$funcname};
 
     # Generate title
     push @out, "=head2 " . $lines[$j+1] . "\n";
