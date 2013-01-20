@@ -51,6 +51,8 @@ TODO: {
     barycentriclintransx
     barycentriclintransy
     barycentricunpack
+    polynomialbar2cheb
+    polynomialcheb2bar
   );
 }
 
