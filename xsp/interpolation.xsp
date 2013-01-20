@@ -141,3 +141,26 @@ polynomialbuild(alglib::real_1d_array x, alglib::real_1d_array y)
     alglib::polynomialbuild(x, y, *RETVAL);
   %};
 
+{%
+barycentricinterpolant*
+polynomialbuildcheb1(const double a, const double b, alglib::real_1d_array y)
+  PREINIT:
+    const char CLASS[] = "Math::Alglib::Interpolation::BarycentricInterpolant";
+  ALIAS:
+    alglib::polynomialbuildeqdist = 1
+    alglib::polynomialbuildcheb2 = 2
+  CODE:
+    RETVAL = new alglib::barycentricinterpolant();
+    if (ix == 0)
+      alglib::polynomialbuildcheb1(a, b, y, *RETVAL);
+    else if (ix == 1)
+      alglib::polynomialbuildeqdist(a, b, y, *RETVAL);
+    else
+      alglib::polynomialbuildcheb2(a, b, y, *RETVAL);
+  OUTPUT: RETVAL
+%}
+
+double polynomialcalceqdist(const double a, const double b, alglib::real_1d_array f, const double t);
+double polynomialcalccheb1(const double a, const double b, alglib::real_1d_array f, const double t);
+double polynomialcalccheb2(const double a, const double b, alglib::real_1d_array f, const double t);
+

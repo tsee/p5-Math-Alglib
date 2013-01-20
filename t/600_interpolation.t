@@ -56,6 +56,12 @@ TODO: {
     polynomialbar2pow
     polynomialpow2bar
     polynomialbuild
+    polynomialbuildeqdist
+    polynomialbuildcheb1
+    polynomialbuildcheb2
+    polynomialcalceqdist
+    polynomialcalccheb1
+    polynomialcalccheb2
   );
 }
 
