@@ -43,7 +43,6 @@ TODO: {
   fail($_) for qw(
     barycentricbuildxyw
     barycentricbuildfloaterhormann
-    barycentricinterpolant
     ~barycentricinterpolant
     barycentriccalc
     barycentricdiff1
@@ -62,6 +61,10 @@ TODO: {
     polynomialcalceqdist
     polynomialcalccheb1
     polynomialcalccheb2
+    ~spline1dinterpolant
+    spline1dbuildlinear
+    spline1dbuildcubic
+    spline1dgriddiffcubic
   );
 }
 

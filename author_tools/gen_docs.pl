@@ -101,6 +101,8 @@ my $docs = [
     sig_override => {
       polynomialbar2pow => 'void polynomialbar2pow(const barycentricinterpolant &p, const double c, const double s, real_1d_array &a);',
       polynomialpow2bar => 'void polynomialpow2bar(const real_1d_array &a, const ae_int_t n, const double c, const double s, barycentricinterpolant &p);',
+      spline1dbuildcubic => 'spline1dinterpolant* spline1dbuildcubic(alglib::real_1d_array x, alglib::real_1d_array y, ae_int_t n, ae_int_t boundltype = 0, double boundl = 0, ae_int_t boundrtype = 0, double boundr = 0);',
+      spline1dgriddiffcubic => 'alglib::real_1d_array spline1dgriddiffcubic(alglib::real_1d_array x, alglib::real_1d_array y, ae_int_t n, ae_int_t boundltype = 0, double boundl = 0, ae_int_t boundrtype = 0, double boundr = 0);',
     },
   },
 ];

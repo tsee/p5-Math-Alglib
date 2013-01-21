@@ -12,6 +12,7 @@ alglib::complex_1d_array*	AL_CPLXNV_ARRAY_PTR
 
 idwinterpolant*			O_OBJECT
 barycentricinterpolant*		O_OBJECT
+spline1dinterpolant*		O_OBJECT
 odesolverstate*			O_OBJECT
 odesolverreport*		O_OBJECT
 

@@ -31,8 +31,9 @@
 // %typemap{alglib_impl::odesolverstate};
 // %typemap{alglib_impl::odesolverstate*};
 
-%typemap{alglib_impl::idwinterpolant*};
-%typemap{alglib_impl::barycentricinterpolant*};
+%typemap{idwinterpolant*};
+%typemap{barycentricinterpolant*};
+%typemap{spline1dinterpolant*};
 
 %exception{ApError}{alglib::ap_error}{code}{%
   croak("%s", e.msg.c_str());
