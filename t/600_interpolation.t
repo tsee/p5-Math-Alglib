@@ -77,6 +77,7 @@ TODO: {
     spline1dbuildcatmullrom
     spline1dbuildhermite
     spline1dbuildakima
+    spline1dbuildmonotone
   );
 }
 

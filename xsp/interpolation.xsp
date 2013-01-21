@@ -309,11 +309,18 @@ spline1dbuildhermite(alglib::real_1d_array x, alglib::real_1d_array y, alglib::r
     alglib::spline1dbuildhermite(x, y, d, *RETVAL);
   %};
 
+{%
 spline1dinterpolant*
 spline1dbuildakima(alglib::real_1d_array x, alglib::real_1d_array y)
-  %code{%
+  ALIAS:
+    spline1dbuildmonotone = 1
+  CODE:
     const char CLASS[] = "Math::Alglib::Interpolation::Spline1dInterpolant";
     RETVAL = new alglib::spline1dinterpolant();
-    alglib::spline1dbuildakima(x, y, *RETVAL);
-  %};
+    if (ix == 0)
+      alglib::spline1dbuildakima(x, y, *RETVAL);
+    else
+      alglib::spline1dbuildmonotone(x, y, *RETVAL);
+  OUTPUT: RETVAL
+%}
 
