@@ -118,7 +118,6 @@ AL_NV_2DARRAY
 
 OUTPUT
 AL_NV_ARRAY
-        AV* av = newAV();
         const unsigned int len = $var.length();
         $arg = newRV_noinc((SV *)real_1d_array_to_av(aTHX_ $var));
 
