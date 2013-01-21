@@ -65,6 +65,7 @@ TODO: {
     spline1dbuildlinear
     spline1dbuildcubic
     spline1dgriddiffcubic
+    spline1dconvcubic
   );
 }
 

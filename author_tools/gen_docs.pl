@@ -103,6 +103,8 @@ my $docs = [
       polynomialpow2bar => 'void polynomialpow2bar(const real_1d_array &a, const ae_int_t n, const double c, const double s, barycentricinterpolant &p);',
       spline1dbuildcubic => 'spline1dinterpolant* spline1dbuildcubic(alglib::real_1d_array x, alglib::real_1d_array y, ae_int_t n, ae_int_t boundltype = 0, double boundl = 0, ae_int_t boundrtype = 0, double boundr = 0);',
       spline1dgriddiffcubic => 'alglib::real_1d_array spline1dgriddiffcubic(alglib::real_1d_array x, alglib::real_1d_array y, ae_int_t n, ae_int_t boundltype = 0, double boundl = 0, ae_int_t boundrtype = 0, double boundr = 0);',
+      spline1dconvcubic => 'alglib::real_1d_array spline1dconvcubic(alglib::real_1d_array x, alglib::real_1d_array y, ae_int_t n, ae_int_t boundltype, double boundl, ae_int_t boundrtype, double boundr, alglib::real_1d_array x2, const ae_int_t n2);',
+      spline1dconvdiffcubic => 'void spline1dconvdiffcubic(const real_1d_array &x, const real_1d_array &y, const ae_int_t n, const ae_int_t boundltype, const double boundl, const ae_int_t boundrtype, const double boundr, const real_1d_array &x2, const ae_int_t n2, real_1d_array &y2, real_1d_array &d2);',
     },
   },
 ];

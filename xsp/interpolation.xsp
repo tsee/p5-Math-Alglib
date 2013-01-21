@@ -205,3 +205,31 @@ spline1dgriddiffcubic(alglib::real_1d_array x, alglib::real_1d_array y, ae_int_t
   %};
 
 
+alglib::real_1d_array
+spline1dconvcubic(alglib::real_1d_array x, alglib::real_1d_array y, ae_int_t n,
+                  ae_int_t boundltype, double boundl,
+                  ae_int_t boundrtype, double boundr,
+                  alglib::real_1d_array x2, const ae_int_t n2)
+  %code{%
+    alglib::spline1dconvcubic(x, y, n, boundltype, boundl, boundrtype, boundr, x2, n2, RETVAL);
+  %};
+
+void
+spline1dconvdiffcubic(alglib::real_1d_array x, alglib::real_1d_array y, ae_int_t n,
+                      ae_int_t boundltype, double boundl,
+                      ae_int_t boundrtype, double boundr,
+                      alglib::real_1d_array x2, const ae_int_t n2)
+  %code{%
+    alglib::real_1d_array y2, d2;
+    alglib::spline1dconvdiffcubic(x, y, n, boundltype, boundl, boundrtype, boundr, x2, n2, y2, d2);
+    EXTEND(SP, 2);
+    {
+      const unsigned int len = y2.length();
+      mPUSHs(sv_2mortal(newRV_noinc((SV *)real_1d_array_to_av(aTHX_ y2))));
+    }
+    {
+      const unsigned int len = d2.length();
+      mPUSHs(sv_2mortal(newRV_noinc((SV *)real_1d_array_to_av(aTHX_ d2))));
+    }
+  %};
+
