@@ -79,6 +79,42 @@ class barycentricinterpolant {
 %name{Math::Alglib::Interpolation::Spline1dInterpolant}
 class spline1dinterpolant {
   ~spline1dinterpolant();
+
+  double spline1dcalc(const double x)
+    %code{%
+      RETVAL = alglib::spline1dcalc(*THIS, x);
+    %};
+
+  void
+  spline1ddiff(const double x)
+    %code{%
+      double s, ds, d2s;
+      alglib::spline1ddiff(*THIS, x, s, ds, d2s);
+      EXTEND(SP, 3);
+      mPUSHn(s); mPUSHn(ds); mPUSHn(d2s);
+    %};
+
+  alglib::real_2d_array
+  spline1dunpack()
+    %code{%
+      ae_int_t n;
+      alglib::spline1dunpack(*THIS, n, RETVAL);
+    %};
+
+  void
+  spline1dlintransx(const double a, const double b)
+    %code{% alglib::spline1dlintransx(*THIS, a, b); %};
+
+  void
+  spline1dlintransy(const double a, const double b)
+    %code{% alglib::spline1dlintransy(*THIS, a, b); %};
+
+  double
+  spline1dintegrate(const double x)
+    %code{%
+      RETVAL = alglib::spline1dintegrate(*THIS, x);
+    %};
+
 };
 
 
@@ -271,5 +307,13 @@ spline1dbuildhermite(alglib::real_1d_array x, alglib::real_1d_array y, alglib::r
     const char CLASS[] = "Math::Alglib::Interpolation::Spline1dInterpolant";
     RETVAL = new alglib::spline1dinterpolant();
     alglib::spline1dbuildhermite(x, y, d, *RETVAL);
+  %};
+
+spline1dinterpolant*
+spline1dbuildakima(alglib::real_1d_array x, alglib::real_1d_array y)
+  %code{%
+    const char CLASS[] = "Math::Alglib::Interpolation::Spline1dInterpolant";
+    RETVAL = new alglib::spline1dinterpolant();
+    alglib::spline1dbuildakima(x, y, *RETVAL);
   %};
 

@@ -62,6 +62,12 @@ TODO: {
     polynomialcalccheb1
     polynomialcalccheb2
     ~spline1dinterpolant
+    spline1dcalc
+    spline1ddiff
+    spline1dunpack
+    spline1dlintransx
+    spline1dlintransy
+    spline1dintegrate
     spline1dbuildlinear
     spline1dbuildcubic
     spline1dgriddiffcubic
@@ -70,6 +76,7 @@ TODO: {
     spline1dconvdiff2cubic
     spline1dbuildcatmullrom
     spline1dbuildhermite
+    spline1dbuildakima
   );
 }
 
