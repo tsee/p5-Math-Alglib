@@ -66,6 +66,10 @@ TODO: {
     spline1dbuildcubic
     spline1dgriddiffcubic
     spline1dconvcubic
+    spline1dconvdiffcubic
+    spline1dconvdiff2cubic
+    spline1dbuildcatmullrom
+    spline1dbuildhermite
   );
 }
 

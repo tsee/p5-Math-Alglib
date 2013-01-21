@@ -233,3 +233,43 @@ spline1dconvdiffcubic(alglib::real_1d_array x, alglib::real_1d_array y, ae_int_t
     }
   %};
 
+void
+spline1dconvdiff2cubic(alglib::real_1d_array x, alglib::real_1d_array y, ae_int_t n,
+                       ae_int_t boundltype, double boundl,
+                       ae_int_t boundrtype, double boundr,
+                       alglib::real_1d_array x2, const ae_int_t n2)
+  %code{%
+    alglib::real_1d_array y2, d2, dd2;
+    alglib::spline1dconvdiff2cubic(x, y, n, boundltype, boundl, boundrtype, boundr, x2, n2, y2, d2, dd2);
+    EXTEND(SP, 3);
+    {
+      const unsigned int len = y2.length();
+      mPUSHs(sv_2mortal(newRV_noinc((SV *)real_1d_array_to_av(aTHX_ y2))));
+    }
+    {
+      const unsigned int len = d2.length();
+      mPUSHs(sv_2mortal(newRV_noinc((SV *)real_1d_array_to_av(aTHX_ d2))));
+    }
+    {
+      const unsigned int len = dd2.length();
+      mPUSHs(sv_2mortal(newRV_noinc((SV *)real_1d_array_to_av(aTHX_ dd2))));
+    }
+  %};
+
+spline1dinterpolant*
+spline1dbuildcatmullrom(alglib::real_1d_array x, alglib::real_1d_array y, ae_int_t n,
+                        ae_int_t boundtype = 0, double tension = 0)
+  %code{%
+    const char CLASS[] = "Math::Alglib::Interpolation::Spline1dInterpolant";
+    RETVAL = new alglib::spline1dinterpolant();
+    alglib::spline1dbuildcatmullrom(x, y, n, boundtype, tension, *RETVAL);
+  %};
+
+spline1dinterpolant*
+spline1dbuildhermite(alglib::real_1d_array x, alglib::real_1d_array y, alglib::real_1d_array d)
+  %code{%
+    const char CLASS[] = "Math::Alglib::Interpolation::Spline1dInterpolant";
+    RETVAL = new alglib::spline1dinterpolant();
+    alglib::spline1dbuildhermite(x, y, d, *RETVAL);
+  %};
+
