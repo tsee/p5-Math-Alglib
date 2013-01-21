@@ -31,9 +31,7 @@
 // %typemap{alglib_impl::odesolverstate};
 // %typemap{alglib_impl::odesolverstate*};
 
-%typemap{alglib_impl::idwinterpolant};
 %typemap{alglib_impl::idwinterpolant*};
-%typemap{alglib_impl::barycentricinterpolant};
 %typemap{alglib_impl::barycentricinterpolant*};
 
 %exception{ApError}{alglib::ap_error}{code}{%
