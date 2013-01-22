@@ -110,6 +110,7 @@ my $docs = [
     },
     notes => {
       polynomialfit => 'Returns array ref of three elements: info, barycentricinterpolant object, hashref of polynomialfitreport data',
+      polynomialfitwc => 'Returns array ref of three elements: info, barycentricinterpolant object, hashref of polynomialfitreport data',
     },
   },
 ];
