@@ -32,6 +32,8 @@
 %typemap{barycentricinterpolant*};
 %typemap{spline1dinterpolant*};
 %typemap{polynomialfitreport};
+%typemap{spline1dfitreport};
+%typemap{barycentricfitreport};
 
 %exception{ApError}{alglib::ap_error}{code}{%
   croak("%s", e.msg.c_str());

@@ -82,6 +82,7 @@ TODO: {
     polynomialfitwc
     barycentricfitfloaterhormannwc
     barycentricfitfloaterhormann
+    spline1dfitpenalized
   );
 }
 

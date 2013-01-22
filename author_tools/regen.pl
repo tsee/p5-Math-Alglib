@@ -99,6 +99,20 @@ barycentricfitreport_to_hvref(pTHX_ const alglib::barycentricfitreport &rep)
   return rv;
 }
 
+/* turns spline1dfitreport into a hashref for output */
+SV *
+spline1dfitreport_to_hvref(pTHX_ const alglib::spline1dfitreport &rep)
+{
+  HV* hv = newHV();
+  SV *rv = newRV_noinc((SV*)hv);
+  hv_stores(hv, "taskrcond", newSVnv(rep.taskrcond));
+  hv_stores(hv, "rmserror", newSVnv(rep.rmserror));
+  hv_stores(hv, "avgerror", newSVnv(rep.avgerror));
+  hv_stores(hv, "avgrelerror", newSVnv(rep.avgrelerror));
+  hv_stores(hv, "maxerror", newSVnv(rep.maxerror));
+  return rv;
+}
+
 /* Given an arbitrary ptr and a class name, returns a blessed scalar,
  * traditional XS style... */
 SV *

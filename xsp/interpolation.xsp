@@ -392,5 +392,21 @@ barycentricfitfloaterhormann(real_1d_array x, real_1d_array y, const ae_int_t n,
   OUTPUT: RETVAL
 %}
 
+{%
+AV *
+spline1dfitpenalized(real_1d_array x, real_1d_array y, const ae_int_t m, const double rho)
+  CODE:
+    sv_2mortal((SV *)RETVAL);
+    alglib::spline1dfitreport rep;
+    ae_int_t info;
+    alglib::spline1dinterpolant *spl = new alglib::spline1dinterpolant();
+
+    alglib::spline1dfitpenalized(x, y, m, rho, info, *spl, rep);
+
+    av_push(RETVAL, newSViv(info));
+    av_push(RETVAL, ptr_to_perl_obj(aTHX_ spl, "Math::Alglib::Interpolation::Spline1dInterpolant"));
+    av_push(RETVAL, spline1dfitreport_to_hvref(aTHX_ rep));
+  OUTPUT: RETVAL
+%}
 
 
