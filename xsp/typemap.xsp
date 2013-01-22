@@ -8,23 +8,15 @@
 
 %typemap{real_1d_array};
 %typemap{alglib::real_1d_array};
-%typemap{const real_1d_array};
-%typemap{const alglib::real_1d_array};
 
 %typemap{complex_1d_array};
 %typemap{alglib::complex_1d_array};
-%typemap{const complex_1d_array};
-%typemap{const alglib::complex_1d_array};
 
 %typemap{integer_1d_array};
 %typemap{alglib::integer_1d_array};
-%typemap{const integer_1d_array};
-%typemap{const alglib::integer_1d_array};
 
 %typemap{real_2d_array};
 %typemap{alglib::real_2d_array};
-%typemap{const real_2d_array};
-%typemap{const alglib::real_2d_array};
 
 %typemap{const double};
 %typemap{double};

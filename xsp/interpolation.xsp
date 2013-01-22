@@ -13,7 +13,7 @@ class idwinterpolant {
   ~idwinterpolant();
 
   double
-  idwcalc(alglib::real_1d_array x)
+  idwcalc(real_1d_array x)
     %code{%
       RETVAL = alglib::idwcalc(*THIS, x);
     %};
@@ -66,11 +66,11 @@ class barycentricinterpolant {
       XSRETURN(4);
     %};
 
-  alglib::real_1d_array
+  real_1d_array
   polynomialbar2cheb(const double a, const double b)
     %code{% alglib::polynomialbar2cheb(*THIS, a, b, RETVAL); %};
 
-  alglib::real_1d_array
+  real_1d_array
   polynomialbar2pow(const double c, const double s)
     %code{% alglib::polynomialbar2pow(*THIS, c, s, RETVAL); %};
 };
@@ -94,7 +94,7 @@ class spline1dinterpolant {
       mPUSHn(s); mPUSHn(ds); mPUSHn(d2s);
     %};
 
-  alglib::real_2d_array
+  real_2d_array
   spline1dunpack()
     %code{%
       ae_int_t n;
@@ -122,7 +122,7 @@ class spline1dinterpolant {
 %package{Math::Alglib::Interpolation};
 
 idwinterpolant*
-idwbuildmodifiedshepard(alglib::real_2d_array xy, const ae_int_t n, const ae_int_t nx,
+idwbuildmodifiedshepard(real_2d_array xy, const ae_int_t n, const ae_int_t nx,
                          const ae_int_t d, const ae_int_t nq, const ae_int_t nw)
   %code{%
     const char CLASS[] = "Math::Alglib::Interpolation::IdwInterpolant";
@@ -131,7 +131,7 @@ idwbuildmodifiedshepard(alglib::real_2d_array xy, const ae_int_t n, const ae_int
   %};
 
 idwinterpolant*
-idwbuildmodifiedshepardr(alglib::real_2d_array xy, const ae_int_t n, const ae_int_t nx, const double r)
+idwbuildmodifiedshepardr(real_2d_array xy, const ae_int_t n, const ae_int_t nx, const double r)
   %code{%
     const char CLASS[] = "Math::Alglib::Interpolation::IdwInterpolant";
     RETVAL = new alglib::idwinterpolant();
@@ -139,7 +139,7 @@ idwbuildmodifiedshepardr(alglib::real_2d_array xy, const ae_int_t n, const ae_in
   %};
 
 idwinterpolant*
-idwbuildnoisy(alglib::real_2d_array xy, const ae_int_t n, const ae_int_t nx,
+idwbuildnoisy(real_2d_array xy, const ae_int_t n, const ae_int_t nx,
               const ae_int_t d, const ae_int_t nq, const ae_int_t nw)
   %code{%
     const char CLASS[] = "Math::Alglib::Interpolation::IdwInterpolant";
@@ -149,7 +149,7 @@ idwbuildnoisy(alglib::real_2d_array xy, const ae_int_t n, const ae_int_t nx,
 
 //////////////////////////////////////////////////////////////////////
 barycentricinterpolant*
-barycentricbuildxyw(alglib::real_1d_array x, alglib::real_1d_array y, alglib::real_1d_array w, const ae_int_t n)
+barycentricbuildxyw(real_1d_array x, real_1d_array y, real_1d_array w, const ae_int_t n)
   %code{%
     const char CLASS[] = "Math::Alglib::Interpolation::BarycentricInterpolant";
     RETVAL = new alglib::barycentricinterpolant();
@@ -157,7 +157,7 @@ barycentricbuildxyw(alglib::real_1d_array x, alglib::real_1d_array y, alglib::re
   %};
 
 barycentricinterpolant*
-barycentricbuildfloaterhormann(alglib::real_1d_array x, alglib::real_1d_array y, const ae_int_t n, const ae_int_t d)
+barycentricbuildfloaterhormann(real_1d_array x, real_1d_array y, const ae_int_t n, const ae_int_t d)
   %code{%
     const char CLASS[] = "Math::Alglib::Interpolation::BarycentricInterpolant";
     RETVAL = new alglib::barycentricinterpolant();
@@ -165,7 +165,7 @@ barycentricbuildfloaterhormann(alglib::real_1d_array x, alglib::real_1d_array y,
   %};
 
 barycentricinterpolant*
-polynomialcheb2bar(alglib::real_1d_array t, const double a, const double b)
+polynomialcheb2bar(real_1d_array t, const double a, const double b)
   %code{%
     const char CLASS[] = "Math::Alglib::Interpolation::BarycentricInterpolant";
     RETVAL = new alglib::barycentricinterpolant();
@@ -173,7 +173,7 @@ polynomialcheb2bar(alglib::real_1d_array t, const double a, const double b)
   %};
 
 barycentricinterpolant*
-polynomialpow2bar(alglib::real_1d_array a, const ae_int_t n, const double c, const double s)
+polynomialpow2bar(real_1d_array a, const ae_int_t n, const double c, const double s)
   %code{%
     const char CLASS[] = "Math::Alglib::Interpolation::BarycentricInterpolant";
     RETVAL = new alglib::barycentricinterpolant();
@@ -181,7 +181,7 @@ polynomialpow2bar(alglib::real_1d_array a, const ae_int_t n, const double c, con
   %};
 
 barycentricinterpolant*
-polynomialbuild(alglib::real_1d_array x, alglib::real_1d_array y)
+polynomialbuild(real_1d_array x, real_1d_array y)
   %code{%
     const char CLASS[] = "Math::Alglib::Interpolation::BarycentricInterpolant";
     RETVAL = new alglib::barycentricinterpolant();
@@ -190,7 +190,7 @@ polynomialbuild(alglib::real_1d_array x, alglib::real_1d_array y)
 
 {%
 barycentricinterpolant*
-polynomialbuildcheb1(const double a, const double b, alglib::real_1d_array y)
+polynomialbuildcheb1(const double a, const double b, real_1d_array y)
   PREINIT:
     const char CLASS[] = "Math::Alglib::Interpolation::BarycentricInterpolant";
   ALIAS:
@@ -208,14 +208,14 @@ polynomialbuildcheb1(const double a, const double b, alglib::real_1d_array y)
 %}
 //////////////////////////////////////////////////////////////////////
 
-double polynomialcalceqdist(const double a, const double b, alglib::real_1d_array f, const double t);
-double polynomialcalccheb1(const double a, const double b, alglib::real_1d_array f, const double t);
-double polynomialcalccheb2(const double a, const double b, alglib::real_1d_array f, const double t);
+double polynomialcalceqdist(const double a, const double b, real_1d_array f, const double t);
+double polynomialcalccheb1(const double a, const double b, real_1d_array f, const double t);
+double polynomialcalccheb2(const double a, const double b, real_1d_array f, const double t);
 
 
 //////////////////////////////////////////////////////////////////////
 spline1dinterpolant*
-spline1dbuildlinear(alglib::real_1d_array x, alglib::real_1d_array y)
+spline1dbuildlinear(real_1d_array x, real_1d_array y)
   %code{%
     const char CLASS[] = "Math::Alglib::Interpolation::Spline1dInterpolant";
     RETVAL = new alglib::spline1dinterpolant();
@@ -223,7 +223,7 @@ spline1dbuildlinear(alglib::real_1d_array x, alglib::real_1d_array y)
   %};
 
 spline1dinterpolant*
-spline1dbuildcubic(alglib::real_1d_array x, alglib::real_1d_array y, ae_int_t n,
+spline1dbuildcubic(real_1d_array x, real_1d_array y, ae_int_t n,
                    ae_int_t boundltype = 0, double boundl = 0,
                    ae_int_t boundrtype = 0, double boundr = 0)
   %code{%
@@ -232,8 +232,8 @@ spline1dbuildcubic(alglib::real_1d_array x, alglib::real_1d_array y, ae_int_t n,
     alglib::spline1dbuildcubic(x, y, n, boundltype, boundl, boundrtype, boundr, *RETVAL);
   %};
 
-alglib::real_1d_array
-spline1dgriddiffcubic(alglib::real_1d_array x, alglib::real_1d_array y, ae_int_t n,
+real_1d_array
+spline1dgriddiffcubic(real_1d_array x, real_1d_array y, ae_int_t n,
                       ae_int_t boundltype = 0, double boundl = 0,
                       ae_int_t boundrtype = 0, double boundr = 0)
   %code{%
@@ -241,22 +241,22 @@ spline1dgriddiffcubic(alglib::real_1d_array x, alglib::real_1d_array y, ae_int_t
   %};
 
 
-alglib::real_1d_array
-spline1dconvcubic(alglib::real_1d_array x, alglib::real_1d_array y, ae_int_t n,
+real_1d_array
+spline1dconvcubic(real_1d_array x, real_1d_array y, ae_int_t n,
                   ae_int_t boundltype, double boundl,
                   ae_int_t boundrtype, double boundr,
-                  alglib::real_1d_array x2, const ae_int_t n2)
+                  real_1d_array x2, const ae_int_t n2)
   %code{%
     alglib::spline1dconvcubic(x, y, n, boundltype, boundl, boundrtype, boundr, x2, n2, RETVAL);
   %};
 
 void
-spline1dconvdiffcubic(alglib::real_1d_array x, alglib::real_1d_array y, ae_int_t n,
+spline1dconvdiffcubic(real_1d_array x, real_1d_array y, ae_int_t n,
                       ae_int_t boundltype, double boundl,
                       ae_int_t boundrtype, double boundr,
-                      alglib::real_1d_array x2, const ae_int_t n2)
+                      real_1d_array x2, const ae_int_t n2)
   %code{%
-    alglib::real_1d_array y2, d2;
+    real_1d_array y2, d2;
     alglib::spline1dconvdiffcubic(x, y, n, boundltype, boundl, boundrtype, boundr, x2, n2, y2, d2);
     EXTEND(SP, 2);
     {
@@ -270,12 +270,12 @@ spline1dconvdiffcubic(alglib::real_1d_array x, alglib::real_1d_array y, ae_int_t
   %};
 
 void
-spline1dconvdiff2cubic(alglib::real_1d_array x, alglib::real_1d_array y, ae_int_t n,
+spline1dconvdiff2cubic(real_1d_array x, real_1d_array y, ae_int_t n,
                        ae_int_t boundltype, double boundl,
                        ae_int_t boundrtype, double boundr,
-                       alglib::real_1d_array x2, const ae_int_t n2)
+                       real_1d_array x2, const ae_int_t n2)
   %code{%
-    alglib::real_1d_array y2, d2, dd2;
+    real_1d_array y2, d2, dd2;
     alglib::spline1dconvdiff2cubic(x, y, n, boundltype, boundl, boundrtype, boundr, x2, n2, y2, d2, dd2);
     EXTEND(SP, 3);
     {
@@ -293,7 +293,7 @@ spline1dconvdiff2cubic(alglib::real_1d_array x, alglib::real_1d_array y, ae_int_
   %};
 
 spline1dinterpolant*
-spline1dbuildcatmullrom(alglib::real_1d_array x, alglib::real_1d_array y, ae_int_t n,
+spline1dbuildcatmullrom(real_1d_array x, real_1d_array y, ae_int_t n,
                         ae_int_t boundtype = 0, double tension = 0)
   %code{%
     const char CLASS[] = "Math::Alglib::Interpolation::Spline1dInterpolant";
@@ -302,7 +302,7 @@ spline1dbuildcatmullrom(alglib::real_1d_array x, alglib::real_1d_array y, ae_int
   %};
 
 spline1dinterpolant*
-spline1dbuildhermite(alglib::real_1d_array x, alglib::real_1d_array y, alglib::real_1d_array d)
+spline1dbuildhermite(real_1d_array x, real_1d_array y, real_1d_array d)
   %code{%
     const char CLASS[] = "Math::Alglib::Interpolation::Spline1dInterpolant";
     RETVAL = new alglib::spline1dinterpolant();
@@ -311,7 +311,7 @@ spline1dbuildhermite(alglib::real_1d_array x, alglib::real_1d_array y, alglib::r
 
 {%
 spline1dinterpolant*
-spline1dbuildakima(alglib::real_1d_array x, alglib::real_1d_array y)
+spline1dbuildakima(real_1d_array x, real_1d_array y)
   ALIAS:
     spline1dbuildmonotone = 1
   CODE:
@@ -326,7 +326,7 @@ spline1dbuildakima(alglib::real_1d_array x, alglib::real_1d_array y)
 
 {%
 void
-polynomialfit(alglib::real_1d_array x, alglib::real_1d_array y, const ae_int_t m)
+polynomialfit(real_1d_array x, real_1d_array y, const ae_int_t m)
   PPCODE:
     const char CLASS[] = "Math::Alglib::Interpolation::Spline1dInterpolant";
     alglib::polynomialfitreport rep;
@@ -346,10 +346,7 @@ polynomialfit(alglib::real_1d_array x, alglib::real_1d_array y, const ae_int_t m
 
 {%
 void
-polynomialfitwc(real_1d_array x, real_1d_array y,
-                real_1d_array w, real_1d_array xc,
-                real_1d_array yc, integer_1d_array dc,
-                const ae_int_t m)
+polynomialfitwc(real_1d_array x, real_1d_array y, real_1d_array w, real_1d_array xc, real_1d_array yc, integer_1d_array dc, const ae_int_t m)
   PPCODE:
     const char CLASS[] = "Math::Alglib::Interpolation::Spline1dInterpolant";
     alglib::polynomialfitreport rep;
@@ -359,7 +356,7 @@ polynomialfitwc(real_1d_array x, real_1d_array y,
     SV *sv = newSV(0);
     sv_setref_pv(sv, CLASS, (void*)bary );
 
-    alglib::polynomialfit(x, y, w, xc, yc, dc, m, info, *bary, rep);
+    alglib::polynomialfitwc(x, y, w, xc, yc, dc, m, info, *bary, rep);
 
     XPUSHs(sv_2mortal(newRV_noinc((SV *)av)));
     av_push(av, newSViv(m));

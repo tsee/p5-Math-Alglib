@@ -10,54 +10,54 @@
 
 
 std::vector<double>
-samplemoments(alglib::real_1d_array sample)
+samplemoments(real_1d_array sample)
   %code{%
     RETVAL.resize(4);
     alglib::samplemoments(sample, RETVAL[0], RETVAL[1], RETVAL[2], RETVAL[3]);
   %};
 
-double samplemean(alglib::real_1d_array x);
-double samplevariance(alglib::real_1d_array x);
-double sampleskewness(alglib::real_1d_array x);
-double samplekurtosis(alglib::real_1d_array x);
+double samplemean(real_1d_array x);
+double samplevariance(real_1d_array x);
+double sampleskewness(real_1d_array x);
+double samplekurtosis(real_1d_array x);
 
 double
-samplemedian(alglib::real_1d_array sample)
+samplemedian(real_1d_array sample)
   %code{% alglib::samplemedian(sample, RETVAL); %};
 
 double
-samplepercentile(alglib::real_1d_array sample, double p)
+samplepercentile(real_1d_array sample, double p)
   %code{%
     if (sample.length() == 0)
       croak("Need non-zero sample size");
     alglib::samplepercentile(sample, p, RETVAL);
   %};
 
-double cov2(alglib::real_1d_array x, alglib::real_1d_array y)
+double cov2(real_1d_array x, real_1d_array y)
   %catch{ApError}; // FIXME leak on exception?
 
-double pearsoncorr2(alglib::real_1d_array x, alglib::real_1d_array y)
+double pearsoncorr2(real_1d_array x, real_1d_array y)
   %catch{ApError};
 
-double spearmancorr2(alglib::real_1d_array x, alglib::real_1d_array y)
+double spearmancorr2(real_1d_array x, real_1d_array y)
   %catch{ApError};
 
-alglib::real_2d_array covm(alglib::real_2d_array x)
+real_2d_array covm(real_2d_array x)
   %code{% alglib::covm(x, RETVAL); %};
 
-alglib::real_2d_array pearsoncorrm(alglib::real_2d_array x)
+real_2d_array pearsoncorrm(real_2d_array x)
   %code{% alglib::pearsoncorrm(x, RETVAL); %};
 
-alglib::real_2d_array spearmancorrm(alglib::real_2d_array x)
+real_2d_array spearmancorrm(real_2d_array x)
   %code{% alglib::spearmancorrm(x, RETVAL); %};
 
-alglib::real_2d_array covm2(alglib::real_2d_array x, alglib::real_2d_array y)
+real_2d_array covm2(real_2d_array x, real_2d_array y)
   %code{% alglib::covm2(x, y, RETVAL); %};
 
-alglib::real_2d_array pearsoncorrm2(alglib::real_2d_array x, alglib::real_2d_array y)
+real_2d_array pearsoncorrm2(real_2d_array x, real_2d_array y)
   %code{% alglib::pearsoncorrm2(x, y, RETVAL); %};
 
-alglib::real_2d_array spearmancorrm2(alglib::real_2d_array x, alglib::real_2d_array y)
+real_2d_array spearmancorrm2(real_2d_array x, real_2d_array y)
   %code{% alglib::spearmancorrm2(x, y, RETVAL); %};
 
 std::vector<double>
@@ -75,13 +75,13 @@ spearmanrankcorrelationsignificance(const double r, const ptrdiff_t n)
   %};
 
 std::vector<double>
-mannwhitneyutest(alglib::real_1d_array x, alglib::real_1d_array y)
+mannwhitneyutest(real_1d_array x, real_1d_array y)
   %code{%
     RETVAL.resize(3);
     alglib::mannwhitneyutest(x, x.length(), y, y.length(), RETVAL[0], RETVAL[1], RETVAL[2]);
   %};
 
-double jarqueberatest(alglib::real_1d_array sample)
+double jarqueberatest(real_1d_array sample)
   %code{%
     try {
       alglib::jarqueberatest(sample, sample.length(), RETVAL);
@@ -96,49 +96,49 @@ double jarqueberatest(alglib::real_1d_array sample)
   %};
 
 std::vector<double>
-onesamplesigntest(alglib::real_1d_array x, const double median)
+onesamplesigntest(real_1d_array x, const double median)
   %code{%
     RETVAL.resize(3);
     alglib::onesamplesigntest(x, x.length(), median, RETVAL[0], RETVAL[1], RETVAL[2]);
   %};
 
 std::vector<double>
-studentttest1(alglib::real_1d_array x, const double mean)
+studentttest1(real_1d_array x, const double mean)
   %code{%
     RETVAL.resize(3);
     alglib::studentttest1(x, x.length(), mean, RETVAL[0], RETVAL[1], RETVAL[2]);
   %};
 
 std::vector<double>
-studentttest2(alglib::real_1d_array x, alglib::real_1d_array y)
+studentttest2(real_1d_array x, real_1d_array y)
   %code{%
     RETVAL.resize(3);
     alglib::studentttest2(x, x.length(), y, y.length(), RETVAL[0], RETVAL[1], RETVAL[2]);
   %};
 
 std::vector<double>
-unequalvariancettest(alglib::real_1d_array x, alglib::real_1d_array y)
+unequalvariancettest(real_1d_array x, real_1d_array y)
   %code{%
     RETVAL.resize(3);
     alglib::unequalvariancettest(x, x.length(), y, y.length(), RETVAL[0], RETVAL[1], RETVAL[2]);
   %};
 
 std::vector<double>
-ftest(alglib::real_1d_array x, alglib::real_1d_array y)
+ftest(real_1d_array x, real_1d_array y)
   %code{%
     RETVAL.resize(3);
     alglib::ftest(x, x.length(), y, y.length(), RETVAL[0], RETVAL[1], RETVAL[2]);
   %};
 
 std::vector<double>
-onesamplevariancetest(alglib::real_1d_array x, const double variance)
+onesamplevariancetest(real_1d_array x, const double variance)
   %code{%
     RETVAL.resize(3);
     alglib::onesamplevariancetest(x, x.length(), variance, RETVAL[0], RETVAL[1], RETVAL[2]);
   %};
 
 std::vector<double>
-wilcoxonsignedranktest(alglib::real_1d_array x, const double median)
+wilcoxonsignedranktest(real_1d_array x, const double median)
   %code{%
     RETVAL.resize(3);
     alglib::wilcoxonsignedranktest(x, x.length(), median, RETVAL[0], RETVAL[1], RETVAL[2]);

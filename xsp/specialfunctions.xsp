@@ -47,16 +47,16 @@ double binomialdistribution(const ptrdiff_t k, const ptrdiff_t n, const double p
 double binomialcdistribution(const ptrdiff_t k, const ptrdiff_t n, const double p);
 double invbinomialdistribution(const ptrdiff_t k, const ptrdiff_t n, const double y);
 double chebyshevcalculate(const ptrdiff_t r, const ptrdiff_t n, const double x);
-double chebyshevsum(alglib::real_1d_array c, const ptrdiff_t r, const ptrdiff_t n, const double x);
+double chebyshevsum(real_1d_array c, const ptrdiff_t r, const ptrdiff_t n, const double x);
 
-alglib::real_1d_array
+real_1d_array
 chebyshevcoefficients(const ptrdiff_t n)
   %code{%
     alglib::chebyshevcoefficients(n, RETVAL);
   %};
 
-alglib::real_1d_array
-fromchebyshev(alglib::real_1d_array a, const ptrdiff_t n)
+real_1d_array
+fromchebyshev(real_1d_array a, const ptrdiff_t n)
   %code{%
     alglib::fromchebyshev(a, n, RETVAL);
   %};
@@ -84,9 +84,9 @@ fresnelintegral(const double x)
   %};
 
 double hermitecalculate(const ptrdiff_t n, const double x);
-double hermitesum(alglib::real_1d_array c, const ptrdiff_t n, const double x);
+double hermitesum(real_1d_array c, const ptrdiff_t n, const double x);
 
-alglib::real_1d_array
+real_1d_array
 hermitecoefficients(const ptrdiff_t n)
   %code{%
     alglib::hermitecoefficients(n, RETVAL);
@@ -100,18 +100,18 @@ jacobianellipticfunctions(const double u, const double m)
   %};
 
 double laguerrecalculate(const ptrdiff_t n, const double x);
-double laguerresum(alglib::real_1d_array c, const ptrdiff_t n, const double x);
+double laguerresum(real_1d_array c, const ptrdiff_t n, const double x);
 
-alglib::real_1d_array
+real_1d_array
 laguerrecoefficients(const ptrdiff_t n)
   %code{%
     alglib::laguerrecoefficients(n, RETVAL);
   %};
 
 double legendrecalculate(const ptrdiff_t n, const double x);
-double legendresum(alglib::real_1d_array c, const ptrdiff_t n, const double x);
+double legendresum(real_1d_array c, const ptrdiff_t n, const double x);
 
-alglib::real_1d_array
+real_1d_array
 legendrecoefficients(const ptrdiff_t n)
   %code{%
     alglib::legendrecoefficients(n, RETVAL);

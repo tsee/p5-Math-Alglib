@@ -11,6 +11,12 @@ alglib::complex_1d_array	AL_CPLXNV_ARRAY
 alglib::complex_1d_array*	AL_CPLXNV_ARRAY_PTR
 alglib::integer_1d_array	AL_IV_ARRAY
 
+real_1d_array			AL_NV_ARRAY
+real_2d_array			AL_NV_2DARRAY
+complex_1d_array		AL_CPLXNV_ARRAY
+complex_1d_array* 	 	AL_CPLXNV_ARRAY_PTR
+integer_1d_array		AL_IV_ARRAY
+
 idwinterpolant*			O_OBJECT
 barycentricinterpolant*		O_OBJECT
 spline1dinterpolant*		O_OBJECT

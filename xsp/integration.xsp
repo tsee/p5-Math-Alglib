@@ -9,7 +9,7 @@
 
 {%
 SV *
-gqgeneraterec(alglib::real_1d_array alpha, alglib::real_1d_array beta, double mu0, ae_int_t n)
+gqgeneraterec(real_1d_array alpha, real_1d_array beta, double mu0, ae_int_t n)
   PREINIT:
     ae_int_t info;
     real_1d_array x, w;
@@ -22,7 +22,7 @@ gqgeneraterec(alglib::real_1d_array alpha, alglib::real_1d_array beta, double mu
 
 {%
 SV *
-gqgenerategausslobattorec(alglib::real_1d_array alpha, alglib::real_1d_array beta, double mu0, double a, double b, ae_int_t n)
+gqgenerategausslobattorec(real_1d_array alpha, real_1d_array beta, double mu0, double a, double b, ae_int_t n)
   PREINIT:
     ae_int_t info;
     real_1d_array x, w;
@@ -34,7 +34,7 @@ gqgenerategausslobattorec(alglib::real_1d_array alpha, alglib::real_1d_array bet
 
 {%
 SV *
-gqgenerategaussradaurec(alglib::real_1d_array alpha, alglib::real_1d_array beta, double mu0, double a, ae_int_t n)
+gqgenerategaussradaurec(real_1d_array alpha, real_1d_array beta, double mu0, double a, ae_int_t n)
   PREINIT:
     ae_int_t info;
     real_1d_array x, w;
@@ -87,7 +87,7 @@ gqgenerategausslaguerre(ae_int_t n, double alpha)
 
 {%
 SV *
-gkqgeneraterec(alglib::real_1d_array alpha, alglib::real_1d_array beta, double mu0, ae_int_t n)
+gkqgeneraterec(real_1d_array alpha, real_1d_array beta, double mu0, ae_int_t n)
   PREINIT:
     ae_int_t info;
     real_1d_array x, wkronrod, wgauss;

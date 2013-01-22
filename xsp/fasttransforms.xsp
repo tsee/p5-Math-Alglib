@@ -8,120 +8,120 @@
 %package{Math::Alglib::FastTransforms};
 
 {%
-alglib::complex_1d_array
+complex_1d_array
 fftc1d(a)
-    alglib::complex_1d_array a;
+    complex_1d_array a;
   CODE:
     alglib::fftc1d(a);
   OUTPUT: a
 %}
 
 {%
-alglib::complex_1d_array
+complex_1d_array
 fftc1dinv(a)
-    alglib::complex_1d_array a;
+    complex_1d_array a;
   CODE:
     alglib::fftc1dinv(a);
   OUTPUT: a
 %}
 
-alglib::complex_1d_array
-fftr1d(alglib::real_1d_array a)
+complex_1d_array
+fftr1d(real_1d_array a)
   %code{%
     fftr1d(a, RETVAL);
   %};
 
-alglib::real_1d_array
-fftr1dinv(alglib::complex_1d_array f)
+real_1d_array
+fftr1dinv(complex_1d_array f)
   %code{%
     fftr1dinv(f, RETVAL);
   %};
 
-alglib::complex_1d_array
-convc1d(alglib::complex_1d_array a, alglib::complex_1d_array b)
+complex_1d_array
+convc1d(complex_1d_array a, complex_1d_array b)
   %code{%
     convc1d(a, a.length(), b, b.length(), RETVAL);
   %};
 
-alglib::complex_1d_array
-convc1dinv(alglib::complex_1d_array a, alglib::complex_1d_array b)
+complex_1d_array
+convc1dinv(complex_1d_array a, complex_1d_array b)
   %code{%
     convc1dinv(a, a.length(), b, b.length(), RETVAL);
   %};
 
-alglib::complex_1d_array
-convc1dcircular(alglib::complex_1d_array s, alglib::complex_1d_array r)
+complex_1d_array
+convc1dcircular(complex_1d_array s, complex_1d_array r)
   %code{%
     convc1dcircular(s, s.length(), r, r.length(), RETVAL);
   %};
 
-alglib::complex_1d_array
-convc1dcircularinv(alglib::complex_1d_array s, alglib::complex_1d_array r)
+complex_1d_array
+convc1dcircularinv(complex_1d_array s, complex_1d_array r)
   %code{%
     convc1dcircularinv(s, s.length(), r, r.length(), RETVAL);
   %};
 
-alglib::real_1d_array
-convr1d(alglib::real_1d_array a, alglib::real_1d_array b)
+real_1d_array
+convr1d(real_1d_array a, real_1d_array b)
   %code{%
     convr1d(a, a.length(), b, b.length(), RETVAL);
   %};
 
-alglib::real_1d_array
-convr1dinv(alglib::real_1d_array a, alglib::real_1d_array b)
+real_1d_array
+convr1dinv(real_1d_array a, real_1d_array b)
   %code{%
     convr1dinv(a, a.length(), b, b.length(), RETVAL);
   %};
 
-alglib::real_1d_array
-convr1dcircular(alglib::real_1d_array s, alglib::real_1d_array r)
+real_1d_array
+convr1dcircular(real_1d_array s, real_1d_array r)
   %code{%
     convr1dcircular(s, s.length(), r, r.length(), RETVAL);
   %};
 
-alglib::real_1d_array
-convr1dcircularinv(alglib::real_1d_array s, alglib::real_1d_array r)
+real_1d_array
+convr1dcircularinv(real_1d_array s, real_1d_array r)
   %code{%
     convr1dcircularinv(s, s.length(), r, r.length(), RETVAL);
   %};
 
-alglib::complex_1d_array
-corrc1d(alglib::complex_1d_array signal, alglib::complex_1d_array pattern)
+complex_1d_array
+corrc1d(complex_1d_array signal, complex_1d_array pattern)
   %code{%
     corrc1d(signal, signal.length(), pattern, pattern.length(), RETVAL);
   %};
 
-alglib::complex_1d_array
-corrc1dcircular(alglib::complex_1d_array signal, alglib::complex_1d_array pattern)
+complex_1d_array
+corrc1dcircular(complex_1d_array signal, complex_1d_array pattern)
   %code{%
     corrc1dcircular(signal, signal.length(), pattern, pattern.length(), RETVAL);
   %};
 
-alglib::real_1d_array
-corrr1d(alglib::real_1d_array signal, alglib::real_1d_array pattern)
+real_1d_array
+corrr1d(real_1d_array signal, real_1d_array pattern)
   %code{%
     corrr1d(signal, signal.length(), pattern, pattern.length(), RETVAL);
   %};
 
-alglib::real_1d_array
-corrr1dcircular(alglib::real_1d_array signal, alglib::real_1d_array pattern)
+real_1d_array
+corrr1dcircular(real_1d_array signal, real_1d_array pattern)
   %code{%
     corrr1dcircular(signal, signal.length(), pattern, pattern.length(), RETVAL);
   %};
 
 {%
-alglib::real_1d_array
+real_1d_array
 fhtr1d(a)
-    alglib::real_1d_array a;
+    real_1d_array a;
   CODE:
     alglib::fhtr1d(a, a.length());
   OUTPUT: a
 %}
 
 {%
-alglib::real_1d_array
+real_1d_array
 fhtr1dinv(a)
-    alglib::real_1d_array a;
+    real_1d_array a;
   CODE:
     alglib::fhtr1dinv(a, a.length());
   OUTPUT: a
