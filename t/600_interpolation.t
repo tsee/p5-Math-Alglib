@@ -80,6 +80,8 @@ TODO: {
     spline1dbuildmonotone
     polynomialfit
     polynomialfitwc
+    barycentricfitfloaterhormannwc
+    barycentricfitfloaterhormann
   );
 }
 
