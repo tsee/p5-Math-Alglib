@@ -78,6 +78,8 @@ TODO: {
     spline1dbuildhermite
     spline1dbuildakima
     spline1dbuildmonotone
+    polynomialfit
+    polynomialfitwc
   );
 }
 

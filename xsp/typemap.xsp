@@ -16,6 +16,11 @@
 %typemap{const complex_1d_array};
 %typemap{const alglib::complex_1d_array};
 
+%typemap{integer_1d_array};
+%typemap{alglib::integer_1d_array};
+%typemap{const integer_1d_array};
+%typemap{const alglib::integer_1d_array};
+
 %typemap{real_2d_array};
 %typemap{alglib::real_2d_array};
 %typemap{const real_2d_array};
@@ -34,6 +39,7 @@
 %typemap{idwinterpolant*};
 %typemap{barycentricinterpolant*};
 %typemap{spline1dinterpolant*};
+%typemap{polynomialfitreport};
 
 %exception{ApError}{alglib::ap_error}{code}{%
   croak("%s", e.msg.c_str());

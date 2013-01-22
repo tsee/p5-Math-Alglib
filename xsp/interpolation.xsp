@@ -324,3 +324,46 @@ spline1dbuildakima(alglib::real_1d_array x, alglib::real_1d_array y)
   OUTPUT: RETVAL
 %}
 
+{%
+void
+polynomialfit(alglib::real_1d_array x, alglib::real_1d_array y, const ae_int_t m)
+  PPCODE:
+    const char CLASS[] = "Math::Alglib::Interpolation::Spline1dInterpolant";
+    alglib::polynomialfitreport rep;
+    ae_int_t info;
+    alglib::barycentricinterpolant *bary = new alglib::barycentricinterpolant();
+    AV *av = newAV();
+    SV *sv = newSV(0);
+    sv_setref_pv(sv, CLASS, (void*)bary );
+
+    alglib::polynomialfit(x, y, m, info, *bary, rep);
+
+    XPUSHs(sv_2mortal(newRV_noinc((SV *)av)));
+    av_push(av, newSViv(m));
+    av_push(av, sv);
+    av_push(av, polynomialfitreport_to_hvref(aTHX_ rep));
+%}
+
+{%
+void
+polynomialfitwc(real_1d_array x, real_1d_array y,
+                real_1d_array w, real_1d_array xc,
+                real_1d_array yc, integer_1d_array dc,
+                const ae_int_t m)
+  PPCODE:
+    const char CLASS[] = "Math::Alglib::Interpolation::Spline1dInterpolant";
+    alglib::polynomialfitreport rep;
+    ae_int_t info;
+    alglib::barycentricinterpolant *bary = new alglib::barycentricinterpolant();
+    AV *av = newAV();
+    SV *sv = newSV(0);
+    sv_setref_pv(sv, CLASS, (void*)bary );
+
+    alglib::polynomialfit(x, y, w, xc, yc, dc, m, info, *bary, rep);
+
+    XPUSHs(sv_2mortal(newRV_noinc((SV *)av)));
+    av_push(av, newSViv(m));
+    av_push(av, sv);
+    av_push(av, polynomialfitreport_to_hvref(aTHX_ rep));
+%}
+

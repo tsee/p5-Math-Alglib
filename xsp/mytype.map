@@ -9,6 +9,7 @@ alglib::real_1d_array		AL_NV_ARRAY
 alglib::real_2d_array		AL_NV_2DARRAY
 alglib::complex_1d_array	AL_CPLXNV_ARRAY
 alglib::complex_1d_array*	AL_CPLXNV_ARRAY_PTR
+alglib::integer_1d_array	AL_IV_ARRAY
 
 idwinterpolant*			O_OBJECT
 barycentricinterpolant*		O_OBJECT
@@ -16,6 +17,8 @@ spline1dinterpolant*		O_OBJECT
 odesolverstate*			O_OBJECT
 odesolverreport*		O_OBJECT
 
+
+polynomialfitreport		T_HV_POLYNOMIALFITREPORT
 alglib_impl::odesolverstate*    T_HV_ODESOLVERSTATE
 
 
@@ -41,6 +44,28 @@ AL_NV_ARRAY
           Perl_croak(aTHX_ \"%s: %s is not an array reference\",
                      ${$ALIAS?\q[GvNAME(CvGV(cv))]:\qq[\"$pname\"]},
                      \"$var\");
+
+AL_IV_ARRAY
+        if (SvROK($arg) && SvTYPE(SvRV($arg))==SVt_PVAV) {
+          AV *av = (AV*)SvRV($arg);
+          const unsigned int len = av_len(av)+1;
+          unsigned int i;
+          SV **elem;
+          $var = $type();
+          $var.setlength(len);
+          for (i = 0; i < len; i++) {
+            elem = av_fetch(av, i, 0);
+            if (elem != NULL)
+              ${var}[i] = SvIV(*elem);
+            else
+              ${var}[i] = 0;
+          }
+        }
+        else
+          Perl_croak(aTHX_ \"%s: %s is not an array reference\",
+                     ${$ALIAS?\q[GvNAME(CvGV(cv))]:\qq[\"$pname\"]},
+                     \"$var\");
+
 
 AL_CPLXNV_ARRAY
         if (SvROK($arg) && SvTYPE(SvRV($arg))==SVt_PVAV) {
@@ -121,6 +146,11 @@ AL_NV_ARRAY
         const unsigned int len = $var.length();
         $arg = newRV_noinc((SV *)real_1d_array_to_av(aTHX_ $var));
 
+AL_IV_ARRAY
+        const unsigned int len = $var.length();
+        $arg = newRV_noinc((SV *)integer_1d_array_to_av(aTHX_ $var));
+
+
 AL_CPLXNV_ARRAY
         AV* av = newAV();
         const unsigned int len = $var.length();
@@ -166,3 +196,7 @@ AL_NV_2DARRAY
 
 T_HV_ODESOLVERSTATE
         $arg = odesolverstate_to_perl_hash(aTHX_ $var);
+
+T_HV_POLYNOMIALFITREPORT
+        $arg = polynomialfitreport_to_hvref(aTHX_ $var);
+
