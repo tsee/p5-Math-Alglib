@@ -72,6 +72,17 @@ polynomialfitreport_to_hvref(pTHX_ const alglib::polynomialfitreport &rep)
   return rv;
 }
 
+/* Given an arbitrary ptr and a class name, returns a blessed scalar,
+ * traditional XS style... */
+SV *
+ptr_to_perl_obj(pTHX_ void *ptr, const char *CLASS)
+{
+  SV *obj;
+  obj = newSV(0);
+  sv_setref_pv(obj, CLASS, ptr);
+  return obj;
+}
+
 
 using namespace alglib; /* FIXME hack */
 
