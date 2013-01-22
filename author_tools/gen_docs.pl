@@ -97,7 +97,9 @@ my $docs = [
   {
     src_file => 'src/interpolation.h',
     mod_name => 'Math::Alglib::Interpolation',
-    unimpl   => [qw()],
+    unimpl   => [qw(
+      lsfitfit
+    )],
     sig_override => {
       polynomialbar2pow => 'void polynomialbar2pow(const barycentricinterpolant &p, const double c, const double s, real_1d_array &a);',
       polynomialpow2bar => 'void polynomialpow2bar(const real_1d_array &a, const ae_int_t n, const double c, const double s, barycentricinterpolant &p);',
@@ -151,6 +153,8 @@ sub emit_function_docs {
   foreach my $i (0..$#lines) {
     my $line = $lines[$i];
     next unless $line =~ /\*{10,}\/\s*$/; # at least 10 * follwed by /
+
+    # special cases to avoid parse failures (I know, I know...)
     next if !$lines[$i-1] or $lines[$i-1] =~ /LICENSE/;
 
     # backtrack to start of doc block
@@ -159,6 +163,9 @@ sub emit_function_docs {
     if (not grep /[^\s*]/, @lines[$j+1 .. $i-1]) {
       next;
     }
+
+    # more special cases to avoid parse failures (I know, I know...)
+    next if $lines[$j+1] =~ /family of functions is used to launcn iterations of nonlinear fitter/;
 
     # extract function signatures
     next if $lines[$i+1] =~ /^class\s+/; # skip class docs for now (FIXME)
