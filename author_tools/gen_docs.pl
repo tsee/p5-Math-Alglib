@@ -115,6 +115,10 @@ my $docs = [
       polynomialfitwc => 'Returns array ref of three elements: info, barycentricinterpolant object, hashref of polynomialfitreport data',
       barycentricfitfloaterhormannwc => 'Returns array ref of three elements: info, barycentricinterpolant object, hashref of barycentricfitreport data',
       barycentricfitfloaterhormann => 'Returns array ref of three elements: info, barycentricinterpolant object, hashref of barycentricfitreport data',
+      (
+        map {$_ => 'Returns array ref of three elements: info, spline1dinterpolant object, hashref of spline1dreport data'}
+        qw(spline1dfitpenalized spline1dfitpenalizedw spline1dfitcubicwc)
+      )
     },
   },
 ];

@@ -83,6 +83,8 @@ TODO: {
     barycentricfitfloaterhormannwc
     barycentricfitfloaterhormann
     spline1dfitpenalized
+    spline1dfitpenalizedw
+    spline1dfitcubicwc
   );
 }
 
