@@ -101,6 +101,23 @@ spline1dfitreport_to_hvref(pTHX_ const alglib::spline1dfitreport &rep)
   return rv;
 }
 
+/* turns lsfitreport into a hashref for output */
+SV *
+lsfitreport_to_hvref(pTHX_ const alglib::lsfitreport &rep)
+{
+  HV* hv = newHV();
+  SV *rv = newRV_noinc((SV*)hv);
+  hv_stores(hv, "taskrcond", newSVnv(rep.taskrcond));
+  hv_stores(hv, "iterationscount", newSViv(rep.iterationscount));
+  hv_stores(hv, "varidx", newSViv(rep.varidx));
+  hv_stores(hv, "rmserror", newSVnv(rep.rmserror));
+  hv_stores(hv, "avgerror", newSVnv(rep.avgerror));
+  hv_stores(hv, "avgrelerror", newSVnv(rep.avgrelerror));
+  hv_stores(hv, "maxerror", newSVnv(rep.maxerror));
+  hv_stores(hv, "wrmserror", newSVnv(rep.wrmserror));
+  return rv;
+}
+
 /* Given an arbitrary ptr and a class name, returns a blessed scalar,
  * traditional XS style... */
 SV *

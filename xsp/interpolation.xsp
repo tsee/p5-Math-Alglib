@@ -471,3 +471,55 @@ spline1dfitcubic(real_1d_array x, real_1d_array y, const ae_int_t m)
   OUTPUT: RETVAL
 %}
 
+{%
+AV *
+lsfitlinearw(real_1d_array y, real_1d_array w, real_2d_array fmatrix)
+  CODE:
+    sv_2mortal((SV *)RETVAL);
+    alglib::lsfitreport rep;
+    ae_int_t info;
+    real_1d_array c;
+
+    alglib::lsfitlinearw(y, w, fmatrix, info, c, rep);
+
+    av_push(RETVAL, newSViv(info));
+    av_push(RETVAL, newRV_noinc((SV *)real_1d_array_to_av(aTHX_ c)));
+    av_push(RETVAL, lsfitreport_to_hvref(aTHX_ rep));
+  OUTPUT: RETVAL
+%}
+
+{%
+AV *
+lsfitlinearwc(real_1d_array y, real_1d_array w, real_2d_array fmatrix, real_2d_array cmatrix)
+  CODE:
+    sv_2mortal((SV *)RETVAL);
+    alglib::lsfitreport rep;
+    ae_int_t info;
+    real_1d_array c;
+
+    alglib::lsfitlinearwc(y, w, fmatrix, cmatrix, info, c, rep);
+
+    av_push(RETVAL, newSViv(info));
+    av_push(RETVAL, newRV_noinc((SV *)real_1d_array_to_av(aTHX_ c)));
+    av_push(RETVAL, lsfitreport_to_hvref(aTHX_ rep));
+  OUTPUT: RETVAL
+%}
+
+{%
+AV *
+lsfitlinear(real_1d_array y, real_2d_array fmatrix)
+  CODE:
+    sv_2mortal((SV *)RETVAL);
+    alglib::lsfitreport rep;
+    ae_int_t info;
+    real_1d_array c;
+
+    alglib::lsfitlinear(y, fmatrix, info, c, rep);
+
+    av_push(RETVAL, newSViv(info));
+    av_push(RETVAL, newRV_noinc((SV *)real_1d_array_to_av(aTHX_ c)));
+    av_push(RETVAL, lsfitreport_to_hvref(aTHX_ rep));
+  OUTPUT: RETVAL
+%}
+
+

@@ -88,6 +88,9 @@ TODO: {
     spline1dfithermitewc
     spline1dfitcubic
     spline1dfithermite
+    lsfitlinearw
+    lsfitlinearwc
+    lsfitlinear
   );
 }
 

@@ -116,8 +116,12 @@ my $docs = [
       barycentricfitfloaterhormannwc => 'Returns array ref of three elements: info, barycentricinterpolant object, hashref of barycentricfitreport data',
       barycentricfitfloaterhormann => 'Returns array ref of three elements: info, barycentricinterpolant object, hashref of barycentricfitreport data',
       (
-        map {$_ => 'Returns array ref of three elements: info, spline1dinterpolant object, hashref of spline1dreport data'}
+        map {$_ => 'Returns array ref of three elements: info, spline1dinterpolant object, hashref of spline1dfitreport data'}
         qw(spline1dfitpenalized spline1dfitpenalizedw spline1dfitcubicwc spline1dfithermitewc spline1dfitcubic spline1dfithermite)
+      )
+      (
+        map {$_ => 'Returns array ref of three elements: info, array ref of decomposition coefficients, hashref of lsfitreport data'}
+        qw(lsfitlinearw lsfitlinearwc lsfitlinear)
       )
     },
   },
