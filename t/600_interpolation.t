@@ -85,6 +85,9 @@ TODO: {
     spline1dfitpenalized
     spline1dfitpenalizedw
     spline1dfitcubicwc
+    spline1dfithermitewc
+    spline1dfitcubic
+    spline1dfithermite
   );
 }
 

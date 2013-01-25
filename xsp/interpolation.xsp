@@ -430,13 +430,40 @@ spline1dfitpenalizedw(real_1d_array x, real_1d_array y, real_1d_array w, const a
 {%
 AV *
 spline1dfitcubicwc(real_1d_array x, real_1d_array y, real_1d_array w, real_1d_array xc, real_1d_array yc, integer_1d_array dc, const ae_int_t m)
+  ALIAS:
+    spline1dfithermitewc = 1
   CODE:
     sv_2mortal((SV *)RETVAL);
     alglib::spline1dfitreport rep;
     ae_int_t info;
     alglib::spline1dinterpolant *spl = new alglib::spline1dinterpolant();
 
-    alglib::spline1dfitcubicwc(x, y, w, xc, yc, dc, m, info, *spl, rep);
+    if (ix == 0)
+      alglib::spline1dfitcubicwc(x, y, w, xc, yc, dc, m, info, *spl, rep);
+    else
+      alglib::spline1dfithermitewc(x, y, w, xc, yc, dc, m, info, *spl, rep);
+
+    av_push(RETVAL, newSViv(info));
+    av_push(RETVAL, ptr_to_perl_obj(aTHX_ spl, "Math::Alglib::Interpolation::Spline1dInterpolant"));
+    av_push(RETVAL, spline1dfitreport_to_hvref(aTHX_ rep));
+  OUTPUT: RETVAL
+%}
+
+{%
+AV *
+spline1dfitcubic(real_1d_array x, real_1d_array y, const ae_int_t m)
+  ALIAS:
+    spline1dfithermite = 1
+  CODE:
+    sv_2mortal((SV *)RETVAL);
+    alglib::spline1dfitreport rep;
+    ae_int_t info;
+    alglib::spline1dinterpolant *spl = new alglib::spline1dinterpolant();
+
+    if (ix == 0)
+      alglib::spline1dfitcubic(x, y, m, info, *spl, rep);
+    else
+      alglib::spline1dfithermite(x, y, m, info, *spl, rep);
 
     av_push(RETVAL, newSViv(info));
     av_push(RETVAL, ptr_to_perl_obj(aTHX_ spl, "Math::Alglib::Interpolation::Spline1dInterpolant"));
