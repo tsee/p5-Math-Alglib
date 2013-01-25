@@ -91,6 +91,7 @@ TODO: {
     lsfitlinearw
     lsfitlinearwc
     lsfitlinear
+    lsfitlinearc
   );
 }
 

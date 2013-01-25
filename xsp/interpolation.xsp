@@ -522,4 +522,19 @@ lsfitlinear(real_1d_array y, real_2d_array fmatrix)
   OUTPUT: RETVAL
 %}
 
+{%
+AV *
+lsfitlinearc(real_1d_array y, real_2d_array fmatrix, real_2d_array cmatrix)
+  CODE:
+    sv_2mortal((SV *)RETVAL);
+    alglib::lsfitreport rep;
+    ae_int_t info;
+    real_1d_array c;
 
+    alglib::lsfitlinearc(y, fmatrix, cmatrix, info, c, rep);
+
+    av_push(RETVAL, newSViv(info));
+    av_push(RETVAL, newRV_noinc((SV *)real_1d_array_to_av(aTHX_ c)));
+    av_push(RETVAL, lsfitreport_to_hvref(aTHX_ rep));
+  OUTPUT: RETVAL
+%}

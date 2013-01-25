@@ -121,7 +121,7 @@ my $docs = [
       )
       (
         map {$_ => 'Returns array ref of three elements: info, array ref of decomposition coefficients, hashref of lsfitreport data'}
-        qw(lsfitlinearw lsfitlinearwc lsfitlinear)
+        qw(lsfitlinearw lsfitlinearwc lsfitlinear lsfitlinearc)
       )
     },
   },
