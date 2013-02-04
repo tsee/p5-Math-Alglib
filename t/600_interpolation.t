@@ -132,6 +132,7 @@ TODO: {
     spline2dlintransxy
     spline2dlintransf
     spline2dresamplebicubic
+    spline2dresamplebilinear
   );
 }
 

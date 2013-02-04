@@ -379,6 +379,12 @@ spline2dresamplebicubic(real_2d_array a, const ae_int_t oldheight, const ae_int_
     alglib::spline2dresamplebicubic(a, oldheight, oldwidth, RETVAL, newheight, newwidth);
   %};
 
+real_2d_array
+spline2dresamplebilinear(real_2d_array a, const ae_int_t oldheight, const ae_int_t oldwidth, const ae_int_t newheight, const ae_int_t newwidth)
+  %code{%
+    alglib::spline2dresamplebilinear(a, oldheight, oldwidth, RETVAL, newheight, newwidth);
+  %};
+
 {%
 pspline3interpolant*
 pspline3build(real_2d_array xy, const ae_int_t n, const ae_int_t st, const ae_int_t pt)
