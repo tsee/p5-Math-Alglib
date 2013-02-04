@@ -98,6 +98,16 @@ TODO: {
     pspline2build
     pspline3parametervalues
     pspline2parametervalues
+    pspline3calc
+    pspline2calc
+    pspline3tangent
+    pspline2tangent
+    pspline3diff
+    pspline2diff
+    pspline3diff2
+    pspline2diff2
+    pspline3arclength
+    pspline2arclength
   );
 }
 

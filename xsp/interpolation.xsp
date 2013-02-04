@@ -119,7 +119,7 @@ class spline1dinterpolant {
 
 //////////////////////////////////////////////////////////////////////
 %name{Math::Alglib::Interpolation::PSpline2Interpolant}
-class pspline2interpolant{
+class pspline2interpolant {
   ~pspline2interpolant();
 
 {%
@@ -133,6 +133,64 @@ pspline2interpolant::pspline2parametervalues()
     av_extend(RETVAL, 1);
     av_store(RETVAL, 0, newSViv(n));
     av_store(RETVAL, 1, newRV_noinc((SV *)real_1d_array_to_av(aTHX_ t)));
+  OUTPUT: RETVAL
+%}
+
+{%
+AV *
+pspline2interpolant::pspline2calc(const double t)
+  ALIAS:
+    calc = 1
+    pspline2tangent = 2
+    tangent = 3
+    pspline2diff = 4
+    diff = 5
+    pspline2diff2 = 6
+    diff2 = 7
+  CODE:
+    sv_2mortal((SV *)RETVAL);
+    double x, y;
+    if (ix <= 3) {
+      if (ix <= 1)
+        alglib::pspline2calc(*THIS, t, x, y);
+      else
+        alglib::pspline2tangent(*THIS, t, x, y);
+      av_extend(RETVAL, 1);
+      av_store(RETVAL, 0, newSVnv(x));
+      av_store(RETVAL, 1, newSVnv(y));
+    }
+    else {
+      double dx, dy;
+      if (ix <= 5) {
+        alglib::pspline2diff(*THIS, t, x, dx, y, dy);
+        av_extend(RETVAL, 3);
+        av_store(RETVAL, 0, newSVnv(x));
+        av_store(RETVAL, 1, newSVnv(dx));
+        av_store(RETVAL, 2, newSVnv(y));
+        av_store(RETVAL, 3, newSVnv(dy));
+      }
+      else {
+        double dx2, dy2;
+        alglib::pspline2diff2(*THIS, t, x, dx, dx2, y, dy, dy2);
+        av_extend(RETVAL, 5);
+        av_store(RETVAL, 0, newSVnv(x));
+        av_store(RETVAL, 1, newSVnv(dx));
+        av_store(RETVAL, 2, newSVnv(dx2));
+        av_store(RETVAL, 3, newSVnv(y));
+        av_store(RETVAL, 4, newSVnv(dy));
+        av_store(RETVAL, 5, newSVnv(dy2));
+      }
+    }
+  OUTPUT: RETVAL
+%}
+
+{%
+double
+pspline2interpolant::pspline2arclength(const double a, const double b)
+  ALIAS:
+    arclength = 1
+  CODE:
+    RETVAL = alglib::pspline2arclength(*THIS, a, b);
   OUTPUT: RETVAL
 %}
 
@@ -155,7 +213,7 @@ pspline2build(real_2d_array xy, const ae_int_t n, const ae_int_t st, const ae_in
 
 //////////////////////////////////////////////////////////////////////
 %name{Math::Alglib::Interpolation::PSpline3Interpolant}
-class pspline3interpolant{
+class pspline3interpolant {
   ~pspline3interpolant();
 
 {%
@@ -172,6 +230,69 @@ pspline3interpolant::pspline3parametervalues()
   OUTPUT: RETVAL
 %}
 
+{%
+AV *
+pspline3interpolant::pspline3calc(const double t)
+  ALIAS:
+    calc = 1
+    pspline3tangent = 2
+    tangent = 3
+    pspline3diff = 4
+    diff = 5
+    pspline3diff2 = 6
+    diff2 = 7
+  CODE:
+    sv_2mortal((SV *)RETVAL);
+    double x, y, z;
+    if (ix <= 3) {
+      if (ix <= 1)
+        alglib::pspline3calc(*THIS, t, x, y, z);
+      else
+        alglib::pspline3tangent(*THIS, t, x, y, z);
+      av_extend(RETVAL, 2);
+      av_store(RETVAL, 0, newSVnv(x));
+      av_store(RETVAL, 1, newSVnv(y));
+      av_store(RETVAL, 2, newSVnv(z));
+    }
+    else {
+      double dx, dy, dz;
+      if (ix <= 5) {
+        alglib::pspline3diff(*THIS, t, x, dx, y, dy, z, dz);
+        av_extend(RETVAL, 5);
+        av_store(RETVAL, 0, newSVnv(x));
+        av_store(RETVAL, 1, newSVnv(dx));
+        av_store(RETVAL, 2, newSVnv(y));
+        av_store(RETVAL, 3, newSVnv(dy));
+        av_store(RETVAL, 4, newSVnv(z));
+        av_store(RETVAL, 5, newSVnv(dz));
+      }
+      else {
+        double dx2, dy2, dz2;
+        alglib::pspline3diff2(*THIS, t, x, dx, dx2, y, dy, dy2, z, dz, dz2);
+        av_extend(RETVAL, 8);
+        av_store(RETVAL, 0, newSVnv(x));
+        av_store(RETVAL, 1, newSVnv(dx));
+        av_store(RETVAL, 2, newSVnv(dx2));
+        av_store(RETVAL, 3, newSVnv(y));
+        av_store(RETVAL, 4, newSVnv(dy));
+        av_store(RETVAL, 5, newSVnv(dy2));
+        av_store(RETVAL, 6, newSVnv(z));
+        av_store(RETVAL, 7, newSVnv(dz));
+        av_store(RETVAL, 8, newSVnv(dz2));
+      }
+    }
+  OUTPUT: RETVAL
+%}
+
+{%
+double
+pspline3interpolant::pspline3arclength(const double a, const double b)
+  ALIAS:
+    arclength = 1
+  CODE:
+    RETVAL = alglib::pspline3arclength(*THIS, a, b);
+  OUTPUT: RETVAL
+%}
 }; // end class pspline3interpolant
 
 {%

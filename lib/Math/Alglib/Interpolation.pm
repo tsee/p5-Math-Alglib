@@ -1448,6 +1448,9 @@ Returns array ref of three elements: info, barycentricinterpolant object, hashre
 
 =head2 Weghted rational least  squares  fitting  using  Floater-Hormann  rational
 
+Note on the Perl wrapper:
+Returns array ref of three elements: info, barycentricinterpolant object, hashref of barycentricfitreport data
+
   void barycentricfitfloaterhormannwc(const real_1d_array &x, const real_1d_array &y, const real_1d_array &w, const ae_int_t n, const real_1d_array &xc, const real_1d_array &yc, const integer_1d_array &dc, const ae_int_t k, const ae_int_t m, ae_int_t &info, barycentricinterpolant &b, barycentricfitreport &rep);
 
   functions  with  optimal  D  chosen  from  [0,9],  with  constraints   and
@@ -1534,6 +1537,9 @@ Returns array ref of three elements: info, barycentricinterpolant object, hashre
 
 =head2 Rational least squares fitting using  Floater-Hormann  rational  functions
 
+Note on the Perl wrapper:
+Returns array ref of three elements: info, barycentricinterpolant object, hashref of barycentricfitreport data
+
   void barycentricfitfloaterhormann(const real_1d_array &x, const real_1d_array &y, const ae_int_t n, const ae_int_t m, ae_int_t &info, barycentricinterpolant &b, barycentricfitreport &rep);
 
   with optimal D chosen from [0,9].
@@ -1571,6 +1577,9 @@ Returns array ref of three elements: info, barycentricinterpolant object, hashre
 
 =head2 Rational least squares fitting using  Floater-Hormann  rational  functions
 
+Note on the Perl wrapper:
+Returns array ref of three elements: info, spline1dinterpolant object, hashref of spline1dfitreport data
+
   void spline1dfitpenalized(const real_1d_array &x, const real_1d_array &y, const ae_int_t m, const double rho, ae_int_t &info, spline1dinterpolant &s, spline1dfitreport &rep);
 
   with optimal D chosen from [0,9].
@@ -1607,6 +1616,9 @@ Returns array ref of three elements: info, barycentricinterpolant object, hashre
        Copyright 18.08.2009 by Bochkanov Sergey
 
 =head2 Weighted fitting by penalized cubic spline.
+
+Note on the Perl wrapper:
+Returns array ref of three elements: info, spline1dinterpolant object, hashref of spline1dfitreport data
 
   void spline1dfitpenalizedw(const real_1d_array &x, const real_1d_array &y, const real_1d_array &w, const ae_int_t m, const double rho, ae_int_t &info, spline1dinterpolant &s, spline1dfitreport &rep);
 
@@ -1674,6 +1686,9 @@ Returns array ref of three elements: info, barycentricinterpolant object, hashre
        Copyright 19.10.2010 by Bochkanov Sergey
 
 =head2 Weighted fitting by cubic  spline,  with constraints on function values or
+
+Note on the Perl wrapper:
+Returns array ref of three elements: info, spline1dinterpolant object, hashref of spline1dfitreport data
 
   void spline1dfitcubicwc(const real_1d_array &x, const real_1d_array &y, const real_1d_array &w, const real_1d_array &xc, const real_1d_array &yc, const integer_1d_array &dc, const ae_int_t m, ae_int_t &info, spline1dinterpolant &s, spline1dfitreport &rep);
 
@@ -1775,6 +1790,9 @@ Returns array ref of three elements: info, barycentricinterpolant object, hashre
        Copyright 18.08.2009 by Bochkanov Sergey
 
 =head2 Weighted  fitting  by Hermite spline,  with constraints on function values
+
+Note on the Perl wrapper:
+Returns array ref of three elements: info, spline1dinterpolant object, hashref of spline1dfitreport data
 
   void spline1dfithermitewc(const real_1d_array &x, const real_1d_array &y, const real_1d_array &w, const real_1d_array &xc, const real_1d_array &yc, const integer_1d_array &dc, const ae_int_t m, ae_int_t &info, spline1dinterpolant &s, spline1dfitreport &rep);
 
@@ -1882,6 +1900,9 @@ Returns array ref of three elements: info, barycentricinterpolant object, hashre
 
 =head2 Least squares fitting by cubic spline.
 
+Note on the Perl wrapper:
+Returns array ref of three elements: info, spline1dinterpolant object, hashref of spline1dfitreport data
+
   void spline1dfitcubic(const real_1d_array &x, const real_1d_array &y, const ae_int_t m, ae_int_t &info, spline1dinterpolant &s, spline1dfitreport &rep);
 
   This subroutine is "lightweight" alternative for more complex and feature-
@@ -1892,6 +1913,9 @@ Returns array ref of three elements: info, barycentricinterpolant object, hashre
        Copyright 18.08.2009 by Bochkanov Sergey
 
 =head2 Least squares fitting by Hermite spline.
+
+Note on the Perl wrapper:
+Returns array ref of three elements: info, spline1dinterpolant object, hashref of spline1dfitreport data
 
   void spline1dfithermite(const real_1d_array &x, const real_1d_array &y, const ae_int_t m, ae_int_t &info, spline1dinterpolant &s, spline1dfitreport &rep);
 
@@ -1904,6 +1928,9 @@ Returns array ref of three elements: info, barycentricinterpolant object, hashre
        Copyright 18.08.2009 by Bochkanov Sergey
 
 =head2 Weighted linear least squares fitting.
+
+Note on the Perl wrapper:
+Returns array ref of three elements: info, array ref of decomposition coefficients, hashref of lsfitreport data
 
   void lsfitlinearw(const real_1d_array &y, const real_1d_array &w, const real_2d_array &fmatrix, ae_int_t &info, real_1d_array &c, lsfitreport &rep);
 
@@ -1941,6 +1968,9 @@ Returns array ref of three elements: info, barycentricinterpolant object, hashre
        Copyright 17.08.2009 by Bochkanov Sergey
 
 =head2 Weighted constained linear least squares fitting.
+
+Note on the Perl wrapper:
+Returns array ref of three elements: info, array ref of decomposition coefficients, hashref of lsfitreport data
 
   void lsfitlinearwc(const real_1d_array &y, const real_1d_array &w, const real_2d_array &fmatrix, const real_2d_array &cmatrix, ae_int_t &info, real_1d_array &c, lsfitreport &rep);
 
@@ -1990,6 +2020,9 @@ Returns array ref of three elements: info, barycentricinterpolant object, hashre
 
 =head2 Linear least squares fitting.
 
+Note on the Perl wrapper:
+Returns array ref of three elements: info, array ref of decomposition coefficients, hashref of lsfitreport data
+
   void lsfitlinear(const real_1d_array &y, const real_2d_array &fmatrix, ae_int_t &info, real_1d_array &c, lsfitreport &rep);
 
   QR decomposition is used to reduce task to MxM, then triangular solver  or
@@ -2021,6 +2054,9 @@ Returns array ref of three elements: info, barycentricinterpolant object, hashre
        Copyright 17.08.2009 by Bochkanov Sergey
 
 =head2 Constained linear least squares fitting.
+
+Note on the Perl wrapper:
+Returns array ref of three elements: info, array ref of decomposition coefficients, hashref of lsfitreport data
 
   void lsfitlinearc(const real_1d_array &y, const real_2d_array &fmatrix, const real_2d_array &cmatrix, ae_int_t &info, real_1d_array &c, lsfitreport &rep);
 
@@ -2063,452 +2099,6 @@ Returns array ref of three elements: info, barycentricinterpolant object, hashre
   
     -- ALGLIB --
        Copyright 07.09.2009 by Bochkanov Sergey
-
-=head2 Weighted nonlinear least squares fitting using function values only.
-
-  void lsfitcreatewf(const real_2d_array &x, const real_1d_array &y, const real_1d_array &w, const real_1d_array &c, const double diffstep, lsfitstate &state);
-
-  Combination of numerical differentiation and secant updates is used to
-  obtain function Jacobian.
-  
-  Nonlinear task min(F(c)) is solved, where
-  
-      F(c) = (w[0]*(f(c,x[0])-y[0]))^2 + ... + (w[n-1]*(f(c,x[n-1])-y[n-1]))^2,
-  
-      * N is a number of points,
-      * M is a dimension of a space points belong to,
-      * K is a dimension of a space of parameters being fitted,
-      * w is an N-dimensional vector of weight coefficients,
-      * x is a set of N points, each of them is an M-dimensional vector,
-      * c is a K-dimensional vector of parameters being fitted
-  
-  This subroutine uses only f(c,x[i]).
-  
-  INPUT PARAMETERS:
-      X       -   array[0..N-1,0..M-1], points (one row = one point)
-      Y       -   array[0..N-1], function values.
-      W       -   weights, array[0..N-1]
-      C       -   array[0..K-1], initial approximation to the solution,
-      N       -   number of points, N>1
-      M       -   dimension of space
-      K       -   number of parameters being fitted
-      DiffStep-   numerical differentiation step;
-                  should not be very small or large;
-                  large = loss of accuracy
-                  small = growth of round-off errors
-  
-  OUTPUT PARAMETERS:
-      State   -   structure which stores algorithm state
-  
-    -- ALGLIB --
-       Copyright 18.10.2008 by Bochkanov Sergey
-
-=head2 Nonlinear least squares fitting using function values only.
-
-  void lsfitcreatef(const real_2d_array &x, const real_1d_array &y, const real_1d_array &c, const double diffstep, lsfitstate &state);
-
-  Combination of numerical differentiation and secant updates is used to
-  obtain function Jacobian.
-  
-  Nonlinear task min(F(c)) is solved, where
-  
-      F(c) = (f(c,x[0])-y[0])^2 + ... + (f(c,x[n-1])-y[n-1])^2,
-  
-      * N is a number of points,
-      * M is a dimension of a space points belong to,
-      * K is a dimension of a space of parameters being fitted,
-      * w is an N-dimensional vector of weight coefficients,
-      * x is a set of N points, each of them is an M-dimensional vector,
-      * c is a K-dimensional vector of parameters being fitted
-  
-  This subroutine uses only f(c,x[i]).
-  
-  INPUT PARAMETERS:
-      X       -   array[0..N-1,0..M-1], points (one row = one point)
-      Y       -   array[0..N-1], function values.
-      C       -   array[0..K-1], initial approximation to the solution,
-      N       -   number of points, N>1
-      M       -   dimension of space
-      K       -   number of parameters being fitted
-      DiffStep-   numerical differentiation step;
-                  should not be very small or large;
-                  large = loss of accuracy
-                  small = growth of round-off errors
-  
-  OUTPUT PARAMETERS:
-      State   -   structure which stores algorithm state
-  
-    -- ALGLIB --
-       Copyright 18.10.2008 by Bochkanov Sergey
-
-=head2 Weighted nonlinear least squares fitting using gradient only.
-
-  void lsfitcreatewfg(const real_2d_array &x, const real_1d_array &y, const real_1d_array &w, const real_1d_array &c, const bool cheapfg, lsfitstate &state);
-
-  Nonlinear task min(F(c)) is solved, where
-  
-      F(c) = (w[0]*(f(c,x[0])-y[0]))^2 + ... + (w[n-1]*(f(c,x[n-1])-y[n-1]))^2,
-  
-      * N is a number of points,
-      * M is a dimension of a space points belong to,
-      * K is a dimension of a space of parameters being fitted,
-      * w is an N-dimensional vector of weight coefficients,
-      * x is a set of N points, each of them is an M-dimensional vector,
-      * c is a K-dimensional vector of parameters being fitted
-  
-  This subroutine uses only f(c,x[i]) and its gradient.
-  
-  INPUT PARAMETERS:
-      X       -   array[0..N-1,0..M-1], points (one row = one point)
-      Y       -   array[0..N-1], function values.
-      W       -   weights, array[0..N-1]
-      C       -   array[0..K-1], initial approximation to the solution,
-      N       -   number of points, N>1
-      M       -   dimension of space
-      K       -   number of parameters being fitted
-      CheapFG -   boolean flag, which is:
-                  * True  if both function and gradient calculation complexity
-                          are less than O(M^2).  An improved  algorithm  can
-                          be  used  which corresponds  to  FGJ  scheme  from
-                          MINLM unit.
-                  * False otherwise.
-                          Standard Jacibian-bases  Levenberg-Marquardt  algo
-                          will be used (FJ scheme).
-  
-  OUTPUT PARAMETERS:
-      State   -   structure which stores algorithm state
-  
-  See also:
-      LSFitResults
-      LSFitCreateFG (fitting without weights)
-      LSFitCreateWFGH (fitting using Hessian)
-      LSFitCreateFGH (fitting using Hessian, without weights)
-  
-    -- ALGLIB --
-       Copyright 17.08.2009 by Bochkanov Sergey
-
-=head2 Nonlinear least squares fitting using gradient only, without individual
-
-  void lsfitcreatefg(const real_2d_array &x, const real_1d_array &y, const real_1d_array &c, const bool cheapfg, lsfitstate &state);
-
-  weights.
-  
-  Nonlinear task min(F(c)) is solved, where
-  
-      F(c) = ((f(c,x[0])-y[0]))^2 + ... + ((f(c,x[n-1])-y[n-1]))^2,
-  
-      * N is a number of points,
-      * M is a dimension of a space points belong to,
-      * K is a dimension of a space of parameters being fitted,
-      * x is a set of N points, each of them is an M-dimensional vector,
-      * c is a K-dimensional vector of parameters being fitted
-  
-  This subroutine uses only f(c,x[i]) and its gradient.
-  
-  INPUT PARAMETERS:
-      X       -   array[0..N-1,0..M-1], points (one row = one point)
-      Y       -   array[0..N-1], function values.
-      C       -   array[0..K-1], initial approximation to the solution,
-      N       -   number of points, N>1
-      M       -   dimension of space
-      K       -   number of parameters being fitted
-      CheapFG -   boolean flag, which is:
-                  * True  if both function and gradient calculation complexity
-                          are less than O(M^2).  An improved  algorithm  can
-                          be  used  which corresponds  to  FGJ  scheme  from
-                          MINLM unit.
-                  * False otherwise.
-                          Standard Jacibian-bases  Levenberg-Marquardt  algo
-                          will be used (FJ scheme).
-  
-  OUTPUT PARAMETERS:
-      State   -   structure which stores algorithm state
-  
-    -- ALGLIB --
-       Copyright 17.08.2009 by Bochkanov Sergey
-
-=head2 Weighted nonlinear least squares fitting using gradient/Hessian.
-
-  void lsfitcreatewfgh(const real_2d_array &x, const real_1d_array &y, const real_1d_array &w, const real_1d_array &c, lsfitstate &state);
-
-  Nonlinear task min(F(c)) is solved, where
-  
-      F(c) = (w[0]*(f(c,x[0])-y[0]))^2 + ... + (w[n-1]*(f(c,x[n-1])-y[n-1]))^2,
-  
-      * N is a number of points,
-      * M is a dimension of a space points belong to,
-      * K is a dimension of a space of parameters being fitted,
-      * w is an N-dimensional vector of weight coefficients,
-      * x is a set of N points, each of them is an M-dimensional vector,
-      * c is a K-dimensional vector of parameters being fitted
-  
-  This subroutine uses f(c,x[i]), its gradient and its Hessian.
-  
-  INPUT PARAMETERS:
-      X       -   array[0..N-1,0..M-1], points (one row = one point)
-      Y       -   array[0..N-1], function values.
-      W       -   weights, array[0..N-1]
-      C       -   array[0..K-1], initial approximation to the solution,
-      N       -   number of points, N>1
-      M       -   dimension of space
-      K       -   number of parameters being fitted
-  
-  OUTPUT PARAMETERS:
-      State   -   structure which stores algorithm state
-  
-    -- ALGLIB --
-       Copyright 17.08.2009 by Bochkanov Sergey
-
-=head2 Nonlinear least squares fitting using gradient/Hessian, without individial
-
-  void lsfitcreatefgh(const real_2d_array &x, const real_1d_array &y, const real_1d_array &c, lsfitstate &state);
-
-  weights.
-  
-  Nonlinear task min(F(c)) is solved, where
-  
-      F(c) = ((f(c,x[0])-y[0]))^2 + ... + ((f(c,x[n-1])-y[n-1]))^2,
-  
-      * N is a number of points,
-      * M is a dimension of a space points belong to,
-      * K is a dimension of a space of parameters being fitted,
-      * x is a set of N points, each of them is an M-dimensional vector,
-      * c is a K-dimensional vector of parameters being fitted
-  
-  This subroutine uses f(c,x[i]), its gradient and its Hessian.
-  
-  INPUT PARAMETERS:
-      X       -   array[0..N-1,0..M-1], points (one row = one point)
-      Y       -   array[0..N-1], function values.
-      C       -   array[0..K-1], initial approximation to the solution,
-      N       -   number of points, N>1
-      M       -   dimension of space
-      K       -   number of parameters being fitted
-  
-  OUTPUT PARAMETERS:
-      State   -   structure which stores algorithm state
-  
-  
-    -- ALGLIB --
-       Copyright 17.08.2009 by Bochkanov Sergey
-
-=head2 Stopping conditions for nonlinear least squares fitting.
-
-  void lsfitsetcond(const lsfitstate &state, const double epsf, const double epsx, const ae_int_t maxits);
-
-  INPUT PARAMETERS:
-      State   -   structure which stores algorithm state
-      EpsF    -   stopping criterion. Algorithm stops if
-                  |F(k+1)-F(k)| <= EpsF*max{|F(k)|, |F(k+1)|, 1}
-      EpsX    -   >=0
-                  The subroutine finishes its work if  on  k+1-th  iteration
-                  the condition |v|<=EpsX is fulfilled, where:
-                  * |.| means Euclidian norm
-                  * v - scaled step vector, v[i]=dx[i]/s[i]
-                  * dx - ste pvector, dx=X(k+1)-X(k)
-                  * s - scaling coefficients set by LSFitSetScale()
-      MaxIts  -   maximum number of iterations. If MaxIts=0, the  number  of
-                  iterations   is    unlimited.   Only   Levenberg-Marquardt
-                  iterations  are  counted  (L-BFGS/CG  iterations  are  NOT
-                  counted because their cost is very low compared to that of
-                  LM).
-  
-  NOTE
-  
-  Passing EpsF=0, EpsX=0 and MaxIts=0 (simultaneously) will lead to automatic
-  stopping criterion selection (according to the scheme used by MINLM unit).
-  
-  
-    -- ALGLIB --
-       Copyright 17.08.2009 by Bochkanov Sergey
-
-=head2 This function sets maximum step length
-
-  void lsfitsetstpmax(const lsfitstate &state, const double stpmax);
-
-  INPUT PARAMETERS:
-      State   -   structure which stores algorithm state
-      StpMax  -   maximum step length, >=0. Set StpMax to 0.0,  if you don't
-                  want to limit step length.
-  
-  Use this subroutine when you optimize target function which contains exp()
-  or  other  fast  growing  functions,  and optimization algorithm makes too
-  large  steps  which  leads  to overflow. This function allows us to reject
-  steps  that  are  too  large  (and  therefore  expose  us  to the possible
-  overflow) without actually calculating function value at the x+stp*d.
-  
-  NOTE: non-zero StpMax leads to moderate  performance  degradation  because
-  intermediate  step  of  preconditioned L-BFGS optimization is incompatible
-  with limits on step size.
-  
-    -- ALGLIB --
-       Copyright 02.04.2010 by Bochkanov Sergey
-
-=head2 This function turns on/off reporting.
-
-  void lsfitsetxrep(const lsfitstate &state, const bool needxrep);
-
-  INPUT PARAMETERS:
-      State   -   structure which stores algorithm state
-      NeedXRep-   whether iteration reports are needed or not
-  
-  When reports are needed, State.C (current parameters) and State.F (current
-  value of fitting function) are reported.
-  
-  
-    -- ALGLIB --
-       Copyright 15.08.2010 by Bochkanov Sergey
-
-=head2 This function sets scaling coefficients for underlying optimizer.
-
-  void lsfitsetscale(const lsfitstate &state, const real_1d_array &s);
-
-  ALGLIB optimizers use scaling matrices to test stopping  conditions  (step
-  size and gradient are scaled before comparison with tolerances).  Scale of
-  the I-th variable is a translation invariant measure of:
-  a) "how large" the variable is
-  b) how large the step should be to make significant changes in the function
-  
-  Generally, scale is NOT considered to be a form of preconditioner.  But LM
-  optimizer is unique in that it uses scaling matrix both  in  the  stopping
-  condition tests and as Marquardt damping factor.
-  
-  Proper scaling is very important for the algorithm performance. It is less
-  important for the quality of results, but still has some influence (it  is
-  easier  to  converge  when  variables  are  properly  scaled, so premature
-  stopping is possible when very badly scalled variables are  combined  with
-  relaxed stopping conditions).
-  
-  INPUT PARAMETERS:
-      State   -   structure stores algorithm state
-      S       -   array[N], non-zero scaling coefficients
-                  S[i] may be negative, sign doesn't matter.
-  
-    -- ALGLIB --
-       Copyright 14.01.2011 by Bochkanov Sergey
-
-=head2 This function sets boundary constraints for underlying optimizer
-
-  void lsfitsetbc(const lsfitstate &state, const real_1d_array &bndl, const real_1d_array &bndu);
-
-  Boundary constraints are inactive by default (after initial creation).
-  They are preserved until explicitly turned off with another SetBC() call.
-  
-  INPUT PARAMETERS:
-      State   -   structure stores algorithm state
-      BndL    -   lower bounds, array[K].
-                  If some (all) variables are unbounded, you may specify
-                  very small number or -INF (latter is recommended because
-                  it will allow solver to use better algorithm).
-      BndU    -   upper bounds, array[K].
-                  If some (all) variables are unbounded, you may specify
-                  very large number or +INF (latter is recommended because
-                  it will allow solver to use better algorithm).
-  
-  NOTE 1: it is possible to specify BndL[i]=BndU[i]. In this case I-th
-  variable will be "frozen" at X[i]=BndL[i]=BndU[i].
-  
-  NOTE 2: unlike other constrained optimization algorithms, this solver  has
-  following useful properties:
-  * bound constraints are always satisfied exactly
-  * function is evaluated only INSIDE area specified by bound constraints
-  
-    -- ALGLIB --
-       Copyright 14.01.2011 by Bochkanov Sergey
-
-=head2 This function provides reverse communication interface
-
-  bool lsfititeration(const lsfitstate &state);
-
-  Reverse communication interface is not documented or recommended to use.
-  See below for functions which provide better documented API
-
-=head2 Nonlinear least squares fitting results.
-
-  void lsfitresults(const lsfitstate &state, ae_int_t &info, real_1d_array &c, lsfitreport &rep);
-
-  Called after return from LSFitFit().
-  
-  INPUT PARAMETERS:
-      State   -   algorithm state
-  
-  OUTPUT PARAMETERS:
-      Info    -   completetion code:
-                      * -7    gradient verification failed.
-                              See LSFitSetGradientCheck() for more information.
-                      *  1    relative function improvement is no more than
-                              EpsF.
-                      *  2    relative step is no more than EpsX.
-                      *  4    gradient norm is no more than EpsG
-                      *  5    MaxIts steps was taken
-                      *  7    stopping conditions are too stringent,
-                              further improvement is impossible
-      C       -   array[0..K-1], solution
-      Rep     -   optimization report. Following fields are set:
-                  * Rep.TerminationType completetion code:
-                  * RMSError          rms error on the (X,Y).
-                  * AvgError          average error on the (X,Y).
-                  * AvgRelError       average relative error on the non-zero Y
-                  * MaxError          maximum error
-                                      NON-WEIGHTED ERRORS ARE CALCULATED
-                  * WRMSError         weighted rms error on the (X,Y).
-  
-  
-    -- ALGLIB --
-       Copyright 17.08.2009 by Bochkanov Sergey
-
-=head2 This  subroutine  turns  on  verification  of  the  user-supplied analytic
-
-  void lsfitsetgradientcheck(const lsfitstate &state, const double teststep);
-
-  gradient:
-  * user calls this subroutine before fitting begins
-  * LSFitFit() is called
-  * prior to actual fitting, for  each  point  in  data  set  X_i  and  each
-    component  of  parameters  being  fited C_j algorithm performs following
-    steps:
-    * two trial steps are made to C_j-TestStep*S[j] and C_j+TestStep*S[j],
-      where C_j is j-th parameter and S[j] is a scale of j-th parameter
-    * if needed, steps are bounded with respect to constraints on C[]
-    * F(X_i|C) is evaluated at these trial points
-    * we perform one more evaluation in the middle point of the interval
-    * we  build  cubic  model using function values and derivatives at trial
-      points and we compare its prediction with actual value in  the  middle
-      point
-    * in case difference between prediction and actual value is higher  than
-      some predetermined threshold, algorithm stops with completion code -7;
-      Rep.VarIdx is set to index of the parameter with incorrect derivative.
-  * after verification is over, algorithm proceeds to the actual optimization.
-  
-  NOTE 1: verification needs N*K (points count * parameters count)  gradient
-          evaluations. It is very costly and you should use it only for  low
-          dimensional  problems,  when  you  want  to  be  sure  that you've
-          correctly calculated analytic derivatives. You should not  use  it
-          in the production code  (unless  you  want  to  check  derivatives
-          provided by some third party).
-  
-  NOTE 2: you  should  carefully  choose  TestStep. Value which is too large
-          (so large that function behaviour is significantly non-cubic) will
-          lead to false alarms. You may use  different  step  for  different
-          parameters by means of setting scale with LSFitSetScale().
-  
-  NOTE 3: this function may lead to false positives. In case it reports that
-          I-th  derivative was calculated incorrectly, you may decrease test
-          step  and  try  one  more  time  - maybe your function changes too
-          sharply  and  your  step  is  too  large for such rapidly chanding
-          function.
-  
-  NOTE 4: this function works only for optimizers created with LSFitCreateWFG()
-          or LSFitCreateFG() constructors.
-  
-  INPUT PARAMETERS:
-      State       -   structure used to store algorithm state
-      TestStep    -   verification step:
-                      * TestStep=0 turns verification off
-                      * TestStep>0 activates verification
-  
-    -- ALGLIB --
-       Copyright 15.06.2012 by Bochkanov Sergey
 
 =head2 This function  builds  non-periodic 2-dimensional parametric spline  which
 
@@ -2607,6 +2197,9 @@ Returns array ref of three elements: info, barycentricinterpolant object, hashre
 
 =head2 This function returns vector of parameter values correspoding to points.
 
+Note on the Perl wrapper:
+Returns array ref of two elements: n, t
+
   void pspline2parametervalues(const pspline2interpolant &p, ae_int_t &n, real_1d_array &t);
 
   I.e. for P created from (X[0],Y[0])...(X[N-1],Y[N-1]) and U=TValues(P)  we
@@ -2633,6 +2226,9 @@ Returns array ref of three elements: info, barycentricinterpolant object, hashre
 
 =head2 This function returns vector of parameter values correspoding to points.
 
+Note on the Perl wrapper:
+Returns array ref of two elements: n, t
+
   void pspline3parametervalues(const pspline3interpolant &p, ae_int_t &n, real_1d_array &t);
 
   Same as PSpline2ParameterValues(), but for 3D.
@@ -2641,6 +2237,9 @@ Returns array ref of three elements: info, barycentricinterpolant object, hashre
        Copyright 28.05.2010 by Bochkanov Sergey
 
 =head2 This function  calculates  the value of the parametric spline for a  given
+
+Note on the Perl wrapper:
+Also aliased to not include the "pspline\d" method name prefix.
 
   void pspline2calc(const pspline2interpolant &p, const double t, double &x, double &y);
 
@@ -2664,6 +2263,9 @@ Returns array ref of three elements: info, barycentricinterpolant object, hashre
        Copyright 28.05.2010 by Bochkanov Sergey
 
 =head2 This function  calculates  the value of the parametric spline for a  given
+
+Note on the Perl wrapper:
+Also aliased to not include the "pspline\d" method name prefix.
 
   void pspline3calc(const pspline3interpolant &p, const double t, double &x, double &y, double &z);
 
@@ -2689,6 +2291,9 @@ Returns array ref of three elements: info, barycentricinterpolant object, hashre
 
 =head2 This function  calculates  tangent vector for a given value of parameter T
 
+Note on the Perl wrapper:
+Also aliased to not include the "pspline\d" method name prefix.
+
   void pspline2tangent(const pspline2interpolant &p, const double t, double &x, double &y);
 
   INPUT PARAMETERS:
@@ -2712,6 +2317,9 @@ Returns array ref of three elements: info, barycentricinterpolant object, hashre
        Copyright 28.05.2010 by Bochkanov Sergey
 
 =head2 This function  calculates  tangent vector for a given value of parameter T
+
+Note on the Perl wrapper:
+Also aliased to not include the "pspline\d" method name prefix.
 
   void pspline3tangent(const pspline3interpolant &p, const double t, double &x, double &y, double &z);
 
@@ -2738,6 +2346,9 @@ Returns array ref of three elements: info, barycentricinterpolant object, hashre
 
 =head2 This function calculates derivative, i.e. it returns (dX/dT,dY/dT).
 
+Note on the Perl wrapper:
+Also aliased to not include the "pspline\d" method name prefix.
+
   void pspline2diff(const pspline2interpolant &p, const double t, double &x, double &dx, double &y, double &dy);
 
   INPUT PARAMETERS:
@@ -2760,6 +2371,9 @@ Returns array ref of three elements: info, barycentricinterpolant object, hashre
        Copyright 28.05.2010 by Bochkanov Sergey
 
 =head2 This function calculates derivative, i.e. it returns (dX/dT,dY/dT,dZ/dT).
+
+Note on the Perl wrapper:
+Also aliased to not include the "pspline\d" method name prefix.
 
   void pspline3diff(const pspline3interpolant &p, const double t, double &x, double &dx, double &y, double &dy, double &z, double &dz);
 
@@ -2786,6 +2400,9 @@ Returns array ref of three elements: info, barycentricinterpolant object, hashre
 
 =head2 This function calculates first and second derivative with respect to T.
 
+Note on the Perl wrapper:
+Also aliased to not include the "pspline\d" method name prefix.
+
   void pspline2diff2(const pspline2interpolant &p, const double t, double &x, double &dx, double &d2x, double &y, double &dy, double &d2y);
 
   INPUT PARAMETERS:
@@ -2810,6 +2427,9 @@ Returns array ref of three elements: info, barycentricinterpolant object, hashre
        Copyright 28.05.2010 by Bochkanov Sergey
 
 =head2 This function calculates first and second derivative with respect to T.
+
+Note on the Perl wrapper:
+Also aliased to not include the "pspline\d" method name prefix.
 
   void pspline3diff2(const pspline3interpolant &p, const double t, double &x, double &dx, double &d2x, double &y, double &dy, double &d2y, double &z, double &dz, double &d2z);
 
