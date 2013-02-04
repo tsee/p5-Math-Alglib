@@ -142,6 +142,7 @@ my $docs = [
         map {my $x = $_; $x =~ s/2/3/; ($x, $_)}
         qw(pspline2calc pspline2tangent pspline2diff pspline2diff2 psline2arclength)
       ),
+      rbfbuildmodel => 'In Perl, this really just returns an integer indicating the termination type, not a whole struct. This is subject to change.',
     },
   },
 ];

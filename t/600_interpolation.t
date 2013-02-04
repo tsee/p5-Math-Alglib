@@ -116,6 +116,10 @@ TODO: {
     rbfunserialize
     rbfsetalgoqnn
     rbfsetalgomultilayer
+    rbfsetlinterm
+    rbfsetconstterm
+    rbfsetzeroterm
+    rbfbuildmodel
   );
 }
 

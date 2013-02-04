@@ -2797,6 +2797,9 @@ Also aliased to not include the "pspline\d" method name prefix.
 
 =head2 This   function  builds  RBF  model  and  returns  report  (contains  some
 
+Note on the Perl wrapper:
+In Perl, this really just returns an integer indicating the termination type, not a whole struct. This is subject to change.
+
   void rbfbuildmodel(const rbfmodel &s, rbfreport &rep);
 
   information which can be used for evaluation of the algorithm properties).

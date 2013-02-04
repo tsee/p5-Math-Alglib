@@ -328,6 +328,18 @@ class rbfmodel {
   void rbfsetalgomultilayer(const double rbase, const ae_int_t nlayers, const double lambdav)
     %code{% alglib::rbfsetalgomultilayer(*THIS, rbase, nlayers, lambdav); %};
 
+  void rbfsetlinterm() %code{% alglib::rbfsetlinterm(*THIS); %};
+  void rbfsetconstterm() %code{% alglib::rbfsetconstterm(*THIS); %};
+  void rbfsetzeroterm() %code{% alglib::rbfsetzeroterm(*THIS); %};
+
+  ae_int_t
+  rbfbuildmodel()
+    %code{%
+      alglib::rbfreport rep;
+      alglib::rbfbuildmodel(*THIS, rep);
+      RETVAL = rep.terminationtype;
+    %};
+
 };
 
 {%
