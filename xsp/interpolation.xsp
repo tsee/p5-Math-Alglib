@@ -210,6 +210,38 @@ pspline2build(real_2d_array xy, const ae_int_t n, const ae_int_t st, const ae_in
 %}
 
 //////////////////////////////////////////////////////////////////////
+%name{Math::Alglib::Interpolation::Spline2dInterpolant}
+class spline2dinterpolant {
+  spline2dinterpolant();
+  ~spline2dinterpolant();
+
+  double spline2dcalc(const double x, const double y)
+    %code{% RETVAL = alglib::spline2dcalc(*THIS, x, y); %};
+
+  AV *
+  spline2ddiff(const double x, const double y)
+    %code{%
+      sv_2mortal((SV *)RETVAL);
+      double f, fx, fy, fxy;
+      alglib::spline2ddiff(*THIS, x, y, f, fx, fy, fxy);
+      av_extend(RETVAL, 4);
+      av_store(RETVAL, 0, newSVnv(f));
+      av_store(RETVAL, 1, newSVnv(fx));
+      av_store(RETVAL, 2, newSVnv(fy));
+      av_store(RETVAL, 3, newSVnv(fxy));
+    %};
+
+  void
+  spline2dlintransxy(const double Ax, const double bx, const double ay, const double by)
+    %code{% alglib::spline2dlintransxy(*THIS, Ax, bx, ay, by); %};
+
+  void
+  spline2dlintransf(const double a, const double b)
+    %code{% alglib::spline2dlintransf(*THIS, a, b); %};
+
+}; // end class spline2dinterpolant
+
+//////////////////////////////////////////////////////////////////////
 %name{Math::Alglib::Interpolation::PSpline3Interpolant}
 class pspline3interpolant {
   ~pspline3interpolant();

@@ -113,6 +113,7 @@ my $docs = [
       lsfitsetscale
       lsfitsetbc
       lsfitsetgradientcheck
+      spline2dcopy
     )],
     sig_override => {
       polynomialbar2pow => 'void polynomialbar2pow(const barycentricinterpolant &p, const double c, const double s, real_1d_array &a);',

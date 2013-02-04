@@ -3051,19 +3051,6 @@ In Perl, this really just returns an integer indicating the termination type, no
     -- ALGLIB PROJECT --
        Copyright 30.06.2007 by Bochkanov Sergey
 
-=head2 This subroutine makes the copy of the spline model.
-
-  void spline2dcopy(const spline2dinterpolant &c, spline2dinterpolant &cc);
-
-  Input parameters:
-      C   -   spline interpolant
-  
-  Output parameters:
-      CC  -   spline copy
-  
-    -- ALGLIB PROJECT --
-       Copyright 29.06.2007 by Bochkanov Sergey
-
 =head2 Bicubic spline resampling
 
   void spline2dresamplebicubic(const real_2d_array &a, const ae_int_t oldheight, const ae_int_t oldwidth, real_2d_array &b, const ae_int_t newheight, const ae_int_t newwidth);

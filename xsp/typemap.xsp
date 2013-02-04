@@ -39,6 +39,7 @@
 %typemap{pspline2interpolant*};
 %typemap{pspline3interpolant*};
 %typemap{rbfmodel*};
+%typemap{spline2dinterpolant*};
 
 %exception{ApError}{alglib::ap_error}{code}{%
   croak("%s", e.msg.c_str());

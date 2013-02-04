@@ -125,6 +125,12 @@ TODO: {
     rbfcalc3
     rbfgridcalc2
     rbfunpack
+    spline2dinterpolant
+    ~spline2dinterpolant
+    spline2dcalc
+    spline2ddiff
+    spline2dlintransxy
+    spline2dlintransf
   );
 }
 

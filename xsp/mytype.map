@@ -25,6 +25,7 @@ odesolverreport*		O_OBJECT
 pspline2interpolant*		O_OBJECT
 pspline3interpolant*		O_OBJECT
 rbfmodel*			O_OBJECT
+spline2dinterpolant*		O_OBJECT
 
 polynomialfitreport		T_HV_POLYNOMIALFITREPORT
 alglib_impl::odesolverstate*    T_HV_ODESOLVERSTATE
