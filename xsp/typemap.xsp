@@ -24,6 +24,7 @@
 %typemap{double_ref};
 
 %typemap{std::vector<double>};
+%typemap{std::string};
 
 // %typemap{alglib_impl::odesolverstate};
 // %typemap{alglib_impl::odesolverstate*};
@@ -36,6 +37,7 @@
 %typemap{barycentricfitreport};
 %typemap{pspline2interpolant*};
 %typemap{pspline3interpolant*};
+%typemap{rbfmodel*};
 
 %exception{ApError}{alglib::ap_error}{code}{%
   croak("%s", e.msg.c_str());

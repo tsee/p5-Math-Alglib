@@ -312,6 +312,45 @@ pspline3build(real_2d_array xy, const ae_int_t n, const ae_int_t st, const ae_in
 
 
 //////////////////////////////////////////////////////////////////////
+%name{Math::Alglib::Interpolation::RbfModel}
+class rbfmodel {
+  ~rbfmodel();
+
+  std::string rbfserialize()
+   %code{% alglib::rbfserialize(*THIS, RETVAL); %};
+
+  void rbfsetpoints(real_2d_array xy)
+    %code{% alglib::rbfsetpoints(*THIS, xy); %};
+
+  void rbfsetalgoqnn(const double q, const double z)
+    %code{% alglib::rbfsetalgoqnn(*THIS, q, z); %};
+
+  void rbfsetalgomultilayer(const double rbase, const ae_int_t nlayers, const double lambdav)
+    %code{% alglib::rbfsetalgomultilayer(*THIS, rbase, nlayers, lambdav); %};
+
+};
+
+{%
+rbfmodel*
+rbfunserialize(std::string s)
+  CODE:
+    const char CLASS[] = "Math::Alglib::Interpolation::RbfModel";
+    RETVAL = new alglib::rbfmodel();
+    alglib::rbfunserialize(s, *RETVAL);
+  OUTPUT: RETVAL
+%}
+
+{%
+rbfmodel*
+rbfcreate(const ae_int_t nx, const ae_int_t ny)
+  CODE:
+    const char CLASS[] = "Math::Alglib::Interpolation::RbfModel";
+    RETVAL = new alglib::rbfmodel();
+    alglib::rbfcreate(nx, ny, *RETVAL);
+  OUTPUT: RETVAL
+%}
+
+//////////////////////////////////////////////////////////////////////
 %package{Math::Alglib::Interpolation};
 
 idwinterpolant*

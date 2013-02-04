@@ -2601,8 +2601,7 @@ Also aliased to not include the "pspline\d" method name prefix.
 
 =head2 This  function  sets  RBF interpolation algorithm. ALGLIB supports several
 
-  void rbfsetalgoqnn(const rbfmodel &s);
-
+  void rbfsetalgoqnn(const rbfmodel &s, const double q, const double z);
   RBF algorithms with different properties.
   
   This algorithm is called RBF-QNN and  it  is  good  for  point  sets  with
@@ -2656,8 +2655,7 @@ Also aliased to not include the "pspline\d" method name prefix.
 
 =head2 This  function  sets  RBF interpolation algorithm. ALGLIB supports several
 
-  void rbfsetalgomultilayer(const rbfmodel &s, const double rbase, const ae_int_t nlayers);
-
+  void rbfsetalgomultilayer(const rbfmodel &s, const double rbase, const ae_int_t nlayers, const double lambdav);
   RBF algorithms with different properties.
   
   This  algorithm is called RBF-ML. It builds  multilayer  RBF  model,  i.e.

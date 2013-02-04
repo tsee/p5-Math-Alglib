@@ -92,6 +92,8 @@ TODO: {
     lsfitlinearwc
     lsfitlinear
     lsfitlinearc
+    ~pspline3interpolator
+    ~pspline2interpolator
     pspline3buildperiodic
     pspline3build
     pspline2buildperiodic
@@ -108,6 +110,12 @@ TODO: {
     pspline2diff2
     pspline3arclength
     pspline2arclength
+    ~rbfmodel
+    rbfcreate
+    rbfserialize
+    rbfunserialize
+    rbfsetalgoqnn
+    rbfsetalgomultilayer
   );
 }
 

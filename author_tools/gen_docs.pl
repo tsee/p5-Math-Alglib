@@ -123,6 +123,8 @@ my $docs = [
       spline1dconvdiffcubic => 'void spline1dconvdiffcubic(const real_1d_array &x, const real_1d_array &y, const ae_int_t n, const ae_int_t boundltype, const double boundl, const ae_int_t boundrtype, const double boundr, const real_1d_array &x2, const ae_int_t n2, real_1d_array &y2, real_1d_array &d2);',
       spline1dconvdiff2cubic => 'void spline1dconvdiff2cubic(const real_1d_array &x, const real_1d_array &y, const ae_int_t n, const ae_int_t boundltype, const double boundl, const ae_int_t boundrtype, const double boundr, const real_1d_array &x2, const ae_int_t n2, real_1d_array &y2, real_1d_array &d2, real_1d_array &dd2);',
       spline1dbuildcatmullrom => 'spline1dinterpolant* spline1dbuildcatmullrom(alglib::real_1d_array x, alglib::real_1d_array y, ae_int_t n, ae_int_t boundtype = 0, double tension = 0)',
+      rbfsetalgoqnn => 'void rbfsetalgoqnn(const rbfmodel &s, const double q, const double z);',
+      rbfsetalgomultilayer => 'void rbfsetalgomultilayer(const rbfmodel &s, const double rbase, const ae_int_t nlayers, const double lambdav);',      
     },
     notes => {
       polynomialfit => 'Returns array ref of three elements: info, barycentricinterpolant object, hashref of polynomialfitreport data',
