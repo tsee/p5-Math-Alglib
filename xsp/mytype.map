@@ -151,11 +151,9 @@ AL_NV_2DARRAY
 
 OUTPUT
 AL_NV_ARRAY
-        const unsigned int len = $var.length();
         $arg = newRV_noinc((SV *)real_1d_array_to_av(aTHX_ $var));
 
 AL_IV_ARRAY
-        const unsigned int len = $var.length();
         $arg = newRV_noinc((SV *)integer_1d_array_to_av(aTHX_ $var));
 
 
@@ -187,20 +185,7 @@ AL_CPLXNV_ARRAY_PTR
 
 
 AL_NV_2DARRAY
-        AV* av = newAV();
-        const unsigned int rows = $var.rows();
-        const unsigned int cols = $var.cols();
-        $arg = newRV_noinc((SV*)av);
-        av_extend(av, rows-1);
-        for (unsigned int i = 0; i < rows; i++) {
-          AV *iav = newAV();
-          double *row = ${var}[i];
-          av_extend(iav, cols-1);
-          av_store(av, i, newRV_noinc((SV *)iav));
-          for (unsigned int j = 0; j < cols; j++) {
-            av_store(iav, j, newSVnv(row[j]));
-          }
-        }
+        $arg = newRV_noinc((SV *)real_2d_array_to_av(aTHX_ $var));
 
 T_HV_ODESOLVERSTATE
         $arg = odesolverstate_to_perl_hash(aTHX_ $var);

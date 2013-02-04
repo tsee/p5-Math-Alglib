@@ -120,6 +120,11 @@ TODO: {
     rbfsetconstterm
     rbfsetzeroterm
     rbfbuildmodel
+    rbfcalc
+    rbfcalc2
+    rbfcalc3
+    rbfgridcalc2
+    rbfunpack
   );
 }
 

@@ -37,6 +37,26 @@ real_1d_array_to_av(pTHX_ const alglib::real_1d_array &x)
   return av;
 }
 
+/* used by the real_2d_array typemap, but also usable separately */
+AV *
+real_2d_array_to_av(pTHX_ const alglib::real_2d_array &x)
+{
+  AV* av = newAV();
+  const unsigned int rows = x.rows();
+  const unsigned int cols = x.cols();
+  av_extend(av, rows-1);
+  for (unsigned int i = 0; i < rows; i++) {
+    AV *iav = newAV();
+    const double *row = x[i];
+    av_extend(iav, cols-1);
+    av_store(av, i, newRV_noinc((SV *)iav));
+    for (unsigned int j = 0; j < cols; j++) {
+      av_store(iav, j, newSVnv(row[j]));
+    }
+  }
+  return av;
+}
+
 /* used by the integer_1d_array typemap, but also usable separately */
 AV *
 integer_1d_array_to_av(pTHX_ const alglib::integer_1d_array &x)

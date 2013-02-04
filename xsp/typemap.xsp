@@ -1,4 +1,5 @@
 
+%typemap{AV *};
 %typemap{bool};
 
 %typemap{ptrdiff_t};

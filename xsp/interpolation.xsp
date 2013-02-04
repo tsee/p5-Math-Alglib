@@ -340,6 +340,35 @@ class rbfmodel {
       RETVAL = rep.terminationtype;
     %};
 
+  double rbfcalc2(const double x0, const double x1)
+    %code{% RETVAL = alglib::rbfcalc2(*THIS, x0, x1); %};
+
+  double rbfcalc3(const double x0, const double x1, const double x2)
+    %code{% RETVAL = alglib::rbfcalc3(*THIS, x0, x1, x2); %};
+
+  real_1d_array
+  rbfcalc(real_1d_array x)
+    %code{% alglib::rbfcalc(*THIS, x, RETVAL); %};
+
+  real_2d_array
+  rbfgridcalc2(real_1d_array x0, const ae_int_t n0, real_1d_array x1, const ae_int_t n1)
+    %code{% alglib::rbfgridcalc2(*THIS, x0, n0, x1, n1, RETVAL); %};
+
+  AV*
+  rbfunpack()
+    %code{%
+      sv_2mortal((SV *)RETVAL);
+      ae_int_t nx, ny, nc;
+      real_2d_array xwr, v;
+      alglib::rbfunpack(*THIS, nx, ny, xwr, nc, v);
+      av_extend(RETVAL, 4);
+      av_store(RETVAL, 0, newSViv(nx));
+      av_store(RETVAL, 1, newSViv(ny));
+      av_store(RETVAL, 2, newRV_noinc((SV *)real_2d_array_to_av(aTHX_ xwr)));
+      av_store(RETVAL, 3, newSViv(nc));
+      av_store(RETVAL, 4, newRV_noinc((SV *)real_2d_array_to_av(aTHX_ v)));
+    %};
+
 };
 
 {%
