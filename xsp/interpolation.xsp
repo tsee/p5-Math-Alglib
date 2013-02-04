@@ -117,6 +117,78 @@ class spline1dinterpolant {
 
 };
 
+//////////////////////////////////////////////////////////////////////
+%name{Math::Alglib::Interpolation::PSpline2Interpolant}
+class pspline2interpolant{
+  ~pspline2interpolant();
+
+{%
+AV *
+pspline2interpolant::pspline2parametervalues()
+  CODE:
+    sv_2mortal((SV *)RETVAL);
+    ae_int_t n;
+    real_1d_array t;
+    alglib::pspline2parametervalues(*THIS, n, t);
+    av_extend(RETVAL, 1);
+    av_store(RETVAL, 0, newSViv(n));
+    av_store(RETVAL, 1, newRV_noinc((SV *)real_1d_array_to_av(aTHX_ t)));
+  OUTPUT: RETVAL
+%}
+
+}; // end class pspline2interpolant
+
+{%
+pspline2interpolant*
+pspline2build(real_2d_array xy, const ae_int_t n, const ae_int_t st, const ae_int_t pt)
+  ALIAS:
+    pspline2buildperiodic = 1
+  CODE:
+    const char CLASS[] = "Math::Alglib::Interpolation::PSpline2Interpolant";
+    RETVAL = new alglib::pspline2interpolant();
+    if (ix == 0)
+      alglib::pspline2build(xy, n, st, pt, *RETVAL);
+    else
+      alglib::pspline2buildperiodic(xy, n, st, pt, *RETVAL);
+  OUTPUT: RETVAL
+%}
+
+//////////////////////////////////////////////////////////////////////
+%name{Math::Alglib::Interpolation::PSpline3Interpolant}
+class pspline3interpolant{
+  ~pspline3interpolant();
+
+{%
+AV *
+pspline3interpolant::pspline3parametervalues()
+  CODE:
+    sv_2mortal((SV *)RETVAL);
+    ae_int_t n;
+    real_1d_array t;
+    alglib::pspline3parametervalues(*THIS, n, t);
+    av_extend(RETVAL, 1);
+    av_store(RETVAL, 0, newSViv(n));
+    av_store(RETVAL, 1, newRV_noinc((SV *)real_1d_array_to_av(aTHX_ t)));
+  OUTPUT: RETVAL
+%}
+
+}; // end class pspline3interpolant
+
+{%
+pspline3interpolant*
+pspline3build(real_2d_array xy, const ae_int_t n, const ae_int_t st, const ae_int_t pt)
+  ALIAS:
+    pspline3buildperiodic = 1
+  CODE:
+    const char CLASS[] = "Math::Alglib::Interpolation::PSpline3Interpolant";
+    RETVAL = new alglib::pspline3interpolant();
+    if (ix == 0)
+      alglib::pspline3build(xy, n, st, pt, *RETVAL);
+    else
+      alglib::pspline3buildperiodic(xy, n, st, pt, *RETVAL);
+  OUTPUT: RETVAL
+%}
+
 
 //////////////////////////////////////////////////////////////////////
 %package{Math::Alglib::Interpolation};
@@ -211,7 +283,6 @@ polynomialbuildcheb1(const double a, const double b, real_1d_array y)
 double polynomialcalceqdist(const double a, const double b, real_1d_array f, const double t);
 double polynomialcalccheb1(const double a, const double b, real_1d_array f, const double t);
 double polynomialcalccheb2(const double a, const double b, real_1d_array f, const double t);
-
 
 //////////////////////////////////////////////////////////////////////
 spline1dinterpolant*

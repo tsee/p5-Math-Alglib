@@ -99,6 +99,20 @@ my $docs = [
     mod_name => 'Math::Alglib::Interpolation',
     unimpl   => [qw(
       lsfitfit
+      lsfititeration
+      lsfitresults
+      lsfitcreatewf
+      lsfitcreatef
+      lsfitcreatewfg
+      lsfitcreatefg
+      lsfitcreatewfgh
+      lsfitcreatefgh
+      lsfitsetcond
+      lsfitsetstpmax
+      lsfitsetxrep
+      lsfitsetscale
+      lsfitsetbc
+      lsfitsetgradientcheck
     )],
     sig_override => {
       polynomialbar2pow => 'void polynomialbar2pow(const barycentricinterpolant &p, const double c, const double s, real_1d_array &a);',
@@ -118,11 +132,15 @@ my $docs = [
       (
         map {$_ => 'Returns array ref of three elements: info, spline1dinterpolant object, hashref of spline1dfitreport data'}
         qw(spline1dfitpenalized spline1dfitpenalizedw spline1dfitcubicwc spline1dfithermitewc spline1dfitcubic spline1dfithermite)
-      )
+      ),
       (
         map {$_ => 'Returns array ref of three elements: info, array ref of decomposition coefficients, hashref of lsfitreport data'}
         qw(lsfitlinearw lsfitlinearwc lsfitlinear lsfitlinearc)
-      )
+      ),
+      (
+        map {$_ => 'Returns array ref of two elements: n, t'}
+        qw(pspline3parametervalues pspline2parametervalues)
+      ),
     },
   },
 ];

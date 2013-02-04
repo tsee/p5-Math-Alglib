@@ -22,6 +22,8 @@ barycentricinterpolant*		O_OBJECT
 spline1dinterpolant*		O_OBJECT
 odesolverstate*			O_OBJECT
 odesolverreport*		O_OBJECT
+pspline2interpolant*		O_OBJECT
+pspline3interpolant*		O_OBJECT
 
 
 polynomialfitreport		T_HV_POLYNOMIALFITREPORT

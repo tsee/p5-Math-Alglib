@@ -92,6 +92,12 @@ TODO: {
     lsfitlinearwc
     lsfitlinear
     lsfitlinearc
+    pspline3buildperiodic
+    pspline3build
+    pspline2buildperiodic
+    pspline2build
+    pspline3parametervalues
+    pspline2parametervalues
   );
 }
 
