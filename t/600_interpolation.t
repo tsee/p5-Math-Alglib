@@ -131,6 +131,7 @@ TODO: {
     spline2ddiff
     spline2dlintransxy
     spline2dlintransf
+    spline2dresamplebicubic
   );
 }
 

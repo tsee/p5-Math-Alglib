@@ -3053,8 +3053,7 @@ In Perl, this really just returns an integer indicating the termination type, no
 
 =head2 Bicubic spline resampling
 
-  void spline2dresamplebicubic(const real_2d_array &a, const ae_int_t oldheight, const ae_int_t oldwidth, real_2d_array &b, const ae_int_t newheight, const ae_int_t newwidth);
-
+  real_2d_array spline2dresamplebicubic(real_2d_array a, const ae_int_t oldheight, const ae_int_t oldwidth, const ae_int_t newheight, const ae_int_t newwidth)
   Input parameters:
       A           -   function values at the old grid,
                       array[0..OldHeight-1, 0..OldWidth-1]

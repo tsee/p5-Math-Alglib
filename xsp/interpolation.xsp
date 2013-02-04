@@ -73,7 +73,7 @@ class barycentricinterpolant {
   real_1d_array
   polynomialbar2pow(const double c, const double s)
     %code{% alglib::polynomialbar2pow(*THIS, c, s, RETVAL); %};
-};
+}; // end class barycentricinterpolant
 
 //////////////////////////////////////////////////////////////////////
 %name{Math::Alglib::Interpolation::Spline1dInterpolant}
@@ -115,7 +115,7 @@ class spline1dinterpolant {
       RETVAL = alglib::spline1dintegrate(*THIS, x);
     %};
 
-};
+}; // end class spline1dinterpolant
 
 //////////////////////////////////////////////////////////////////////
 %name{Math::Alglib::Interpolation::PSpline2Interpolant}
@@ -193,21 +193,6 @@ pspline2interpolant::pspline2arclength(const double a, const double b)
 %}
 
 }; // end class pspline2interpolant
-
-{%
-pspline2interpolant*
-pspline2build(real_2d_array xy, const ae_int_t n, const ae_int_t st, const ae_int_t pt)
-  ALIAS:
-    pspline2buildperiodic = 1
-  CODE:
-    const char CLASS[] = "Math::Alglib::Interpolation::PSpline2Interpolant";
-    RETVAL = new alglib::pspline2interpolant();
-    if (ix == 0)
-      alglib::pspline2build(xy, n, st, pt, *RETVAL);
-    else
-      alglib::pspline2buildperiodic(xy, n, st, pt, *RETVAL);
-  OUTPUT: RETVAL
-%}
 
 //////////////////////////////////////////////////////////////////////
 %name{Math::Alglib::Interpolation::Spline2dInterpolant}
@@ -325,22 +310,6 @@ pspline3interpolant::pspline3arclength(const double a, const double b)
 %}
 }; // end class pspline3interpolant
 
-{%
-pspline3interpolant*
-pspline3build(real_2d_array xy, const ae_int_t n, const ae_int_t st, const ae_int_t pt)
-  ALIAS:
-    pspline3buildperiodic = 1
-  CODE:
-    const char CLASS[] = "Math::Alglib::Interpolation::PSpline3Interpolant";
-    RETVAL = new alglib::pspline3interpolant();
-    if (ix == 0)
-      alglib::pspline3build(xy, n, st, pt, *RETVAL);
-    else
-      alglib::pspline3buildperiodic(xy, n, st, pt, *RETVAL);
-  OUTPUT: RETVAL
-%}
-
-
 //////////////////////////////////////////////////////////////////////
 %name{Math::Alglib::Interpolation::RbfModel}
 class rbfmodel {
@@ -399,7 +368,31 @@ class rbfmodel {
       av_store(RETVAL, 4, newRV_noinc((SV *)real_2d_array_to_av(aTHX_ v)));
     %};
 
-};
+}; // end class rbfmodel
+
+//////////////////////////////////////////////////////////////////////
+%package{Math::Alglib::Interpolation};
+
+real_2d_array
+spline2dresamplebicubic(real_2d_array a, const ae_int_t oldheight, const ae_int_t oldwidth, const ae_int_t newheight, const ae_int_t newwidth)
+  %code{%
+    alglib::spline2dresamplebicubic(a, oldheight, oldwidth, RETVAL, newheight, newwidth);
+  %};
+
+{%
+pspline3interpolant*
+pspline3build(real_2d_array xy, const ae_int_t n, const ae_int_t st, const ae_int_t pt)
+  ALIAS:
+    pspline3buildperiodic = 1
+  CODE:
+    const char CLASS[] = "Math::Alglib::Interpolation::PSpline3Interpolant";
+    RETVAL = new alglib::pspline3interpolant();
+    if (ix == 0)
+      alglib::pspline3build(xy, n, st, pt, *RETVAL);
+    else
+      alglib::pspline3buildperiodic(xy, n, st, pt, *RETVAL);
+  OUTPUT: RETVAL
+%}
 
 {%
 rbfmodel*
@@ -420,9 +413,20 @@ rbfcreate(const ae_int_t nx, const ae_int_t ny)
     alglib::rbfcreate(nx, ny, *RETVAL);
   OUTPUT: RETVAL
 %}
-
-//////////////////////////////////////////////////////////////////////
-%package{Math::Alglib::Interpolation};
+{%
+pspline2interpolant*
+pspline2build(real_2d_array xy, const ae_int_t n, const ae_int_t st, const ae_int_t pt)
+  ALIAS:
+    pspline2buildperiodic = 1
+  CODE:
+    const char CLASS[] = "Math::Alglib::Interpolation::PSpline2Interpolant";
+    RETVAL = new alglib::pspline2interpolant();
+    if (ix == 0)
+      alglib::pspline2build(xy, n, st, pt, *RETVAL);
+    else
+      alglib::pspline2buildperiodic(xy, n, st, pt, *RETVAL);
+  OUTPUT: RETVAL
+%}
 
 idwinterpolant*
 idwbuildmodifiedshepard(real_2d_array xy, const ae_int_t n, const ae_int_t nx,
