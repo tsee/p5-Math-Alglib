@@ -122,19 +122,17 @@ class spline1dinterpolant {
 class pspline2interpolant {
   ~pspline2interpolant();
 
-{%
-AV *
-pspline2interpolant::pspline2parametervalues()
-  CODE:
-    sv_2mortal((SV *)RETVAL);
-    ae_int_t n;
-    real_1d_array t;
-    alglib::pspline2parametervalues(*THIS, n, t);
-    av_extend(RETVAL, 1);
-    av_store(RETVAL, 0, newSViv(n));
-    av_store(RETVAL, 1, newRV_noinc((SV *)real_1d_array_to_av(aTHX_ t)));
-  OUTPUT: RETVAL
-%}
+  AV *
+  pspline2parametervalues()
+    %code{%
+      sv_2mortal((SV *)RETVAL);
+      ae_int_t n;
+      real_1d_array t;
+      alglib::pspline2parametervalues(*THIS, n, t);
+      av_extend(RETVAL, 1);
+      av_store(RETVAL, 0, newSViv(n));
+      av_store(RETVAL, 1, newRV_noinc((SV *)real_1d_array_to_av(aTHX_ t)));
+    %};
 
 {%
 AV *
