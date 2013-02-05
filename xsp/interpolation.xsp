@@ -372,6 +372,7 @@ class rbfmodel {
 
 //////////////////////////////////////////////////////////////////////
 %package{Math::Alglib::Interpolation};
+//////////////////////////////////////////////////////////////////////
 
 real_2d_array
 spline2dresamplebicubic(real_2d_array a, const ae_int_t oldheight, const ae_int_t oldwidth, const ae_int_t newheight, const ae_int_t newwidth)
@@ -385,6 +386,7 @@ spline2dresamplebilinear(real_2d_array a, const ae_int_t oldheight, const ae_int
     alglib::spline2dresamplebilinear(a, oldheight, oldwidth, RETVAL, newheight, newwidth);
   %};
 
+//////////////////////////////////////////////////////////////////////
 {%
 pspline3interpolant*
 pspline3build(real_2d_array xy, const ae_int_t n, const ae_int_t st, const ae_int_t pt)
@@ -400,6 +402,23 @@ pspline3build(real_2d_array xy, const ae_int_t n, const ae_int_t st, const ae_in
   OUTPUT: RETVAL
 %}
 
+//////////////////////////////////////////////////////////////////////
+{%
+pspline2interpolant*
+pspline2build(real_2d_array xy, const ae_int_t n, const ae_int_t st, const ae_int_t pt)
+  ALIAS:
+    pspline2buildperiodic = 1
+  CODE:
+    const char CLASS[] = "Math::Alglib::Interpolation::PSpline2Interpolant";
+    RETVAL = new alglib::pspline2interpolant();
+    if (ix == 0)
+      alglib::pspline2build(xy, n, st, pt, *RETVAL);
+    else
+      alglib::pspline2buildperiodic(xy, n, st, pt, *RETVAL);
+  OUTPUT: RETVAL
+%}
+
+//////////////////////////////////////////////////////////////////////
 {%
 rbfmodel*
 rbfunserialize(std::string s)
@@ -419,21 +438,8 @@ rbfcreate(const ae_int_t nx, const ae_int_t ny)
     alglib::rbfcreate(nx, ny, *RETVAL);
   OUTPUT: RETVAL
 %}
-{%
-pspline2interpolant*
-pspline2build(real_2d_array xy, const ae_int_t n, const ae_int_t st, const ae_int_t pt)
-  ALIAS:
-    pspline2buildperiodic = 1
-  CODE:
-    const char CLASS[] = "Math::Alglib::Interpolation::PSpline2Interpolant";
-    RETVAL = new alglib::pspline2interpolant();
-    if (ix == 0)
-      alglib::pspline2build(xy, n, st, pt, *RETVAL);
-    else
-      alglib::pspline2buildperiodic(xy, n, st, pt, *RETVAL);
-  OUTPUT: RETVAL
-%}
 
+//////////////////////////////////////////////////////////////////////
 idwinterpolant*
 idwbuildmodifiedshepard(real_2d_array xy, const ae_int_t n, const ae_int_t nx,
                          const ae_int_t d, const ae_int_t nq, const ae_int_t nw)
@@ -636,6 +642,7 @@ spline1dbuildakima(real_1d_array x, real_1d_array y)
   OUTPUT: RETVAL
 %}
 
+//////////////////////////////////////////////////////////////////////
 {%
 AV *
 polynomialfit(real_1d_array x, real_1d_array y, const ae_int_t m)
