@@ -9,6 +9,7 @@ my $build = Module::Build::WithXSpp->new(
   },
   build_requires        => {
     'ExtUtils::ParseXS' => '3.15',
+    'ExtUtils::XSpp' => '0.1604',
   },
   # Provides extra C typemaps for opaque objects:
   extra_typemap_modules => {

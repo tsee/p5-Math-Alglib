@@ -182,15 +182,10 @@ pspline2interpolant::pspline2calc(const double t)
   OUTPUT: RETVAL
 %}
 
-{%
-double
-pspline2interpolant::pspline2arclength(const double a, const double b)
-  ALIAS:
-    arclength = 1
-  CODE:
-    RETVAL = alglib::pspline2arclength(*THIS, a, b);
-  OUTPUT: RETVAL
-%}
+  double
+  pspline2arclength(const double a, const double b)
+    %alias{arclength = 1}
+    %code{% RETVAL = alglib::pspline2arclength(*THIS, a, b); %};
 
 }; // end class pspline2interpolant
 
