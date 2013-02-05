@@ -224,6 +224,14 @@ class spline2dinterpolant {
   spline2dlintransf(const double a, const double b)
     %code{% alglib::spline2dlintransf(*THIS, a, b); %};
 
+  real_1d_array
+  spline2dcalcvbuf(const double x, const double y)
+    %code{% alglib::spline2dcalcvbuf(*THIS, x, y, RETVAL); %};
+
+  real_1d_array
+  spline2dcalcv(const double x, const double y)
+    %code{% alglib::spline2dcalcv(*THIS, x, y, RETVAL); %};
+
 }; // end class spline2dinterpolant
 
 //////////////////////////////////////////////////////////////////////
@@ -373,6 +381,21 @@ class rbfmodel {
 //////////////////////////////////////////////////////////////////////
 %package{Math::Alglib::Interpolation};
 //////////////////////////////////////////////////////////////////////
+
+{%
+spline2dinterpolant*
+spline2dbuildbilinearv(real_1d_array x, const ae_int_t n, real_1d_array y, const ae_int_t m, real_1d_array f, const ae_int_t d)
+  ALIAS:
+    spline2dbuildbicubicv = 1
+  CODE:
+    const char CLASS[] = "Math::Alglib::Interpolation::Spline2DInterpolant";
+    RETVAL = new alglib::spline2dinterpolant();
+    if (ix == 0)
+      alglib::spline2dbuildbilinearv(x, n, y, m, f, d, *RETVAL);
+    else
+      alglib::spline2dbuildbicubicv(x, n, y, m, f, d, *RETVAL);
+  OUTPUT: RETVAL
+%}
 
 real_2d_array
 spline2dresamplebicubic(real_2d_array a, const ae_int_t oldheight, const ae_int_t oldwidth, const ae_int_t newheight, const ae_int_t newwidth)

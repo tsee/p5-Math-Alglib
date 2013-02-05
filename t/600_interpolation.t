@@ -133,6 +133,10 @@ TODO: {
     spline2dlintransf
     spline2dresamplebicubic
     spline2dresamplebilinear
+    spline2dbuildbilinearv
+    spline2dbuildbicubicv
+    spline2dcalcv
+    spline2dcalcvbuf
   );
 }
 
