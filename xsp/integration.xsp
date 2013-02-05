@@ -7,134 +7,104 @@
 %module{Math::Alglib};
 %package{Math::Alglib::Integration};
 
-{%
 SV *
 gqgeneraterec(real_1d_array alpha, real_1d_array beta, double mu0, ae_int_t n)
-  PREINIT:
+  %code{%
     ae_int_t info;
     real_1d_array x, w;
-  CODE:
     alglib::gqgeneraterec(alpha, beta, mu0, n, info, x, w);
     RETVAL = sv_2mortal(integration_return_status_ary_ary(aTHX_ (IV)info, x, w));
-  OUTPUT: RETVAL
-%}
+  %};
 
 
-{%
 SV *
 gqgenerategausslobattorec(real_1d_array alpha, real_1d_array beta, double mu0, double a, double b, ae_int_t n)
-  PREINIT:
+  %code{%
     ae_int_t info;
     real_1d_array x, w;
-  CODE:
     alglib::gqgenerategausslobattorec(alpha, beta, mu0, a, b, n, info, x, w);
     RETVAL = sv_2mortal(integration_return_status_ary_ary(aTHX_ (IV)info, x, w));
-  OUTPUT: RETVAL
-%}
+  %};
 
-{%
 SV *
 gqgenerategaussradaurec(real_1d_array alpha, real_1d_array beta, double mu0, double a, ae_int_t n)
-  PREINIT:
+  %code{%
     ae_int_t info;
     real_1d_array x, w;
-  CODE:
     alglib::gqgenerategaussradaurec(alpha, beta, mu0, a, n, info, x, w);
     RETVAL = sv_2mortal(integration_return_status_ary_ary(aTHX_ (IV)info, x, w));
-  OUTPUT: RETVAL
-%}
+  %};
 
-{%
+
 SV *
 gqgenerategausslegendre(ae_int_t n)
-  PREINIT:
+  %alias{gqgenerategausshermite = 1}
+  %code{%
     ae_int_t info;
     real_1d_array x, w;
-  ALIAS:
-    gqgenerategausshermite = 1
-  CODE:
     if (ix == 0)
       alglib::gqgenerategausslegendre(n, info, x, w);
     else
       alglib::gqgenerategausshermite(n, info, x, w);
     RETVAL = sv_2mortal(integration_return_status_ary_ary(aTHX_ (IV)info, x, w));
-  OUTPUT: RETVAL
-%}
+  %};
 
-{%
 SV *
 gqgenerategaussjacobi(ae_int_t n, double alpha, double beta)
-  PREINIT:
+  %code{%
     ae_int_t info;
     real_1d_array x, w;
-  CODE:
     alglib::gqgenerategaussjacobi(n, alpha, beta, info, x, w);
     RETVAL = sv_2mortal(integration_return_status_ary_ary(aTHX_ (IV)info, x, w));
-  OUTPUT: RETVAL
-%}
+  %};
 
-{%
 SV *
 gqgenerategausslaguerre(ae_int_t n, double alpha)
-  PREINIT:
+  %code{%
     ae_int_t info;
     real_1d_array x, w;
-  CODE:
     alglib::gqgenerategausslaguerre(n, alpha, info, x, w);
     RETVAL = sv_2mortal(integration_return_status_ary_ary(aTHX_ (IV)info, x, w));
-  OUTPUT: RETVAL
-%}
+  %};
 
-{%
 SV *
 gkqgeneraterec(real_1d_array alpha, real_1d_array beta, double mu0, ae_int_t n)
-  PREINIT:
+  %code{%
     ae_int_t info;
     real_1d_array x, wkronrod, wgauss;
-  CODE:
     alglib::gkqgeneraterec(alpha, beta, mu0, n, info, x, wkronrod, wgauss);
     RETVAL = sv_2mortal(integration_return_status_ary_ary(aTHX_ (IV)info, x, wkronrod, &wgauss));
-  OUTPUT: RETVAL
-%}
+  %};
 
-{%
 SV *
 gkqgenerategausslegendre(ae_int_t n)
-  PREINIT:
+  %alias{gkqlegendrecalc = 1}
+  %code{%
     ae_int_t info;
     real_1d_array x, wkronrod, wgauss;
-  ALIAS:
-    gkqlegendrecalc = 1
-  CODE:
     if (ix == 0)
       alglib::gkqgenerategausslegendre(n, info, x, wkronrod, wgauss);
     else
       alglib::gkqlegendrecalc(n, info, x, wkronrod, wgauss);
     RETVAL = sv_2mortal(integration_return_status_ary_ary(aTHX_ (IV)info, x, wkronrod, &wgauss));
-  OUTPUT: RETVAL
-%}
+  %};
 
-{%
 SV *
 gkqgenerategaussjacobi(ae_int_t n, double alpha, double beta)
-  PREINIT:
+  %code{%
     ae_int_t info;
     real_1d_array x, wkronrod, wgauss;
-  CODE:
     alglib::gkqgenerategaussjacobi(n, alpha, beta, info, x, wkronrod, wgauss);
     RETVAL = sv_2mortal(integration_return_status_ary_ary(aTHX_ (IV)info, x, wkronrod, &wgauss));
-  OUTPUT: RETVAL
-%}
+  %};
 
-{%
 SV *
 gkqlegendretbl(ae_int_t n)
-  PREINIT:
+  %code{%
     ae_int_t info;
     real_1d_array x, wkronrod, wgauss;
     double eps;
     AV *av;
-  CODE:
     alglib::gkqlegendretbl(n, x, wkronrod, wgauss, eps);
     RETVAL = sv_2mortal(integration_return_status_ary_ary(aTHX_ (IV)info, x, wkronrod, &wgauss));
     av = newAV();
@@ -144,6 +114,5 @@ gkqlegendretbl(ae_int_t n)
     av_store(av, 1, newRV_noinc((SV *) real_1d_array_to_av(aTHX_ wkronrod)));
     av_store(av, 2, newRV_noinc((SV *) real_1d_array_to_av(aTHX_ wgauss)));
     av_store(av, 3, newSVnv(eps));
-  OUTPUT: RETVAL
-%}
+  %};
 

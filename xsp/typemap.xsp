@@ -1,5 +1,7 @@
 
 %typemap{AV *};
+%typemap{SV *};
+
 %typemap{bool};
 
 %typemap{ptrdiff_t};
