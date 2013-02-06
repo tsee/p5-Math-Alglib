@@ -37,6 +37,23 @@ real_1d_array_to_av(pTHX_ const alglib::real_1d_array &x)
   return av;
 }
 
+void
+av_to_real_1d_array(pTHX_ AV *av, alglib::real_1d_array &x)
+{
+  const unsigned int len = av_len(av)+1;
+  unsigned int i;
+  SV **elem;
+  x.setlength(len);
+  for (i = 0; i < len; ++i) {
+    elem = av_fetch(av, len, 0);
+    if (elem == 0)
+      x[i] = 0.;
+    else
+      x[i] = SvNV(*elem);
+  }
+}
+
+
 /* used by the real_2d_array typemap, but also usable separately */
 AV *
 real_2d_array_to_av(pTHX_ const alglib::real_2d_array &x)
