@@ -38,6 +38,17 @@ SCOPE: {
   isa_ok($int, 'Math::Alglib::Interpolation::IdwInterpolant');
 }
 
+SCOPE: {
+  my $spl = Math::Alglib::Interpolation::spline3dbuildtrilinearv(
+    [0..9], 10, [0..9], 10, [0..9], 10,
+    [0..999],
+    1
+  );
+  isa_ok($spl, 'Math::Alglib::Interpolation::Spline3dInterpolant');
+  my $x = $spl->spline3dcalc(1, 1, 1);
+  ok($x > 111-1e-9 and $x < 111+1e-9);
+}
+
 TODO: {
   local $TODO = "Functions requiring test coverage";
   fail($_) for qw(
@@ -142,12 +153,9 @@ TODO: {
     spline2dbuildbicubic
     spline2dunpack
     spline3dcalc
-    spline3dinterpolant
-    ~spline3dinterpolant
     spline3dcalc
     spline3dlintransxyz
     spline3dlintransf
-    spline3dbuildtrilinearv
     spline3dcalcvbuf
     spline3dcalcv
     spline3dunpackv
