@@ -212,6 +212,22 @@ class spline3dinterpolant {
         alglib::spline3dcalcv(*THIS, x, y, z, RETVAL);
     %};
 
+  AV *
+  spline3dunpackv()
+    %code{%
+      sv_2mortal((SV *)RETVAL);
+      ae_int_t n, m, l, d, stype;
+      real_2d_array tbl;
+      alglib::spline3dunpackv(*THIS, n, m, l, d, stype, tbl);
+      av_extend(RETVAL, 5);
+      av_store(RETVAL, 0, newSViv(n));
+      av_store(RETVAL, 1, newSViv(m));
+      av_store(RETVAL, 2, newSViv(l));
+      av_store(RETVAL, 3, newSViv(d));
+      av_store(RETVAL, 4, newSViv(stype));
+      av_store(RETVAL, 5, newRV_noinc((SV *) real_2d_array_to_av(aTHX_ tbl)));
+    %};
+
 }; // end class spline3dinterpolant
 
 //////////////////////////////////////////////////////////////////////

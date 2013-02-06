@@ -150,6 +150,7 @@ TODO: {
     spline3dbuildtrilinearv
     spline3dcalcvbuf
     spline3dcalcv
+    spline3dunpackv
   );
 }
 
