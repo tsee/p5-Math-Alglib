@@ -202,6 +202,16 @@ class spline3dinterpolant {
   spline3dlintransf(const double a, const double b)
     %code{% alglib::spline3dlintransf(*THIS, a, b); %};
 
+  real_1d_array
+  spline3dcalcvbuf(const double x, const double y, const double z)
+    %alias{spline3dcalcv = 1}
+    %code{%
+      if (ix == 0)
+        alglib::spline3dcalcvbuf(*THIS, x, y, z, RETVAL);
+      else
+        alglib::spline3dcalcv(*THIS, x, y, z, RETVAL);
+    %};
+
 }; // end class spline3dinterpolant
 
 //////////////////////////////////////////////////////////////////////
@@ -293,6 +303,15 @@ spline3dresampletrilinear(real_1d_array a, const ae_int_t oldzcount, const ae_in
                           const ae_int_t newxcount)
   %code{%
     alglib::spline3dresampletrilinear(a, oldzcount, oldycount, oldxcount, newzcount, newycount, newxcount, RETVAL);
+  %};
+
+spline3dinterpolant*
+spline3dbuildtrilinearv(real_1d_array x, const ae_int_t n, real_1d_array y, const ae_int_t m, real_1d_array z,
+                        const ae_int_t l, real_1d_array f, const ae_int_t d)
+  %code{%
+    const char CLASS[] = "Math::Alglib::Interpolation::Spline3DInterpolant";
+    RETVAL = new alglib::spline3dinterpolant();
+    alglib::spline3dbuildtrilinearv(x, n, y, m, z, l, f, d, *RETVAL);
   %};
 
 

@@ -147,6 +147,9 @@ TODO: {
     spline3dcalc
     spline3dlintransxyz
     spline3dlintransf
+    spline3dbuildtrilinearv
+    spline3dcalcvbuf
+    spline3dcalcv
   );
 }
 
