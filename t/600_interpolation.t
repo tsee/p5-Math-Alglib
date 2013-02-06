@@ -160,7 +160,6 @@ TODO: {
     spline3dlintransf
     spline3dcalcvbuf
     spline3dcalcv
-    spline3dunpackv
   );
 }
 
