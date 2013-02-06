@@ -121,7 +121,7 @@ class rbfmodel {
   AV*
   rbfunpack()
     %code{%
-      sv_2mortal((SV *)RETVAL);
+      RETVAL = NEW_MORTAL_AV();
       ae_int_t nx, ny, nc;
       real_2d_array xwr, v;
       alglib::rbfunpack(*THIS, nx, ny, xwr, nc, v);
@@ -253,7 +253,7 @@ double polynomialcalccheb2(const double a, const double b, real_1d_array f, cons
 AV *
 polynomialfit(real_1d_array x, real_1d_array y, const ae_int_t m)
   CODE:
-    sv_2mortal((SV *)RETVAL);
+    RETVAL = NEW_MORTAL_AV();
     alglib::polynomialfitreport rep;
     ae_int_t info;
     alglib::barycentricinterpolant *bary = new alglib::barycentricinterpolant();
@@ -270,7 +270,7 @@ polynomialfit(real_1d_array x, real_1d_array y, const ae_int_t m)
 AV *
 polynomialfitwc(real_1d_array x, real_1d_array y, real_1d_array w, real_1d_array xc, real_1d_array yc, integer_1d_array dc, const ae_int_t m)
   CODE:
-    sv_2mortal((SV *)RETVAL);
+    RETVAL = NEW_MORTAL_AV();
     alglib::polynomialfitreport rep;
     ae_int_t info;
     alglib::barycentricinterpolant *bary = new alglib::barycentricinterpolant();
@@ -287,7 +287,7 @@ polynomialfitwc(real_1d_array x, real_1d_array y, real_1d_array w, real_1d_array
 AV *
 barycentricfitfloaterhormannwc(real_1d_array x, real_1d_array y, real_1d_array w, const ae_int_t n, real_1d_array xc, real_1d_array yc, integer_1d_array dc, const ae_int_t k, ae_int_t m)
   CODE:
-    sv_2mortal((SV *)RETVAL);
+    RETVAL = NEW_MORTAL_AV();
     alglib::barycentricfitreport rep;
     ae_int_t info;
     alglib::barycentricinterpolant *bary = new alglib::barycentricinterpolant();
@@ -304,7 +304,7 @@ barycentricfitfloaterhormannwc(real_1d_array x, real_1d_array y, real_1d_array w
 AV *
 barycentricfitfloaterhormann(real_1d_array x, real_1d_array y, const ae_int_t n, ae_int_t m)
   CODE:
-    sv_2mortal((SV *)RETVAL);
+    RETVAL = NEW_MORTAL_AV();
     alglib::barycentricfitreport rep;
     ae_int_t info;
     alglib::barycentricinterpolant *bary = new alglib::barycentricinterpolant();
@@ -320,7 +320,7 @@ barycentricfitfloaterhormann(real_1d_array x, real_1d_array y, const ae_int_t n,
 AV *
 lsfitlinearw(real_1d_array y, real_1d_array w, real_2d_array fmatrix)
   %code{%
-    sv_2mortal((SV *)RETVAL);
+    RETVAL = NEW_MORTAL_AV();
     alglib::lsfitreport rep;
     ae_int_t info;
     real_1d_array c;
@@ -335,7 +335,7 @@ lsfitlinearw(real_1d_array y, real_1d_array w, real_2d_array fmatrix)
 AV *
 lsfitlinearwc(real_1d_array y, real_1d_array w, real_2d_array fmatrix, real_2d_array cmatrix)
   %code{%
-    sv_2mortal((SV *)RETVAL);
+    RETVAL = NEW_MORTAL_AV();
     alglib::lsfitreport rep;
     ae_int_t info;
     real_1d_array c;
@@ -350,7 +350,7 @@ lsfitlinearwc(real_1d_array y, real_1d_array w, real_2d_array fmatrix, real_2d_a
 AV *
 lsfitlinear(real_1d_array y, real_2d_array fmatrix)
   %code{%
-    sv_2mortal((SV *)RETVAL);
+    RETVAL = NEW_MORTAL_AV();
     alglib::lsfitreport rep;
     ae_int_t info;
     real_1d_array c;
@@ -365,7 +365,7 @@ lsfitlinear(real_1d_array y, real_2d_array fmatrix)
 AV *
 lsfitlinearc(real_1d_array y, real_2d_array fmatrix, real_2d_array cmatrix)
   %code{%
-    sv_2mortal((SV *)RETVAL);
+    RETVAL = NEW_MORTAL_AV();
     alglib::lsfitreport rep;
     ae_int_t info;
     real_1d_array c;

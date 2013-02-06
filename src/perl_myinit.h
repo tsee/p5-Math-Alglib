@@ -3,4 +3,6 @@
 #include <perl_conversion_functions.h>
 using namespace alglib;
 
+#define NEW_MORTAL_AV() ((AV *)sv_2mortal((SV *)newAV()))
+
 #endif

@@ -57,7 +57,7 @@ class pspline2interpolant {
   AV *
   pspline2parametervalues()
     %code{%
-      sv_2mortal((SV *)RETVAL);
+      RETVAL = NEW_MORTAL_AV();
       ae_int_t n;
       real_1d_array t;
       alglib::pspline2parametervalues(*THIS, n, t);
@@ -78,7 +78,7 @@ pspline2interpolant::pspline2calc(const double t)
     pspline2diff2 = 6
     diff2 = 7
   CODE:
-    sv_2mortal((SV *)RETVAL);
+    RETVAL = NEW_MORTAL_AV();
     double x, y;
     if (ix <= 3) {
       if (ix <= 1)
@@ -133,7 +133,7 @@ class spline2dinterpolant {
   AV *
   spline2ddiff(const double x, const double y)
     %code{%
-      sv_2mortal((SV *)RETVAL);
+      RETVAL = NEW_MORTAL_AV();
       double f, fx, fy, fxy;
       alglib::spline2ddiff(*THIS, x, y, f, fx, fy, fxy);
       av_extend(RETVAL, 4);
@@ -163,7 +163,7 @@ class spline2dinterpolant {
   spline2dunpackv()
     %alias{spline2dunpack = 1}
     %code{%
-      sv_2mortal((SV *)RETVAL);
+      RETVAL = NEW_MORTAL_AV();
       ae_int_t m, n, d;
       real_2d_array tbl;
       if (ix == 0) {
@@ -215,7 +215,7 @@ class spline3dinterpolant {
   AV *
   spline3dunpackv()
     %code{%
-      sv_2mortal((SV *)RETVAL);
+      RETVAL = NEW_MORTAL_AV();
       ae_int_t n, m, l, d, stype;
       real_2d_array tbl;
       alglib::spline3dunpackv(*THIS, n, m, l, d, stype, tbl);
@@ -239,7 +239,7 @@ class pspline3interpolant {
 AV *
 pspline3interpolant::pspline3parametervalues()
   CODE:
-    sv_2mortal((SV *)RETVAL);
+    RETVAL = NEW_MORTAL_AV();
     ae_int_t n;
     real_1d_array t;
     alglib::pspline3parametervalues(*THIS, n, t);
@@ -261,7 +261,7 @@ pspline3interpolant::pspline3calc(const double t)
     pspline3diff2 = 6
     diff2 = 7
   CODE:
-    sv_2mortal((SV *)RETVAL);
+    RETVAL = NEW_MORTAL_AV();
     double x, y, z;
     if (ix <= 3) {
       if (ix <= 1)
@@ -507,7 +507,7 @@ spline1dbuildakima(real_1d_array x, real_1d_array y)
 AV *
 spline1dfitpenalized(real_1d_array x, real_1d_array y, const ae_int_t m, const double rho)
   CODE:
-    sv_2mortal((SV *)RETVAL);
+    RETVAL = NEW_MORTAL_AV();
     alglib::spline1dfitreport rep;
     ae_int_t info;
     alglib::spline1dinterpolant *spl = new alglib::spline1dinterpolant();
@@ -524,7 +524,7 @@ spline1dfitpenalized(real_1d_array x, real_1d_array y, const ae_int_t m, const d
 AV *
 spline1dfitpenalizedw(real_1d_array x, real_1d_array y, real_1d_array w, const ae_int_t m, const double rho)
   CODE:
-    sv_2mortal((SV *)RETVAL);
+    RETVAL = NEW_MORTAL_AV();
     alglib::spline1dfitreport rep;
     ae_int_t info;
     alglib::spline1dinterpolant *spl = new alglib::spline1dinterpolant();
@@ -542,7 +542,7 @@ AV *
 spline1dfitcubicwc(real_1d_array x, real_1d_array y, real_1d_array w, real_1d_array xc, real_1d_array yc, integer_1d_array dc, const ae_int_t m)
   %alias{spline1dfithermitewc = 1}
   %code{%
-    sv_2mortal((SV *)RETVAL);
+    RETVAL = NEW_MORTAL_AV();
     alglib::spline1dfitreport rep;
     ae_int_t info;
     alglib::spline1dinterpolant *spl = new alglib::spline1dinterpolant();
@@ -561,7 +561,7 @@ AV *
 spline1dfitcubic(real_1d_array x, real_1d_array y, const ae_int_t m)
   %alias{spline1dfithermite = 1}
   %code{%
-    sv_2mortal((SV *)RETVAL);
+    RETVAL = NEW_MORTAL_AV();
     alglib::spline1dfitreport rep;
     ae_int_t info;
     alglib::spline1dinterpolant *spl = new alglib::spline1dinterpolant();

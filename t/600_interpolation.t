@@ -46,7 +46,11 @@ SCOPE: {
   );
   isa_ok($spl, 'Math::Alglib::Interpolation::Spline3dInterpolant');
   my $x = $spl->spline3dcalc(1, 1, 1);
-  ok($x > 111-1e-9 and $x < 111+1e-9);
+  ok(($x > 111 - 1e-9 and $x < 111 + 1e-9), "spline3dcalc");
+  my $r = $spl->spline3dunpackv();
+  is(ref($r), 'ARRAY', "spline3dunpackv ret type");
+  is(scalar(@$r), 6, "spline3dunpackv ret len");
+  is(ref($r->[5]), 'ARRAY', "spline3dunpackv ret array");
 }
 
 TODO: {
@@ -152,8 +156,6 @@ TODO: {
     spline2dbuildbilinear
     spline2dbuildbicubic
     spline2dunpack
-    spline3dcalc
-    spline3dcalc
     spline3dlintransxyz
     spline3dlintransf
     spline3dcalcvbuf
