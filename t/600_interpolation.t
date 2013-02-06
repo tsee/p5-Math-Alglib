@@ -141,6 +141,12 @@ TODO: {
     spline2dbuildbilinear
     spline2dbuildbicubic
     spline2dunpack
+    spline3dcalc
+    spline3dinterpolant
+    ~spline3dinterpolant
+    spline3dcalc
+    spline3dlintransxyz
+    spline3dlintransf
   );
 }
 

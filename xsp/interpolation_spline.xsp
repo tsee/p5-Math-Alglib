@@ -186,6 +186,25 @@ class spline2dinterpolant {
 }; // end class spline2dinterpolant
 
 //////////////////////////////////////////////////////////////////////
+%name{Math::Alglib::Interpolation::Spline3dInterpolant}
+class spline3dinterpolant {
+  spline3dinterpolant();
+  ~spline3dinterpolant();
+
+  double spline3dcalc(const double x, const double y, const double z)
+    %code{% RETVAL = alglib::spline3dcalc(*THIS, x, y, z); %};
+
+  void
+  spline3dlintransxyz(const double Ax, const double bx, const double ay, const double by, const double az, const double bz)
+    %code{% alglib::spline3dlintransxyz(*THIS, Ax, bx, ay, by, az, bz); %};
+
+  void
+  spline3dlintransf(const double a, const double b)
+    %code{% alglib::spline3dlintransf(*THIS, a, b); %};
+
+}; // end class spline3dinterpolant
+
+//////////////////////////////////////////////////////////////////////
 %name{Math::Alglib::Interpolation::PSpline3Interpolant}
 class pspline3interpolant {
   ~pspline3interpolant();
@@ -267,6 +286,15 @@ pspline3interpolant::pspline3calc(const double t)
 //////////////////////////////////////////////////////////////////////
 %package{Math::Alglib::Interpolation};
 //////////////////////////////////////////////////////////////////////
+
+real_1d_array
+spline3dresampletrilinear(real_1d_array a, const ae_int_t oldzcount, const ae_int_t oldycount,
+                          const ae_int_t oldxcount, const ae_int_t newzcount, const ae_int_t newycount,
+                          const ae_int_t newxcount)
+  %code{%
+    alglib::spline3dresampletrilinear(a, oldzcount, oldycount, oldxcount, newzcount, newycount, newxcount, RETVAL);
+  %};
+
 
 spline2dinterpolant*
 spline2dbuildbilinearv(real_1d_array x, const ae_int_t n, real_1d_array y, const ae_int_t m, real_1d_array f, const ae_int_t d)
