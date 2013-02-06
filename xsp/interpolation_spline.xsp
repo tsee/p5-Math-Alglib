@@ -1,0 +1,515 @@
+#include <vector>
+#include <interpolation.h>
+#include <ap.h>
+
+#include <perl_myinit.h>
+
+%module{Math::Alglib};
+%package{Math::Alglib::Interpolation};
+
+//////////////////////////////////////////////////////////////////////
+%name{Math::Alglib::Interpolation::Spline1dInterpolant}
+class spline1dinterpolant {
+  ~spline1dinterpolant();
+
+  double spline1dcalc(const double x)
+    %code{%
+      RETVAL = alglib::spline1dcalc(*THIS, x);
+    %};
+
+  void
+  spline1ddiff(const double x)
+    %code{%
+      double s, ds, d2s;
+      alglib::spline1ddiff(*THIS, x, s, ds, d2s);
+      EXTEND(SP, 3);
+      mPUSHn(s); mPUSHn(ds); mPUSHn(d2s);
+    %};
+
+  real_2d_array
+  spline1dunpack()
+    %code{%
+      ae_int_t n;
+      alglib::spline1dunpack(*THIS, n, RETVAL);
+    %};
+
+  void
+  spline1dlintransx(const double a, const double b)
+    %code{% alglib::spline1dlintransx(*THIS, a, b); %};
+
+  void
+  spline1dlintransy(const double a, const double b)
+    %code{% alglib::spline1dlintransy(*THIS, a, b); %};
+
+  double
+  spline1dintegrate(const double x)
+    %code{%
+      RETVAL = alglib::spline1dintegrate(*THIS, x);
+    %};
+
+}; // end class spline1dinterpolant
+
+//////////////////////////////////////////////////////////////////////
+%name{Math::Alglib::Interpolation::PSpline2Interpolant}
+class pspline2interpolant {
+  ~pspline2interpolant();
+
+  AV *
+  pspline2parametervalues()
+    %code{%
+      sv_2mortal((SV *)RETVAL);
+      ae_int_t n;
+      real_1d_array t;
+      alglib::pspline2parametervalues(*THIS, n, t);
+      av_extend(RETVAL, 1);
+      av_store(RETVAL, 0, newSViv(n));
+      av_store(RETVAL, 1, newRV_noinc((SV *)real_1d_array_to_av(aTHX_ t)));
+    %};
+
+{%
+AV *
+pspline2interpolant::pspline2calc(const double t)
+  ALIAS:
+    calc = 1
+    pspline2tangent = 2
+    tangent = 3
+    pspline2diff = 4
+    diff = 5
+    pspline2diff2 = 6
+    diff2 = 7
+  CODE:
+    sv_2mortal((SV *)RETVAL);
+    double x, y;
+    if (ix <= 3) {
+      if (ix <= 1)
+        alglib::pspline2calc(*THIS, t, x, y);
+      else
+        alglib::pspline2tangent(*THIS, t, x, y);
+      av_extend(RETVAL, 1);
+      av_store(RETVAL, 0, newSVnv(x));
+      av_store(RETVAL, 1, newSVnv(y));
+    }
+    else {
+      double dx, dy;
+      if (ix <= 5) {
+        alglib::pspline2diff(*THIS, t, x, dx, y, dy);
+        av_extend(RETVAL, 3);
+        av_store(RETVAL, 0, newSVnv(x));
+        av_store(RETVAL, 1, newSVnv(dx));
+        av_store(RETVAL, 2, newSVnv(y));
+        av_store(RETVAL, 3, newSVnv(dy));
+      }
+      else {
+        double dx2, dy2;
+        alglib::pspline2diff2(*THIS, t, x, dx, dx2, y, dy, dy2);
+        av_extend(RETVAL, 5);
+        av_store(RETVAL, 0, newSVnv(x));
+        av_store(RETVAL, 1, newSVnv(dx));
+        av_store(RETVAL, 2, newSVnv(dx2));
+        av_store(RETVAL, 3, newSVnv(y));
+        av_store(RETVAL, 4, newSVnv(dy));
+        av_store(RETVAL, 5, newSVnv(dy2));
+      }
+    }
+  OUTPUT: RETVAL
+%}
+
+  double
+  pspline2arclength(const double a, const double b)
+    %alias{arclength = 1}
+    %code{% RETVAL = alglib::pspline2arclength(*THIS, a, b); %};
+
+}; // end class pspline2interpolant
+
+//////////////////////////////////////////////////////////////////////
+%name{Math::Alglib::Interpolation::Spline2dInterpolant}
+class spline2dinterpolant {
+  spline2dinterpolant();
+  ~spline2dinterpolant();
+
+  double spline2dcalc(const double x, const double y)
+    %code{% RETVAL = alglib::spline2dcalc(*THIS, x, y); %};
+
+  AV *
+  spline2ddiff(const double x, const double y)
+    %code{%
+      sv_2mortal((SV *)RETVAL);
+      double f, fx, fy, fxy;
+      alglib::spline2ddiff(*THIS, x, y, f, fx, fy, fxy);
+      av_extend(RETVAL, 4);
+      av_store(RETVAL, 0, newSVnv(f));
+      av_store(RETVAL, 1, newSVnv(fx));
+      av_store(RETVAL, 2, newSVnv(fy));
+      av_store(RETVAL, 3, newSVnv(fxy));
+    %};
+
+  void
+  spline2dlintransxy(const double Ax, const double bx, const double ay, const double by)
+    %code{% alglib::spline2dlintransxy(*THIS, Ax, bx, ay, by); %};
+
+  void
+  spline2dlintransf(const double a, const double b)
+    %code{% alglib::spline2dlintransf(*THIS, a, b); %};
+
+  real_1d_array
+  spline2dcalcvbuf(const double x, const double y)
+    %code{% alglib::spline2dcalcvbuf(*THIS, x, y, RETVAL); %};
+
+  real_1d_array
+  spline2dcalcv(const double x, const double y)
+    %code{% alglib::spline2dcalcv(*THIS, x, y, RETVAL); %};
+
+  AV *
+  spline2dunpackv()
+    %alias{spline2dunpack = 1}
+    %code{%
+      sv_2mortal((SV *)RETVAL);
+      ae_int_t m, n, d;
+      real_2d_array tbl;
+      if (ix == 0) {
+        alglib::spline2dunpackv(*THIS, m, n, d, tbl);
+        av_extend(RETVAL, 3);
+        av_store(RETVAL, 0, newSViv(m));
+        av_store(RETVAL, 1, newSViv(n));
+        av_store(RETVAL, 2, newSViv(d));
+        av_store(RETVAL, 3, newRV_noinc((SV *) real_2d_array_to_av(aTHX_ tbl)));
+      }
+      else {
+        alglib::spline2dunpack(*THIS, m, n, tbl);
+        av_extend(RETVAL, 2);
+        av_store(RETVAL, 0, newSViv(m));
+        av_store(RETVAL, 1, newSViv(n));
+        av_store(RETVAL, 2, newRV_noinc((SV *) real_2d_array_to_av(aTHX_ tbl)));
+      }
+    %};
+
+}; // end class spline2dinterpolant
+
+//////////////////////////////////////////////////////////////////////
+%name{Math::Alglib::Interpolation::PSpline3Interpolant}
+class pspline3interpolant {
+  ~pspline3interpolant();
+
+{%
+AV *
+pspline3interpolant::pspline3parametervalues()
+  CODE:
+    sv_2mortal((SV *)RETVAL);
+    ae_int_t n;
+    real_1d_array t;
+    alglib::pspline3parametervalues(*THIS, n, t);
+    av_extend(RETVAL, 1);
+    av_store(RETVAL, 0, newSViv(n));
+    av_store(RETVAL, 1, newRV_noinc((SV *)real_1d_array_to_av(aTHX_ t)));
+  OUTPUT: RETVAL
+%}
+
+{%
+AV *
+pspline3interpolant::pspline3calc(const double t)
+  ALIAS:
+    calc = 1
+    pspline3tangent = 2
+    tangent = 3
+    pspline3diff = 4
+    diff = 5
+    pspline3diff2 = 6
+    diff2 = 7
+  CODE:
+    sv_2mortal((SV *)RETVAL);
+    double x, y, z;
+    if (ix <= 3) {
+      if (ix <= 1)
+        alglib::pspline3calc(*THIS, t, x, y, z);
+      else
+        alglib::pspline3tangent(*THIS, t, x, y, z);
+      av_extend(RETVAL, 2);
+      av_store(RETVAL, 0, newSVnv(x));
+      av_store(RETVAL, 1, newSVnv(y));
+      av_store(RETVAL, 2, newSVnv(z));
+    }
+    else {
+      double dx, dy, dz;
+      if (ix <= 5) {
+        alglib::pspline3diff(*THIS, t, x, dx, y, dy, z, dz);
+        av_extend(RETVAL, 5);
+        av_store(RETVAL, 0, newSVnv(x));
+        av_store(RETVAL, 1, newSVnv(dx));
+        av_store(RETVAL, 2, newSVnv(y));
+        av_store(RETVAL, 3, newSVnv(dy));
+        av_store(RETVAL, 4, newSVnv(z));
+        av_store(RETVAL, 5, newSVnv(dz));
+      }
+      else {
+        double dx2, dy2, dz2;
+        alglib::pspline3diff2(*THIS, t, x, dx, dx2, y, dy, dy2, z, dz, dz2);
+        av_extend(RETVAL, 8);
+        av_store(RETVAL, 0, newSVnv(x));
+        av_store(RETVAL, 1, newSVnv(dx));
+        av_store(RETVAL, 2, newSVnv(dx2));
+        av_store(RETVAL, 3, newSVnv(y));
+        av_store(RETVAL, 4, newSVnv(dy));
+        av_store(RETVAL, 5, newSVnv(dy2));
+        av_store(RETVAL, 6, newSVnv(z));
+        av_store(RETVAL, 7, newSVnv(dz));
+        av_store(RETVAL, 8, newSVnv(dz2));
+      }
+    }
+  OUTPUT: RETVAL
+%}
+
+  double
+  pspline3arclength(const double a, const double b)
+    %alias{arclength = 1}
+    %code{% RETVAL = alglib::pspline3arclength(*THIS, a, b); %};
+}; // end class pspline3interpolant
+
+//////////////////////////////////////////////////////////////////////
+%package{Math::Alglib::Interpolation};
+//////////////////////////////////////////////////////////////////////
+
+spline2dinterpolant*
+spline2dbuildbilinearv(real_1d_array x, const ae_int_t n, real_1d_array y, const ae_int_t m, real_1d_array f, const ae_int_t d)
+  %alias{spline2dbuildbicubicv = 1}
+  %code{%
+    const char CLASS[] = "Math::Alglib::Interpolation::Spline2DInterpolant";
+    RETVAL = new alglib::spline2dinterpolant();
+    if (ix == 0)
+      alglib::spline2dbuildbilinearv(x, n, y, m, f, d, *RETVAL);
+    else
+      alglib::spline2dbuildbicubicv(x, n, y, m, f, d, *RETVAL);
+  %};
+
+real_2d_array
+spline2dresamplebicubic(real_2d_array a, const ae_int_t oldheight, const ae_int_t oldwidth, const ae_int_t newheight, const ae_int_t newwidth)
+  %code{%
+    alglib::spline2dresamplebicubic(a, oldheight, oldwidth, RETVAL, newheight, newwidth);
+  %};
+
+real_2d_array
+spline2dresamplebilinear(real_2d_array a, const ae_int_t oldheight, const ae_int_t oldwidth, const ae_int_t newheight, const ae_int_t newwidth)
+  %code{%
+    alglib::spline2dresamplebilinear(a, oldheight, oldwidth, RETVAL, newheight, newwidth);
+  %};
+
+spline2dinterpolant*
+spline2dbuildbilinear(real_1d_array x, real_1d_array y, real_2d_array f, const ae_int_t m, const ae_int_t n)
+  %alias{spline2dbuildbicubic = 1}
+  %code{%
+    const char CLASS[] = "Math::Alglib::Interpolation::Spline2DInterpolant";
+    RETVAL = new alglib::spline2dinterpolant();
+    if (ix == 0)
+      alglib::spline2dbuildbilinear(x, y, f, m, n, *RETVAL);
+    else
+      alglib::spline2dbuildbicubic(x, y, f, m, n, *RETVAL);
+  %};
+ 
+//////////////////////////////////////////////////////////////////////
+
+pspline3interpolant*
+pspline3build(real_2d_array xy, const ae_int_t n, const ae_int_t st, const ae_int_t pt)
+  %alias{pspline3buildperiodic = 1}
+  %code{%
+    const char CLASS[] = "Math::Alglib::Interpolation::PSpline3Interpolant";
+    RETVAL = new alglib::pspline3interpolant();
+    if (ix == 0)
+      alglib::pspline3build(xy, n, st, pt, *RETVAL);
+    else
+      alglib::pspline3buildperiodic(xy, n, st, pt, *RETVAL);
+  %};
+
+//////////////////////////////////////////////////////////////////////
+
+pspline2interpolant*
+pspline2build(real_2d_array xy, const ae_int_t n, const ae_int_t st, const ae_int_t pt)
+  %alias{pspline2buildperiodic = 1}
+  %code{%
+    const char CLASS[] = "Math::Alglib::Interpolation::PSpline2Interpolant";
+    RETVAL = new alglib::pspline2interpolant();
+    if (ix == 0)
+      alglib::pspline2build(xy, n, st, pt, *RETVAL);
+    else
+      alglib::pspline2buildperiodic(xy, n, st, pt, *RETVAL);
+  %};
+
+//////////////////////////////////////////////////////////////////////
+spline1dinterpolant*
+spline1dbuildlinear(real_1d_array x, real_1d_array y)
+  %code{%
+    const char CLASS[] = "Math::Alglib::Interpolation::Spline1dInterpolant";
+    RETVAL = new alglib::spline1dinterpolant();
+    alglib::spline1dbuildlinear(x, y, *RETVAL);
+  %};
+
+spline1dinterpolant*
+spline1dbuildcubic(real_1d_array x, real_1d_array y, ae_int_t n,
+                   ae_int_t boundltype = 0, double boundl = 0,
+                   ae_int_t boundrtype = 0, double boundr = 0)
+  %code{%
+    const char CLASS[] = "Math::Alglib::Interpolation::Spline1dInterpolant";
+    RETVAL = new alglib::spline1dinterpolant();
+    alglib::spline1dbuildcubic(x, y, n, boundltype, boundl, boundrtype, boundr, *RETVAL);
+  %};
+
+real_1d_array
+spline1dgriddiffcubic(real_1d_array x, real_1d_array y, ae_int_t n,
+                      ae_int_t boundltype = 0, double boundl = 0,
+                      ae_int_t boundrtype = 0, double boundr = 0)
+  %code{%
+    alglib::spline1dgriddiffcubic(x, y, n, boundltype, boundl, boundrtype, boundr, RETVAL);
+  %};
+
+
+real_1d_array
+spline1dconvcubic(real_1d_array x, real_1d_array y, ae_int_t n,
+                  ae_int_t boundltype, double boundl,
+                  ae_int_t boundrtype, double boundr,
+                  real_1d_array x2, const ae_int_t n2)
+  %code{%
+    alglib::spline1dconvcubic(x, y, n, boundltype, boundl, boundrtype, boundr, x2, n2, RETVAL);
+  %};
+
+void
+spline1dconvdiffcubic(real_1d_array x, real_1d_array y, ae_int_t n,
+                      ae_int_t boundltype, double boundl,
+                      ae_int_t boundrtype, double boundr,
+                      real_1d_array x2, const ae_int_t n2)
+  %code{%
+    real_1d_array y2, d2;
+    alglib::spline1dconvdiffcubic(x, y, n, boundltype, boundl, boundrtype, boundr, x2, n2, y2, d2);
+    EXTEND(SP, 2);
+    {
+      const unsigned int len = y2.length();
+      mPUSHs(sv_2mortal(newRV_noinc((SV *)real_1d_array_to_av(aTHX_ y2))));
+    }
+    {
+      const unsigned int len = d2.length();
+      mPUSHs(sv_2mortal(newRV_noinc((SV *)real_1d_array_to_av(aTHX_ d2))));
+    }
+  %};
+
+void
+spline1dconvdiff2cubic(real_1d_array x, real_1d_array y, ae_int_t n,
+                       ae_int_t boundltype, double boundl,
+                       ae_int_t boundrtype, double boundr,
+                       real_1d_array x2, const ae_int_t n2)
+  %code{%
+    real_1d_array y2, d2, dd2;
+    alglib::spline1dconvdiff2cubic(x, y, n, boundltype, boundl, boundrtype, boundr, x2, n2, y2, d2, dd2);
+    EXTEND(SP, 3);
+    {
+      const unsigned int len = y2.length();
+      mPUSHs(sv_2mortal(newRV_noinc((SV *)real_1d_array_to_av(aTHX_ y2))));
+    }
+    {
+      const unsigned int len = d2.length();
+      mPUSHs(sv_2mortal(newRV_noinc((SV *)real_1d_array_to_av(aTHX_ d2))));
+    }
+    {
+      const unsigned int len = dd2.length();
+      mPUSHs(sv_2mortal(newRV_noinc((SV *)real_1d_array_to_av(aTHX_ dd2))));
+    }
+  %};
+
+spline1dinterpolant*
+spline1dbuildcatmullrom(real_1d_array x, real_1d_array y, ae_int_t n,
+                        ae_int_t boundtype = 0, double tension = 0)
+  %code{%
+    const char CLASS[] = "Math::Alglib::Interpolation::Spline1dInterpolant";
+    RETVAL = new alglib::spline1dinterpolant();
+    alglib::spline1dbuildcatmullrom(x, y, n, boundtype, tension, *RETVAL);
+  %};
+
+spline1dinterpolant*
+spline1dbuildhermite(real_1d_array x, real_1d_array y, real_1d_array d)
+  %code{%
+    const char CLASS[] = "Math::Alglib::Interpolation::Spline1dInterpolant";
+    RETVAL = new alglib::spline1dinterpolant();
+    alglib::spline1dbuildhermite(x, y, d, *RETVAL);
+  %};
+
+spline1dinterpolant*
+spline1dbuildakima(real_1d_array x, real_1d_array y)
+  %alias{spline1dbuildmonotone = 1}
+  %code{%
+    const char CLASS[] = "Math::Alglib::Interpolation::Spline1dInterpolant";
+    RETVAL = new alglib::spline1dinterpolant();
+    if (ix == 0)
+      alglib::spline1dbuildakima(x, y, *RETVAL);
+    else
+      alglib::spline1dbuildmonotone(x, y, *RETVAL);
+  %};
+
+{%
+AV *
+spline1dfitpenalized(real_1d_array x, real_1d_array y, const ae_int_t m, const double rho)
+  CODE:
+    sv_2mortal((SV *)RETVAL);
+    alglib::spline1dfitreport rep;
+    ae_int_t info;
+    alglib::spline1dinterpolant *spl = new alglib::spline1dinterpolant();
+
+    alglib::spline1dfitpenalized(x, y, m, rho, info, *spl, rep);
+
+    av_push(RETVAL, newSViv(info));
+    av_push(RETVAL, ptr_to_perl_obj(aTHX_ spl, "Math::Alglib::Interpolation::Spline1dInterpolant"));
+    av_push(RETVAL, spline1dfitreport_to_hvref(aTHX_ rep));
+  OUTPUT: RETVAL
+%}
+
+{%
+AV *
+spline1dfitpenalizedw(real_1d_array x, real_1d_array y, real_1d_array w, const ae_int_t m, const double rho)
+  CODE:
+    sv_2mortal((SV *)RETVAL);
+    alglib::spline1dfitreport rep;
+    ae_int_t info;
+    alglib::spline1dinterpolant *spl = new alglib::spline1dinterpolant();
+
+    alglib::spline1dfitpenalizedw(x, y, w, m, rho, info, *spl, rep);
+
+    av_push(RETVAL, newSViv(info));
+    av_push(RETVAL, ptr_to_perl_obj(aTHX_ spl, "Math::Alglib::Interpolation::Spline1dInterpolant"));
+    av_push(RETVAL, spline1dfitreport_to_hvref(aTHX_ rep));
+  OUTPUT: RETVAL
+%}
+
+
+AV *
+spline1dfitcubicwc(real_1d_array x, real_1d_array y, real_1d_array w, real_1d_array xc, real_1d_array yc, integer_1d_array dc, const ae_int_t m)
+  %alias{spline1dfithermitewc = 1}
+  %code{%
+    sv_2mortal((SV *)RETVAL);
+    alglib::spline1dfitreport rep;
+    ae_int_t info;
+    alglib::spline1dinterpolant *spl = new alglib::spline1dinterpolant();
+
+    if (ix == 0)
+      alglib::spline1dfitcubicwc(x, y, w, xc, yc, dc, m, info, *spl, rep);
+    else
+      alglib::spline1dfithermitewc(x, y, w, xc, yc, dc, m, info, *spl, rep);
+
+    av_push(RETVAL, newSViv(info));
+    av_push(RETVAL, ptr_to_perl_obj(aTHX_ spl, "Math::Alglib::Interpolation::Spline1dInterpolant"));
+    av_push(RETVAL, spline1dfitreport_to_hvref(aTHX_ rep));
+  %};
+
+AV *
+spline1dfitcubic(real_1d_array x, real_1d_array y, const ae_int_t m)
+  %alias{spline1dfithermite = 1}
+  %code{%
+    sv_2mortal((SV *)RETVAL);
+    alglib::spline1dfitreport rep;
+    ae_int_t info;
+    alglib::spline1dinterpolant *spl = new alglib::spline1dinterpolant();
+
+    if (ix == 0)
+      alglib::spline1dfitcubic(x, y, m, info, *spl, rep);
+    else
+      alglib::spline1dfithermite(x, y, m, info, *spl, rep);
+
+    av_push(RETVAL, newSViv(info));
+    av_push(RETVAL, ptr_to_perl_obj(aTHX_ spl, "Math::Alglib::Interpolation::Spline1dInterpolant"));
+    av_push(RETVAL, spline1dfitreport_to_hvref(aTHX_ rep));
+  %};
+
