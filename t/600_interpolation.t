@@ -10,6 +10,7 @@ use Math::Alglib::Test;
 pass();
 
 SCOPE: {
+  note("idwbuildmodifiedshepard");
   my $p = [
     [0, 0],
     [1, 0.5],
@@ -39,6 +40,7 @@ SCOPE: {
 }
 
 SCOPE: {
+  note("spline3dbuildtrilinearv");
   my $spl = Math::Alglib::Interpolation::spline3dbuildtrilinearv(
     [0..9], 10, [0..9], 10, [0..9], 10,
     [0..999],
@@ -51,6 +53,24 @@ SCOPE: {
   is(ref($r), 'ARRAY', "spline3dunpackv ret type");
   is(scalar(@$r), 6, "spline3dunpackv ret len");
   is(ref($r->[5]), 'ARRAY', "spline3dunpackv ret array");
+}
+
+SCOPE: {
+  note("lsfit");
+  my $lsf = Math::Alglib::Interpolation::lsfitcreatef(
+    [
+      [0, 0],
+      [0, 1],
+      [1, 0],
+      [1, 1],
+    ],
+    [0, 1, 1, 2],
+    [1],
+    0.05
+  );
+  isa_ok($lsf, "Math::Alglib::Interpolation::LsFitState");
+
+  
 }
 
 TODO: {
@@ -165,7 +185,6 @@ TODO: {
     lsfitsetstpmax
     lsfitsetcond
     lsfitcreatewf
-    lsfitcreatef
     lsfitcreatewfg
     lsfitcreatefg
     lsfitcreatewfgh
