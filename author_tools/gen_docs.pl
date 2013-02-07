@@ -98,22 +98,8 @@ my $docs = [
     src_file => 'src/interpolation.h',
     mod_name => 'Math::Alglib::Interpolation',
     unimpl   => [qw(
-      lsfitfit
-      lsfititeration
-      lsfitresults
-      lsfitcreatewf
-      lsfitcreatef
-      lsfitcreatewfg
-      lsfitcreatefg
-      lsfitcreatewfgh
-      lsfitcreatefgh
-      lsfitsetcond
-      lsfitsetstpmax
-      lsfitsetxrep
-      lsfitsetscale
-      lsfitsetbc
-      lsfitsetgradientcheck
       spline2dcopy
+      lsfititeration
     )],
     sig_override => {
       polynomialbar2pow => 'void polynomialbar2pow(const barycentricinterpolant &p, const double c, const double s, real_1d_array &a);',
@@ -145,6 +131,7 @@ my $docs = [
         qw(pspline2calc pspline2tangent pspline2diff pspline2diff2 psline2arclength)
       ),
       rbfbuildmodel => 'In Perl, this really just returns an integer indicating the termination type, not a whole struct. This is subject to change.',
+      lsfitresults => 'Returns reference to an array of two elements: info, c (real_1d_array), lsfitreport. lsfitreport is a hash ref.',
     },
   },
 ];

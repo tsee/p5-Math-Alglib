@@ -160,6 +160,18 @@ TODO: {
     spline3dlintransf
     spline3dcalcvbuf
     spline3dcalcv
+    lsfitsetscale
+    lsfitsetxrep
+    lsfitsetstpmax
+    lsfitsetcond
+    lsfitcreatewf
+    lsfitcreatef
+    lsfitcreatewfg
+    lsfitcreatefg
+    lsfitcreatewfgh
+    lsfitcreatefgh
+    lsfitresults
+    lsfitsetgradientcheck
   );
 }
 

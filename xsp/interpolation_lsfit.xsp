@@ -1,0 +1,109 @@
+#include <vector>
+#include <interpolation.h>
+#include <ap.h>
+
+#include <perl_myinit.h>
+#include <perl_lsfitcallbacks.h>
+
+%module{Math::Alglib};
+%package{Math::Alglib::Interpolation};
+
+//////////////////////////////////////////////////////////////////////
+%name{Math::Alglib::Interpolation::LsFitState}
+class lsfitstate {
+  lsfitstate();
+  ~lsfitstate();
+
+  void
+  lsfitsetcond(const double epsf, const double epsx, const ae_int_t maxits)
+    %code{% alglib::lsfitsetcond(*THIS, epsf, epsx, maxits); %};
+
+  void
+  lsfitsetstpmax(const double stpmax)
+    %code{% alglib::lsfitsetstpmax(*THIS, stpmax); %};
+
+  void
+  lsfitsetxrep(const bool needxrep)
+    %code{% alglib::lsfitsetxrep(*THIS, needxrep); %};
+
+  void
+  lsfitsetscale(real_1d_array s)
+    %code{% alglib::lsfitsetscale(*THIS, s); %};
+
+  void
+  lsfitsetbc(real_1d_array bndl, real_1d_array bndu)
+    %code{% alglib::lsfitsetbc(*THIS, bndl, bndu); %};
+
+  void
+  lsfitsetgradientcheck(const double teststep)
+    %code{% alglib::lsfitsetgradientcheck(*THIS, teststep); %};
+
+  AV *
+  lsfitresults()
+    %code{%
+      ae_int_t info;
+      real_1d_array c;
+      lsfitreport rep;
+      alglib::lsfitresults(*THIS, info, c, rep);
+      RETVAL = NEW_MORTAL_AV();
+      av_extend(RETVAL, 2);
+      av_store(RETVAL, 0, newSViv(info));
+      av_store(RETVAL, 1, newRV_noinc((SV *)real_1d_array_to_av(aTHX_ c)));
+      av_store(RETVAL, 2, lsfitreport_to_hvref(aTHX_ rep));
+    %};
+
+}; // end class lsfitstate
+
+//////////////////////////////////////////////////////////////////////
+%package{Math::Alglib::Interpolation};
+//////////////////////////////////////////////////////////////////////
+
+lsfitstate *
+lsfitcreatewf(real_2d_array x, real_1d_array y, real_1d_array w, real_1d_array c, const double diffstep)
+  %code{%
+    const char CLASS[] = "Math::Alglib::Interpolation::LsFitState";
+    RETVAL = new alglib::lsfitstate();
+    alglib::lsfitcreatewf(x, y, w, c, diffstep, *RETVAL);
+  %};
+
+lsfitstate *
+lsfitcreatef(real_2d_array x, real_1d_array y, real_1d_array c, const double diffstep)
+  %code{%
+    const char CLASS[] = "Math::Alglib::Interpolation::LsFitState";
+    RETVAL = new alglib::lsfitstate();
+    alglib::lsfitcreatef(x, y, c, diffstep, *RETVAL);
+  %};
+
+lsfitstate *
+lsfitcreatewfg(real_2d_array x, real_1d_array y, real_1d_array w, real_1d_array c, bool cheapfg)
+  %code{%
+    const char CLASS[] = "Math::Alglib::Interpolation::LsFitState";
+    RETVAL = new alglib::lsfitstate();
+    alglib::lsfitcreatewfg(x, y, w, c, cheapfg, *RETVAL);
+  %};
+
+lsfitstate *
+lsfitcreatefg(real_2d_array x, real_1d_array y, real_1d_array c, bool cheapfg)
+  %code{%
+    const char CLASS[] = "Math::Alglib::Interpolation::LsFitState";
+    RETVAL = new alglib::lsfitstate();
+    alglib::lsfitcreatefg(x, y, c, cheapfg, *RETVAL);
+  %};
+
+lsfitstate *
+lsfitcreatewfgh(real_2d_array x, real_1d_array y, real_1d_array w, real_1d_array c)
+  %code{%
+    const char CLASS[] = "Math::Alglib::Interpolation::LsFitState";
+    RETVAL = new alglib::lsfitstate();
+    alglib::lsfitcreatewfgh(x, y, w, c, *RETVAL);
+  %};
+
+lsfitstate *
+lsfitcreatefgh(real_2d_array x, real_1d_array y, real_1d_array c)
+  %code{%
+    const char CLASS[] = "Math::Alglib::Interpolation::LsFitState";
+    RETVAL = new alglib::lsfitstate();
+    alglib::lsfitcreatefgh(x, y, c, *RETVAL);
+  %};
+
+

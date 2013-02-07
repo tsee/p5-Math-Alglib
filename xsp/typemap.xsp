@@ -3,6 +3,7 @@
 %typemap{SV *};
 
 %typemap{bool};
+%typemap{const bool};
 
 %typemap{ptrdiff_t};
 %typemap{const ptrdiff_t};
@@ -43,6 +44,7 @@
 %typemap{rbfmodel*};
 %typemap{spline2dinterpolant*};
 %typemap{spline3dinterpolant*};
+%typemap{lsfitstate*};
 
 %exception{ApError}{alglib::ap_error}{code}{%
   croak("%s", e.msg.c_str());
