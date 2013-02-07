@@ -51,7 +51,6 @@ class lsfitstate {
       av_store(RETVAL, 1, newRV_noinc((SV *)real_1d_array_to_av(aTHX_ c)));
       av_store(RETVAL, 2, lsfitreport_to_hvref(aTHX_ rep));
     %};
-
 }; // end class lsfitstate
 
 //////////////////////////////////////////////////////////////////////
