@@ -33,8 +33,8 @@ av_to_real_1d_array(pTHX_ AV *av, alglib::real_1d_array &x)
   SV **elem;
   x.setlength(len);
   for (i = 0; i < len; ++i) {
-    elem = av_fetch(av, len, 0);
-    if (elem == 0)
+    elem = av_fetch(av, i, 0);
+    if (elem == NULL)
       x[i] = 0.;
     else
       x[i] = SvNV(*elem);

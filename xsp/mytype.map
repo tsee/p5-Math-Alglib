@@ -27,6 +27,7 @@ pspline3interpolant*		O_OBJECT
 rbfmodel*			O_OBJECT
 spline2dinterpolant*		O_OBJECT
 spline3dinterpolant*		O_OBJECT
+lsfitstate*			O_OBJECT
 
 polynomialfitreport		T_HV_POLYNOMIALFITREPORT
 alglib_impl::odesolverstate*    T_HV_ODESOLVERSTATE
@@ -36,19 +37,7 @@ INPUT
 
 AL_NV_ARRAY
         if (SvROK($arg) && SvTYPE(SvRV($arg))==SVt_PVAV) {
-          AV *av = (AV*)SvRV($arg);
-          const unsigned int len = av_len(av)+1;
-          unsigned int i;
-          SV **elem;
-          $var = $type();
-          $var.setlength(len);
-          for (i = 0; i < len; i++) {
-            elem = av_fetch(av, i, 0);
-            if (elem != NULL)
-              ${var}[i] = SvNV(*elem);
-            else
-              ${var}[i] = 0.;
-          }
+          av_to_real_1d_array(aTHX_ (AV*)SvRV($arg), $var);
         }
         else
           Perl_croak(aTHX_ \"%s: %s is not an array reference\",
