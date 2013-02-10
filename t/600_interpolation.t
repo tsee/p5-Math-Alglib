@@ -70,7 +70,23 @@ SCOPE: {
   );
   isa_ok($lsf, "Math::Alglib::Interpolation::LsFitState");
 
-  
+  $lsf->lsfitfit_func(sub {
+    is(scalar(@_), 3);
+    my ($obj, $c, $x) = @_;
+    isa_ok($obj, "Math::Alglib::Interpolation::LsFitState");
+    is(ref($c), 'ARRAY') or die;
+    is(ref($x), 'ARRAY') or die;
+    is(scalar(@$c), 1);
+    is(scalar(@$x), 2);
+    return 0.;
+  });
+
+  my $res = $lsf->lsfitresults;
+  is(ref($res), "ARRAY");
+  is(scalar(@$res), 3);
+  is(int($res->[0]), $res->[0]);
+  is(ref($res->[1]), 'ARRAY');
+  is(ref($res->[2]), 'HASH');
 }
 
 TODO: {

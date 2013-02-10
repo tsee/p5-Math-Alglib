@@ -51,7 +51,21 @@ class lsfitstate {
       av_store(RETVAL, 1, newRV_noinc((SV *)real_1d_array_to_av(aTHX_ c)));
       av_store(RETVAL, 2, lsfitreport_to_hvref(aTHX_ rep));
     %};
+
 }; // end class lsfitstate
+
+%package{Math::Alglib::Interpolation::LsFitState};
+
+void
+lsfitfit_func(SV *obj, CV *func)
+  %code{%
+    if( !sv_isobject(obj) || (SvTYPE(SvRV(obj)) != SVt_PVMG) )
+      croak( "Math::Alglib::Interpolation::LsFitState::lsfitfit_function() -- invocant is not a blessed SV reference" );
+    lsfitstate *THIS = (lsfitstate *)SvIV(SvRV(obj));
+    xs_lsfit_cb_state state(aTHX_ obj);
+    state.func_callback = func;
+    alglib::lsfitfit(*THIS, &lsfit_callback_func, NULL, (void *)&state);
+  %};
 
 //////////////////////////////////////////////////////////////////////
 %package{Math::Alglib::Interpolation};
