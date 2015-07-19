@@ -1,10 +1,11 @@
 /*************************************************************************
+ALGLIB 3.9.0 (source code generated 2014-12-11)
 Copyright (c) Sergey Bochkanov (ALGLIB project).
 
 >>> SOURCE LICENSE >>>
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
-the Free Software Foundation (www.fsf.org); either version 2 of the
+the Free Software Foundation (www.fsf.org); either version 2 of the 
 License, or (at your option) any later version.
 
 This program is distributed in the hope that it will be useful,
@@ -142,7 +143,7 @@ INPUT PARAMETERS:
     X       -   points at which Y should be tabulated, array[0..M-1]
                 integrations starts at X[0], ends at X[M-1],  intermediate
                 values at X[i] are returned too.
-                SHOULD BE ORDERED BY ASCENDING OR BY DESCENDING!!!!
+                SHOULD BE ORDERED BY ASCENDING OR BY DESCENDING!
     M       -   number of intermediate points + first point + last point:
                 * M>2 means that you need both Y(X[M-1]) and M-2 values at
                   intermediate points
@@ -253,12 +254,14 @@ void odesolverresults(odesolverstate* state,
      /* Real    */ ae_matrix* ytbl,
      odesolverreport* rep,
      ae_state *_state);
-ae_bool _odesolverstate_init(odesolverstate* p, ae_state *_state, ae_bool make_automatic);
-ae_bool _odesolverstate_init_copy(odesolverstate* dst, odesolverstate* src, ae_state *_state, ae_bool make_automatic);
-void _odesolverstate_clear(odesolverstate* p);
-ae_bool _odesolverreport_init(odesolverreport* p, ae_state *_state, ae_bool make_automatic);
-ae_bool _odesolverreport_init_copy(odesolverreport* dst, odesolverreport* src, ae_state *_state, ae_bool make_automatic);
-void _odesolverreport_clear(odesolverreport* p);
+void _odesolverstate_init(void* _p, ae_state *_state);
+void _odesolverstate_init_copy(void* _dst, void* _src, ae_state *_state);
+void _odesolverstate_clear(void* _p);
+void _odesolverstate_destroy(void* _p);
+void _odesolverreport_init(void* _p, ae_state *_state);
+void _odesolverreport_init_copy(void* _dst, void* _src, ae_state *_state);
+void _odesolverreport_clear(void* _p);
+void _odesolverreport_destroy(void* _p);
 
 }
 #endif

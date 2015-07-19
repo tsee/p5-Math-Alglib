@@ -1,10 +1,11 @@
 /*************************************************************************
+ALGLIB 3.9.0 (source code generated 2014-12-11)
 Copyright (c) Sergey Bochkanov (ALGLIB project).
 
 >>> SOURCE LICENSE >>>
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
-the Free Software Foundation (www.fsf.org); either version 2 of the
+the Free Software Foundation (www.fsf.org); either version 2 of the 
 License, or (at your option) any later version.
 
 This program is distributed in the hope that it will be useful,
@@ -1094,7 +1095,8 @@ ACCURACY:
 arithmetic   domain     # trials      peak         rms
    IEEE       0,1        30000       2.5e-16     6.8e-17
 
-Алгоритм взят из библиотеки Cephes
+Cephes Math Library, Release 2.8:  June, 2000
+Copyright 1984, 1987, 2000 by Stephen L. Moshier
 *************************************************************************/
 double ellipticintegralkhighprecision(const double m1);
 

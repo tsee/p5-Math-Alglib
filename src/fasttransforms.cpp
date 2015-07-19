@@ -1,10 +1,11 @@
 /*************************************************************************
+ALGLIB 3.9.0 (source code generated 2014-12-11)
 Copyright (c) Sergey Bochkanov (ALGLIB project).
 
 >>> SOURCE LICENSE >>>
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
-the Free Software Foundation (www.fsf.org); either version 2 of the
+the Free Software Foundation (www.fsf.org); either version 2 of the 
 License, or (at your option) any later version.
 
 This program is distributed in the hope that it will be useful,
@@ -80,10 +81,6 @@ void fftc1d(complex_1d_array &a, const ae_int_t n)
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
-    {
-        throw;
-    }
 }
 
 /*************************************************************************
@@ -133,10 +130,6 @@ void fftc1d(complex_1d_array &a)
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
-    {
-        throw;
-    }
 }
 
 /*************************************************************************
@@ -172,10 +165,6 @@ void fftc1dinv(complex_1d_array &a, const ae_int_t n)
     catch(alglib_impl::ae_error_type)
     {
         throw ap_error(_alglib_env_state.error_msg);
-    }
-    catch(...)
-    {
-        throw;
     }
 }
 
@@ -217,10 +206,6 @@ void fftc1dinv(complex_1d_array &a)
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
-    {
-        throw;
-    }
 }
 
 /*************************************************************************
@@ -259,10 +244,6 @@ void fftr1d(const real_1d_array &a, const ae_int_t n, complex_1d_array &f)
     catch(alglib_impl::ae_error_type)
     {
         throw ap_error(_alglib_env_state.error_msg);
-    }
-    catch(...)
-    {
-        throw;
     }
 }
 
@@ -306,10 +287,6 @@ void fftr1d(const real_1d_array &a, complex_1d_array &f)
     catch(alglib_impl::ae_error_type)
     {
         throw ap_error(_alglib_env_state.error_msg);
-    }
-    catch(...)
-    {
-        throw;
     }
 }
 
@@ -361,10 +338,6 @@ void fftr1dinv(const complex_1d_array &f, const ae_int_t n, real_1d_array &a)
     catch(alglib_impl::ae_error_type)
     {
         throw ap_error(_alglib_env_state.error_msg);
-    }
-    catch(...)
-    {
-        throw;
     }
 }
 
@@ -421,10 +394,6 @@ void fftr1dinv(const complex_1d_array &f, real_1d_array &a)
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
-    {
-        throw;
-    }
 }
 
 /*************************************************************************
@@ -470,10 +439,6 @@ void convc1d(const complex_1d_array &a, const ae_int_t m, const complex_1d_array
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
-    {
-        throw;
-    }
 }
 
 /*************************************************************************
@@ -515,10 +480,6 @@ void convc1dinv(const complex_1d_array &a, const ae_int_t m, const complex_1d_ar
     catch(alglib_impl::ae_error_type)
     {
         throw ap_error(_alglib_env_state.error_msg);
-    }
-    catch(...)
-    {
-        throw;
     }
 }
 
@@ -564,10 +525,6 @@ void convc1dcircular(const complex_1d_array &s, const ae_int_t m, const complex_
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
-    {
-        throw;
-    }
 }
 
 /*************************************************************************
@@ -610,10 +567,6 @@ void convc1dcircularinv(const complex_1d_array &a, const ae_int_t m, const compl
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
-    {
-        throw;
-    }
 }
 
 /*************************************************************************
@@ -651,10 +604,6 @@ void convr1d(const real_1d_array &a, const ae_int_t m, const real_1d_array &b, c
     catch(alglib_impl::ae_error_type)
     {
         throw ap_error(_alglib_env_state.error_msg);
-    }
-    catch(...)
-    {
-        throw;
     }
 }
 
@@ -698,10 +647,6 @@ void convr1dinv(const real_1d_array &a, const ae_int_t m, const real_1d_array &b
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
-    {
-        throw;
-    }
 }
 
 /*************************************************************************
@@ -739,10 +684,6 @@ void convr1dcircular(const real_1d_array &s, const ae_int_t m, const real_1d_arr
     catch(alglib_impl::ae_error_type)
     {
         throw ap_error(_alglib_env_state.error_msg);
-    }
-    catch(...)
-    {
-        throw;
     }
 }
 
@@ -785,10 +726,6 @@ void convr1dcircularinv(const real_1d_array &a, const ae_int_t m, const real_1d_
     catch(alglib_impl::ae_error_type)
     {
         throw ap_error(_alglib_env_state.error_msg);
-    }
-    catch(...)
-    {
-        throw;
     }
 }
 
@@ -842,10 +779,6 @@ void corrc1d(const complex_1d_array &signal, const ae_int_t n, const complex_1d_
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
-    {
-        throw;
-    }
 }
 
 /*************************************************************************
@@ -888,10 +821,6 @@ void corrc1dcircular(const complex_1d_array &signal, const ae_int_t m, const com
     catch(alglib_impl::ae_error_type)
     {
         throw ap_error(_alglib_env_state.error_msg);
-    }
-    catch(...)
-    {
-        throw;
     }
 }
 
@@ -945,10 +874,6 @@ void corrr1d(const real_1d_array &signal, const ae_int_t n, const real_1d_array 
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
-    {
-        throw;
-    }
 }
 
 /*************************************************************************
@@ -992,10 +917,6 @@ void corrr1dcircular(const real_1d_array &signal, const ae_int_t m, const real_1
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
-    {
-        throw;
-    }
 }
 
 /*************************************************************************
@@ -1029,10 +950,6 @@ void fhtr1d(real_1d_array &a, const ae_int_t n)
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
-    {
-        throw;
-    }
 }
 
 /*************************************************************************
@@ -1064,10 +981,6 @@ void fhtr1dinv(real_1d_array &a, const ae_int_t n)
     catch(alglib_impl::ae_error_type)
     {
         throw ap_error(_alglib_env_state.error_msg);
-    }
-    catch(...)
-    {
-        throw;
     }
 }
 }
@@ -1122,13 +1035,13 @@ OUTPUT PARAMETERS
 void fftc1d(/* Complex */ ae_vector* a, ae_int_t n, ae_state *_state)
 {
     ae_frame _frame_block;
-    ftplan plan;
+    fasttransformplan plan;
     ae_int_t i;
     ae_vector buf;
 
     ae_frame_make(_state, &_frame_block);
-    _ftplan_init(&plan, _state, ae_true);
-    ae_vector_init(&buf, 0, DT_REAL, _state, ae_true);
+    _fasttransformplan_init(&plan, _state);
+    ae_vector_init(&buf, 0, DT_REAL, _state);
 
     ae_assert(n>0, "FFTC1D: incorrect N!", _state);
     ae_assert(a->cnt>=n, "FFTC1D: Length(A)<N!", _state);
@@ -1161,8 +1074,8 @@ void fftc1d(/* Complex */ ae_vector* a, ae_int_t n, ae_state *_state)
      * precomputed data. It is much like a FFTW plan, but is not stored
      * between subroutine calls and is much simpler.
      */
-    ftbasegeneratecomplexfftplan(n, &plan, _state);
-    ftbaseexecuteplan(&buf, 0, n, &plan, _state);
+    ftcomplexfftplan(n, 1, &plan, _state);
+    ftapplyplan(&plan, &buf, 0, 1, _state);
     
     /*
      * result
@@ -1261,12 +1174,12 @@ void fftr1d(/* Real    */ ae_vector* a,
     ae_complex hmnc;
     ae_complex v;
     ae_vector buf;
-    ftplan plan;
+    fasttransformplan plan;
 
     ae_frame_make(_state, &_frame_block);
     ae_vector_clear(f);
-    ae_vector_init(&buf, 0, DT_REAL, _state, ae_true);
-    _ftplan_init(&plan, _state, ae_true);
+    ae_vector_init(&buf, 0, DT_REAL, _state);
+    _fasttransformplan_init(&plan, _state);
 
     ae_assert(n>0, "FFTR1D: incorrect N!", _state);
     ae_assert(a->cnt>=n, "FFTR1D: Length(A)<N!", _state);
@@ -1290,9 +1203,9 @@ void fftr1d(/* Real    */ ae_vector* a,
     {
         ae_vector_set_length(f, 2, _state);
         f->ptr.p_complex[0].x = a->ptr.p_double[0]+a->ptr.p_double[1];
-        f->ptr.p_complex[0].y = 0;
+        f->ptr.p_complex[0].y = (double)(0);
         f->ptr.p_complex[1].x = a->ptr.p_double[0]-a->ptr.p_double[1];
-        f->ptr.p_complex[1].y = 0;
+        f->ptr.p_complex[1].y = (double)(0);
         ae_frame_leave(_state);
         return;
     }
@@ -1309,8 +1222,8 @@ void fftr1d(/* Real    */ ae_vector* a,
         n2 = n/2;
         ae_vector_set_length(&buf, n, _state);
         ae_v_move(&buf.ptr.p_double[0], 1, &a->ptr.p_double[0], 1, ae_v_len(0,n-1));
-        ftbasegeneratecomplexfftplan(n2, &plan, _state);
-        ftbaseexecuteplan(&buf, 0, n2, &plan, _state);
+        ftcomplexfftplan(n2, 1, &plan, _state);
+        ftapplyplan(&plan, &buf, 0, 1, _state);
         ae_vector_set_length(f, n, _state);
         for(i=0; i<=n2; i++)
         {
@@ -1395,8 +1308,8 @@ void fftr1dinv(/* Complex */ ae_vector* f,
 
     ae_frame_make(_state, &_frame_block);
     ae_vector_clear(a);
-    ae_vector_init(&h, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&fh, 0, DT_COMPLEX, _state, ae_true);
+    ae_vector_init(&h, 0, DT_REAL, _state);
+    ae_vector_init(&fh, 0, DT_COMPLEX, _state);
 
     ae_assert(n>0, "FFTR1DInv: incorrect N!", _state);
     ae_assert(f->cnt>=ae_ifloor((double)n/(double)2, _state)+1, "FFTR1DInv: Length(F)<Floor(N/2)+1!", _state);
@@ -1466,7 +1379,7 @@ Internal subroutine. Never call it directly!
 void fftr1dinternaleven(/* Real    */ ae_vector* a,
      ae_int_t n,
      /* Real    */ ae_vector* buf,
-     ftplan* plan,
+     fasttransformplan* plan,
      ae_state *_state)
 {
     double x;
@@ -1501,7 +1414,7 @@ void fftr1dinternaleven(/* Real    */ ae_vector* a,
      */
     n2 = n/2;
     ae_v_move(&buf->ptr.p_double[0], 1, &a->ptr.p_double[0], 1, ae_v_len(0,n-1));
-    ftbaseexecuteplan(buf, 0, n2, plan, _state);
+    ftapplyplan(plan, buf, 0, 1, _state);
     a->ptr.p_double[0] = buf->ptr.p_double[0]+buf->ptr.p_double[1];
     for(i=1; i<=n2-1; i++)
     {
@@ -1531,7 +1444,7 @@ Internal subroutine. Never call it directly!
 void fftr1dinvinternaleven(/* Real    */ ae_vector* a,
      ae_int_t n,
      /* Real    */ ae_vector* buf,
-     ftplan* plan,
+     fasttransformplan* plan,
      ae_state *_state)
 {
     double x;
@@ -1683,7 +1596,7 @@ void convc1dinv(/* Complex */ ae_vector* a,
     ae_int_t p;
     ae_vector buf;
     ae_vector buf2;
-    ftplan plan;
+    fasttransformplan plan;
     ae_complex c1;
     ae_complex c2;
     ae_complex c3;
@@ -1691,13 +1604,13 @@ void convc1dinv(/* Complex */ ae_vector* a,
 
     ae_frame_make(_state, &_frame_block);
     ae_vector_clear(r);
-    ae_vector_init(&buf, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&buf2, 0, DT_REAL, _state, ae_true);
-    _ftplan_init(&plan, _state, ae_true);
+    ae_vector_init(&buf, 0, DT_REAL, _state);
+    ae_vector_init(&buf2, 0, DT_REAL, _state);
+    _fasttransformplan_init(&plan, _state);
 
     ae_assert((n>0&&m>0)&&n<=m, "ConvC1DInv: incorrect N or M!", _state);
     p = ftbasefindsmooth(m, _state);
-    ftbasegeneratecomplexfftplan(p, &plan, _state);
+    ftcomplexfftplan(p, 1, &plan, _state);
     ae_vector_set_length(&buf, 2*p, _state);
     for(i=0; i<=m-1; i++)
     {
@@ -1706,8 +1619,8 @@ void convc1dinv(/* Complex */ ae_vector* a,
     }
     for(i=m; i<=p-1; i++)
     {
-        buf.ptr.p_double[2*i+0] = 0;
-        buf.ptr.p_double[2*i+1] = 0;
+        buf.ptr.p_double[2*i+0] = (double)(0);
+        buf.ptr.p_double[2*i+1] = (double)(0);
     }
     ae_vector_set_length(&buf2, 2*p, _state);
     for(i=0; i<=n-1; i++)
@@ -1717,11 +1630,11 @@ void convc1dinv(/* Complex */ ae_vector* a,
     }
     for(i=n; i<=p-1; i++)
     {
-        buf2.ptr.p_double[2*i+0] = 0;
-        buf2.ptr.p_double[2*i+1] = 0;
+        buf2.ptr.p_double[2*i+0] = (double)(0);
+        buf2.ptr.p_double[2*i+1] = (double)(0);
     }
-    ftbaseexecuteplan(&buf, 0, p, &plan, _state);
-    ftbaseexecuteplan(&buf2, 0, p, &plan, _state);
+    ftapplyplan(&plan, &buf, 0, 1, _state);
+    ftapplyplan(&plan, &buf2, 0, 1, _state);
     for(i=0; i<=p-1; i++)
     {
         c1.x = buf.ptr.p_double[2*i+0];
@@ -1732,7 +1645,7 @@ void convc1dinv(/* Complex */ ae_vector* a,
         buf.ptr.p_double[2*i+0] = c3.x;
         buf.ptr.p_double[2*i+1] = -c3.y;
     }
-    ftbaseexecuteplan(&buf, 0, p, &plan, _state);
+    ftapplyplan(&plan, &buf, 0, 1, _state);
     t = (double)1/(double)p;
     ae_vector_set_length(r, m-n+1, _state);
     for(i=0; i<=m-n; i++)
@@ -1787,7 +1700,7 @@ void convc1dcircular(/* Complex */ ae_vector* s,
 
     ae_frame_make(_state, &_frame_block);
     ae_vector_clear(c);
-    ae_vector_init(&buf, 0, DT_COMPLEX, _state, ae_true);
+    ae_vector_init(&buf, 0, DT_COMPLEX, _state);
 
     ae_assert(n>0&&m>0, "ConvC1DCircular: incorrect N or M!", _state);
     
@@ -1800,7 +1713,7 @@ void convc1dcircular(/* Complex */ ae_vector* s,
         ae_vector_set_length(&buf, m, _state);
         for(i1=0; i1<=m-1; i1++)
         {
-            buf.ptr.p_complex[i1] = ae_complex_from_d(0);
+            buf.ptr.p_complex[i1] = ae_complex_from_i(0);
         }
         i1 = 0;
         while(i1<n)
@@ -1860,7 +1773,7 @@ void convc1dcircularinv(/* Complex */ ae_vector* a,
     ae_vector buf;
     ae_vector buf2;
     ae_vector cbuf;
-    ftplan plan;
+    fasttransformplan plan;
     ae_complex c1;
     ae_complex c2;
     ae_complex c3;
@@ -1868,10 +1781,10 @@ void convc1dcircularinv(/* Complex */ ae_vector* a,
 
     ae_frame_make(_state, &_frame_block);
     ae_vector_clear(r);
-    ae_vector_init(&buf, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&buf2, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&cbuf, 0, DT_COMPLEX, _state, ae_true);
-    _ftplan_init(&plan, _state, ae_true);
+    ae_vector_init(&buf, 0, DT_REAL, _state);
+    ae_vector_init(&buf2, 0, DT_REAL, _state);
+    ae_vector_init(&cbuf, 0, DT_COMPLEX, _state);
+    _fasttransformplan_init(&plan, _state);
 
     ae_assert(n>0&&m>0, "ConvC1DCircularInv: incorrect N or M!", _state);
     
@@ -1884,7 +1797,7 @@ void convc1dcircularinv(/* Complex */ ae_vector* a,
         ae_vector_set_length(&cbuf, m, _state);
         for(i=0; i<=m-1; i++)
         {
-            cbuf.ptr.p_complex[i] = ae_complex_from_d(0);
+            cbuf.ptr.p_complex[i] = ae_complex_from_i(0);
         }
         i1 = 0;
         while(i1<n)
@@ -1902,7 +1815,7 @@ void convc1dcircularinv(/* Complex */ ae_vector* a,
     /*
      * Task is normalized
      */
-    ftbasegeneratecomplexfftplan(m, &plan, _state);
+    ftcomplexfftplan(m, 1, &plan, _state);
     ae_vector_set_length(&buf, 2*m, _state);
     for(i=0; i<=m-1; i++)
     {
@@ -1917,11 +1830,11 @@ void convc1dcircularinv(/* Complex */ ae_vector* a,
     }
     for(i=n; i<=m-1; i++)
     {
-        buf2.ptr.p_double[2*i+0] = 0;
-        buf2.ptr.p_double[2*i+1] = 0;
+        buf2.ptr.p_double[2*i+0] = (double)(0);
+        buf2.ptr.p_double[2*i+1] = (double)(0);
     }
-    ftbaseexecuteplan(&buf, 0, m, &plan, _state);
-    ftbaseexecuteplan(&buf2, 0, m, &plan, _state);
+    ftapplyplan(&plan, &buf, 0, 1, _state);
+    ftapplyplan(&plan, &buf2, 0, 1, _state);
     for(i=0; i<=m-1; i++)
     {
         c1.x = buf.ptr.p_double[2*i+0];
@@ -1932,7 +1845,7 @@ void convc1dcircularinv(/* Complex */ ae_vector* a,
         buf.ptr.p_double[2*i+0] = c3.x;
         buf.ptr.p_double[2*i+1] = -c3.y;
     }
-    ftbaseexecuteplan(&buf, 0, m, &plan, _state);
+    ftapplyplan(&plan, &buf, 0, 1, _state);
     t = (double)1/(double)m;
     ae_vector_set_length(r, m, _state);
     for(i=0; i<=m-1; i++)
@@ -2030,17 +1943,17 @@ void convr1dinv(/* Real    */ ae_vector* a,
     ae_vector buf;
     ae_vector buf2;
     ae_vector buf3;
-    ftplan plan;
+    fasttransformplan plan;
     ae_complex c1;
     ae_complex c2;
     ae_complex c3;
 
     ae_frame_make(_state, &_frame_block);
     ae_vector_clear(r);
-    ae_vector_init(&buf, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&buf2, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&buf3, 0, DT_REAL, _state, ae_true);
-    _ftplan_init(&plan, _state, ae_true);
+    ae_vector_init(&buf, 0, DT_REAL, _state);
+    ae_vector_init(&buf2, 0, DT_REAL, _state);
+    ae_vector_init(&buf3, 0, DT_REAL, _state);
+    _fasttransformplan_init(&plan, _state);
 
     ae_assert((n>0&&m>0)&&n<=m, "ConvR1DInv: incorrect N or M!", _state);
     p = ftbasefindsmootheven(m, _state);
@@ -2048,16 +1961,16 @@ void convr1dinv(/* Real    */ ae_vector* a,
     ae_v_move(&buf.ptr.p_double[0], 1, &a->ptr.p_double[0], 1, ae_v_len(0,m-1));
     for(i=m; i<=p-1; i++)
     {
-        buf.ptr.p_double[i] = 0;
+        buf.ptr.p_double[i] = (double)(0);
     }
     ae_vector_set_length(&buf2, p, _state);
     ae_v_move(&buf2.ptr.p_double[0], 1, &b->ptr.p_double[0], 1, ae_v_len(0,n-1));
     for(i=n; i<=p-1; i++)
     {
-        buf2.ptr.p_double[i] = 0;
+        buf2.ptr.p_double[i] = (double)(0);
     }
     ae_vector_set_length(&buf3, p, _state);
-    ftbasegeneratecomplexfftplan(p/2, &plan, _state);
+    ftcomplexfftplan(p/2, 1, &plan, _state);
     fftr1dinternaleven(&buf, p, &buf3, &plan, _state);
     fftr1dinternaleven(&buf2, p, &buf3, &plan, _state);
     buf.ptr.p_double[0] = buf.ptr.p_double[0]/buf2.ptr.p_double[0];
@@ -2116,7 +2029,7 @@ void convr1dcircular(/* Real    */ ae_vector* s,
 
     ae_frame_make(_state, &_frame_block);
     ae_vector_clear(c);
-    ae_vector_init(&buf, 0, DT_REAL, _state, ae_true);
+    ae_vector_init(&buf, 0, DT_REAL, _state);
 
     ae_assert(n>0&&m>0, "ConvC1DCircular: incorrect N or M!", _state);
     
@@ -2129,7 +2042,7 @@ void convr1dcircular(/* Real    */ ae_vector* s,
         ae_vector_set_length(&buf, m, _state);
         for(i1=0; i1<=m-1; i1++)
         {
-            buf.ptr.p_double[i1] = 0;
+            buf.ptr.p_double[i1] = (double)(0);
         }
         i1 = 0;
         while(i1<n)
@@ -2195,19 +2108,19 @@ void convr1dcircularinv(/* Real    */ ae_vector* a,
     ae_vector buf3;
     ae_vector cbuf;
     ae_vector cbuf2;
-    ftplan plan;
+    fasttransformplan plan;
     ae_complex c1;
     ae_complex c2;
     ae_complex c3;
 
     ae_frame_make(_state, &_frame_block);
     ae_vector_clear(r);
-    ae_vector_init(&buf, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&buf2, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&buf3, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&cbuf, 0, DT_COMPLEX, _state, ae_true);
-    ae_vector_init(&cbuf2, 0, DT_COMPLEX, _state, ae_true);
-    _ftplan_init(&plan, _state, ae_true);
+    ae_vector_init(&buf, 0, DT_REAL, _state);
+    ae_vector_init(&buf2, 0, DT_REAL, _state);
+    ae_vector_init(&buf3, 0, DT_REAL, _state);
+    ae_vector_init(&cbuf, 0, DT_COMPLEX, _state);
+    ae_vector_init(&cbuf2, 0, DT_COMPLEX, _state);
+    _fasttransformplan_init(&plan, _state);
 
     ae_assert(n>0&&m>0, "ConvR1DCircularInv: incorrect N or M!", _state);
     
@@ -2220,7 +2133,7 @@ void convr1dcircularinv(/* Real    */ ae_vector* a,
         ae_vector_set_length(&buf, m, _state);
         for(i=0; i<=m-1; i++)
         {
-            buf.ptr.p_double[i] = 0;
+            buf.ptr.p_double[i] = (double)(0);
         }
         i1 = 0;
         while(i1<n)
@@ -2250,10 +2163,10 @@ void convr1dcircularinv(/* Real    */ ae_vector* a,
         ae_v_move(&buf2.ptr.p_double[0], 1, &b->ptr.p_double[0], 1, ae_v_len(0,n-1));
         for(i=n; i<=m-1; i++)
         {
-            buf2.ptr.p_double[i] = 0;
+            buf2.ptr.p_double[i] = (double)(0);
         }
         ae_vector_set_length(&buf3, m, _state);
-        ftbasegeneratecomplexfftplan(m/2, &plan, _state);
+        ftcomplexfftplan(m/2, 1, &plan, _state);
         fftr1dinternaleven(&buf, m, &buf3, &plan, _state);
         fftr1dinternaleven(&buf2, m, &buf3, &plan, _state);
         buf.ptr.p_double[0] = buf.ptr.p_double[0]/buf2.ptr.p_double[0];
@@ -2283,7 +2196,7 @@ void convr1dcircularinv(/* Real    */ ae_vector* a,
         ae_v_move(&buf2.ptr.p_double[0], 1, &b->ptr.p_double[0], 1, ae_v_len(0,n-1));
         for(i=n; i<=m-1; i++)
         {
-            buf2.ptr.p_double[i] = 0;
+            buf2.ptr.p_double[i] = (double)(0);
         }
         fftr1d(&buf2, m, &cbuf2, _state);
         for(i=0; i<=ae_ifloor((double)m/(double)2, _state); i++)
@@ -2352,16 +2265,16 @@ void convc1dx(/* Complex */ ae_vector* a,
     double flopcand;
     double flopbest;
     ae_int_t algbest;
-    ftplan plan;
+    fasttransformplan plan;
     ae_vector buf;
     ae_vector buf2;
 
     ae_frame_make(_state, &_frame_block);
     ae_vector_clear(r);
-    ae_vector_init(&bbuf, 0, DT_COMPLEX, _state, ae_true);
-    _ftplan_init(&plan, _state, ae_true);
-    ae_vector_init(&buf, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&buf2, 0, DT_REAL, _state, ae_true);
+    ae_vector_init(&bbuf, 0, DT_COMPLEX, _state);
+    _fasttransformplan_init(&plan, _state);
+    ae_vector_init(&buf, 0, DT_REAL, _state);
+    ae_vector_init(&buf2, 0, DT_REAL, _state);
 
     ae_assert(n>0&&m>0, "ConvC1DX: incorrect N or M!", _state);
     ae_assert(n<=m, "ConvC1DX: N<M assumption is false!", _state);
@@ -2382,7 +2295,7 @@ void convc1dx(/* Complex */ ae_vector* a,
         algbest = 0;
         if( alg==-1 )
         {
-            flopbest = 2*m*n;
+            flopbest = (double)(2*m*n);
         }
         else
         {
@@ -2507,7 +2420,7 @@ void convc1dx(/* Complex */ ae_vector* a,
             ae_vector_set_length(r, m+n-1, _state);
             for(i=0; i<=m+n-2; i++)
             {
-                r->ptr.p_complex[i] = ae_complex_from_d(0);
+                r->ptr.p_complex[i] = ae_complex_from_i(0);
             }
             for(i=0; i<=n-1; i++)
             {
@@ -2537,7 +2450,7 @@ void convc1dx(/* Complex */ ae_vector* a,
             /*
              * special code for circular convolution with smooth M
              */
-            ftbasegeneratecomplexfftplan(m, &plan, _state);
+            ftcomplexfftplan(m, 1, &plan, _state);
             ae_vector_set_length(&buf, 2*m, _state);
             for(i=0; i<=m-1; i++)
             {
@@ -2552,11 +2465,11 @@ void convc1dx(/* Complex */ ae_vector* a,
             }
             for(i=n; i<=m-1; i++)
             {
-                buf2.ptr.p_double[2*i+0] = 0;
-                buf2.ptr.p_double[2*i+1] = 0;
+                buf2.ptr.p_double[2*i+0] = (double)(0);
+                buf2.ptr.p_double[2*i+1] = (double)(0);
             }
-            ftbaseexecuteplan(&buf, 0, m, &plan, _state);
-            ftbaseexecuteplan(&buf2, 0, m, &plan, _state);
+            ftapplyplan(&plan, &buf, 0, 1, _state);
+            ftapplyplan(&plan, &buf2, 0, 1, _state);
             for(i=0; i<=m-1; i++)
             {
                 ax = buf.ptr.p_double[2*i+0];
@@ -2568,7 +2481,7 @@ void convc1dx(/* Complex */ ae_vector* a,
                 buf.ptr.p_double[2*i+0] = tx;
                 buf.ptr.p_double[2*i+1] = -ty;
             }
-            ftbaseexecuteplan(&buf, 0, m, &plan, _state);
+            ftapplyplan(&plan, &buf, 0, 1, _state);
             t = (double)1/(double)m;
             ae_vector_set_length(r, m, _state);
             for(i=0; i<=m-1; i++)
@@ -2589,7 +2502,7 @@ void convc1dx(/* Complex */ ae_vector* a,
              *   * for circular convolution we add array tail to its head
              */
             p = ftbasefindsmooth(m+n-1, _state);
-            ftbasegeneratecomplexfftplan(p, &plan, _state);
+            ftcomplexfftplan(p, 1, &plan, _state);
             ae_vector_set_length(&buf, 2*p, _state);
             for(i=0; i<=m-1; i++)
             {
@@ -2598,8 +2511,8 @@ void convc1dx(/* Complex */ ae_vector* a,
             }
             for(i=m; i<=p-1; i++)
             {
-                buf.ptr.p_double[2*i+0] = 0;
-                buf.ptr.p_double[2*i+1] = 0;
+                buf.ptr.p_double[2*i+0] = (double)(0);
+                buf.ptr.p_double[2*i+1] = (double)(0);
             }
             ae_vector_set_length(&buf2, 2*p, _state);
             for(i=0; i<=n-1; i++)
@@ -2609,11 +2522,11 @@ void convc1dx(/* Complex */ ae_vector* a,
             }
             for(i=n; i<=p-1; i++)
             {
-                buf2.ptr.p_double[2*i+0] = 0;
-                buf2.ptr.p_double[2*i+1] = 0;
+                buf2.ptr.p_double[2*i+0] = (double)(0);
+                buf2.ptr.p_double[2*i+1] = (double)(0);
             }
-            ftbaseexecuteplan(&buf, 0, p, &plan, _state);
-            ftbaseexecuteplan(&buf2, 0, p, &plan, _state);
+            ftapplyplan(&plan, &buf, 0, 1, _state);
+            ftapplyplan(&plan, &buf2, 0, 1, _state);
             for(i=0; i<=p-1; i++)
             {
                 ax = buf.ptr.p_double[2*i+0];
@@ -2625,7 +2538,7 @@ void convc1dx(/* Complex */ ae_vector* a,
                 buf.ptr.p_double[2*i+0] = tx;
                 buf.ptr.p_double[2*i+1] = -ty;
             }
-            ftbaseexecuteplan(&buf, 0, p, &plan, _state);
+            ftapplyplan(&plan, &buf, 0, 1, _state);
             t = (double)1/(double)p;
             if( circular )
             {
@@ -2685,7 +2598,7 @@ void convc1dx(/* Complex */ ae_vector* a,
             ae_vector_set_length(r, m, _state);
             for(i=0; i<=m-1; i++)
             {
-                r->ptr.p_complex[i] = ae_complex_from_d(0);
+                r->ptr.p_complex[i] = ae_complex_from_i(0);
             }
         }
         else
@@ -2693,7 +2606,7 @@ void convc1dx(/* Complex */ ae_vector* a,
             ae_vector_set_length(r, m+n-1, _state);
             for(i=0; i<=m+n-2; i++)
             {
-                r->ptr.p_complex[i] = ae_complex_from_d(0);
+                r->ptr.p_complex[i] = ae_complex_from_i(0);
             }
         }
         
@@ -2704,14 +2617,14 @@ void convc1dx(/* Complex */ ae_vector* a,
         ae_v_cmove(&bbuf.ptr.p_complex[0], 1, &b->ptr.p_complex[0], 1, "N", ae_v_len(0,n-1));
         for(j=n; j<=q+n-2; j++)
         {
-            bbuf.ptr.p_complex[j] = ae_complex_from_d(0);
+            bbuf.ptr.p_complex[j] = ae_complex_from_i(0);
         }
         fftc1d(&bbuf, q+n-1, _state);
         
         /*
          * prepare FFT plan for chunks of A
          */
-        ftbasegeneratecomplexfftplan(q+n-1, &plan, _state);
+        ftcomplexfftplan(q+n-1, 1, &plan, _state);
         
         /*
          * main overlap-add cycle
@@ -2727,10 +2640,10 @@ void convc1dx(/* Complex */ ae_vector* a,
             }
             for(j=p; j<=q+n-2; j++)
             {
-                buf.ptr.p_double[2*j+0] = 0;
-                buf.ptr.p_double[2*j+1] = 0;
+                buf.ptr.p_double[2*j+0] = (double)(0);
+                buf.ptr.p_double[2*j+1] = (double)(0);
             }
-            ftbaseexecuteplan(&buf, 0, q+n-1, &plan, _state);
+            ftapplyplan(&plan, &buf, 0, 1, _state);
             for(j=0; j<=q+n-2; j++)
             {
                 ax = buf.ptr.p_double[2*j+0];
@@ -2742,7 +2655,7 @@ void convc1dx(/* Complex */ ae_vector* a,
                 buf.ptr.p_double[2*j+0] = tx;
                 buf.ptr.p_double[2*j+1] = -ty;
             }
-            ftbaseexecuteplan(&buf, 0, q+n-1, &plan, _state);
+            ftapplyplan(&plan, &buf, 0, 1, _state);
             t = (double)1/(double)(q+n-1);
             if( circular )
             {
@@ -2827,17 +2740,17 @@ void convr1dx(/* Real    */ ae_vector* a,
     double flopcand;
     double flopbest;
     ae_int_t algbest;
-    ftplan plan;
+    fasttransformplan plan;
     ae_vector buf;
     ae_vector buf2;
     ae_vector buf3;
 
     ae_frame_make(_state, &_frame_block);
     ae_vector_clear(r);
-    _ftplan_init(&plan, _state, ae_true);
-    ae_vector_init(&buf, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&buf2, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&buf3, 0, DT_REAL, _state, ae_true);
+    _fasttransformplan_init(&plan, _state);
+    ae_vector_init(&buf, 0, DT_REAL, _state);
+    ae_vector_init(&buf2, 0, DT_REAL, _state);
+    ae_vector_init(&buf3, 0, DT_REAL, _state);
 
     ae_assert(n>0&&m>0, "ConvC1DX: incorrect N or M!", _state);
     ae_assert(n<=m, "ConvC1DX: N<M assumption is false!", _state);
@@ -2991,7 +2904,7 @@ void convr1dx(/* Real    */ ae_vector* a,
             ae_vector_set_length(r, m+n-1, _state);
             for(i=0; i<=m+n-2; i++)
             {
-                r->ptr.p_double[i] = 0;
+                r->ptr.p_double[i] = (double)(0);
             }
             for(i=0; i<=n-1; i++)
             {
@@ -3030,10 +2943,10 @@ void convr1dx(/* Real    */ ae_vector* a,
             ae_v_move(&buf2.ptr.p_double[0], 1, &b->ptr.p_double[0], 1, ae_v_len(0,n-1));
             for(i=n; i<=m-1; i++)
             {
-                buf2.ptr.p_double[i] = 0;
+                buf2.ptr.p_double[i] = (double)(0);
             }
             ae_vector_set_length(&buf3, m, _state);
-            ftbasegeneratecomplexfftplan(m/2, &plan, _state);
+            ftcomplexfftplan(m/2, 1, &plan, _state);
             fftr1dinternaleven(&buf, m, &buf3, &plan, _state);
             fftr1dinternaleven(&buf2, m, &buf3, &plan, _state);
             buf.ptr.p_double[0] = buf.ptr.p_double[0]*buf2.ptr.p_double[0];
@@ -3069,16 +2982,16 @@ void convr1dx(/* Real    */ ae_vector* a,
             ae_v_move(&buf.ptr.p_double[0], 1, &a->ptr.p_double[0], 1, ae_v_len(0,m-1));
             for(i=m; i<=p-1; i++)
             {
-                buf.ptr.p_double[i] = 0;
+                buf.ptr.p_double[i] = (double)(0);
             }
             ae_vector_set_length(&buf2, p, _state);
             ae_v_move(&buf2.ptr.p_double[0], 1, &b->ptr.p_double[0], 1, ae_v_len(0,n-1));
             for(i=n; i<=p-1; i++)
             {
-                buf2.ptr.p_double[i] = 0;
+                buf2.ptr.p_double[i] = (double)(0);
             }
             ae_vector_set_length(&buf3, p, _state);
-            ftbasegeneratecomplexfftplan(p/2, &plan, _state);
+            ftcomplexfftplan(p/2, 1, &plan, _state);
             fftr1dinternaleven(&buf, p, &buf3, &plan, _state);
             fftr1dinternaleven(&buf2, p, &buf3, &plan, _state);
             buf.ptr.p_double[0] = buf.ptr.p_double[0]*buf2.ptr.p_double[0];
@@ -3131,7 +3044,7 @@ void convr1dx(/* Real    */ ae_vector* a,
         ae_vector_set_length(&buf, q+n-1, _state);
         ae_vector_set_length(&buf2, q+n-1, _state);
         ae_vector_set_length(&buf3, q+n-1, _state);
-        ftbasegeneratecomplexfftplan((q+n-1)/2, &plan, _state);
+        ftcomplexfftplan((q+n-1)/2, 1, &plan, _state);
         
         /*
          * prepare R
@@ -3141,7 +3054,7 @@ void convr1dx(/* Real    */ ae_vector* a,
             ae_vector_set_length(r, m, _state);
             for(i=0; i<=m-1; i++)
             {
-                r->ptr.p_double[i] = 0;
+                r->ptr.p_double[i] = (double)(0);
             }
         }
         else
@@ -3149,7 +3062,7 @@ void convr1dx(/* Real    */ ae_vector* a,
             ae_vector_set_length(r, m+n-1, _state);
             for(i=0; i<=m+n-2; i++)
             {
-                r->ptr.p_double[i] = 0;
+                r->ptr.p_double[i] = (double)(0);
             }
         }
         
@@ -3159,7 +3072,7 @@ void convr1dx(/* Real    */ ae_vector* a,
         ae_v_move(&buf2.ptr.p_double[0], 1, &b->ptr.p_double[0], 1, ae_v_len(0,n-1));
         for(j=n; j<=q+n-2; j++)
         {
-            buf2.ptr.p_double[j] = 0;
+            buf2.ptr.p_double[j] = (double)(0);
         }
         fftr1dinternaleven(&buf2, q+n-1, &buf3, &plan, _state);
         
@@ -3173,7 +3086,7 @@ void convr1dx(/* Real    */ ae_vector* a,
             ae_v_move(&buf.ptr.p_double[0], 1, &a->ptr.p_double[i], 1, ae_v_len(0,p-1));
             for(j=p; j<=q+n-2; j++)
             {
-                buf.ptr.p_double[j] = 0;
+                buf.ptr.p_double[j] = (double)(0);
             }
             fftr1dinternaleven(&buf, q+n-1, &buf3, &plan, _state);
             buf.ptr.p_double[0] = buf.ptr.p_double[0]*buf2.ptr.p_double[0];
@@ -3266,8 +3179,8 @@ void corrc1d(/* Complex */ ae_vector* signal,
 
     ae_frame_make(_state, &_frame_block);
     ae_vector_clear(r);
-    ae_vector_init(&p, 0, DT_COMPLEX, _state, ae_true);
-    ae_vector_init(&b, 0, DT_COMPLEX, _state, ae_true);
+    ae_vector_init(&p, 0, DT_COMPLEX, _state);
+    ae_vector_init(&b, 0, DT_COMPLEX, _state);
 
     ae_assert(n>0&&m>0, "CorrC1D: incorrect N or M!", _state);
     ae_vector_set_length(&p, m, _state);
@@ -3330,8 +3243,8 @@ void corrc1dcircular(/* Complex */ ae_vector* signal,
 
     ae_frame_make(_state, &_frame_block);
     ae_vector_clear(c);
-    ae_vector_init(&p, 0, DT_COMPLEX, _state, ae_true);
-    ae_vector_init(&b, 0, DT_COMPLEX, _state, ae_true);
+    ae_vector_init(&p, 0, DT_COMPLEX, _state);
+    ae_vector_init(&b, 0, DT_COMPLEX, _state);
 
     ae_assert(n>0&&m>0, "ConvC1DCircular: incorrect N or M!", _state);
     
@@ -3344,7 +3257,7 @@ void corrc1dcircular(/* Complex */ ae_vector* signal,
         ae_vector_set_length(&b, m, _state);
         for(i1=0; i1<=m-1; i1++)
         {
-            b.ptr.p_complex[i1] = ae_complex_from_d(0);
+            b.ptr.p_complex[i1] = ae_complex_from_i(0);
         }
         i1 = 0;
         while(i1<n)
@@ -3428,8 +3341,8 @@ void corrr1d(/* Real    */ ae_vector* signal,
 
     ae_frame_make(_state, &_frame_block);
     ae_vector_clear(r);
-    ae_vector_init(&p, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&b, 0, DT_REAL, _state, ae_true);
+    ae_vector_init(&p, 0, DT_REAL, _state);
+    ae_vector_init(&b, 0, DT_REAL, _state);
 
     ae_assert(n>0&&m>0, "CorrR1D: incorrect N or M!", _state);
     ae_vector_set_length(&p, m, _state);
@@ -3492,8 +3405,8 @@ void corrr1dcircular(/* Real    */ ae_vector* signal,
 
     ae_frame_make(_state, &_frame_block);
     ae_vector_clear(c);
-    ae_vector_init(&p, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&b, 0, DT_REAL, _state, ae_true);
+    ae_vector_init(&p, 0, DT_REAL, _state);
+    ae_vector_init(&b, 0, DT_REAL, _state);
 
     ae_assert(n>0&&m>0, "ConvC1DCircular: incorrect N or M!", _state);
     
@@ -3506,7 +3419,7 @@ void corrr1dcircular(/* Real    */ ae_vector* signal,
         ae_vector_set_length(&b, m, _state);
         for(i1=0; i1<=m-1; i1++)
         {
-            b.ptr.p_double[i1] = 0;
+            b.ptr.p_double[i1] = (double)(0);
         }
         i1 = 0;
         while(i1<n)
@@ -3562,13 +3475,11 @@ OUTPUT PARAMETERS
 void fhtr1d(/* Real    */ ae_vector* a, ae_int_t n, ae_state *_state)
 {
     ae_frame _frame_block;
-    ftplan plan;
     ae_int_t i;
     ae_vector fa;
 
     ae_frame_make(_state, &_frame_block);
-    _ftplan_init(&plan, _state, ae_true);
-    ae_vector_init(&fa, 0, DT_COMPLEX, _state, ae_true);
+    ae_vector_init(&fa, 0, DT_COMPLEX, _state);
 
     ae_assert(n>0, "FHTR1D: incorrect N!", _state);
     

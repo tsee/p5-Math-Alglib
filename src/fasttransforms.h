@@ -1,10 +1,11 @@
 /*************************************************************************
+ALGLIB 3.9.0 (source code generated 2014-12-11)
 Copyright (c) Sergey Bochkanov (ALGLIB project).
 
 >>> SOURCE LICENSE >>>
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
-the Free Software Foundation (www.fsf.org); either version 2 of the
+the Free Software Foundation (www.fsf.org); either version 2 of the 
 License, or (at your option) any later version.
 
 This program is distributed in the hope that it will be useful,
@@ -586,12 +587,12 @@ void fftr1dinv(/* Complex */ ae_vector* f,
 void fftr1dinternaleven(/* Real    */ ae_vector* a,
      ae_int_t n,
      /* Real    */ ae_vector* buf,
-     ftplan* plan,
+     fasttransformplan* plan,
      ae_state *_state);
 void fftr1dinvinternaleven(/* Real    */ ae_vector* a,
      ae_int_t n,
      /* Real    */ ae_vector* buf,
-     ftplan* plan,
+     fasttransformplan* plan,
      ae_state *_state);
 void convc1d(/* Complex */ ae_vector* a,
      ae_int_t m,

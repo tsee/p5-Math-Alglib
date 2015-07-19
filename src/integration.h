@@ -1,10 +1,11 @@
 /*************************************************************************
+ALGLIB 3.9.0 (source code generated 2014-12-11)
 Copyright (c) Sergey Bochkanov (ALGLIB project).
 
 >>> SOURCE LICENSE >>>
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
-the Free Software Foundation (www.fsf.org); either version 2 of the
+the Free Software Foundation (www.fsf.org); either version 2 of the 
 License, or (at your option) any later version.
 
 This program is distributed in the hope that it will be useful,
@@ -819,15 +820,18 @@ void autogkresults(autogkstate* state,
      double* v,
      autogkreport* rep,
      ae_state *_state);
-ae_bool _autogkreport_init(autogkreport* p, ae_state *_state, ae_bool make_automatic);
-ae_bool _autogkreport_init_copy(autogkreport* dst, autogkreport* src, ae_state *_state, ae_bool make_automatic);
-void _autogkreport_clear(autogkreport* p);
-ae_bool _autogkinternalstate_init(autogkinternalstate* p, ae_state *_state, ae_bool make_automatic);
-ae_bool _autogkinternalstate_init_copy(autogkinternalstate* dst, autogkinternalstate* src, ae_state *_state, ae_bool make_automatic);
-void _autogkinternalstate_clear(autogkinternalstate* p);
-ae_bool _autogkstate_init(autogkstate* p, ae_state *_state, ae_bool make_automatic);
-ae_bool _autogkstate_init_copy(autogkstate* dst, autogkstate* src, ae_state *_state, ae_bool make_automatic);
-void _autogkstate_clear(autogkstate* p);
+void _autogkreport_init(void* _p, ae_state *_state);
+void _autogkreport_init_copy(void* _dst, void* _src, ae_state *_state);
+void _autogkreport_clear(void* _p);
+void _autogkreport_destroy(void* _p);
+void _autogkinternalstate_init(void* _p, ae_state *_state);
+void _autogkinternalstate_init_copy(void* _dst, void* _src, ae_state *_state);
+void _autogkinternalstate_clear(void* _p);
+void _autogkinternalstate_destroy(void* _p);
+void _autogkstate_init(void* _p, ae_state *_state);
+void _autogkstate_init_copy(void* _dst, void* _src, ae_state *_state);
+void _autogkstate_clear(void* _p);
+void _autogkstate_destroy(void* _p);
 
 }
 #endif

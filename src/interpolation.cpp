@@ -1,10 +1,11 @@
 /*************************************************************************
+ALGLIB 3.9.0 (source code generated 2014-12-11)
 Copyright (c) Sergey Bochkanov (ALGLIB project).
 
 >>> SOURCE LICENSE >>>
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
-the Free Software Foundation (www.fsf.org); either version 2 of the
+the Free Software Foundation (www.fsf.org); either version 2 of the 
 License, or (at your option) any later version.
 
 This program is distributed in the hope that it will be useful,
@@ -45,8 +46,7 @@ _idwinterpolant_owner::_idwinterpolant_owner()
     p_struct = (alglib_impl::idwinterpolant*)alglib_impl::ae_malloc(sizeof(alglib_impl::idwinterpolant), NULL);
     if( p_struct==NULL )
         throw ap_error("ALGLIB: malloc error");
-    if( !alglib_impl::_idwinterpolant_init(p_struct, NULL, ae_false) )
-        throw ap_error("ALGLIB: malloc error");
+    alglib_impl::_idwinterpolant_init(p_struct, NULL);
 }
 
 _idwinterpolant_owner::_idwinterpolant_owner(const _idwinterpolant_owner &rhs)
@@ -54,8 +54,7 @@ _idwinterpolant_owner::_idwinterpolant_owner(const _idwinterpolant_owner &rhs)
     p_struct = (alglib_impl::idwinterpolant*)alglib_impl::ae_malloc(sizeof(alglib_impl::idwinterpolant), NULL);
     if( p_struct==NULL )
         throw ap_error("ALGLIB: malloc error");
-    if( !alglib_impl::_idwinterpolant_init_copy(p_struct, const_cast<alglib_impl::idwinterpolant*>(rhs.p_struct), NULL, ae_false) )
-        throw ap_error("ALGLIB: malloc error");
+    alglib_impl::_idwinterpolant_init_copy(p_struct, const_cast<alglib_impl::idwinterpolant*>(rhs.p_struct), NULL);
 }
 
 _idwinterpolant_owner& _idwinterpolant_owner::operator=(const _idwinterpolant_owner &rhs)
@@ -63,8 +62,7 @@ _idwinterpolant_owner& _idwinterpolant_owner::operator=(const _idwinterpolant_ow
     if( this==&rhs )
         return *this;
     alglib_impl::_idwinterpolant_clear(p_struct);
-    if( !alglib_impl::_idwinterpolant_init_copy(p_struct, const_cast<alglib_impl::idwinterpolant*>(rhs.p_struct), NULL, ae_false) )
-        throw ap_error("ALGLIB: malloc error");
+    alglib_impl::_idwinterpolant_init_copy(p_struct, const_cast<alglib_impl::idwinterpolant*>(rhs.p_struct), NULL);
     return *this;
 }
 
@@ -130,10 +128,6 @@ double idwcalc(const idwinterpolant &z, const real_1d_array &x)
     catch(alglib_impl::ae_error_type)
     {
         throw ap_error(_alglib_env_state.error_msg);
-    }
-    catch(...)
-    {
-        throw;
     }
 }
 
@@ -206,10 +200,6 @@ void idwbuildmodifiedshepard(const real_2d_array &xy, const ae_int_t n, const ae
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
-    {
-        throw;
-    }
 }
 
 /*************************************************************************
@@ -252,10 +242,6 @@ void idwbuildmodifiedshepardr(const real_2d_array &xy, const ae_int_t n, const a
     catch(alglib_impl::ae_error_type)
     {
         throw ap_error(_alglib_env_state.error_msg);
-    }
-    catch(...)
-    {
-        throw;
     }
 }
 
@@ -336,10 +322,6 @@ void idwbuildnoisy(const real_2d_array &xy, const ae_int_t n, const ae_int_t nx,
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
-    {
-        throw;
-    }
 }
 
 /*************************************************************************
@@ -350,8 +332,7 @@ _barycentricinterpolant_owner::_barycentricinterpolant_owner()
     p_struct = (alglib_impl::barycentricinterpolant*)alglib_impl::ae_malloc(sizeof(alglib_impl::barycentricinterpolant), NULL);
     if( p_struct==NULL )
         throw ap_error("ALGLIB: malloc error");
-    if( !alglib_impl::_barycentricinterpolant_init(p_struct, NULL, ae_false) )
-        throw ap_error("ALGLIB: malloc error");
+    alglib_impl::_barycentricinterpolant_init(p_struct, NULL);
 }
 
 _barycentricinterpolant_owner::_barycentricinterpolant_owner(const _barycentricinterpolant_owner &rhs)
@@ -359,8 +340,7 @@ _barycentricinterpolant_owner::_barycentricinterpolant_owner(const _barycentrici
     p_struct = (alglib_impl::barycentricinterpolant*)alglib_impl::ae_malloc(sizeof(alglib_impl::barycentricinterpolant), NULL);
     if( p_struct==NULL )
         throw ap_error("ALGLIB: malloc error");
-    if( !alglib_impl::_barycentricinterpolant_init_copy(p_struct, const_cast<alglib_impl::barycentricinterpolant*>(rhs.p_struct), NULL, ae_false) )
-        throw ap_error("ALGLIB: malloc error");
+    alglib_impl::_barycentricinterpolant_init_copy(p_struct, const_cast<alglib_impl::barycentricinterpolant*>(rhs.p_struct), NULL);
 }
 
 _barycentricinterpolant_owner& _barycentricinterpolant_owner::operator=(const _barycentricinterpolant_owner &rhs)
@@ -368,8 +348,7 @@ _barycentricinterpolant_owner& _barycentricinterpolant_owner::operator=(const _b
     if( this==&rhs )
         return *this;
     alglib_impl::_barycentricinterpolant_clear(p_struct);
-    if( !alglib_impl::_barycentricinterpolant_init_copy(p_struct, const_cast<alglib_impl::barycentricinterpolant*>(rhs.p_struct), NULL, ae_false) )
-        throw ap_error("ALGLIB: malloc error");
+    alglib_impl::_barycentricinterpolant_init_copy(p_struct, const_cast<alglib_impl::barycentricinterpolant*>(rhs.p_struct), NULL);
     return *this;
 }
 
@@ -438,10 +417,6 @@ double barycentriccalc(const barycentricinterpolant &b, const double t)
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
-    {
-        throw;
-    }
 }
 
 /*************************************************************************
@@ -480,10 +455,6 @@ void barycentricdiff1(const barycentricinterpolant &b, const double t, double &f
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
-    {
-        throw;
-    }
 }
 
 /*************************************************************************
@@ -521,10 +492,6 @@ void barycentricdiff2(const barycentricinterpolant &b, const double t, double &f
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
-    {
-        throw;
-    }
 }
 
 /*************************************************************************
@@ -553,10 +520,6 @@ void barycentriclintransx(const barycentricinterpolant &b, const double ca, cons
     catch(alglib_impl::ae_error_type)
     {
         throw ap_error(_alglib_env_state.error_msg);
-    }
-    catch(...)
-    {
-        throw;
     }
 }
 
@@ -588,10 +551,6 @@ void barycentriclintransy(const barycentricinterpolant &b, const double ca, cons
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
-    {
-        throw;
-    }
 }
 
 /*************************************************************************
@@ -622,10 +581,6 @@ void barycentricunpack(const barycentricinterpolant &b, ae_int_t &n, real_1d_arr
     catch(alglib_impl::ae_error_type)
     {
         throw ap_error(_alglib_env_state.error_msg);
-    }
-    catch(...)
-    {
-        throw;
     }
 }
 
@@ -659,10 +614,6 @@ void barycentricbuildxyw(const real_1d_array &x, const real_1d_array &y, const r
     catch(alglib_impl::ae_error_type)
     {
         throw ap_error(_alglib_env_state.error_msg);
-    }
-    catch(...)
-    {
-        throw;
     }
 }
 
@@ -707,10 +658,6 @@ void barycentricbuildfloaterhormann(const real_1d_array &x, const real_1d_array 
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
-    {
-        throw;
-    }
 }
 
 /*************************************************************************
@@ -751,10 +698,6 @@ void polynomialbar2cheb(const barycentricinterpolant &p, const double a, const d
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
-    {
-        throw;
-    }
 }
 
 /*************************************************************************
@@ -790,10 +733,6 @@ void polynomialcheb2bar(const real_1d_array &t, const ae_int_t n, const double a
     catch(alglib_impl::ae_error_type)
     {
         throw ap_error(_alglib_env_state.error_msg);
-    }
-    catch(...)
-    {
-        throw;
     }
 }
 
@@ -834,10 +773,6 @@ void polynomialcheb2bar(const real_1d_array &t, const double a, const double b, 
     catch(alglib_impl::ae_error_type)
     {
         throw ap_error(_alglib_env_state.error_msg);
-    }
-    catch(...)
-    {
-        throw;
     }
 }
 
@@ -894,10 +829,6 @@ void polynomialbar2pow(const barycentricinterpolant &p, const double c, const do
     catch(alglib_impl::ae_error_type)
     {
         throw ap_error(_alglib_env_state.error_msg);
-    }
-    catch(...)
-    {
-        throw;
     }
 }
 
@@ -961,10 +892,6 @@ void polynomialbar2pow(const barycentricinterpolant &p, real_1d_array &a)
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
-    {
-        throw;
-    }
 }
 
 /*************************************************************************
@@ -1016,10 +943,6 @@ void polynomialpow2bar(const real_1d_array &a, const ae_int_t n, const double c,
     catch(alglib_impl::ae_error_type)
     {
         throw ap_error(_alglib_env_state.error_msg);
-    }
-    catch(...)
-    {
-        throw;
     }
 }
 
@@ -1081,10 +1004,6 @@ void polynomialpow2bar(const real_1d_array &a, barycentricinterpolant &p)
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
-    {
-        throw;
-    }
 }
 
 /*************************************************************************
@@ -1117,10 +1036,6 @@ void polynomialbuild(const real_1d_array &x, const real_1d_array &y, const ae_in
     catch(alglib_impl::ae_error_type)
     {
         throw ap_error(_alglib_env_state.error_msg);
-    }
-    catch(...)
-    {
-        throw;
     }
 }
 
@@ -1160,10 +1075,6 @@ void polynomialbuild(const real_1d_array &x, const real_1d_array &y, barycentric
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
-    {
-        throw;
-    }
 }
 
 /*************************************************************************
@@ -1198,10 +1109,6 @@ void polynomialbuildeqdist(const double a, const double b, const real_1d_array &
     catch(alglib_impl::ae_error_type)
     {
         throw ap_error(_alglib_env_state.error_msg);
-    }
-    catch(...)
-    {
-        throw;
     }
 }
 
@@ -1242,10 +1149,6 @@ void polynomialbuildeqdist(const double a, const double b, const real_1d_array &
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
-    {
-        throw;
-    }
 }
 
 /*************************************************************************
@@ -1281,10 +1184,6 @@ void polynomialbuildcheb1(const double a, const double b, const real_1d_array &y
     catch(alglib_impl::ae_error_type)
     {
         throw ap_error(_alglib_env_state.error_msg);
-    }
-    catch(...)
-    {
-        throw;
     }
 }
 
@@ -1326,10 +1225,6 @@ void polynomialbuildcheb1(const double a, const double b, const real_1d_array &y
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
-    {
-        throw;
-    }
 }
 
 /*************************************************************************
@@ -1365,10 +1260,6 @@ void polynomialbuildcheb2(const double a, const double b, const real_1d_array &y
     catch(alglib_impl::ae_error_type)
     {
         throw ap_error(_alglib_env_state.error_msg);
-    }
-    catch(...)
-    {
-        throw;
     }
 }
 
@@ -1410,10 +1301,6 @@ void polynomialbuildcheb2(const double a, const double b, const real_1d_array &y
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
-    {
-        throw;
-    }
 }
 
 /*************************************************************************
@@ -1453,10 +1340,6 @@ double polynomialcalceqdist(const double a, const double b, const real_1d_array 
     catch(alglib_impl::ae_error_type)
     {
         throw ap_error(_alglib_env_state.error_msg);
-    }
-    catch(...)
-    {
-        throw;
     }
 }
 
@@ -1502,10 +1385,6 @@ double polynomialcalceqdist(const double a, const double b, const real_1d_array 
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
-    {
-        throw;
-    }
 }
 
 /*************************************************************************
@@ -1547,10 +1426,6 @@ double polynomialcalccheb1(const double a, const double b, const real_1d_array &
     catch(alglib_impl::ae_error_type)
     {
         throw ap_error(_alglib_env_state.error_msg);
-    }
-    catch(...)
-    {
-        throw;
     }
 }
 
@@ -1598,10 +1473,6 @@ double polynomialcalccheb1(const double a, const double b, const real_1d_array &
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
-    {
-        throw;
-    }
 }
 
 /*************************************************************************
@@ -1643,10 +1514,6 @@ double polynomialcalccheb2(const double a, const double b, const real_1d_array &
     catch(alglib_impl::ae_error_type)
     {
         throw ap_error(_alglib_env_state.error_msg);
-    }
-    catch(...)
-    {
-        throw;
     }
 }
 
@@ -1694,10 +1561,6 @@ double polynomialcalccheb2(const double a, const double b, const real_1d_array &
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
-    {
-        throw;
-    }
 }
 
 /*************************************************************************
@@ -1708,8 +1571,7 @@ _spline1dinterpolant_owner::_spline1dinterpolant_owner()
     p_struct = (alglib_impl::spline1dinterpolant*)alglib_impl::ae_malloc(sizeof(alglib_impl::spline1dinterpolant), NULL);
     if( p_struct==NULL )
         throw ap_error("ALGLIB: malloc error");
-    if( !alglib_impl::_spline1dinterpolant_init(p_struct, NULL, ae_false) )
-        throw ap_error("ALGLIB: malloc error");
+    alglib_impl::_spline1dinterpolant_init(p_struct, NULL);
 }
 
 _spline1dinterpolant_owner::_spline1dinterpolant_owner(const _spline1dinterpolant_owner &rhs)
@@ -1717,8 +1579,7 @@ _spline1dinterpolant_owner::_spline1dinterpolant_owner(const _spline1dinterpolan
     p_struct = (alglib_impl::spline1dinterpolant*)alglib_impl::ae_malloc(sizeof(alglib_impl::spline1dinterpolant), NULL);
     if( p_struct==NULL )
         throw ap_error("ALGLIB: malloc error");
-    if( !alglib_impl::_spline1dinterpolant_init_copy(p_struct, const_cast<alglib_impl::spline1dinterpolant*>(rhs.p_struct), NULL, ae_false) )
-        throw ap_error("ALGLIB: malloc error");
+    alglib_impl::_spline1dinterpolant_init_copy(p_struct, const_cast<alglib_impl::spline1dinterpolant*>(rhs.p_struct), NULL);
 }
 
 _spline1dinterpolant_owner& _spline1dinterpolant_owner::operator=(const _spline1dinterpolant_owner &rhs)
@@ -1726,8 +1587,7 @@ _spline1dinterpolant_owner& _spline1dinterpolant_owner::operator=(const _spline1
     if( this==&rhs )
         return *this;
     alglib_impl::_spline1dinterpolant_clear(p_struct);
-    if( !alglib_impl::_spline1dinterpolant_init_copy(p_struct, const_cast<alglib_impl::spline1dinterpolant*>(rhs.p_struct), NULL, ae_false) )
-        throw ap_error("ALGLIB: malloc error");
+    alglib_impl::_spline1dinterpolant_init_copy(p_struct, const_cast<alglib_impl::spline1dinterpolant*>(rhs.p_struct), NULL);
     return *this;
 }
 
@@ -1803,10 +1663,6 @@ void spline1dbuildlinear(const real_1d_array &x, const real_1d_array &y, const a
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
-    {
-        throw;
-    }
 }
 
 /*************************************************************************
@@ -1850,10 +1706,6 @@ void spline1dbuildlinear(const real_1d_array &x, const real_1d_array &y, spline1
     catch(alglib_impl::ae_error_type)
     {
         throw ap_error(_alglib_env_state.error_msg);
-    }
-    catch(...)
-    {
-        throw;
     }
 }
 
@@ -1923,10 +1775,6 @@ void spline1dbuildcubic(const real_1d_array &x, const real_1d_array &y, const ae
     catch(alglib_impl::ae_error_type)
     {
         throw ap_error(_alglib_env_state.error_msg);
-    }
-    catch(...)
-    {
-        throw;
     }
 }
 
@@ -2010,10 +1858,6 @@ void spline1dbuildcubic(const real_1d_array &x, const real_1d_array &y, spline1d
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
-    {
-        throw;
-    }
 }
 
 /*************************************************************************
@@ -2090,10 +1934,6 @@ void spline1dgriddiffcubic(const real_1d_array &x, const real_1d_array &y, const
     catch(alglib_impl::ae_error_type)
     {
         throw ap_error(_alglib_env_state.error_msg);
-    }
-    catch(...)
-    {
-        throw;
     }
 }
 
@@ -2185,10 +2025,6 @@ void spline1dgriddiffcubic(const real_1d_array &x, const real_1d_array &y, real_
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
-    {
-        throw;
-    }
 }
 
 /*************************************************************************
@@ -2266,10 +2102,6 @@ void spline1dgriddiff2cubic(const real_1d_array &x, const real_1d_array &y, cons
     catch(alglib_impl::ae_error_type)
     {
         throw ap_error(_alglib_env_state.error_msg);
-    }
-    catch(...)
-    {
-        throw;
     }
 }
 
@@ -2362,10 +2194,6 @@ void spline1dgriddiff2cubic(const real_1d_array &x, const real_1d_array &y, real
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
-    {
-        throw;
-    }
 }
 
 /*************************************************************************
@@ -2447,10 +2275,6 @@ void spline1dconvcubic(const real_1d_array &x, const real_1d_array &y, const ae_
     catch(alglib_impl::ae_error_type)
     {
         throw ap_error(_alglib_env_state.error_msg);
-    }
-    catch(...)
-    {
-        throw;
     }
 }
 
@@ -2549,10 +2373,6 @@ void spline1dconvcubic(const real_1d_array &x, const real_1d_array &y, const rea
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
-    {
-        throw;
-    }
 }
 
 /*************************************************************************
@@ -2635,10 +2455,6 @@ void spline1dconvdiffcubic(const real_1d_array &x, const real_1d_array &y, const
     catch(alglib_impl::ae_error_type)
     {
         throw ap_error(_alglib_env_state.error_msg);
-    }
-    catch(...)
-    {
-        throw;
     }
 }
 
@@ -2738,10 +2554,6 @@ void spline1dconvdiffcubic(const real_1d_array &x, const real_1d_array &y, const
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
-    {
-        throw;
-    }
 }
 
 /*************************************************************************
@@ -2826,10 +2638,6 @@ void spline1dconvdiff2cubic(const real_1d_array &x, const real_1d_array &y, cons
     catch(alglib_impl::ae_error_type)
     {
         throw ap_error(_alglib_env_state.error_msg);
-    }
-    catch(...)
-    {
-        throw;
     }
 }
 
@@ -2931,10 +2739,6 @@ void spline1dconvdiff2cubic(const real_1d_array &x, const real_1d_array &y, cons
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
-    {
-        throw;
-    }
 }
 
 /*************************************************************************
@@ -2990,10 +2794,6 @@ void spline1dbuildcatmullrom(const real_1d_array &x, const real_1d_array &y, con
     catch(alglib_impl::ae_error_type)
     {
         throw ap_error(_alglib_env_state.error_msg);
-    }
-    catch(...)
-    {
-        throw;
     }
 }
 
@@ -3060,10 +2860,6 @@ void spline1dbuildcatmullrom(const real_1d_array &x, const real_1d_array &y, spl
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
-    {
-        throw;
-    }
 }
 
 /*************************************************************************
@@ -3103,10 +2899,6 @@ void spline1dbuildhermite(const real_1d_array &x, const real_1d_array &y, const 
     catch(alglib_impl::ae_error_type)
     {
         throw ap_error(_alglib_env_state.error_msg);
-    }
-    catch(...)
-    {
-        throw;
     }
 }
 
@@ -3153,10 +2945,6 @@ void spline1dbuildhermite(const real_1d_array &x, const real_1d_array &y, const 
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
-    {
-        throw;
-    }
 }
 
 /*************************************************************************
@@ -3166,7 +2954,7 @@ INPUT PARAMETERS:
     X           -   spline nodes, array[0..N-1]
     Y           -   function values, array[0..N-1]
     N           -   points count (optional):
-                    * N>=5
+                    * N>=2
                     * if given, only first N points are used to build spline
                     * if not given, automatically detected from X/Y sizes
                       (len(X) must be equal to len(Y))
@@ -3196,10 +2984,6 @@ void spline1dbuildakima(const real_1d_array &x, const real_1d_array &y, const ae
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
-    {
-        throw;
-    }
 }
 
 /*************************************************************************
@@ -3209,7 +2993,7 @@ INPUT PARAMETERS:
     X           -   spline nodes, array[0..N-1]
     Y           -   function values, array[0..N-1]
     N           -   points count (optional):
-                    * N>=5
+                    * N>=2
                     * if given, only first N points are used to build spline
                     * if not given, automatically detected from X/Y sizes
                       (len(X) must be equal to len(Y))
@@ -3244,10 +3028,6 @@ void spline1dbuildakima(const real_1d_array &x, const real_1d_array &y, spline1d
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
-    {
-        throw;
-    }
 }
 
 /*************************************************************************
@@ -3276,10 +3056,6 @@ double spline1dcalc(const spline1dinterpolant &c, const double x)
     catch(alglib_impl::ae_error_type)
     {
         throw ap_error(_alglib_env_state.error_msg);
-    }
-    catch(...)
-    {
-        throw;
     }
 }
 
@@ -3311,10 +3087,6 @@ void spline1ddiff(const spline1dinterpolant &c, const double x, double &s, doubl
     catch(alglib_impl::ae_error_type)
     {
         throw ap_error(_alglib_env_state.error_msg);
-    }
-    catch(...)
-    {
-        throw;
     }
 }
 
@@ -3360,10 +3132,6 @@ void spline1dunpack(const spline1dinterpolant &c, ae_int_t &n, real_2d_array &tb
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
-    {
-        throw;
-    }
 }
 
 /*************************************************************************
@@ -3391,10 +3159,6 @@ void spline1dlintransx(const spline1dinterpolant &c, const double a, const doubl
     catch(alglib_impl::ae_error_type)
     {
         throw ap_error(_alglib_env_state.error_msg);
-    }
-    catch(...)
-    {
-        throw;
     }
 }
 
@@ -3424,10 +3188,6 @@ void spline1dlintransy(const spline1dinterpolant &c, const double a, const doubl
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
-    {
-        throw;
-    }
 }
 
 /*************************************************************************
@@ -3456,10 +3216,6 @@ double spline1dintegrate(const spline1dinterpolant &c, const double x)
     catch(alglib_impl::ae_error_type)
     {
         throw ap_error(_alglib_env_state.error_msg);
-    }
-    catch(...)
-    {
-        throw;
     }
 }
 
@@ -3496,10 +3252,6 @@ void spline1dbuildmonotone(const real_1d_array &x, const real_1d_array &y, const
     catch(alglib_impl::ae_error_type)
     {
         throw ap_error(_alglib_env_state.error_msg);
-    }
-    catch(...)
-    {
-        throw;
     }
 }
 
@@ -3542,10 +3294,6 @@ void spline1dbuildmonotone(const real_1d_array &x, const real_1d_array &y, splin
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
-    {
-        throw;
-    }
 }
 
 /*************************************************************************
@@ -3561,8 +3309,7 @@ _polynomialfitreport_owner::_polynomialfitreport_owner()
     p_struct = (alglib_impl::polynomialfitreport*)alglib_impl::ae_malloc(sizeof(alglib_impl::polynomialfitreport), NULL);
     if( p_struct==NULL )
         throw ap_error("ALGLIB: malloc error");
-    if( !alglib_impl::_polynomialfitreport_init(p_struct, NULL, ae_false) )
-        throw ap_error("ALGLIB: malloc error");
+    alglib_impl::_polynomialfitreport_init(p_struct, NULL);
 }
 
 _polynomialfitreport_owner::_polynomialfitreport_owner(const _polynomialfitreport_owner &rhs)
@@ -3570,8 +3317,7 @@ _polynomialfitreport_owner::_polynomialfitreport_owner(const _polynomialfitrepor
     p_struct = (alglib_impl::polynomialfitreport*)alglib_impl::ae_malloc(sizeof(alglib_impl::polynomialfitreport), NULL);
     if( p_struct==NULL )
         throw ap_error("ALGLIB: malloc error");
-    if( !alglib_impl::_polynomialfitreport_init_copy(p_struct, const_cast<alglib_impl::polynomialfitreport*>(rhs.p_struct), NULL, ae_false) )
-        throw ap_error("ALGLIB: malloc error");
+    alglib_impl::_polynomialfitreport_init_copy(p_struct, const_cast<alglib_impl::polynomialfitreport*>(rhs.p_struct), NULL);
 }
 
 _polynomialfitreport_owner& _polynomialfitreport_owner::operator=(const _polynomialfitreport_owner &rhs)
@@ -3579,8 +3325,7 @@ _polynomialfitreport_owner& _polynomialfitreport_owner::operator=(const _polynom
     if( this==&rhs )
         return *this;
     alglib_impl::_polynomialfitreport_clear(p_struct);
-    if( !alglib_impl::_polynomialfitreport_init_copy(p_struct, const_cast<alglib_impl::polynomialfitreport*>(rhs.p_struct), NULL, ae_false) )
-        throw ap_error("ALGLIB: malloc error");
+    alglib_impl::_polynomialfitreport_init_copy(p_struct, const_cast<alglib_impl::polynomialfitreport*>(rhs.p_struct), NULL);
     return *this;
 }
 
@@ -3633,8 +3378,7 @@ _barycentricfitreport_owner::_barycentricfitreport_owner()
     p_struct = (alglib_impl::barycentricfitreport*)alglib_impl::ae_malloc(sizeof(alglib_impl::barycentricfitreport), NULL);
     if( p_struct==NULL )
         throw ap_error("ALGLIB: malloc error");
-    if( !alglib_impl::_barycentricfitreport_init(p_struct, NULL, ae_false) )
-        throw ap_error("ALGLIB: malloc error");
+    alglib_impl::_barycentricfitreport_init(p_struct, NULL);
 }
 
 _barycentricfitreport_owner::_barycentricfitreport_owner(const _barycentricfitreport_owner &rhs)
@@ -3642,8 +3386,7 @@ _barycentricfitreport_owner::_barycentricfitreport_owner(const _barycentricfitre
     p_struct = (alglib_impl::barycentricfitreport*)alglib_impl::ae_malloc(sizeof(alglib_impl::barycentricfitreport), NULL);
     if( p_struct==NULL )
         throw ap_error("ALGLIB: malloc error");
-    if( !alglib_impl::_barycentricfitreport_init_copy(p_struct, const_cast<alglib_impl::barycentricfitreport*>(rhs.p_struct), NULL, ae_false) )
-        throw ap_error("ALGLIB: malloc error");
+    alglib_impl::_barycentricfitreport_init_copy(p_struct, const_cast<alglib_impl::barycentricfitreport*>(rhs.p_struct), NULL);
 }
 
 _barycentricfitreport_owner& _barycentricfitreport_owner::operator=(const _barycentricfitreport_owner &rhs)
@@ -3651,8 +3394,7 @@ _barycentricfitreport_owner& _barycentricfitreport_owner::operator=(const _baryc
     if( this==&rhs )
         return *this;
     alglib_impl::_barycentricfitreport_clear(p_struct);
-    if( !alglib_impl::_barycentricfitreport_init_copy(p_struct, const_cast<alglib_impl::barycentricfitreport*>(rhs.p_struct), NULL, ae_false) )
-        throw ap_error("ALGLIB: malloc error");
+    alglib_impl::_barycentricfitreport_init_copy(p_struct, const_cast<alglib_impl::barycentricfitreport*>(rhs.p_struct), NULL);
     return *this;
 }
 
@@ -3708,8 +3450,7 @@ _spline1dfitreport_owner::_spline1dfitreport_owner()
     p_struct = (alglib_impl::spline1dfitreport*)alglib_impl::ae_malloc(sizeof(alglib_impl::spline1dfitreport), NULL);
     if( p_struct==NULL )
         throw ap_error("ALGLIB: malloc error");
-    if( !alglib_impl::_spline1dfitreport_init(p_struct, NULL, ae_false) )
-        throw ap_error("ALGLIB: malloc error");
+    alglib_impl::_spline1dfitreport_init(p_struct, NULL);
 }
 
 _spline1dfitreport_owner::_spline1dfitreport_owner(const _spline1dfitreport_owner &rhs)
@@ -3717,8 +3458,7 @@ _spline1dfitreport_owner::_spline1dfitreport_owner(const _spline1dfitreport_owne
     p_struct = (alglib_impl::spline1dfitreport*)alglib_impl::ae_malloc(sizeof(alglib_impl::spline1dfitreport), NULL);
     if( p_struct==NULL )
         throw ap_error("ALGLIB: malloc error");
-    if( !alglib_impl::_spline1dfitreport_init_copy(p_struct, const_cast<alglib_impl::spline1dfitreport*>(rhs.p_struct), NULL, ae_false) )
-        throw ap_error("ALGLIB: malloc error");
+    alglib_impl::_spline1dfitreport_init_copy(p_struct, const_cast<alglib_impl::spline1dfitreport*>(rhs.p_struct), NULL);
 }
 
 _spline1dfitreport_owner& _spline1dfitreport_owner::operator=(const _spline1dfitreport_owner &rhs)
@@ -3726,8 +3466,7 @@ _spline1dfitreport_owner& _spline1dfitreport_owner::operator=(const _spline1dfit
     if( this==&rhs )
         return *this;
     alglib_impl::_spline1dfitreport_clear(p_struct);
-    if( !alglib_impl::_spline1dfitreport_init_copy(p_struct, const_cast<alglib_impl::spline1dfitreport*>(rhs.p_struct), NULL, ae_false) )
-        throw ap_error("ALGLIB: malloc error");
+    alglib_impl::_spline1dfitreport_init_copy(p_struct, const_cast<alglib_impl::spline1dfitreport*>(rhs.p_struct), NULL);
     return *this;
 }
 
@@ -3768,9 +3507,20 @@ spline1dfitreport::~spline1dfitreport()
 
 
 /*************************************************************************
-Least squares fitting report:
+Least squares fitting report. This structure contains informational fields
+which are set by fitting functions provided by this unit.
+
+Different functions initialize different sets of  fields,  so  you  should
+read documentation on specific function you used in order  to  know  which
+fields are initialized.
+
     TaskRCond       reciprocal of task's condition number
     IterationsCount number of internal iterations
+
+    VarIdx          if user-supplied gradient contains errors  which  were
+                    detected by nonlinear fitter, this  field  is  set  to
+                    index  of  the  first  component  of gradient which is
+                    suspected to be spoiled by bugs.
 
     RMSError        RMS error
     AvgError        average error
@@ -3778,14 +3528,22 @@ Least squares fitting report:
     MaxError        maximum error
 
     WRMSError       weighted RMS error
+
+    CovPar          covariance matrix for parameters, filled by some solvers
+    ErrPar          vector of errors in parameters, filled by some solvers
+    ErrCurve        vector of fit errors -  variability  of  the  best-fit
+                    curve, filled by some solvers.
+    Noise           vector of per-point noise estimates, filled by
+                    some solvers.
+    R2              coefficient of determination (non-weighted, non-adjusted),
+                    filled by some solvers.
 *************************************************************************/
 _lsfitreport_owner::_lsfitreport_owner()
 {
     p_struct = (alglib_impl::lsfitreport*)alglib_impl::ae_malloc(sizeof(alglib_impl::lsfitreport), NULL);
     if( p_struct==NULL )
         throw ap_error("ALGLIB: malloc error");
-    if( !alglib_impl::_lsfitreport_init(p_struct, NULL, ae_false) )
-        throw ap_error("ALGLIB: malloc error");
+    alglib_impl::_lsfitreport_init(p_struct, NULL);
 }
 
 _lsfitreport_owner::_lsfitreport_owner(const _lsfitreport_owner &rhs)
@@ -3793,8 +3551,7 @@ _lsfitreport_owner::_lsfitreport_owner(const _lsfitreport_owner &rhs)
     p_struct = (alglib_impl::lsfitreport*)alglib_impl::ae_malloc(sizeof(alglib_impl::lsfitreport), NULL);
     if( p_struct==NULL )
         throw ap_error("ALGLIB: malloc error");
-    if( !alglib_impl::_lsfitreport_init_copy(p_struct, const_cast<alglib_impl::lsfitreport*>(rhs.p_struct), NULL, ae_false) )
-        throw ap_error("ALGLIB: malloc error");
+    alglib_impl::_lsfitreport_init_copy(p_struct, const_cast<alglib_impl::lsfitreport*>(rhs.p_struct), NULL);
 }
 
 _lsfitreport_owner& _lsfitreport_owner::operator=(const _lsfitreport_owner &rhs)
@@ -3802,8 +3559,7 @@ _lsfitreport_owner& _lsfitreport_owner::operator=(const _lsfitreport_owner &rhs)
     if( this==&rhs )
         return *this;
     alglib_impl::_lsfitreport_clear(p_struct);
-    if( !alglib_impl::_lsfitreport_init_copy(p_struct, const_cast<alglib_impl::lsfitreport*>(rhs.p_struct), NULL, ae_false) )
-        throw ap_error("ALGLIB: malloc error");
+    alglib_impl::_lsfitreport_init_copy(p_struct, const_cast<alglib_impl::lsfitreport*>(rhs.p_struct), NULL);
     return *this;
 }
 
@@ -3822,11 +3578,11 @@ alglib_impl::lsfitreport* _lsfitreport_owner::c_ptr() const
 {
     return const_cast<alglib_impl::lsfitreport*>(p_struct);
 }
-lsfitreport::lsfitreport() : _lsfitreport_owner() ,taskrcond(p_struct->taskrcond),iterationscount(p_struct->iterationscount),varidx(p_struct->varidx),rmserror(p_struct->rmserror),avgerror(p_struct->avgerror),avgrelerror(p_struct->avgrelerror),maxerror(p_struct->maxerror),wrmserror(p_struct->wrmserror)
+lsfitreport::lsfitreport() : _lsfitreport_owner() ,taskrcond(p_struct->taskrcond),iterationscount(p_struct->iterationscount),varidx(p_struct->varidx),rmserror(p_struct->rmserror),avgerror(p_struct->avgerror),avgrelerror(p_struct->avgrelerror),maxerror(p_struct->maxerror),wrmserror(p_struct->wrmserror),covpar(&p_struct->covpar),errpar(&p_struct->errpar),errcurve(&p_struct->errcurve),noise(&p_struct->noise),r2(p_struct->r2)
 {
 }
 
-lsfitreport::lsfitreport(const lsfitreport &rhs):_lsfitreport_owner(rhs) ,taskrcond(p_struct->taskrcond),iterationscount(p_struct->iterationscount),varidx(p_struct->varidx),rmserror(p_struct->rmserror),avgerror(p_struct->avgerror),avgrelerror(p_struct->avgrelerror),maxerror(p_struct->maxerror),wrmserror(p_struct->wrmserror)
+lsfitreport::lsfitreport(const lsfitreport &rhs):_lsfitreport_owner(rhs) ,taskrcond(p_struct->taskrcond),iterationscount(p_struct->iterationscount),varidx(p_struct->varidx),rmserror(p_struct->rmserror),avgerror(p_struct->avgerror),avgrelerror(p_struct->avgrelerror),maxerror(p_struct->maxerror),wrmserror(p_struct->wrmserror),covpar(&p_struct->covpar),errpar(&p_struct->errpar),errcurve(&p_struct->errcurve),noise(&p_struct->noise),r2(p_struct->r2)
 {
 }
 
@@ -3854,8 +3610,7 @@ _lsfitstate_owner::_lsfitstate_owner()
     p_struct = (alglib_impl::lsfitstate*)alglib_impl::ae_malloc(sizeof(alglib_impl::lsfitstate), NULL);
     if( p_struct==NULL )
         throw ap_error("ALGLIB: malloc error");
-    if( !alglib_impl::_lsfitstate_init(p_struct, NULL, ae_false) )
-        throw ap_error("ALGLIB: malloc error");
+    alglib_impl::_lsfitstate_init(p_struct, NULL);
 }
 
 _lsfitstate_owner::_lsfitstate_owner(const _lsfitstate_owner &rhs)
@@ -3863,8 +3618,7 @@ _lsfitstate_owner::_lsfitstate_owner(const _lsfitstate_owner &rhs)
     p_struct = (alglib_impl::lsfitstate*)alglib_impl::ae_malloc(sizeof(alglib_impl::lsfitstate), NULL);
     if( p_struct==NULL )
         throw ap_error("ALGLIB: malloc error");
-    if( !alglib_impl::_lsfitstate_init_copy(p_struct, const_cast<alglib_impl::lsfitstate*>(rhs.p_struct), NULL, ae_false) )
-        throw ap_error("ALGLIB: malloc error");
+    alglib_impl::_lsfitstate_init_copy(p_struct, const_cast<alglib_impl::lsfitstate*>(rhs.p_struct), NULL);
 }
 
 _lsfitstate_owner& _lsfitstate_owner::operator=(const _lsfitstate_owner &rhs)
@@ -3872,8 +3626,7 @@ _lsfitstate_owner& _lsfitstate_owner::operator=(const _lsfitstate_owner &rhs)
     if( this==&rhs )
         return *this;
     alglib_impl::_lsfitstate_clear(p_struct);
-    if( !alglib_impl::_lsfitstate_init_copy(p_struct, const_cast<alglib_impl::lsfitstate*>(rhs.p_struct), NULL, ae_false) )
-        throw ap_error("ALGLIB: malloc error");
+    alglib_impl::_lsfitstate_init_copy(p_struct, const_cast<alglib_impl::lsfitstate*>(rhs.p_struct), NULL);
     return *this;
 }
 
@@ -3913,6 +3666,127 @@ lsfitstate::~lsfitstate()
 }
 
 /*************************************************************************
+This  subroutine fits piecewise linear curve to points with Ramer-Douglas-
+Peucker algorithm, which stops after generating specified number of linear
+sections.
+
+IMPORTANT:
+* it does NOT perform least-squares fitting; it  builds  curve,  but  this
+  curve does not minimize some least squares metric.  See  description  of
+  RDP algorithm (say, in Wikipedia) for more details on WHAT is performed.
+* this function does NOT work with parametric curves  (i.e.  curves  which
+  can be represented as {X(t),Y(t)}. It works with curves   which  can  be
+  represented as Y(X). Thus,  it  is  impossible  to  model  figures  like
+  circles  with  this  functions.
+  If  you  want  to  work  with  parametric   curves,   you   should   use
+  ParametricRDPFixed() function provided  by  "Parametric"  subpackage  of
+  "Interpolation" package.
+
+INPUT PARAMETERS:
+    X       -   array of X-coordinates:
+                * at least N elements
+                * can be unordered (points are automatically sorted)
+                * this function may accept non-distinct X (see below for
+                  more information on handling of such inputs)
+    Y       -   array of Y-coordinates:
+                * at least N elements
+    N       -   number of elements in X/Y
+    M       -   desired number of sections:
+                * at most M sections are generated by this function
+                * less than M sections can be generated if we have N<M
+                  (or some X are non-distinct).
+
+OUTPUT PARAMETERS:
+    X2      -   X-values of corner points for piecewise approximation,
+                has length NSections+1 or zero (for NSections=0).
+    Y2      -   Y-values of corner points,
+                has length NSections+1 or zero (for NSections=0).
+    NSections-  number of sections found by algorithm, NSections<=M,
+                NSections can be zero for degenerate datasets
+                (N<=1 or all X[] are non-distinct).
+
+NOTE: X2/Y2 are ordered arrays, i.e. (X2[0],Y2[0]) is  a  first  point  of
+      curve, (X2[NSection-1],Y2[NSection-1]) is the last point.
+
+  -- ALGLIB --
+     Copyright 02.10.2014 by Bochkanov Sergey
+*************************************************************************/
+void lstfitpiecewiselinearrdpfixed(const real_1d_array &x, const real_1d_array &y, const ae_int_t n, const ae_int_t m, real_1d_array &x2, real_1d_array &y2, ae_int_t &nsections)
+{
+    alglib_impl::ae_state _alglib_env_state;
+    alglib_impl::ae_state_init(&_alglib_env_state);
+    try
+    {
+        alglib_impl::lstfitpiecewiselinearrdpfixed(const_cast<alglib_impl::ae_vector*>(x.c_ptr()), const_cast<alglib_impl::ae_vector*>(y.c_ptr()), n, m, const_cast<alglib_impl::ae_vector*>(x2.c_ptr()), const_cast<alglib_impl::ae_vector*>(y2.c_ptr()), &nsections, &_alglib_env_state);
+        alglib_impl::ae_state_clear(&_alglib_env_state);
+        return;
+    }
+    catch(alglib_impl::ae_error_type)
+    {
+        throw ap_error(_alglib_env_state.error_msg);
+    }
+}
+
+/*************************************************************************
+This  subroutine fits piecewise linear curve to points with Ramer-Douglas-
+Peucker algorithm, which stops after achieving desired precision.
+
+IMPORTANT:
+* it performs non-least-squares fitting; it builds curve, but  this  curve
+  does not minimize some least squares  metric.  See  description  of  RDP
+  algorithm (say, in Wikipedia) for more details on WHAT is performed.
+* this function does NOT work with parametric curves  (i.e.  curves  which
+  can be represented as {X(t),Y(t)}. It works with curves   which  can  be
+  represented as Y(X). Thus, it is impossible to model figures like circles
+  with this functions.
+  If  you  want  to  work  with  parametric   curves,   you   should   use
+  ParametricRDPFixed() function provided  by  "Parametric"  subpackage  of
+  "Interpolation" package.
+
+INPUT PARAMETERS:
+    X       -   array of X-coordinates:
+                * at least N elements
+                * can be unordered (points are automatically sorted)
+                * this function may accept non-distinct X (see below for
+                  more information on handling of such inputs)
+    Y       -   array of Y-coordinates:
+                * at least N elements
+    N       -   number of elements in X/Y
+    Eps     -   positive number, desired precision.
+
+
+OUTPUT PARAMETERS:
+    X2      -   X-values of corner points for piecewise approximation,
+                has length NSections+1 or zero (for NSections=0).
+    Y2      -   Y-values of corner points,
+                has length NSections+1 or zero (for NSections=0).
+    NSections-  number of sections found by algorithm,
+                NSections can be zero for degenerate datasets
+                (N<=1 or all X[] are non-distinct).
+
+NOTE: X2/Y2 are ordered arrays, i.e. (X2[0],Y2[0]) is  a  first  point  of
+      curve, (X2[NSection-1],Y2[NSection-1]) is the last point.
+
+  -- ALGLIB --
+     Copyright 02.10.2014 by Bochkanov Sergey
+*************************************************************************/
+void lstfitpiecewiselinearrdp(const real_1d_array &x, const real_1d_array &y, const ae_int_t n, const double eps, real_1d_array &x2, real_1d_array &y2, ae_int_t &nsections)
+{
+    alglib_impl::ae_state _alglib_env_state;
+    alglib_impl::ae_state_init(&_alglib_env_state);
+    try
+    {
+        alglib_impl::lstfitpiecewiselinearrdp(const_cast<alglib_impl::ae_vector*>(x.c_ptr()), const_cast<alglib_impl::ae_vector*>(y.c_ptr()), n, eps, const_cast<alglib_impl::ae_vector*>(x2.c_ptr()), const_cast<alglib_impl::ae_vector*>(y2.c_ptr()), &nsections, &_alglib_env_state);
+        alglib_impl::ae_state_clear(&_alglib_env_state);
+        return;
+    }
+    catch(alglib_impl::ae_error_type)
+    {
+        throw ap_error(_alglib_env_state.error_msg);
+    }
+}
+
+/*************************************************************************
 Fitting by polynomials in barycentric form. This function provides  simple
 unterface for unconstrained unweighted fitting. See  PolynomialFitWC()  if
 you need constrained fitting.
@@ -3922,6 +3796,29 @@ computational scheme is O(N*M^2), mostly dominated by least squares solver
 
 SEE ALSO:
     PolynomialFitWC()
+
+COMMERCIAL EDITION OF ALGLIB:
+
+  ! Commercial version of ALGLIB includes two  important  improvements  of
+  ! this function, which can be used from C++ and C#:
+  ! * Intel MKL support (lightweight Intel MKL is shipped with ALGLIB)
+  ! * multithreading support
+  !
+  ! Intel MKL gives approximately constant  (with  respect  to  number  of
+  ! worker threads) acceleration factor which depends on CPU  being  used,
+  ! problem  size  and  "baseline"  ALGLIB  edition  which  is  used   for
+  ! comparison.
+  !
+  ! Speed-up provided by multithreading greatly depends  on  problem  size
+  ! - only large problems (number of coefficients is more than 500) can be
+  ! efficiently multithreaded.
+  !
+  ! Generally, commercial ALGLIB is several times faster than  open-source
+  ! generic C edition, and many times faster than open-source C# edition.
+  !
+  ! We recommend you to read 'Working with commercial version' section  of
+  ! ALGLIB Reference Manual in order to find out how to  use  performance-
+  ! related features provided by commercial edition of ALGLIB.
 
 INPUT PARAMETERS:
     X   -   points, array[0..N-1].
@@ -3967,9 +3864,22 @@ void polynomialfit(const real_1d_array &x, const real_1d_array &y, const ae_int_
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
+}
+
+
+void smp_polynomialfit(const real_1d_array &x, const real_1d_array &y, const ae_int_t n, const ae_int_t m, ae_int_t &info, barycentricinterpolant &p, polynomialfitreport &rep)
+{
+    alglib_impl::ae_state _alglib_env_state;
+    alglib_impl::ae_state_init(&_alglib_env_state);
+    try
     {
-        throw;
+        alglib_impl::_pexec_polynomialfit(const_cast<alglib_impl::ae_vector*>(x.c_ptr()), const_cast<alglib_impl::ae_vector*>(y.c_ptr()), n, m, &info, const_cast<alglib_impl::barycentricinterpolant*>(p.c_ptr()), const_cast<alglib_impl::polynomialfitreport*>(rep.c_ptr()), &_alglib_env_state);
+        alglib_impl::ae_state_clear(&_alglib_env_state);
+        return;
+    }
+    catch(alglib_impl::ae_error_type)
+    {
+        throw ap_error(_alglib_env_state.error_msg);
     }
 }
 
@@ -3983,6 +3893,29 @@ computational scheme is O(N*M^2), mostly dominated by least squares solver
 
 SEE ALSO:
     PolynomialFitWC()
+
+COMMERCIAL EDITION OF ALGLIB:
+
+  ! Commercial version of ALGLIB includes two  important  improvements  of
+  ! this function, which can be used from C++ and C#:
+  ! * Intel MKL support (lightweight Intel MKL is shipped with ALGLIB)
+  ! * multithreading support
+  !
+  ! Intel MKL gives approximately constant  (with  respect  to  number  of
+  ! worker threads) acceleration factor which depends on CPU  being  used,
+  ! problem  size  and  "baseline"  ALGLIB  edition  which  is  used   for
+  ! comparison.
+  !
+  ! Speed-up provided by multithreading greatly depends  on  problem  size
+  ! - only large problems (number of coefficients is more than 500) can be
+  ! efficiently multithreaded.
+  !
+  ! Generally, commercial ALGLIB is several times faster than  open-source
+  ! generic C edition, and many times faster than open-source C# edition.
+  !
+  ! We recommend you to read 'Working with commercial version' section  of
+  ! ALGLIB Reference Manual in order to find out how to  use  performance-
+  ! related features provided by commercial edition of ALGLIB.
 
 INPUT PARAMETERS:
     X   -   points, array[0..N-1].
@@ -4033,9 +3966,27 @@ void polynomialfit(const real_1d_array &x, const real_1d_array &y, const ae_int_
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
+}
+
+
+void smp_polynomialfit(const real_1d_array &x, const real_1d_array &y, const ae_int_t m, ae_int_t &info, barycentricinterpolant &p, polynomialfitreport &rep)
+{
+    alglib_impl::ae_state _alglib_env_state;    
+    ae_int_t n;
+    if( (x.length()!=y.length()))
+        throw ap_error("Error while calling 'polynomialfit': looks like one of arguments has wrong size");
+    n = x.length();
+    alglib_impl::ae_state_init(&_alglib_env_state);
+    try
     {
-        throw;
+        alglib_impl::_pexec_polynomialfit(const_cast<alglib_impl::ae_vector*>(x.c_ptr()), const_cast<alglib_impl::ae_vector*>(y.c_ptr()), n, m, &info, const_cast<alglib_impl::barycentricinterpolant*>(p.c_ptr()), const_cast<alglib_impl::polynomialfitreport*>(rep.c_ptr()), &_alglib_env_state);
+
+        alglib_impl::ae_state_clear(&_alglib_env_state);
+        return;
+    }
+    catch(alglib_impl::ae_error_type)
+    {
+        throw ap_error(_alglib_env_state.error_msg);
     }
 }
 
@@ -4051,6 +4002,29 @@ computational scheme is O(N*M^2), mostly dominated by least squares solver
 
 SEE ALSO:
     PolynomialFit()
+
+COMMERCIAL EDITION OF ALGLIB:
+
+  ! Commercial version of ALGLIB includes two  important  improvements  of
+  ! this function, which can be used from C++ and C#:
+  ! * Intel MKL support (lightweight Intel MKL is shipped with ALGLIB)
+  ! * multithreading support
+  !
+  ! Intel MKL gives approximately constant  (with  respect  to  number  of
+  ! worker threads) acceleration factor which depends on CPU  being  used,
+  ! problem  size  and  "baseline"  ALGLIB  edition  which  is  used   for
+  ! comparison.
+  !
+  ! Speed-up provided by multithreading greatly depends  on  problem  size
+  ! - only large problems (number of coefficients is more than 500) can be
+  ! efficiently multithreaded.
+  !
+  ! Generally, commercial ALGLIB is several times faster than  open-source
+  ! generic C edition, and many times faster than open-source C# edition.
+  !
+  ! We recommend you to read 'Working with commercial version' section  of
+  ! ALGLIB Reference Manual in order to find out how to  use  performance-
+  ! related features provided by commercial edition of ALGLIB.
 
 INPUT PARAMETERS:
     X   -   points, array[0..N-1].
@@ -4132,9 +4106,22 @@ void polynomialfitwc(const real_1d_array &x, const real_1d_array &y, const real_
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
+}
+
+
+void smp_polynomialfitwc(const real_1d_array &x, const real_1d_array &y, const real_1d_array &w, const ae_int_t n, const real_1d_array &xc, const real_1d_array &yc, const integer_1d_array &dc, const ae_int_t k, const ae_int_t m, ae_int_t &info, barycentricinterpolant &p, polynomialfitreport &rep)
+{
+    alglib_impl::ae_state _alglib_env_state;
+    alglib_impl::ae_state_init(&_alglib_env_state);
+    try
     {
-        throw;
+        alglib_impl::_pexec_polynomialfitwc(const_cast<alglib_impl::ae_vector*>(x.c_ptr()), const_cast<alglib_impl::ae_vector*>(y.c_ptr()), const_cast<alglib_impl::ae_vector*>(w.c_ptr()), n, const_cast<alglib_impl::ae_vector*>(xc.c_ptr()), const_cast<alglib_impl::ae_vector*>(yc.c_ptr()), const_cast<alglib_impl::ae_vector*>(dc.c_ptr()), k, m, &info, const_cast<alglib_impl::barycentricinterpolant*>(p.c_ptr()), const_cast<alglib_impl::polynomialfitreport*>(rep.c_ptr()), &_alglib_env_state);
+        alglib_impl::ae_state_clear(&_alglib_env_state);
+        return;
+    }
+    catch(alglib_impl::ae_error_type)
+    {
+        throw ap_error(_alglib_env_state.error_msg);
     }
 }
 
@@ -4150,6 +4137,29 @@ computational scheme is O(N*M^2), mostly dominated by least squares solver
 
 SEE ALSO:
     PolynomialFit()
+
+COMMERCIAL EDITION OF ALGLIB:
+
+  ! Commercial version of ALGLIB includes two  important  improvements  of
+  ! this function, which can be used from C++ and C#:
+  ! * Intel MKL support (lightweight Intel MKL is shipped with ALGLIB)
+  ! * multithreading support
+  !
+  ! Intel MKL gives approximately constant  (with  respect  to  number  of
+  ! worker threads) acceleration factor which depends on CPU  being  used,
+  ! problem  size  and  "baseline"  ALGLIB  edition  which  is  used   for
+  ! comparison.
+  !
+  ! Speed-up provided by multithreading greatly depends  on  problem  size
+  ! - only large problems (number of coefficients is more than 500) can be
+  ! efficiently multithreaded.
+  !
+  ! Generally, commercial ALGLIB is several times faster than  open-source
+  ! generic C edition, and many times faster than open-source C# edition.
+  !
+  ! We recommend you to read 'Working with commercial version' section  of
+  ! ALGLIB Reference Manual in order to find out how to  use  performance-
+  ! related features provided by commercial edition of ALGLIB.
 
 INPUT PARAMETERS:
     X   -   points, array[0..N-1].
@@ -4240,9 +4250,676 @@ void polynomialfitwc(const real_1d_array &x, const real_1d_array &y, const real_
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
+}
+
+
+void smp_polynomialfitwc(const real_1d_array &x, const real_1d_array &y, const real_1d_array &w, const real_1d_array &xc, const real_1d_array &yc, const integer_1d_array &dc, const ae_int_t m, ae_int_t &info, barycentricinterpolant &p, polynomialfitreport &rep)
+{
+    alglib_impl::ae_state _alglib_env_state;    
+    ae_int_t n;
+    ae_int_t k;
+    if( (x.length()!=y.length()) || (x.length()!=w.length()))
+        throw ap_error("Error while calling 'polynomialfitwc': looks like one of arguments has wrong size");
+    if( (xc.length()!=yc.length()) || (xc.length()!=dc.length()))
+        throw ap_error("Error while calling 'polynomialfitwc': looks like one of arguments has wrong size");
+    n = x.length();
+    k = xc.length();
+    alglib_impl::ae_state_init(&_alglib_env_state);
+    try
     {
-        throw;
+        alglib_impl::_pexec_polynomialfitwc(const_cast<alglib_impl::ae_vector*>(x.c_ptr()), const_cast<alglib_impl::ae_vector*>(y.c_ptr()), const_cast<alglib_impl::ae_vector*>(w.c_ptr()), n, const_cast<alglib_impl::ae_vector*>(xc.c_ptr()), const_cast<alglib_impl::ae_vector*>(yc.c_ptr()), const_cast<alglib_impl::ae_vector*>(dc.c_ptr()), k, m, &info, const_cast<alglib_impl::barycentricinterpolant*>(p.c_ptr()), const_cast<alglib_impl::polynomialfitreport*>(rep.c_ptr()), &_alglib_env_state);
+
+        alglib_impl::ae_state_clear(&_alglib_env_state);
+        return;
+    }
+    catch(alglib_impl::ae_error_type)
+    {
+        throw ap_error(_alglib_env_state.error_msg);
+    }
+}
+
+/*************************************************************************
+This function calculates value of four-parameter logistic (4PL)  model  at
+specified point X. 4PL model has following form:
+
+    F(x|A,B,C,D) = D+(A-D)/(1+Power(x/C,B))
+
+INPUT PARAMETERS:
+    X       -   current point, X>=0:
+                * zero X is correctly handled even for B<=0
+                * negative X results in exception.
+    A, B, C, D- parameters of 4PL model:
+                * A is unconstrained
+                * B is unconstrained; zero or negative values are handled
+                  correctly.
+                * C>0, non-positive value results in exception
+                * D is unconstrained
+
+RESULT:
+    model value at X
+
+NOTE: if B=0, denominator is assumed to be equal to 2.0 even  for  zero  X
+      (strictly speaking, 0^0 is undefined).
+
+NOTE: this function also throws exception  if  all  input  parameters  are
+      correct, but overflow was detected during calculations.
+
+NOTE: this function performs a lot of checks;  if  you  need  really  high
+      performance, consider evaluating model  yourself,  without  checking
+      for degenerate cases.
+
+
+  -- ALGLIB PROJECT --
+     Copyright 14.05.2014 by Bochkanov Sergey
+*************************************************************************/
+double logisticcalc4(const double x, const double a, const double b, const double c, const double d)
+{
+    alglib_impl::ae_state _alglib_env_state;
+    alglib_impl::ae_state_init(&_alglib_env_state);
+    try
+    {
+        double result = alglib_impl::logisticcalc4(x, a, b, c, d, &_alglib_env_state);
+        alglib_impl::ae_state_clear(&_alglib_env_state);
+        return *(reinterpret_cast<double*>(&result));
+    }
+    catch(alglib_impl::ae_error_type)
+    {
+        throw ap_error(_alglib_env_state.error_msg);
+    }
+}
+
+/*************************************************************************
+This function calculates value of five-parameter logistic (5PL)  model  at
+specified point X. 5PL model has following form:
+
+    F(x|A,B,C,D,G) = D+(A-D)/Power(1+Power(x/C,B),G)
+
+INPUT PARAMETERS:
+    X       -   current point, X>=0:
+                * zero X is correctly handled even for B<=0
+                * negative X results in exception.
+    A, B, C, D, G- parameters of 5PL model:
+                * A is unconstrained
+                * B is unconstrained; zero or negative values are handled
+                  correctly.
+                * C>0, non-positive value results in exception
+                * D is unconstrained
+                * G>0, non-positive value results in exception
+
+RESULT:
+    model value at X
+
+NOTE: if B=0, denominator is assumed to be equal to Power(2.0,G) even  for
+      zero X (strictly speaking, 0^0 is undefined).
+
+NOTE: this function also throws exception  if  all  input  parameters  are
+      correct, but overflow was detected during calculations.
+
+NOTE: this function performs a lot of checks;  if  you  need  really  high
+      performance, consider evaluating model  yourself,  without  checking
+      for degenerate cases.
+
+
+  -- ALGLIB PROJECT --
+     Copyright 14.05.2014 by Bochkanov Sergey
+*************************************************************************/
+double logisticcalc5(const double x, const double a, const double b, const double c, const double d, const double g)
+{
+    alglib_impl::ae_state _alglib_env_state;
+    alglib_impl::ae_state_init(&_alglib_env_state);
+    try
+    {
+        double result = alglib_impl::logisticcalc5(x, a, b, c, d, g, &_alglib_env_state);
+        alglib_impl::ae_state_clear(&_alglib_env_state);
+        return *(reinterpret_cast<double*>(&result));
+    }
+    catch(alglib_impl::ae_error_type)
+    {
+        throw ap_error(_alglib_env_state.error_msg);
+    }
+}
+
+/*************************************************************************
+This function fits four-parameter logistic (4PL) model  to  data  provided
+by user. 4PL model has following form:
+
+    F(x|A,B,C,D) = D+(A-D)/(1+Power(x/C,B))
+
+Here:
+    * A, D - unconstrained (see LogisticFit4EC() for constrained 4PL)
+    * B>=0
+    * C>0
+
+IMPORTANT: output of this function is constrained in  such  way that  B>0.
+           Because 4PL model is symmetric with respect to B, there  is  no
+           need to explore  B<0.  Constraining  B  makes  algorithm easier
+           to stabilize and debug.
+           Users  who  for  some  reason  prefer to work with negative B's
+           should transform output themselves (swap A and D, replace B  by
+           -B).
+
+4PL fitting is implemented as follows:
+* we perform small number of restarts from random locations which helps to
+  solve problem of bad local extrema. Locations are only partially  random
+  - we use input data to determine good  initial  guess,  but  we  include
+  controlled amount of randomness.
+* we perform Levenberg-Marquardt fitting with very  tight  constraints  on
+  parameters B and C - it allows us to find good  initial  guess  for  the
+  second stage without risk of running into "flat spot".
+* second  Levenberg-Marquardt  round  is   performed   without   excessive
+  constraints. Results from the previous round are used as initial guess.
+* after fitting is done, we compare results with best values found so far,
+  rewrite "best solution" if needed, and move to next random location.
+
+Overall algorithm is very stable and is not prone to  bad  local  extrema.
+Furthermore, it automatically scales when input data have  very  large  or
+very small range.
+
+INPUT PARAMETERS:
+    X       -   array[N], stores X-values.
+                MUST include only non-negative numbers  (but  may  include
+                zero values). Can be unsorted.
+    Y       -   array[N], values to fit.
+    N       -   number of points. If N is less than  length  of  X/Y, only
+                leading N elements are used.
+
+OUTPUT PARAMETERS:
+    A, B, C, D- parameters of 4PL model
+    Rep     -   fitting report. This structure has many fields,  but  ONLY
+                ONES LISTED BELOW ARE SET:
+                * Rep.IterationsCount - number of iterations performed
+                * Rep.RMSError - root-mean-square error
+                * Rep.AvgError - average absolute error
+                * Rep.AvgRelError - average relative error (calculated for
+                  non-zero Y-values)
+                * Rep.MaxError - maximum absolute error
+                * Rep.R2 - coefficient of determination,  R-squared.  This
+                  coefficient   is  calculated  as  R2=1-RSS/TSS  (in case
+                  of nonlinear  regression  there  are  multiple  ways  to
+                  define R2, each of them giving different results).
+
+NOTE: after  you  obtained  coefficients,  you  can  evaluate  model  with
+      LogisticCalc4() function.
+
+NOTE: if you need better control over fitting process than provided by this
+      function, you may use LogisticFit45X().
+
+NOTE: step is automatically scaled according to scale of parameters  being
+      fitted before we compare its length with EpsX. Thus,  this  function
+      can be used to fit data with very small or very large values without
+      changing EpsX.
+
+
+  -- ALGLIB PROJECT --
+     Copyright 14.02.2014 by Bochkanov Sergey
+*************************************************************************/
+void logisticfit4(const real_1d_array &x, const real_1d_array &y, const ae_int_t n, double &a, double &b, double &c, double &d, lsfitreport &rep)
+{
+    alglib_impl::ae_state _alglib_env_state;
+    alglib_impl::ae_state_init(&_alglib_env_state);
+    try
+    {
+        alglib_impl::logisticfit4(const_cast<alglib_impl::ae_vector*>(x.c_ptr()), const_cast<alglib_impl::ae_vector*>(y.c_ptr()), n, &a, &b, &c, &d, const_cast<alglib_impl::lsfitreport*>(rep.c_ptr()), &_alglib_env_state);
+        alglib_impl::ae_state_clear(&_alglib_env_state);
+        return;
+    }
+    catch(alglib_impl::ae_error_type)
+    {
+        throw ap_error(_alglib_env_state.error_msg);
+    }
+}
+
+/*************************************************************************
+This function fits four-parameter logistic (4PL) model  to  data  provided
+by user, with optional constraints on parameters A and D.  4PL  model  has
+following form:
+
+    F(x|A,B,C,D) = D+(A-D)/(1+Power(x/C,B))
+
+Here:
+    * A, D - with optional equality constraints
+    * B>=0
+    * C>0
+
+IMPORTANT: output of this function is constrained in  such  way that  B>0.
+           Because 4PL model is symmetric with respect to B, there  is  no
+           need to explore  B<0.  Constraining  B  makes  algorithm easier
+           to stabilize and debug.
+           Users  who  for  some  reason  prefer to work with negative B's
+           should transform output themselves (swap A and D, replace B  by
+           -B).
+
+4PL fitting is implemented as follows:
+* we perform small number of restarts from random locations which helps to
+  solve problem of bad local extrema. Locations are only partially  random
+  - we use input data to determine good  initial  guess,  but  we  include
+  controlled amount of randomness.
+* we perform Levenberg-Marquardt fitting with very  tight  constraints  on
+  parameters B and C - it allows us to find good  initial  guess  for  the
+  second stage without risk of running into "flat spot".
+* second  Levenberg-Marquardt  round  is   performed   without   excessive
+  constraints. Results from the previous round are used as initial guess.
+* after fitting is done, we compare results with best values found so far,
+  rewrite "best solution" if needed, and move to next random location.
+
+Overall algorithm is very stable and is not prone to  bad  local  extrema.
+Furthermore, it automatically scales when input data have  very  large  or
+very small range.
+
+INPUT PARAMETERS:
+    X       -   array[N], stores X-values.
+                MUST include only non-negative numbers  (but  may  include
+                zero values). Can be unsorted.
+    Y       -   array[N], values to fit.
+    N       -   number of points. If N is less than  length  of  X/Y, only
+                leading N elements are used.
+    CnstrLeft-  optional equality constraint for model value at the   left
+                boundary (at X=0). Specify NAN (Not-a-Number)  if  you  do
+                not need constraint on the model value at X=0 (in C++  you
+                can pass alglib::fp_nan as parameter, in  C#  it  will  be
+                Double.NaN).
+                See  below,  section  "EQUALITY  CONSTRAINTS"   for   more
+                information about constraints.
+    CnstrRight- optional equality constraint for model value at X=infinity.
+                Specify NAN (Not-a-Number) if you do not  need  constraint
+                on the model value (in C++  you can pass alglib::fp_nan as
+                parameter, in  C# it will  be Double.NaN).
+                See  below,  section  "EQUALITY  CONSTRAINTS"   for   more
+                information about constraints.
+
+OUTPUT PARAMETERS:
+    A, B, C, D- parameters of 4PL model
+    Rep     -   fitting report. This structure has many fields,  but  ONLY
+                ONES LISTED BELOW ARE SET:
+                * Rep.IterationsCount - number of iterations performed
+                * Rep.RMSError - root-mean-square error
+                * Rep.AvgError - average absolute error
+                * Rep.AvgRelError - average relative error (calculated for
+                  non-zero Y-values)
+                * Rep.MaxError - maximum absolute error
+                * Rep.R2 - coefficient of determination,  R-squared.  This
+                  coefficient   is  calculated  as  R2=1-RSS/TSS  (in case
+                  of nonlinear  regression  there  are  multiple  ways  to
+                  define R2, each of them giving different results).
+
+NOTE: after  you  obtained  coefficients,  you  can  evaluate  model  with
+      LogisticCalc4() function.
+
+NOTE: if you need better control over fitting process than provided by this
+      function, you may use LogisticFit45X().
+
+NOTE: step is automatically scaled according to scale of parameters  being
+      fitted before we compare its length with EpsX. Thus,  this  function
+      can be used to fit data with very small or very large values without
+      changing EpsX.
+
+EQUALITY CONSTRAINTS ON PARAMETERS
+
+4PL/5PL solver supports equality constraints on model values at  the  left
+boundary (X=0) and right  boundary  (X=infinity).  These  constraints  are
+completely optional and you can specify both of them, only  one  -  or  no
+constraints at all.
+
+Parameter  CnstrLeft  contains  left  constraint (or NAN for unconstrained
+fitting), and CnstrRight contains right  one.  For  4PL,  left  constraint
+ALWAYS corresponds to parameter A, and right one is ALWAYS  constraint  on
+D. That's because 4PL model is normalized in such way that B>=0.
+
+
+  -- ALGLIB PROJECT --
+     Copyright 14.02.2014 by Bochkanov Sergey
+*************************************************************************/
+void logisticfit4ec(const real_1d_array &x, const real_1d_array &y, const ae_int_t n, const double cnstrleft, const double cnstrright, double &a, double &b, double &c, double &d, lsfitreport &rep)
+{
+    alglib_impl::ae_state _alglib_env_state;
+    alglib_impl::ae_state_init(&_alglib_env_state);
+    try
+    {
+        alglib_impl::logisticfit4ec(const_cast<alglib_impl::ae_vector*>(x.c_ptr()), const_cast<alglib_impl::ae_vector*>(y.c_ptr()), n, cnstrleft, cnstrright, &a, &b, &c, &d, const_cast<alglib_impl::lsfitreport*>(rep.c_ptr()), &_alglib_env_state);
+        alglib_impl::ae_state_clear(&_alglib_env_state);
+        return;
+    }
+    catch(alglib_impl::ae_error_type)
+    {
+        throw ap_error(_alglib_env_state.error_msg);
+    }
+}
+
+/*************************************************************************
+This function fits five-parameter logistic (5PL) model  to  data  provided
+by user. 5PL model has following form:
+
+    F(x|A,B,C,D,G) = D+(A-D)/Power(1+Power(x/C,B),G)
+
+Here:
+    * A, D - unconstrained
+    * B - unconstrained
+    * C>0
+    * G>0
+
+IMPORTANT: unlike in  4PL  fitting,  output  of  this  function   is   NOT
+           constrained in  such  way that B is guaranteed to be  positive.
+           Furthermore,  unlike  4PL,  5PL  model  is  NOT  symmetric with
+           respect to B, so you can NOT transform model to equivalent one,
+           with B having desired sign (>0 or <0).
+
+5PL fitting is implemented as follows:
+* we perform small number of restarts from random locations which helps to
+  solve problem of bad local extrema. Locations are only partially  random
+  - we use input data to determine good  initial  guess,  but  we  include
+  controlled amount of randomness.
+* we perform Levenberg-Marquardt fitting with very  tight  constraints  on
+  parameters B and C - it allows us to find good  initial  guess  for  the
+  second stage without risk of running into "flat spot".  Parameter  G  is
+  fixed at G=1.
+* second  Levenberg-Marquardt  round  is   performed   without   excessive
+  constraints on B and C, but with G still equal to 1.  Results  from  the
+  previous round are used as initial guess.
+* third Levenberg-Marquardt round relaxes constraints on G  and  tries  two
+  different models - one with B>0 and one with B<0.
+* after fitting is done, we compare results with best values found so far,
+  rewrite "best solution" if needed, and move to next random location.
+
+Overall algorithm is very stable and is not prone to  bad  local  extrema.
+Furthermore, it automatically scales when input data have  very  large  or
+very small range.
+
+INPUT PARAMETERS:
+    X       -   array[N], stores X-values.
+                MUST include only non-negative numbers  (but  may  include
+                zero values). Can be unsorted.
+    Y       -   array[N], values to fit.
+    N       -   number of points. If N is less than  length  of  X/Y, only
+                leading N elements are used.
+
+OUTPUT PARAMETERS:
+    A,B,C,D,G-  parameters of 5PL model
+    Rep     -   fitting report. This structure has many fields,  but  ONLY
+                ONES LISTED BELOW ARE SET:
+                * Rep.IterationsCount - number of iterations performed
+                * Rep.RMSError - root-mean-square error
+                * Rep.AvgError - average absolute error
+                * Rep.AvgRelError - average relative error (calculated for
+                  non-zero Y-values)
+                * Rep.MaxError - maximum absolute error
+                * Rep.R2 - coefficient of determination,  R-squared.  This
+                  coefficient   is  calculated  as  R2=1-RSS/TSS  (in case
+                  of nonlinear  regression  there  are  multiple  ways  to
+                  define R2, each of them giving different results).
+
+NOTE: after  you  obtained  coefficients,  you  can  evaluate  model  with
+      LogisticCalc5() function.
+
+NOTE: if you need better control over fitting process than provided by this
+      function, you may use LogisticFit45X().
+
+NOTE: step is automatically scaled according to scale of parameters  being
+      fitted before we compare its length with EpsX. Thus,  this  function
+      can be used to fit data with very small or very large values without
+      changing EpsX.
+
+
+  -- ALGLIB PROJECT --
+     Copyright 14.02.2014 by Bochkanov Sergey
+*************************************************************************/
+void logisticfit5(const real_1d_array &x, const real_1d_array &y, const ae_int_t n, double &a, double &b, double &c, double &d, double &g, lsfitreport &rep)
+{
+    alglib_impl::ae_state _alglib_env_state;
+    alglib_impl::ae_state_init(&_alglib_env_state);
+    try
+    {
+        alglib_impl::logisticfit5(const_cast<alglib_impl::ae_vector*>(x.c_ptr()), const_cast<alglib_impl::ae_vector*>(y.c_ptr()), n, &a, &b, &c, &d, &g, const_cast<alglib_impl::lsfitreport*>(rep.c_ptr()), &_alglib_env_state);
+        alglib_impl::ae_state_clear(&_alglib_env_state);
+        return;
+    }
+    catch(alglib_impl::ae_error_type)
+    {
+        throw ap_error(_alglib_env_state.error_msg);
+    }
+}
+
+/*************************************************************************
+This function fits five-parameter logistic (5PL) model  to  data  provided
+by user, subject to optional equality constraints on parameters A  and  D.
+5PL model has following form:
+
+    F(x|A,B,C,D,G) = D+(A-D)/Power(1+Power(x/C,B),G)
+
+Here:
+    * A, D - with optional equality constraints
+    * B - unconstrained
+    * C>0
+    * G>0
+
+IMPORTANT: unlike in  4PL  fitting,  output  of  this  function   is   NOT
+           constrained in  such  way that B is guaranteed to be  positive.
+           Furthermore,  unlike  4PL,  5PL  model  is  NOT  symmetric with
+           respect to B, so you can NOT transform model to equivalent one,
+           with B having desired sign (>0 or <0).
+
+5PL fitting is implemented as follows:
+* we perform small number of restarts from random locations which helps to
+  solve problem of bad local extrema. Locations are only partially  random
+  - we use input data to determine good  initial  guess,  but  we  include
+  controlled amount of randomness.
+* we perform Levenberg-Marquardt fitting with very  tight  constraints  on
+  parameters B and C - it allows us to find good  initial  guess  for  the
+  second stage without risk of running into "flat spot".  Parameter  G  is
+  fixed at G=1.
+* second  Levenberg-Marquardt  round  is   performed   without   excessive
+  constraints on B and C, but with G still equal to 1.  Results  from  the
+  previous round are used as initial guess.
+* third Levenberg-Marquardt round relaxes constraints on G  and  tries  two
+  different models - one with B>0 and one with B<0.
+* after fitting is done, we compare results with best values found so far,
+  rewrite "best solution" if needed, and move to next random location.
+
+Overall algorithm is very stable and is not prone to  bad  local  extrema.
+Furthermore, it automatically scales when input data have  very  large  or
+very small range.
+
+INPUT PARAMETERS:
+    X       -   array[N], stores X-values.
+                MUST include only non-negative numbers  (but  may  include
+                zero values). Can be unsorted.
+    Y       -   array[N], values to fit.
+    N       -   number of points. If N is less than  length  of  X/Y, only
+                leading N elements are used.
+    CnstrLeft-  optional equality constraint for model value at the   left
+                boundary (at X=0). Specify NAN (Not-a-Number)  if  you  do
+                not need constraint on the model value at X=0 (in C++  you
+                can pass alglib::fp_nan as parameter, in  C#  it  will  be
+                Double.NaN).
+                See  below,  section  "EQUALITY  CONSTRAINTS"   for   more
+                information about constraints.
+    CnstrRight- optional equality constraint for model value at X=infinity.
+                Specify NAN (Not-a-Number) if you do not  need  constraint
+                on the model value (in C++  you can pass alglib::fp_nan as
+                parameter, in  C# it will  be Double.NaN).
+                See  below,  section  "EQUALITY  CONSTRAINTS"   for   more
+                information about constraints.
+
+OUTPUT PARAMETERS:
+    A,B,C,D,G-  parameters of 5PL model
+    Rep     -   fitting report. This structure has many fields,  but  ONLY
+                ONES LISTED BELOW ARE SET:
+                * Rep.IterationsCount - number of iterations performed
+                * Rep.RMSError - root-mean-square error
+                * Rep.AvgError - average absolute error
+                * Rep.AvgRelError - average relative error (calculated for
+                  non-zero Y-values)
+                * Rep.MaxError - maximum absolute error
+                * Rep.R2 - coefficient of determination,  R-squared.  This
+                  coefficient   is  calculated  as  R2=1-RSS/TSS  (in case
+                  of nonlinear  regression  there  are  multiple  ways  to
+                  define R2, each of them giving different results).
+
+NOTE: after  you  obtained  coefficients,  you  can  evaluate  model  with
+      LogisticCalc5() function.
+
+NOTE: if you need better control over fitting process than provided by this
+      function, you may use LogisticFit45X().
+
+NOTE: step is automatically scaled according to scale of parameters  being
+      fitted before we compare its length with EpsX. Thus,  this  function
+      can be used to fit data with very small or very large values without
+      changing EpsX.
+
+EQUALITY CONSTRAINTS ON PARAMETERS
+
+5PL solver supports equality constraints on model  values  at   the   left
+boundary (X=0) and right  boundary  (X=infinity).  These  constraints  are
+completely optional and you can specify both of them, only  one  -  or  no
+constraints at all.
+
+Parameter  CnstrLeft  contains  left  constraint (or NAN for unconstrained
+fitting), and CnstrRight contains right  one.
+
+Unlike 4PL one, 5PL model is NOT symmetric with respect to  change in sign
+of B. Thus, negative B's are possible, and left constraint  may  constrain
+parameter A (for positive B's)  -  or  parameter  D  (for  negative  B's).
+Similarly changes meaning of right constraint.
+
+You do not have to decide what parameter to  constrain  -  algorithm  will
+automatically determine correct parameters as fitting progresses. However,
+question highlighted above is important when you interpret fitting results.
+
+
+  -- ALGLIB PROJECT --
+     Copyright 14.02.2014 by Bochkanov Sergey
+*************************************************************************/
+void logisticfit5ec(const real_1d_array &x, const real_1d_array &y, const ae_int_t n, const double cnstrleft, const double cnstrright, double &a, double &b, double &c, double &d, double &g, lsfitreport &rep)
+{
+    alglib_impl::ae_state _alglib_env_state;
+    alglib_impl::ae_state_init(&_alglib_env_state);
+    try
+    {
+        alglib_impl::logisticfit5ec(const_cast<alglib_impl::ae_vector*>(x.c_ptr()), const_cast<alglib_impl::ae_vector*>(y.c_ptr()), n, cnstrleft, cnstrright, &a, &b, &c, &d, &g, const_cast<alglib_impl::lsfitreport*>(rep.c_ptr()), &_alglib_env_state);
+        alglib_impl::ae_state_clear(&_alglib_env_state);
+        return;
+    }
+    catch(alglib_impl::ae_error_type)
+    {
+        throw ap_error(_alglib_env_state.error_msg);
+    }
+}
+
+/*************************************************************************
+This is "expert" 4PL/5PL fitting function, which can be used if  you  need
+better control over fitting process than provided  by  LogisticFit4()  or
+LogisticFit5().
+
+This function fits model of the form
+
+    F(x|A,B,C,D)   = D+(A-D)/(1+Power(x/C,B))           (4PL model)
+
+or
+
+    F(x|A,B,C,D,G) = D+(A-D)/Power(1+Power(x/C,B),G)    (5PL model)
+
+Here:
+    * A, D - unconstrained
+    * B>=0 for 4PL, unconstrained for 5PL
+    * C>0
+    * G>0 (if present)
+
+INPUT PARAMETERS:
+    X       -   array[N], stores X-values.
+                MUST include only non-negative numbers  (but  may  include
+                zero values). Can be unsorted.
+    Y       -   array[N], values to fit.
+    N       -   number of points. If N is less than  length  of  X/Y, only
+                leading N elements are used.
+    CnstrLeft-  optional equality constraint for model value at the   left
+                boundary (at X=0). Specify NAN (Not-a-Number)  if  you  do
+                not need constraint on the model value at X=0 (in C++  you
+                can pass alglib::fp_nan as parameter, in  C#  it  will  be
+                Double.NaN).
+                See  below,  section  "EQUALITY  CONSTRAINTS"   for   more
+                information about constraints.
+    CnstrRight- optional equality constraint for model value at X=infinity.
+                Specify NAN (Not-a-Number) if you do not  need  constraint
+                on the model value (in C++  you can pass alglib::fp_nan as
+                parameter, in  C# it will  be Double.NaN).
+                See  below,  section  "EQUALITY  CONSTRAINTS"   for   more
+                information about constraints.
+    Is4PL   -   whether 4PL or 5PL models are fitted
+    LambdaV -   regularization coefficient, LambdaV>=0.
+                Set it to zero unless you know what you are doing.
+    EpsX    -   stopping condition (step size), EpsX>=0.
+                Zero value means that small step is automatically chosen.
+                See notes below for more information.
+    RsCnt   -   number of repeated restarts from  random  points.  4PL/5PL
+                models are prone to problem of bad local extrema. Utilizing
+                multiple random restarts allows  us  to  improve algorithm
+                convergence.
+                RsCnt>=0.
+                Zero value means that function automatically choose  small
+                amount of restarts (recommended).
+
+OUTPUT PARAMETERS:
+    A, B, C, D- parameters of 4PL model
+    G       -   parameter of 5PL model; for Is4PL=True, G=1 is returned.
+    Rep     -   fitting report. This structure has many fields,  but  ONLY
+                ONES LISTED BELOW ARE SET:
+                * Rep.IterationsCount - number of iterations performed
+                * Rep.RMSError - root-mean-square error
+                * Rep.AvgError - average absolute error
+                * Rep.AvgRelError - average relative error (calculated for
+                  non-zero Y-values)
+                * Rep.MaxError - maximum absolute error
+                * Rep.R2 - coefficient of determination,  R-squared.  This
+                  coefficient   is  calculated  as  R2=1-RSS/TSS  (in case
+                  of nonlinear  regression  there  are  multiple  ways  to
+                  define R2, each of them giving different results).
+
+NOTE: after  you  obtained  coefficients,  you  can  evaluate  model  with
+      LogisticCalc5() function.
+
+NOTE: step is automatically scaled according to scale of parameters  being
+      fitted before we compare its length with EpsX. Thus,  this  function
+      can be used to fit data with very small or very large values without
+      changing EpsX.
+
+EQUALITY CONSTRAINTS ON PARAMETERS
+
+4PL/5PL solver supports equality constraints on model values at  the  left
+boundary (X=0) and right  boundary  (X=infinity).  These  constraints  are
+completely optional and you can specify both of them, only  one  -  or  no
+constraints at all.
+
+Parameter  CnstrLeft  contains  left  constraint (or NAN for unconstrained
+fitting), and CnstrRight contains right  one.  For  4PL,  left  constraint
+ALWAYS corresponds to parameter A, and right one is ALWAYS  constraint  on
+D. That's because 4PL model is normalized in such way that B>=0.
+
+For 5PL model things are different. Unlike  4PL  one,  5PL  model  is  NOT
+symmetric with respect to  change  in  sign  of  B. Thus, negative B's are
+possible, and left constraint may constrain parameter A (for positive B's)
+- or parameter D (for negative B's). Similarly changes  meaning  of  right
+constraint.
+
+You do not have to decide what parameter to  constrain  -  algorithm  will
+automatically determine correct parameters as fitting progresses. However,
+question highlighted above is important when you interpret fitting results.
+
+
+  -- ALGLIB PROJECT --
+     Copyright 14.02.2014 by Bochkanov Sergey
+*************************************************************************/
+void logisticfit45x(const real_1d_array &x, const real_1d_array &y, const ae_int_t n, const double cnstrleft, const double cnstrright, const bool is4pl, const double lambdav, const double epsx, const ae_int_t rscnt, double &a, double &b, double &c, double &d, double &g, lsfitreport &rep)
+{
+    alglib_impl::ae_state _alglib_env_state;
+    alglib_impl::ae_state_init(&_alglib_env_state);
+    try
+    {
+        alglib_impl::logisticfit45x(const_cast<alglib_impl::ae_vector*>(x.c_ptr()), const_cast<alglib_impl::ae_vector*>(y.c_ptr()), n, cnstrleft, cnstrright, is4pl, lambdav, epsx, rscnt, &a, &b, &c, &d, &g, const_cast<alglib_impl::lsfitreport*>(rep.c_ptr()), &_alglib_env_state);
+        alglib_impl::ae_state_clear(&_alglib_env_state);
+        return;
+    }
+    catch(alglib_impl::ae_error_type)
+    {
+        throw ap_error(_alglib_env_state.error_msg);
     }
 }
 
@@ -4260,6 +4937,29 @@ solver  is  used.  Complexity  of  this  computational  scheme is O(N*M^2)
 SEE ALSO
 * BarycentricFitFloaterHormann(), "lightweight" fitting without invididual
   weights and constraints.
+
+COMMERCIAL EDITION OF ALGLIB:
+
+  ! Commercial version of ALGLIB includes two  important  improvements  of
+  ! this function, which can be used from C++ and C#:
+  ! * Intel MKL support (lightweight Intel MKL is shipped with ALGLIB)
+  ! * multithreading support
+  !
+  ! Intel MKL gives approximately constant  (with  respect  to  number  of
+  ! worker threads) acceleration factor which depends on CPU  being  used,
+  ! problem  size  and  "baseline"  ALGLIB  edition  which  is  used   for
+  ! comparison.
+  !
+  ! Speed-up provided by multithreading greatly depends  on  problem  size
+  ! - only large problems (number of coefficients is more than 500) can be
+  ! efficiently multithreaded.
+  !
+  ! Generally, commercial ALGLIB is several times faster than  open-source
+  ! generic C edition, and many times faster than open-source C# edition.
+  !
+  ! We recommend you to read 'Working with commercial version' section  of
+  ! ALGLIB Reference Manual in order to find out how to  use  performance-
+  ! related features provided by commercial edition of ALGLIB.
 
 INPUT PARAMETERS:
     X   -   points, array[0..N-1].
@@ -4344,9 +5044,22 @@ void barycentricfitfloaterhormannwc(const real_1d_array &x, const real_1d_array 
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
+}
+
+
+void smp_barycentricfitfloaterhormannwc(const real_1d_array &x, const real_1d_array &y, const real_1d_array &w, const ae_int_t n, const real_1d_array &xc, const real_1d_array &yc, const integer_1d_array &dc, const ae_int_t k, const ae_int_t m, ae_int_t &info, barycentricinterpolant &b, barycentricfitreport &rep)
+{
+    alglib_impl::ae_state _alglib_env_state;
+    alglib_impl::ae_state_init(&_alglib_env_state);
+    try
     {
-        throw;
+        alglib_impl::_pexec_barycentricfitfloaterhormannwc(const_cast<alglib_impl::ae_vector*>(x.c_ptr()), const_cast<alglib_impl::ae_vector*>(y.c_ptr()), const_cast<alglib_impl::ae_vector*>(w.c_ptr()), n, const_cast<alglib_impl::ae_vector*>(xc.c_ptr()), const_cast<alglib_impl::ae_vector*>(yc.c_ptr()), const_cast<alglib_impl::ae_vector*>(dc.c_ptr()), k, m, &info, const_cast<alglib_impl::barycentricinterpolant*>(b.c_ptr()), const_cast<alglib_impl::barycentricfitreport*>(rep.c_ptr()), &_alglib_env_state);
+        alglib_impl::ae_state_clear(&_alglib_env_state);
+        return;
+    }
+    catch(alglib_impl::ae_error_type)
+    {
+        throw ap_error(_alglib_env_state.error_msg);
     }
 }
 
@@ -4359,6 +5072,29 @@ functions. Different values of D are tried, optimal  D  (least  root  mean
 square error) is chosen.  Task  is  linear, so linear least squares solver
 is used. Complexity  of  this  computational  scheme is  O(N*M^2)  (mostly
 dominated by the least squares solver).
+
+COMMERCIAL EDITION OF ALGLIB:
+
+  ! Commercial version of ALGLIB includes two  important  improvements  of
+  ! this function, which can be used from C++ and C#:
+  ! * Intel MKL support (lightweight Intel MKL is shipped with ALGLIB)
+  ! * multithreading support
+  !
+  ! Intel MKL gives approximately constant  (with  respect  to  number  of
+  ! worker threads) acceleration factor which depends on CPU  being  used,
+  ! problem  size  and  "baseline"  ALGLIB  edition  which  is  used   for
+  ! comparison.
+  !
+  ! Speed-up provided by multithreading greatly depends  on  problem  size
+  ! - only large problems (number of coefficients is more than 500) can be
+  ! efficiently multithreaded.
+  !
+  ! Generally, commercial ALGLIB is several times faster than  open-source
+  ! generic C edition, and many times faster than open-source C# edition.
+  !
+  ! We recommend you to read 'Working with commercial version' section  of
+  ! ALGLIB Reference Manual in order to find out how to  use  performance-
+  ! related features provided by commercial edition of ALGLIB.
 
 INPUT PARAMETERS:
     X   -   points, array[0..N-1].
@@ -4399,43 +5135,105 @@ void barycentricfitfloaterhormann(const real_1d_array &x, const real_1d_array &y
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
+}
+
+
+void smp_barycentricfitfloaterhormann(const real_1d_array &x, const real_1d_array &y, const ae_int_t n, const ae_int_t m, ae_int_t &info, barycentricinterpolant &b, barycentricfitreport &rep)
+{
+    alglib_impl::ae_state _alglib_env_state;
+    alglib_impl::ae_state_init(&_alglib_env_state);
+    try
     {
-        throw;
+        alglib_impl::_pexec_barycentricfitfloaterhormann(const_cast<alglib_impl::ae_vector*>(x.c_ptr()), const_cast<alglib_impl::ae_vector*>(y.c_ptr()), n, m, &info, const_cast<alglib_impl::barycentricinterpolant*>(b.c_ptr()), const_cast<alglib_impl::barycentricfitreport*>(rep.c_ptr()), &_alglib_env_state);
+        alglib_impl::ae_state_clear(&_alglib_env_state);
+        return;
+    }
+    catch(alglib_impl::ae_error_type)
+    {
+        throw ap_error(_alglib_env_state.error_msg);
     }
 }
 
 /*************************************************************************
-Rational least squares fitting using  Floater-Hormann  rational  functions
-with optimal D chosen from [0,9].
+Fitting by penalized cubic spline.
 
-Equidistant  grid  with M node on [min(x),max(x)]  is  used to build basis
-functions. Different values of D are tried, optimal  D  (least  root  mean
-square error) is chosen.  Task  is  linear, so linear least squares solver
-is used. Complexity  of  this  computational  scheme is  O(N*M^2)  (mostly
-dominated by the least squares solver).
+Equidistant grid with M nodes on [min(x,xc),max(x,xc)] is  used  to  build
+basis functions. Basis functions are cubic splines with  natural  boundary
+conditions. Problem is regularized by  adding non-linearity penalty to the
+usual least squares penalty function:
+
+    S(x) = arg min { LS + P }, where
+    LS   = SUM { w[i]^2*(y[i] - S(x[i]))^2 } - least squares penalty
+    P    = C*10^rho*integral{ S''(x)^2*dx } - non-linearity penalty
+    rho  - tunable constant given by user
+    C    - automatically determined scale parameter,
+           makes penalty invariant with respect to scaling of X, Y, W.
+
+COMMERCIAL EDITION OF ALGLIB:
+
+  ! Commercial version of ALGLIB includes two  important  improvements  of
+  ! this function, which can be used from C++ and C#:
+  ! * Intel MKL support (lightweight Intel MKL is shipped with ALGLIB)
+  ! * multithreading support
+  !
+  ! Intel MKL gives approximately constant  (with  respect  to  number  of
+  ! worker threads) acceleration factor which depends on CPU  being  used,
+  ! problem  size  and  "baseline"  ALGLIB  edition  which  is  used   for
+  ! comparison.
+  !
+  ! Speed-up provided by multithreading greatly depends  on  problem  size
+  ! - only large problems (number of coefficients is more than 500) can be
+  ! efficiently multithreaded.
+  !
+  ! Generally, commercial ALGLIB is several times faster than  open-source
+  ! generic C edition, and many times faster than open-source C# edition.
+  !
+  ! We recommend you to read 'Working with commercial version' section  of
+  ! ALGLIB Reference Manual in order to find out how to  use  performance-
+  ! related features provided by commercial edition of ALGLIB.
 
 INPUT PARAMETERS:
     X   -   points, array[0..N-1].
     Y   -   function values, array[0..N-1].
-    N   -   number of points, N>0.
-    M   -   number of basis functions ( = number_of_nodes), M>=2.
+    N   -   number of points (optional):
+            * N>0
+            * if given, only first N elements of X/Y are processed
+            * if not given, automatically determined from X/Y sizes
+    M   -   number of basis functions ( = number_of_nodes), M>=4.
+    Rho -   regularization  constant  passed   by   user.   It   penalizes
+            nonlinearity in the regression spline. It  is  logarithmically
+            scaled,  i.e.  actual  value  of  regularization  constant  is
+            calculated as 10^Rho. It is automatically scaled so that:
+            * Rho=2.0 corresponds to moderate amount of nonlinearity
+            * generally, it should be somewhere in the [-8.0,+8.0]
+            If you do not want to penalize nonlineary,
+            pass small Rho. Values as low as -15 should work.
 
 OUTPUT PARAMETERS:
     Info-   same format as in LSFitLinearWC() subroutine.
             * Info>0    task is solved
             * Info<=0   an error occured:
-                        -4 means inconvergence of internal SVD
-                        -3 means inconsistent constraints
-    B   -   barycentric interpolant.
-    Rep -   report, same format as in LSFitLinearWC() subroutine.
-            Following fields are set:
-            * DBest         best value of the D parameter
+                        -4 means inconvergence of internal SVD or
+                           Cholesky decomposition; problem may be
+                           too ill-conditioned (very rare)
+    S   -   spline interpolant.
+    Rep -   Following fields are set:
             * RMSError      rms error on the (X,Y).
             * AvgError      average error on the (X,Y).
             * AvgRelError   average relative error on the non-zero Y
             * MaxError      maximum error
                             NON-WEIGHTED ERRORS ARE CALCULATED
+
+IMPORTANT:
+    this subroitine doesn't calculate task's condition number for K<>0.
+
+NOTE 1: additional nodes are added to the spline outside  of  the  fitting
+interval to force linearity when x<min(x,xc) or x>max(x,xc).  It  is  done
+for consistency - we penalize non-linearity  at [min(x,xc),max(x,xc)],  so
+it is natural to force linearity outside of this interval.
+
+NOTE 2: function automatically sorts points,  so  caller may pass unsorted
+array.
 
   -- ALGLIB PROJECT --
      Copyright 18.08.2009 by Bochkanov Sergey
@@ -4454,43 +5252,105 @@ void spline1dfitpenalized(const real_1d_array &x, const real_1d_array &y, const 
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
+}
+
+
+void smp_spline1dfitpenalized(const real_1d_array &x, const real_1d_array &y, const ae_int_t n, const ae_int_t m, const double rho, ae_int_t &info, spline1dinterpolant &s, spline1dfitreport &rep)
+{
+    alglib_impl::ae_state _alglib_env_state;
+    alglib_impl::ae_state_init(&_alglib_env_state);
+    try
     {
-        throw;
+        alglib_impl::_pexec_spline1dfitpenalized(const_cast<alglib_impl::ae_vector*>(x.c_ptr()), const_cast<alglib_impl::ae_vector*>(y.c_ptr()), n, m, rho, &info, const_cast<alglib_impl::spline1dinterpolant*>(s.c_ptr()), const_cast<alglib_impl::spline1dfitreport*>(rep.c_ptr()), &_alglib_env_state);
+        alglib_impl::ae_state_clear(&_alglib_env_state);
+        return;
+    }
+    catch(alglib_impl::ae_error_type)
+    {
+        throw ap_error(_alglib_env_state.error_msg);
     }
 }
 
 /*************************************************************************
-Rational least squares fitting using  Floater-Hormann  rational  functions
-with optimal D chosen from [0,9].
+Fitting by penalized cubic spline.
 
-Equidistant  grid  with M node on [min(x),max(x)]  is  used to build basis
-functions. Different values of D are tried, optimal  D  (least  root  mean
-square error) is chosen.  Task  is  linear, so linear least squares solver
-is used. Complexity  of  this  computational  scheme is  O(N*M^2)  (mostly
-dominated by the least squares solver).
+Equidistant grid with M nodes on [min(x,xc),max(x,xc)] is  used  to  build
+basis functions. Basis functions are cubic splines with  natural  boundary
+conditions. Problem is regularized by  adding non-linearity penalty to the
+usual least squares penalty function:
+
+    S(x) = arg min { LS + P }, where
+    LS   = SUM { w[i]^2*(y[i] - S(x[i]))^2 } - least squares penalty
+    P    = C*10^rho*integral{ S''(x)^2*dx } - non-linearity penalty
+    rho  - tunable constant given by user
+    C    - automatically determined scale parameter,
+           makes penalty invariant with respect to scaling of X, Y, W.
+
+COMMERCIAL EDITION OF ALGLIB:
+
+  ! Commercial version of ALGLIB includes two  important  improvements  of
+  ! this function, which can be used from C++ and C#:
+  ! * Intel MKL support (lightweight Intel MKL is shipped with ALGLIB)
+  ! * multithreading support
+  !
+  ! Intel MKL gives approximately constant  (with  respect  to  number  of
+  ! worker threads) acceleration factor which depends on CPU  being  used,
+  ! problem  size  and  "baseline"  ALGLIB  edition  which  is  used   for
+  ! comparison.
+  !
+  ! Speed-up provided by multithreading greatly depends  on  problem  size
+  ! - only large problems (number of coefficients is more than 500) can be
+  ! efficiently multithreaded.
+  !
+  ! Generally, commercial ALGLIB is several times faster than  open-source
+  ! generic C edition, and many times faster than open-source C# edition.
+  !
+  ! We recommend you to read 'Working with commercial version' section  of
+  ! ALGLIB Reference Manual in order to find out how to  use  performance-
+  ! related features provided by commercial edition of ALGLIB.
 
 INPUT PARAMETERS:
     X   -   points, array[0..N-1].
     Y   -   function values, array[0..N-1].
-    N   -   number of points, N>0.
-    M   -   number of basis functions ( = number_of_nodes), M>=2.
+    N   -   number of points (optional):
+            * N>0
+            * if given, only first N elements of X/Y are processed
+            * if not given, automatically determined from X/Y sizes
+    M   -   number of basis functions ( = number_of_nodes), M>=4.
+    Rho -   regularization  constant  passed   by   user.   It   penalizes
+            nonlinearity in the regression spline. It  is  logarithmically
+            scaled,  i.e.  actual  value  of  regularization  constant  is
+            calculated as 10^Rho. It is automatically scaled so that:
+            * Rho=2.0 corresponds to moderate amount of nonlinearity
+            * generally, it should be somewhere in the [-8.0,+8.0]
+            If you do not want to penalize nonlineary,
+            pass small Rho. Values as low as -15 should work.
 
 OUTPUT PARAMETERS:
     Info-   same format as in LSFitLinearWC() subroutine.
             * Info>0    task is solved
             * Info<=0   an error occured:
-                        -4 means inconvergence of internal SVD
-                        -3 means inconsistent constraints
-    B   -   barycentric interpolant.
-    Rep -   report, same format as in LSFitLinearWC() subroutine.
-            Following fields are set:
-            * DBest         best value of the D parameter
+                        -4 means inconvergence of internal SVD or
+                           Cholesky decomposition; problem may be
+                           too ill-conditioned (very rare)
+    S   -   spline interpolant.
+    Rep -   Following fields are set:
             * RMSError      rms error on the (X,Y).
             * AvgError      average error on the (X,Y).
             * AvgRelError   average relative error on the non-zero Y
             * MaxError      maximum error
                             NON-WEIGHTED ERRORS ARE CALCULATED
+
+IMPORTANT:
+    this subroitine doesn't calculate task's condition number for K<>0.
+
+NOTE 1: additional nodes are added to the spline outside  of  the  fitting
+interval to force linearity when x<min(x,xc) or x>max(x,xc).  It  is  done
+for consistency - we penalize non-linearity  at [min(x,xc),max(x,xc)],  so
+it is natural to force linearity outside of this interval.
+
+NOTE 2: function automatically sorts points,  so  caller may pass unsorted
+array.
 
   -- ALGLIB PROJECT --
      Copyright 18.08.2009 by Bochkanov Sergey
@@ -4514,9 +5374,27 @@ void spline1dfitpenalized(const real_1d_array &x, const real_1d_array &y, const 
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
+}
+
+
+void smp_spline1dfitpenalized(const real_1d_array &x, const real_1d_array &y, const ae_int_t m, const double rho, ae_int_t &info, spline1dinterpolant &s, spline1dfitreport &rep)
+{
+    alglib_impl::ae_state _alglib_env_state;    
+    ae_int_t n;
+    if( (x.length()!=y.length()))
+        throw ap_error("Error while calling 'spline1dfitpenalized': looks like one of arguments has wrong size");
+    n = x.length();
+    alglib_impl::ae_state_init(&_alglib_env_state);
+    try
     {
-        throw;
+        alglib_impl::_pexec_spline1dfitpenalized(const_cast<alglib_impl::ae_vector*>(x.c_ptr()), const_cast<alglib_impl::ae_vector*>(y.c_ptr()), n, m, rho, &info, const_cast<alglib_impl::spline1dinterpolant*>(s.c_ptr()), const_cast<alglib_impl::spline1dfitreport*>(rep.c_ptr()), &_alglib_env_state);
+
+        alglib_impl::ae_state_clear(&_alglib_env_state);
+        return;
+    }
+    catch(alglib_impl::ae_error_type)
+    {
+        throw ap_error(_alglib_env_state.error_msg);
     }
 }
 
@@ -4534,6 +5412,29 @@ usual least squares penalty function:
     rho  - tunable constant given by user
     C    - automatically determined scale parameter,
            makes penalty invariant with respect to scaling of X, Y, W.
+
+COMMERCIAL EDITION OF ALGLIB:
+
+  ! Commercial version of ALGLIB includes two  important  improvements  of
+  ! this function, which can be used from C++ and C#:
+  ! * Intel MKL support (lightweight Intel MKL is shipped with ALGLIB)
+  ! * multithreading support
+  !
+  ! Intel MKL gives approximately constant  (with  respect  to  number  of
+  ! worker threads) acceleration factor which depends on CPU  being  used,
+  ! problem  size  and  "baseline"  ALGLIB  edition  which  is  used   for
+  ! comparison.
+  !
+  ! Speed-up provided by multithreading greatly depends  on  problem  size
+  ! - only large problems (number of coefficients is more than 500) can be
+  ! efficiently multithreaded.
+  !
+  ! Generally, commercial ALGLIB is several times faster than  open-source
+  ! generic C edition, and many times faster than open-source C# edition.
+  !
+  ! We recommend you to read 'Working with commercial version' section  of
+  ! ALGLIB Reference Manual in order to find out how to  use  performance-
+  ! related features provided by commercial edition of ALGLIB.
 
 INPUT PARAMETERS:
     X   -   points, array[0..N-1].
@@ -4600,9 +5501,22 @@ void spline1dfitpenalizedw(const real_1d_array &x, const real_1d_array &y, const
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
+}
+
+
+void smp_spline1dfitpenalizedw(const real_1d_array &x, const real_1d_array &y, const real_1d_array &w, const ae_int_t n, const ae_int_t m, const double rho, ae_int_t &info, spline1dinterpolant &s, spline1dfitreport &rep)
+{
+    alglib_impl::ae_state _alglib_env_state;
+    alglib_impl::ae_state_init(&_alglib_env_state);
+    try
     {
-        throw;
+        alglib_impl::_pexec_spline1dfitpenalizedw(const_cast<alglib_impl::ae_vector*>(x.c_ptr()), const_cast<alglib_impl::ae_vector*>(y.c_ptr()), const_cast<alglib_impl::ae_vector*>(w.c_ptr()), n, m, rho, &info, const_cast<alglib_impl::spline1dinterpolant*>(s.c_ptr()), const_cast<alglib_impl::spline1dfitreport*>(rep.c_ptr()), &_alglib_env_state);
+        alglib_impl::ae_state_clear(&_alglib_env_state);
+        return;
+    }
+    catch(alglib_impl::ae_error_type)
+    {
+        throw ap_error(_alglib_env_state.error_msg);
     }
 }
 
@@ -4620,6 +5534,29 @@ usual least squares penalty function:
     rho  - tunable constant given by user
     C    - automatically determined scale parameter,
            makes penalty invariant with respect to scaling of X, Y, W.
+
+COMMERCIAL EDITION OF ALGLIB:
+
+  ! Commercial version of ALGLIB includes two  important  improvements  of
+  ! this function, which can be used from C++ and C#:
+  ! * Intel MKL support (lightweight Intel MKL is shipped with ALGLIB)
+  ! * multithreading support
+  !
+  ! Intel MKL gives approximately constant  (with  respect  to  number  of
+  ! worker threads) acceleration factor which depends on CPU  being  used,
+  ! problem  size  and  "baseline"  ALGLIB  edition  which  is  used   for
+  ! comparison.
+  !
+  ! Speed-up provided by multithreading greatly depends  on  problem  size
+  ! - only large problems (number of coefficients is more than 500) can be
+  ! efficiently multithreaded.
+  !
+  ! Generally, commercial ALGLIB is several times faster than  open-source
+  ! generic C edition, and many times faster than open-source C# edition.
+  !
+  ! We recommend you to read 'Working with commercial version' section  of
+  ! ALGLIB Reference Manual in order to find out how to  use  performance-
+  ! related features provided by commercial edition of ALGLIB.
 
 INPUT PARAMETERS:
     X   -   points, array[0..N-1].
@@ -4691,9 +5628,27 @@ void spline1dfitpenalizedw(const real_1d_array &x, const real_1d_array &y, const
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
+}
+
+
+void smp_spline1dfitpenalizedw(const real_1d_array &x, const real_1d_array &y, const real_1d_array &w, const ae_int_t m, const double rho, ae_int_t &info, spline1dinterpolant &s, spline1dfitreport &rep)
+{
+    alglib_impl::ae_state _alglib_env_state;    
+    ae_int_t n;
+    if( (x.length()!=y.length()) || (x.length()!=w.length()))
+        throw ap_error("Error while calling 'spline1dfitpenalizedw': looks like one of arguments has wrong size");
+    n = x.length();
+    alglib_impl::ae_state_init(&_alglib_env_state);
+    try
     {
-        throw;
+        alglib_impl::_pexec_spline1dfitpenalizedw(const_cast<alglib_impl::ae_vector*>(x.c_ptr()), const_cast<alglib_impl::ae_vector*>(y.c_ptr()), const_cast<alglib_impl::ae_vector*>(w.c_ptr()), n, m, rho, &info, const_cast<alglib_impl::spline1dinterpolant*>(s.c_ptr()), const_cast<alglib_impl::spline1dfitreport*>(rep.c_ptr()), &_alglib_env_state);
+
+        alglib_impl::ae_state_clear(&_alglib_env_state);
+        return;
+    }
+    catch(alglib_impl::ae_error_type)
+    {
+        throw ap_error(_alglib_env_state.error_msg);
     }
 }
 
@@ -4715,6 +5670,29 @@ SEE ALSO
                                 less smooth)
     Spline1DFitCubic()      -   "lightweight" fitting  by  cubic  splines,
                                 without invididual weights and constraints
+
+COMMERCIAL EDITION OF ALGLIB:
+
+  ! Commercial version of ALGLIB includes two  important  improvements  of
+  ! this function, which can be used from C++ and C#:
+  ! * Intel MKL support (lightweight Intel MKL is shipped with ALGLIB)
+  ! * multithreading support
+  !
+  ! Intel MKL gives approximately constant  (with  respect  to  number  of
+  ! worker threads) acceleration factor which depends on CPU  being  used,
+  ! problem  size  and  "baseline"  ALGLIB  edition  which  is  used   for
+  ! comparison.
+  !
+  ! Speed-up provided by multithreading greatly depends  on  problem  size
+  ! - only large problems (number of coefficients is more than 500) can be
+  ! efficiently multithreaded.
+  !
+  ! Generally, commercial ALGLIB is several times faster than  open-source
+  ! generic C edition, and many times faster than open-source C# edition.
+  !
+  ! We recommend you to read 'Working with commercial version' section  of
+  ! ALGLIB Reference Manual in order to find out how to  use  performance-
+  ! related features provided by commercial edition of ALGLIB.
 
 INPUT PARAMETERS:
     X   -   points, array[0..N-1].
@@ -4810,9 +5788,22 @@ void spline1dfitcubicwc(const real_1d_array &x, const real_1d_array &y, const re
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
+}
+
+
+void smp_spline1dfitcubicwc(const real_1d_array &x, const real_1d_array &y, const real_1d_array &w, const ae_int_t n, const real_1d_array &xc, const real_1d_array &yc, const integer_1d_array &dc, const ae_int_t k, const ae_int_t m, ae_int_t &info, spline1dinterpolant &s, spline1dfitreport &rep)
+{
+    alglib_impl::ae_state _alglib_env_state;
+    alglib_impl::ae_state_init(&_alglib_env_state);
+    try
     {
-        throw;
+        alglib_impl::_pexec_spline1dfitcubicwc(const_cast<alglib_impl::ae_vector*>(x.c_ptr()), const_cast<alglib_impl::ae_vector*>(y.c_ptr()), const_cast<alglib_impl::ae_vector*>(w.c_ptr()), n, const_cast<alglib_impl::ae_vector*>(xc.c_ptr()), const_cast<alglib_impl::ae_vector*>(yc.c_ptr()), const_cast<alglib_impl::ae_vector*>(dc.c_ptr()), k, m, &info, const_cast<alglib_impl::spline1dinterpolant*>(s.c_ptr()), const_cast<alglib_impl::spline1dfitreport*>(rep.c_ptr()), &_alglib_env_state);
+        alglib_impl::ae_state_clear(&_alglib_env_state);
+        return;
+    }
+    catch(alglib_impl::ae_error_type)
+    {
+        throw ap_error(_alglib_env_state.error_msg);
     }
 }
 
@@ -4834,6 +5825,29 @@ SEE ALSO
                                 less smooth)
     Spline1DFitCubic()      -   "lightweight" fitting  by  cubic  splines,
                                 without invididual weights and constraints
+
+COMMERCIAL EDITION OF ALGLIB:
+
+  ! Commercial version of ALGLIB includes two  important  improvements  of
+  ! this function, which can be used from C++ and C#:
+  ! * Intel MKL support (lightweight Intel MKL is shipped with ALGLIB)
+  ! * multithreading support
+  !
+  ! Intel MKL gives approximately constant  (with  respect  to  number  of
+  ! worker threads) acceleration factor which depends on CPU  being  used,
+  ! problem  size  and  "baseline"  ALGLIB  edition  which  is  used   for
+  ! comparison.
+  !
+  ! Speed-up provided by multithreading greatly depends  on  problem  size
+  ! - only large problems (number of coefficients is more than 500) can be
+  ! efficiently multithreaded.
+  !
+  ! Generally, commercial ALGLIB is several times faster than  open-source
+  ! generic C edition, and many times faster than open-source C# edition.
+  !
+  ! We recommend you to read 'Working with commercial version' section  of
+  ! ALGLIB Reference Manual in order to find out how to  use  performance-
+  ! related features provided by commercial edition of ALGLIB.
 
 INPUT PARAMETERS:
     X   -   points, array[0..N-1].
@@ -4938,9 +5952,31 @@ void spline1dfitcubicwc(const real_1d_array &x, const real_1d_array &y, const re
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
+}
+
+
+void smp_spline1dfitcubicwc(const real_1d_array &x, const real_1d_array &y, const real_1d_array &w, const real_1d_array &xc, const real_1d_array &yc, const integer_1d_array &dc, const ae_int_t m, ae_int_t &info, spline1dinterpolant &s, spline1dfitreport &rep)
+{
+    alglib_impl::ae_state _alglib_env_state;    
+    ae_int_t n;
+    ae_int_t k;
+    if( (x.length()!=y.length()) || (x.length()!=w.length()))
+        throw ap_error("Error while calling 'spline1dfitcubicwc': looks like one of arguments has wrong size");
+    if( (xc.length()!=yc.length()) || (xc.length()!=dc.length()))
+        throw ap_error("Error while calling 'spline1dfitcubicwc': looks like one of arguments has wrong size");
+    n = x.length();
+    k = xc.length();
+    alglib_impl::ae_state_init(&_alglib_env_state);
+    try
     {
-        throw;
+        alglib_impl::_pexec_spline1dfitcubicwc(const_cast<alglib_impl::ae_vector*>(x.c_ptr()), const_cast<alglib_impl::ae_vector*>(y.c_ptr()), const_cast<alglib_impl::ae_vector*>(w.c_ptr()), n, const_cast<alglib_impl::ae_vector*>(xc.c_ptr()), const_cast<alglib_impl::ae_vector*>(yc.c_ptr()), const_cast<alglib_impl::ae_vector*>(dc.c_ptr()), k, m, &info, const_cast<alglib_impl::spline1dinterpolant*>(s.c_ptr()), const_cast<alglib_impl::spline1dfitreport*>(rep.c_ptr()), &_alglib_env_state);
+
+        alglib_impl::ae_state_clear(&_alglib_env_state);
+        return;
+    }
+    catch(alglib_impl::ae_error_type)
+    {
+        throw ap_error(_alglib_env_state.error_msg);
     }
 }
 
@@ -4960,6 +5996,29 @@ SEE ALSO
                                 more smooth)
     Spline1DFitHermite()    -   "lightweight" Hermite fitting, without
                                 invididual weights and constraints
+
+COMMERCIAL EDITION OF ALGLIB:
+
+  ! Commercial version of ALGLIB includes two  important  improvements  of
+  ! this function, which can be used from C++ and C#:
+  ! * Intel MKL support (lightweight Intel MKL is shipped with ALGLIB)
+  ! * multithreading support
+  !
+  ! Intel MKL gives approximately constant  (with  respect  to  number  of
+  ! worker threads) acceleration factor which depends on CPU  being  used,
+  ! problem  size  and  "baseline"  ALGLIB  edition  which  is  used   for
+  ! comparison.
+  !
+  ! Speed-up provided by multithreading greatly depends  on  problem  size
+  ! - only large problems (number of coefficients is more than 500) can be
+  ! efficiently multithreaded.
+  !
+  ! Generally, commercial ALGLIB is several times faster than  open-source
+  ! generic C edition, and many times faster than open-source C# edition.
+  !
+  ! We recommend you to read 'Working with commercial version' section  of
+  ! ALGLIB Reference Manual in order to find out how to  use  performance-
+  ! related features provided by commercial edition of ALGLIB.
 
 INPUT PARAMETERS:
     X   -   points, array[0..N-1].
@@ -5062,9 +6121,22 @@ void spline1dfithermitewc(const real_1d_array &x, const real_1d_array &y, const 
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
+}
+
+
+void smp_spline1dfithermitewc(const real_1d_array &x, const real_1d_array &y, const real_1d_array &w, const ae_int_t n, const real_1d_array &xc, const real_1d_array &yc, const integer_1d_array &dc, const ae_int_t k, const ae_int_t m, ae_int_t &info, spline1dinterpolant &s, spline1dfitreport &rep)
+{
+    alglib_impl::ae_state _alglib_env_state;
+    alglib_impl::ae_state_init(&_alglib_env_state);
+    try
     {
-        throw;
+        alglib_impl::_pexec_spline1dfithermitewc(const_cast<alglib_impl::ae_vector*>(x.c_ptr()), const_cast<alglib_impl::ae_vector*>(y.c_ptr()), const_cast<alglib_impl::ae_vector*>(w.c_ptr()), n, const_cast<alglib_impl::ae_vector*>(xc.c_ptr()), const_cast<alglib_impl::ae_vector*>(yc.c_ptr()), const_cast<alglib_impl::ae_vector*>(dc.c_ptr()), k, m, &info, const_cast<alglib_impl::spline1dinterpolant*>(s.c_ptr()), const_cast<alglib_impl::spline1dfitreport*>(rep.c_ptr()), &_alglib_env_state);
+        alglib_impl::ae_state_clear(&_alglib_env_state);
+        return;
+    }
+    catch(alglib_impl::ae_error_type)
+    {
+        throw ap_error(_alglib_env_state.error_msg);
     }
 }
 
@@ -5084,6 +6156,29 @@ SEE ALSO
                                 more smooth)
     Spline1DFitHermite()    -   "lightweight" Hermite fitting, without
                                 invididual weights and constraints
+
+COMMERCIAL EDITION OF ALGLIB:
+
+  ! Commercial version of ALGLIB includes two  important  improvements  of
+  ! this function, which can be used from C++ and C#:
+  ! * Intel MKL support (lightweight Intel MKL is shipped with ALGLIB)
+  ! * multithreading support
+  !
+  ! Intel MKL gives approximately constant  (with  respect  to  number  of
+  ! worker threads) acceleration factor which depends on CPU  being  used,
+  ! problem  size  and  "baseline"  ALGLIB  edition  which  is  used   for
+  ! comparison.
+  !
+  ! Speed-up provided by multithreading greatly depends  on  problem  size
+  ! - only large problems (number of coefficients is more than 500) can be
+  ! efficiently multithreaded.
+  !
+  ! Generally, commercial ALGLIB is several times faster than  open-source
+  ! generic C edition, and many times faster than open-source C# edition.
+  !
+  ! We recommend you to read 'Working with commercial version' section  of
+  ! ALGLIB Reference Manual in order to find out how to  use  performance-
+  ! related features provided by commercial edition of ALGLIB.
 
 INPUT PARAMETERS:
     X   -   points, array[0..N-1].
@@ -5195,9 +6290,31 @@ void spline1dfithermitewc(const real_1d_array &x, const real_1d_array &y, const 
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
+}
+
+
+void smp_spline1dfithermitewc(const real_1d_array &x, const real_1d_array &y, const real_1d_array &w, const real_1d_array &xc, const real_1d_array &yc, const integer_1d_array &dc, const ae_int_t m, ae_int_t &info, spline1dinterpolant &s, spline1dfitreport &rep)
+{
+    alglib_impl::ae_state _alglib_env_state;    
+    ae_int_t n;
+    ae_int_t k;
+    if( (x.length()!=y.length()) || (x.length()!=w.length()))
+        throw ap_error("Error while calling 'spline1dfithermitewc': looks like one of arguments has wrong size");
+    if( (xc.length()!=yc.length()) || (xc.length()!=dc.length()))
+        throw ap_error("Error while calling 'spline1dfithermitewc': looks like one of arguments has wrong size");
+    n = x.length();
+    k = xc.length();
+    alglib_impl::ae_state_init(&_alglib_env_state);
+    try
     {
-        throw;
+        alglib_impl::_pexec_spline1dfithermitewc(const_cast<alglib_impl::ae_vector*>(x.c_ptr()), const_cast<alglib_impl::ae_vector*>(y.c_ptr()), const_cast<alglib_impl::ae_vector*>(w.c_ptr()), n, const_cast<alglib_impl::ae_vector*>(xc.c_ptr()), const_cast<alglib_impl::ae_vector*>(yc.c_ptr()), const_cast<alglib_impl::ae_vector*>(dc.c_ptr()), k, m, &info, const_cast<alglib_impl::spline1dinterpolant*>(s.c_ptr()), const_cast<alglib_impl::spline1dfitreport*>(rep.c_ptr()), &_alglib_env_state);
+
+        alglib_impl::ae_state_clear(&_alglib_env_state);
+        return;
+    }
+    catch(alglib_impl::ae_error_type)
+    {
+        throw ap_error(_alglib_env_state.error_msg);
     }
 }
 
@@ -5207,6 +6324,29 @@ Least squares fitting by cubic spline.
 This subroutine is "lightweight" alternative for more complex and feature-
 rich Spline1DFitCubicWC().  See  Spline1DFitCubicWC() for more information
 about subroutine parameters (we don't duplicate it here because of length)
+
+COMMERCIAL EDITION OF ALGLIB:
+
+  ! Commercial version of ALGLIB includes two  important  improvements  of
+  ! this function, which can be used from C++ and C#:
+  ! * Intel MKL support (lightweight Intel MKL is shipped with ALGLIB)
+  ! * multithreading support
+  !
+  ! Intel MKL gives approximately constant  (with  respect  to  number  of
+  ! worker threads) acceleration factor which depends on CPU  being  used,
+  ! problem  size  and  "baseline"  ALGLIB  edition  which  is  used   for
+  ! comparison.
+  !
+  ! Speed-up provided by multithreading greatly depends  on  problem  size
+  ! - only large problems (number of coefficients is more than 500) can be
+  ! efficiently multithreaded.
+  !
+  ! Generally, commercial ALGLIB is several times faster than  open-source
+  ! generic C edition, and many times faster than open-source C# edition.
+  !
+  ! We recommend you to read 'Working with commercial version' section  of
+  ! ALGLIB Reference Manual in order to find out how to  use  performance-
+  ! related features provided by commercial edition of ALGLIB.
 
   -- ALGLIB PROJECT --
      Copyright 18.08.2009 by Bochkanov Sergey
@@ -5225,9 +6365,22 @@ void spline1dfitcubic(const real_1d_array &x, const real_1d_array &y, const ae_i
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
+}
+
+
+void smp_spline1dfitcubic(const real_1d_array &x, const real_1d_array &y, const ae_int_t n, const ae_int_t m, ae_int_t &info, spline1dinterpolant &s, spline1dfitreport &rep)
+{
+    alglib_impl::ae_state _alglib_env_state;
+    alglib_impl::ae_state_init(&_alglib_env_state);
+    try
     {
-        throw;
+        alglib_impl::_pexec_spline1dfitcubic(const_cast<alglib_impl::ae_vector*>(x.c_ptr()), const_cast<alglib_impl::ae_vector*>(y.c_ptr()), n, m, &info, const_cast<alglib_impl::spline1dinterpolant*>(s.c_ptr()), const_cast<alglib_impl::spline1dfitreport*>(rep.c_ptr()), &_alglib_env_state);
+        alglib_impl::ae_state_clear(&_alglib_env_state);
+        return;
+    }
+    catch(alglib_impl::ae_error_type)
+    {
+        throw ap_error(_alglib_env_state.error_msg);
     }
 }
 
@@ -5237,6 +6390,29 @@ Least squares fitting by cubic spline.
 This subroutine is "lightweight" alternative for more complex and feature-
 rich Spline1DFitCubicWC().  See  Spline1DFitCubicWC() for more information
 about subroutine parameters (we don't duplicate it here because of length)
+
+COMMERCIAL EDITION OF ALGLIB:
+
+  ! Commercial version of ALGLIB includes two  important  improvements  of
+  ! this function, which can be used from C++ and C#:
+  ! * Intel MKL support (lightweight Intel MKL is shipped with ALGLIB)
+  ! * multithreading support
+  !
+  ! Intel MKL gives approximately constant  (with  respect  to  number  of
+  ! worker threads) acceleration factor which depends on CPU  being  used,
+  ! problem  size  and  "baseline"  ALGLIB  edition  which  is  used   for
+  ! comparison.
+  !
+  ! Speed-up provided by multithreading greatly depends  on  problem  size
+  ! - only large problems (number of coefficients is more than 500) can be
+  ! efficiently multithreaded.
+  !
+  ! Generally, commercial ALGLIB is several times faster than  open-source
+  ! generic C edition, and many times faster than open-source C# edition.
+  !
+  ! We recommend you to read 'Working with commercial version' section  of
+  ! ALGLIB Reference Manual in order to find out how to  use  performance-
+  ! related features provided by commercial edition of ALGLIB.
 
   -- ALGLIB PROJECT --
      Copyright 18.08.2009 by Bochkanov Sergey
@@ -5260,9 +6436,27 @@ void spline1dfitcubic(const real_1d_array &x, const real_1d_array &y, const ae_i
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
+}
+
+
+void smp_spline1dfitcubic(const real_1d_array &x, const real_1d_array &y, const ae_int_t m, ae_int_t &info, spline1dinterpolant &s, spline1dfitreport &rep)
+{
+    alglib_impl::ae_state _alglib_env_state;    
+    ae_int_t n;
+    if( (x.length()!=y.length()))
+        throw ap_error("Error while calling 'spline1dfitcubic': looks like one of arguments has wrong size");
+    n = x.length();
+    alglib_impl::ae_state_init(&_alglib_env_state);
+    try
     {
-        throw;
+        alglib_impl::_pexec_spline1dfitcubic(const_cast<alglib_impl::ae_vector*>(x.c_ptr()), const_cast<alglib_impl::ae_vector*>(y.c_ptr()), n, m, &info, const_cast<alglib_impl::spline1dinterpolant*>(s.c_ptr()), const_cast<alglib_impl::spline1dfitreport*>(rep.c_ptr()), &_alglib_env_state);
+
+        alglib_impl::ae_state_clear(&_alglib_env_state);
+        return;
+    }
+    catch(alglib_impl::ae_error_type)
+    {
+        throw ap_error(_alglib_env_state.error_msg);
     }
 }
 
@@ -5273,6 +6467,29 @@ This subroutine is "lightweight" alternative for more complex and feature-
 rich Spline1DFitHermiteWC().  See Spline1DFitHermiteWC()  description  for
 more information about subroutine parameters (we don't duplicate  it  here
 because of length).
+
+COMMERCIAL EDITION OF ALGLIB:
+
+  ! Commercial version of ALGLIB includes two  important  improvements  of
+  ! this function, which can be used from C++ and C#:
+  ! * Intel MKL support (lightweight Intel MKL is shipped with ALGLIB)
+  ! * multithreading support
+  !
+  ! Intel MKL gives approximately constant  (with  respect  to  number  of
+  ! worker threads) acceleration factor which depends on CPU  being  used,
+  ! problem  size  and  "baseline"  ALGLIB  edition  which  is  used   for
+  ! comparison.
+  !
+  ! Speed-up provided by multithreading greatly depends  on  problem  size
+  ! - only large problems (number of coefficients is more than 500) can be
+  ! efficiently multithreaded.
+  !
+  ! Generally, commercial ALGLIB is several times faster than  open-source
+  ! generic C edition, and many times faster than open-source C# edition.
+  !
+  ! We recommend you to read 'Working with commercial version' section  of
+  ! ALGLIB Reference Manual in order to find out how to  use  performance-
+  ! related features provided by commercial edition of ALGLIB.
 
   -- ALGLIB PROJECT --
      Copyright 18.08.2009 by Bochkanov Sergey
@@ -5291,9 +6508,22 @@ void spline1dfithermite(const real_1d_array &x, const real_1d_array &y, const ae
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
+}
+
+
+void smp_spline1dfithermite(const real_1d_array &x, const real_1d_array &y, const ae_int_t n, const ae_int_t m, ae_int_t &info, spline1dinterpolant &s, spline1dfitreport &rep)
+{
+    alglib_impl::ae_state _alglib_env_state;
+    alglib_impl::ae_state_init(&_alglib_env_state);
+    try
     {
-        throw;
+        alglib_impl::_pexec_spline1dfithermite(const_cast<alglib_impl::ae_vector*>(x.c_ptr()), const_cast<alglib_impl::ae_vector*>(y.c_ptr()), n, m, &info, const_cast<alglib_impl::spline1dinterpolant*>(s.c_ptr()), const_cast<alglib_impl::spline1dfitreport*>(rep.c_ptr()), &_alglib_env_state);
+        alglib_impl::ae_state_clear(&_alglib_env_state);
+        return;
+    }
+    catch(alglib_impl::ae_error_type)
+    {
+        throw ap_error(_alglib_env_state.error_msg);
     }
 }
 
@@ -5304,6 +6534,29 @@ This subroutine is "lightweight" alternative for more complex and feature-
 rich Spline1DFitHermiteWC().  See Spline1DFitHermiteWC()  description  for
 more information about subroutine parameters (we don't duplicate  it  here
 because of length).
+
+COMMERCIAL EDITION OF ALGLIB:
+
+  ! Commercial version of ALGLIB includes two  important  improvements  of
+  ! this function, which can be used from C++ and C#:
+  ! * Intel MKL support (lightweight Intel MKL is shipped with ALGLIB)
+  ! * multithreading support
+  !
+  ! Intel MKL gives approximately constant  (with  respect  to  number  of
+  ! worker threads) acceleration factor which depends on CPU  being  used,
+  ! problem  size  and  "baseline"  ALGLIB  edition  which  is  used   for
+  ! comparison.
+  !
+  ! Speed-up provided by multithreading greatly depends  on  problem  size
+  ! - only large problems (number of coefficients is more than 500) can be
+  ! efficiently multithreaded.
+  !
+  ! Generally, commercial ALGLIB is several times faster than  open-source
+  ! generic C edition, and many times faster than open-source C# edition.
+  !
+  ! We recommend you to read 'Working with commercial version' section  of
+  ! ALGLIB Reference Manual in order to find out how to  use  performance-
+  ! related features provided by commercial edition of ALGLIB.
 
   -- ALGLIB PROJECT --
      Copyright 18.08.2009 by Bochkanov Sergey
@@ -5327,9 +6580,27 @@ void spline1dfithermite(const real_1d_array &x, const real_1d_array &y, const ae
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
+}
+
+
+void smp_spline1dfithermite(const real_1d_array &x, const real_1d_array &y, const ae_int_t m, ae_int_t &info, spline1dinterpolant &s, spline1dfitreport &rep)
+{
+    alglib_impl::ae_state _alglib_env_state;    
+    ae_int_t n;
+    if( (x.length()!=y.length()))
+        throw ap_error("Error while calling 'spline1dfithermite': looks like one of arguments has wrong size");
+    n = x.length();
+    alglib_impl::ae_state_init(&_alglib_env_state);
+    try
     {
-        throw;
+        alglib_impl::_pexec_spline1dfithermite(const_cast<alglib_impl::ae_vector*>(x.c_ptr()), const_cast<alglib_impl::ae_vector*>(y.c_ptr()), n, m, &info, const_cast<alglib_impl::spline1dinterpolant*>(s.c_ptr()), const_cast<alglib_impl::spline1dfitreport*>(rep.c_ptr()), &_alglib_env_state);
+
+        alglib_impl::ae_state_clear(&_alglib_env_state);
+        return;
+    }
+    catch(alglib_impl::ae_error_type)
+    {
+        throw ap_error(_alglib_env_state.error_msg);
     }
 }
 
@@ -5339,6 +6610,35 @@ Weighted linear least squares fitting.
 QR decomposition is used to reduce task to MxM, then triangular solver  or
 SVD-based solver is used depending on condition number of the  system.  It
 allows to maximize speed and retain decent accuracy.
+
+IMPORTANT: if you want to perform  polynomial  fitting,  it  may  be  more
+           convenient to use PolynomialFit() function. This function gives
+           best  results  on  polynomial  problems  and  solves  numerical
+           stability  issues  which  arise  when   you   fit   high-degree
+           polynomials to your data.
+
+COMMERCIAL EDITION OF ALGLIB:
+
+  ! Commercial version of ALGLIB includes two  important  improvements  of
+  ! this function, which can be used from C++ and C#:
+  ! * Intel MKL support (lightweight Intel MKL is shipped with ALGLIB)
+  ! * multithreading support
+  !
+  ! Intel MKL gives approximately constant  (with  respect  to  number  of
+  ! worker threads) acceleration factor which depends on CPU  being  used,
+  ! problem  size  and  "baseline"  ALGLIB  edition  which  is  used   for
+  ! comparison.
+  !
+  ! Speed-up provided by multithreading greatly depends  on  problem  size
+  ! - only large problems (number of coefficients is more than 500) can be
+  ! efficiently multithreaded.
+  !
+  ! Generally, commercial ALGLIB is several times faster than  open-source
+  ! generic C edition, and many times faster than open-source C# edition.
+  !
+  ! We recommend you to read 'Working with commercial version' section  of
+  ! ALGLIB Reference Manual in order to find out how to  use  performance-
+  ! related features provided by commercial edition of ALGLIB.
 
 INPUT PARAMETERS:
     Y       -   array[0..N-1] Function values in  N  points.
@@ -5360,11 +6660,49 @@ OUTPUT PARAMETERS:
     C       -   decomposition coefficients, array[0..M-1]
     Rep     -   fitting report. Following fields are set:
                 * Rep.TaskRCond     reciprocal of condition number
+                * R2                non-adjusted coefficient of determination
+                                    (non-weighted)
                 * RMSError          rms error on the (X,Y).
                 * AvgError          average error on the (X,Y).
                 * AvgRelError       average relative error on the non-zero Y
                 * MaxError          maximum error
                                     NON-WEIGHTED ERRORS ARE CALCULATED
+
+ERRORS IN PARAMETERS
+
+This  solver  also  calculates different kinds of errors in parameters and
+fills corresponding fields of report:
+* Rep.CovPar        covariance matrix for parameters, array[K,K].
+* Rep.ErrPar        errors in parameters, array[K],
+                    errpar = sqrt(diag(CovPar))
+* Rep.ErrCurve      vector of fit errors - standard deviations of empirical
+                    best-fit curve from "ideal" best-fit curve built  with
+                    infinite number of samples, array[N].
+                    errcurve = sqrt(diag(F*CovPar*F')),
+                    where F is functions matrix.
+* Rep.Noise         vector of per-point estimates of noise, array[N]
+
+NOTE:       noise in the data is estimated as follows:
+            * for fitting without user-supplied  weights  all  points  are
+              assumed to have same level of noise, which is estimated from
+              the data
+            * for fitting with user-supplied weights we assume that  noise
+              level in I-th point is inversely proportional to Ith weight.
+              Coefficient of proportionality is estimated from the data.
+
+NOTE:       we apply small amount of regularization when we invert squared
+            Jacobian and calculate covariance matrix. It  guarantees  that
+            algorithm won't divide by zero  during  inversion,  but  skews
+            error estimates a bit (fractional error is about 10^-9).
+
+            However, we believe that this difference is insignificant  for
+            all practical purposes except for the situation when you  want
+            to compare ALGLIB results with "reference"  implementation  up
+            to the last significant digit.
+
+NOTE:       covariance matrix is estimated using  correction  for  degrees
+            of freedom (covariances are divided by N-M instead of dividing
+            by N).
 
   -- ALGLIB --
      Copyright 17.08.2009 by Bochkanov Sergey
@@ -5383,9 +6721,22 @@ void lsfitlinearw(const real_1d_array &y, const real_1d_array &w, const real_2d_
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
+}
+
+
+void smp_lsfitlinearw(const real_1d_array &y, const real_1d_array &w, const real_2d_array &fmatrix, const ae_int_t n, const ae_int_t m, ae_int_t &info, real_1d_array &c, lsfitreport &rep)
+{
+    alglib_impl::ae_state _alglib_env_state;
+    alglib_impl::ae_state_init(&_alglib_env_state);
+    try
     {
-        throw;
+        alglib_impl::_pexec_lsfitlinearw(const_cast<alglib_impl::ae_vector*>(y.c_ptr()), const_cast<alglib_impl::ae_vector*>(w.c_ptr()), const_cast<alglib_impl::ae_matrix*>(fmatrix.c_ptr()), n, m, &info, const_cast<alglib_impl::ae_vector*>(c.c_ptr()), const_cast<alglib_impl::lsfitreport*>(rep.c_ptr()), &_alglib_env_state);
+        alglib_impl::ae_state_clear(&_alglib_env_state);
+        return;
+    }
+    catch(alglib_impl::ae_error_type)
+    {
+        throw ap_error(_alglib_env_state.error_msg);
     }
 }
 
@@ -5395,6 +6746,35 @@ Weighted linear least squares fitting.
 QR decomposition is used to reduce task to MxM, then triangular solver  or
 SVD-based solver is used depending on condition number of the  system.  It
 allows to maximize speed and retain decent accuracy.
+
+IMPORTANT: if you want to perform  polynomial  fitting,  it  may  be  more
+           convenient to use PolynomialFit() function. This function gives
+           best  results  on  polynomial  problems  and  solves  numerical
+           stability  issues  which  arise  when   you   fit   high-degree
+           polynomials to your data.
+
+COMMERCIAL EDITION OF ALGLIB:
+
+  ! Commercial version of ALGLIB includes two  important  improvements  of
+  ! this function, which can be used from C++ and C#:
+  ! * Intel MKL support (lightweight Intel MKL is shipped with ALGLIB)
+  ! * multithreading support
+  !
+  ! Intel MKL gives approximately constant  (with  respect  to  number  of
+  ! worker threads) acceleration factor which depends on CPU  being  used,
+  ! problem  size  and  "baseline"  ALGLIB  edition  which  is  used   for
+  ! comparison.
+  !
+  ! Speed-up provided by multithreading greatly depends  on  problem  size
+  ! - only large problems (number of coefficients is more than 500) can be
+  ! efficiently multithreaded.
+  !
+  ! Generally, commercial ALGLIB is several times faster than  open-source
+  ! generic C edition, and many times faster than open-source C# edition.
+  !
+  ! We recommend you to read 'Working with commercial version' section  of
+  ! ALGLIB Reference Manual in order to find out how to  use  performance-
+  ! related features provided by commercial edition of ALGLIB.
 
 INPUT PARAMETERS:
     Y       -   array[0..N-1] Function values in  N  points.
@@ -5416,11 +6796,49 @@ OUTPUT PARAMETERS:
     C       -   decomposition coefficients, array[0..M-1]
     Rep     -   fitting report. Following fields are set:
                 * Rep.TaskRCond     reciprocal of condition number
+                * R2                non-adjusted coefficient of determination
+                                    (non-weighted)
                 * RMSError          rms error on the (X,Y).
                 * AvgError          average error on the (X,Y).
                 * AvgRelError       average relative error on the non-zero Y
                 * MaxError          maximum error
                                     NON-WEIGHTED ERRORS ARE CALCULATED
+
+ERRORS IN PARAMETERS
+
+This  solver  also  calculates different kinds of errors in parameters and
+fills corresponding fields of report:
+* Rep.CovPar        covariance matrix for parameters, array[K,K].
+* Rep.ErrPar        errors in parameters, array[K],
+                    errpar = sqrt(diag(CovPar))
+* Rep.ErrCurve      vector of fit errors - standard deviations of empirical
+                    best-fit curve from "ideal" best-fit curve built  with
+                    infinite number of samples, array[N].
+                    errcurve = sqrt(diag(F*CovPar*F')),
+                    where F is functions matrix.
+* Rep.Noise         vector of per-point estimates of noise, array[N]
+
+NOTE:       noise in the data is estimated as follows:
+            * for fitting without user-supplied  weights  all  points  are
+              assumed to have same level of noise, which is estimated from
+              the data
+            * for fitting with user-supplied weights we assume that  noise
+              level in I-th point is inversely proportional to Ith weight.
+              Coefficient of proportionality is estimated from the data.
+
+NOTE:       we apply small amount of regularization when we invert squared
+            Jacobian and calculate covariance matrix. It  guarantees  that
+            algorithm won't divide by zero  during  inversion,  but  skews
+            error estimates a bit (fractional error is about 10^-9).
+
+            However, we believe that this difference is insignificant  for
+            all practical purposes except for the situation when you  want
+            to compare ALGLIB results with "reference"  implementation  up
+            to the last significant digit.
+
+NOTE:       covariance matrix is estimated using  correction  for  degrees
+            of freedom (covariances are divided by N-M instead of dividing
+            by N).
 
   -- ALGLIB --
      Copyright 17.08.2009 by Bochkanov Sergey
@@ -5446,9 +6864,29 @@ void lsfitlinearw(const real_1d_array &y, const real_1d_array &w, const real_2d_
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
+}
+
+
+void smp_lsfitlinearw(const real_1d_array &y, const real_1d_array &w, const real_2d_array &fmatrix, ae_int_t &info, real_1d_array &c, lsfitreport &rep)
+{
+    alglib_impl::ae_state _alglib_env_state;    
+    ae_int_t n;
+    ae_int_t m;
+    if( (y.length()!=w.length()) || (y.length()!=fmatrix.rows()))
+        throw ap_error("Error while calling 'lsfitlinearw': looks like one of arguments has wrong size");
+    n = y.length();
+    m = fmatrix.cols();
+    alglib_impl::ae_state_init(&_alglib_env_state);
+    try
     {
-        throw;
+        alglib_impl::_pexec_lsfitlinearw(const_cast<alglib_impl::ae_vector*>(y.c_ptr()), const_cast<alglib_impl::ae_vector*>(w.c_ptr()), const_cast<alglib_impl::ae_matrix*>(fmatrix.c_ptr()), n, m, &info, const_cast<alglib_impl::ae_vector*>(c.c_ptr()), const_cast<alglib_impl::lsfitreport*>(rep.c_ptr()), &_alglib_env_state);
+
+        alglib_impl::ae_state_clear(&_alglib_env_state);
+        return;
+    }
+    catch(alglib_impl::ae_error_type)
+    {
+        throw ap_error(_alglib_env_state.error_msg);
     }
 }
 
@@ -5459,6 +6897,35 @@ This  is  variation  of LSFitLinearW(), which searchs for min|A*x=b| given
 that  K  additional  constaints  C*x=bc are satisfied. It reduces original
 task to modified one: min|B*y-d| WITHOUT constraints,  then LSFitLinearW()
 is called.
+
+IMPORTANT: if you want to perform  polynomial  fitting,  it  may  be  more
+           convenient to use PolynomialFit() function. This function gives
+           best  results  on  polynomial  problems  and  solves  numerical
+           stability  issues  which  arise  when   you   fit   high-degree
+           polynomials to your data.
+
+COMMERCIAL EDITION OF ALGLIB:
+
+  ! Commercial version of ALGLIB includes two  important  improvements  of
+  ! this function, which can be used from C++ and C#:
+  ! * Intel MKL support (lightweight Intel MKL is shipped with ALGLIB)
+  ! * multithreading support
+  !
+  ! Intel MKL gives approximately constant  (with  respect  to  number  of
+  ! worker threads) acceleration factor which depends on CPU  being  used,
+  ! problem  size  and  "baseline"  ALGLIB  edition  which  is  used   for
+  ! comparison.
+  !
+  ! Speed-up provided by multithreading greatly depends  on  problem  size
+  ! - only large problems (number of coefficients is more than 500) can be
+  ! efficiently multithreaded.
+  !
+  ! Generally, commercial ALGLIB is several times faster than  open-source
+  ! generic C edition, and many times faster than open-source C# edition.
+  !
+  ! We recommend you to read 'Working with commercial version' section  of
+  ! ALGLIB Reference Manual in order to find out how to  use  performance-
+  ! related features provided by commercial edition of ALGLIB.
 
 INPUT PARAMETERS:
     Y       -   array[0..N-1] Function values in  N  points.
@@ -5487,6 +6954,8 @@ OUTPUT PARAMETERS:
                 *  1    task is solved
     C       -   decomposition coefficients, array[0..M-1]
     Rep     -   fitting report. Following fields are set:
+                * R2                non-adjusted coefficient of determination
+                                    (non-weighted)
                 * RMSError          rms error on the (X,Y).
                 * AvgError          average error on the (X,Y).
                 * AvgRelError       average relative error on the non-zero Y
@@ -5495,6 +6964,47 @@ OUTPUT PARAMETERS:
 
 IMPORTANT:
     this subroitine doesn't calculate task's condition number for K<>0.
+
+ERRORS IN PARAMETERS
+
+This  solver  also  calculates different kinds of errors in parameters and
+fills corresponding fields of report:
+* Rep.CovPar        covariance matrix for parameters, array[K,K].
+* Rep.ErrPar        errors in parameters, array[K],
+                    errpar = sqrt(diag(CovPar))
+* Rep.ErrCurve      vector of fit errors - standard deviations of empirical
+                    best-fit curve from "ideal" best-fit curve built  with
+                    infinite number of samples, array[N].
+                    errcurve = sqrt(diag(F*CovPar*F')),
+                    where F is functions matrix.
+* Rep.Noise         vector of per-point estimates of noise, array[N]
+
+IMPORTANT:  errors  in  parameters  are  calculated  without  taking  into
+            account boundary/linear constraints! Presence  of  constraints
+            changes distribution of errors, but there is no  easy  way  to
+            account for constraints when you calculate covariance matrix.
+
+NOTE:       noise in the data is estimated as follows:
+            * for fitting without user-supplied  weights  all  points  are
+              assumed to have same level of noise, which is estimated from
+              the data
+            * for fitting with user-supplied weights we assume that  noise
+              level in I-th point is inversely proportional to Ith weight.
+              Coefficient of proportionality is estimated from the data.
+
+NOTE:       we apply small amount of regularization when we invert squared
+            Jacobian and calculate covariance matrix. It  guarantees  that
+            algorithm won't divide by zero  during  inversion,  but  skews
+            error estimates a bit (fractional error is about 10^-9).
+
+            However, we believe that this difference is insignificant  for
+            all practical purposes except for the situation when you  want
+            to compare ALGLIB results with "reference"  implementation  up
+            to the last significant digit.
+
+NOTE:       covariance matrix is estimated using  correction  for  degrees
+            of freedom (covariances are divided by N-M instead of dividing
+            by N).
 
   -- ALGLIB --
      Copyright 07.09.2009 by Bochkanov Sergey
@@ -5513,9 +7023,22 @@ void lsfitlinearwc(const real_1d_array &y, const real_1d_array &w, const real_2d
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
+}
+
+
+void smp_lsfitlinearwc(const real_1d_array &y, const real_1d_array &w, const real_2d_array &fmatrix, const real_2d_array &cmatrix, const ae_int_t n, const ae_int_t m, const ae_int_t k, ae_int_t &info, real_1d_array &c, lsfitreport &rep)
+{
+    alglib_impl::ae_state _alglib_env_state;
+    alglib_impl::ae_state_init(&_alglib_env_state);
+    try
     {
-        throw;
+        alglib_impl::_pexec_lsfitlinearwc(const_cast<alglib_impl::ae_vector*>(y.c_ptr()), const_cast<alglib_impl::ae_vector*>(w.c_ptr()), const_cast<alglib_impl::ae_matrix*>(fmatrix.c_ptr()), const_cast<alglib_impl::ae_matrix*>(cmatrix.c_ptr()), n, m, k, &info, const_cast<alglib_impl::ae_vector*>(c.c_ptr()), const_cast<alglib_impl::lsfitreport*>(rep.c_ptr()), &_alglib_env_state);
+        alglib_impl::ae_state_clear(&_alglib_env_state);
+        return;
+    }
+    catch(alglib_impl::ae_error_type)
+    {
+        throw ap_error(_alglib_env_state.error_msg);
     }
 }
 
@@ -5526,6 +7049,35 @@ This  is  variation  of LSFitLinearW(), which searchs for min|A*x=b| given
 that  K  additional  constaints  C*x=bc are satisfied. It reduces original
 task to modified one: min|B*y-d| WITHOUT constraints,  then LSFitLinearW()
 is called.
+
+IMPORTANT: if you want to perform  polynomial  fitting,  it  may  be  more
+           convenient to use PolynomialFit() function. This function gives
+           best  results  on  polynomial  problems  and  solves  numerical
+           stability  issues  which  arise  when   you   fit   high-degree
+           polynomials to your data.
+
+COMMERCIAL EDITION OF ALGLIB:
+
+  ! Commercial version of ALGLIB includes two  important  improvements  of
+  ! this function, which can be used from C++ and C#:
+  ! * Intel MKL support (lightweight Intel MKL is shipped with ALGLIB)
+  ! * multithreading support
+  !
+  ! Intel MKL gives approximately constant  (with  respect  to  number  of
+  ! worker threads) acceleration factor which depends on CPU  being  used,
+  ! problem  size  and  "baseline"  ALGLIB  edition  which  is  used   for
+  ! comparison.
+  !
+  ! Speed-up provided by multithreading greatly depends  on  problem  size
+  ! - only large problems (number of coefficients is more than 500) can be
+  ! efficiently multithreaded.
+  !
+  ! Generally, commercial ALGLIB is several times faster than  open-source
+  ! generic C edition, and many times faster than open-source C# edition.
+  !
+  ! We recommend you to read 'Working with commercial version' section  of
+  ! ALGLIB Reference Manual in order to find out how to  use  performance-
+  ! related features provided by commercial edition of ALGLIB.
 
 INPUT PARAMETERS:
     Y       -   array[0..N-1] Function values in  N  points.
@@ -5554,6 +7106,8 @@ OUTPUT PARAMETERS:
                 *  1    task is solved
     C       -   decomposition coefficients, array[0..M-1]
     Rep     -   fitting report. Following fields are set:
+                * R2                non-adjusted coefficient of determination
+                                    (non-weighted)
                 * RMSError          rms error on the (X,Y).
                 * AvgError          average error on the (X,Y).
                 * AvgRelError       average relative error on the non-zero Y
@@ -5562,6 +7116,47 @@ OUTPUT PARAMETERS:
 
 IMPORTANT:
     this subroitine doesn't calculate task's condition number for K<>0.
+
+ERRORS IN PARAMETERS
+
+This  solver  also  calculates different kinds of errors in parameters and
+fills corresponding fields of report:
+* Rep.CovPar        covariance matrix for parameters, array[K,K].
+* Rep.ErrPar        errors in parameters, array[K],
+                    errpar = sqrt(diag(CovPar))
+* Rep.ErrCurve      vector of fit errors - standard deviations of empirical
+                    best-fit curve from "ideal" best-fit curve built  with
+                    infinite number of samples, array[N].
+                    errcurve = sqrt(diag(F*CovPar*F')),
+                    where F is functions matrix.
+* Rep.Noise         vector of per-point estimates of noise, array[N]
+
+IMPORTANT:  errors  in  parameters  are  calculated  without  taking  into
+            account boundary/linear constraints! Presence  of  constraints
+            changes distribution of errors, but there is no  easy  way  to
+            account for constraints when you calculate covariance matrix.
+
+NOTE:       noise in the data is estimated as follows:
+            * for fitting without user-supplied  weights  all  points  are
+              assumed to have same level of noise, which is estimated from
+              the data
+            * for fitting with user-supplied weights we assume that  noise
+              level in I-th point is inversely proportional to Ith weight.
+              Coefficient of proportionality is estimated from the data.
+
+NOTE:       we apply small amount of regularization when we invert squared
+            Jacobian and calculate covariance matrix. It  guarantees  that
+            algorithm won't divide by zero  during  inversion,  but  skews
+            error estimates a bit (fractional error is about 10^-9).
+
+            However, we believe that this difference is insignificant  for
+            all practical purposes except for the situation when you  want
+            to compare ALGLIB results with "reference"  implementation  up
+            to the last significant digit.
+
+NOTE:       covariance matrix is estimated using  correction  for  degrees
+            of freedom (covariances are divided by N-M instead of dividing
+            by N).
 
   -- ALGLIB --
      Copyright 07.09.2009 by Bochkanov Sergey
@@ -5591,9 +7186,33 @@ void lsfitlinearwc(const real_1d_array &y, const real_1d_array &w, const real_2d
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
+}
+
+
+void smp_lsfitlinearwc(const real_1d_array &y, const real_1d_array &w, const real_2d_array &fmatrix, const real_2d_array &cmatrix, ae_int_t &info, real_1d_array &c, lsfitreport &rep)
+{
+    alglib_impl::ae_state _alglib_env_state;    
+    ae_int_t n;
+    ae_int_t m;
+    ae_int_t k;
+    if( (y.length()!=w.length()) || (y.length()!=fmatrix.rows()))
+        throw ap_error("Error while calling 'lsfitlinearwc': looks like one of arguments has wrong size");
+    if( (fmatrix.cols()!=cmatrix.cols()-1))
+        throw ap_error("Error while calling 'lsfitlinearwc': looks like one of arguments has wrong size");
+    n = y.length();
+    m = fmatrix.cols();
+    k = cmatrix.rows();
+    alglib_impl::ae_state_init(&_alglib_env_state);
+    try
     {
-        throw;
+        alglib_impl::_pexec_lsfitlinearwc(const_cast<alglib_impl::ae_vector*>(y.c_ptr()), const_cast<alglib_impl::ae_vector*>(w.c_ptr()), const_cast<alglib_impl::ae_matrix*>(fmatrix.c_ptr()), const_cast<alglib_impl::ae_matrix*>(cmatrix.c_ptr()), n, m, k, &info, const_cast<alglib_impl::ae_vector*>(c.c_ptr()), const_cast<alglib_impl::lsfitreport*>(rep.c_ptr()), &_alglib_env_state);
+
+        alglib_impl::ae_state_clear(&_alglib_env_state);
+        return;
+    }
+    catch(alglib_impl::ae_error_type)
+    {
+        throw ap_error(_alglib_env_state.error_msg);
     }
 }
 
@@ -5603,6 +7222,35 @@ Linear least squares fitting.
 QR decomposition is used to reduce task to MxM, then triangular solver  or
 SVD-based solver is used depending on condition number of the  system.  It
 allows to maximize speed and retain decent accuracy.
+
+IMPORTANT: if you want to perform  polynomial  fitting,  it  may  be  more
+           convenient to use PolynomialFit() function. This function gives
+           best  results  on  polynomial  problems  and  solves  numerical
+           stability  issues  which  arise  when   you   fit   high-degree
+           polynomials to your data.
+
+COMMERCIAL EDITION OF ALGLIB:
+
+  ! Commercial version of ALGLIB includes two  important  improvements  of
+  ! this function, which can be used from C++ and C#:
+  ! * Intel MKL support (lightweight Intel MKL is shipped with ALGLIB)
+  ! * multithreading support
+  !
+  ! Intel MKL gives approximately constant  (with  respect  to  number  of
+  ! worker threads) acceleration factor which depends on CPU  being  used,
+  ! problem  size  and  "baseline"  ALGLIB  edition  which  is  used   for
+  ! comparison.
+  !
+  ! Speed-up provided by multithreading greatly depends  on  problem  size
+  ! - only large problems (number of coefficients is more than 500) can be
+  ! efficiently multithreaded.
+  !
+  ! Generally, commercial ALGLIB is several times faster than  open-source
+  ! generic C edition, and many times faster than open-source C# edition.
+  !
+  ! We recommend you to read 'Working with commercial version' section  of
+  ! ALGLIB Reference Manual in order to find out how to  use  performance-
+  ! related features provided by commercial edition of ALGLIB.
 
 INPUT PARAMETERS:
     Y       -   array[0..N-1] Function values in  N  points.
@@ -5619,11 +7267,49 @@ OUTPUT PARAMETERS:
     C       -   decomposition coefficients, array[0..M-1]
     Rep     -   fitting report. Following fields are set:
                 * Rep.TaskRCond     reciprocal of condition number
+                * R2                non-adjusted coefficient of determination
+                                    (non-weighted)
                 * RMSError          rms error on the (X,Y).
                 * AvgError          average error on the (X,Y).
                 * AvgRelError       average relative error on the non-zero Y
                 * MaxError          maximum error
                                     NON-WEIGHTED ERRORS ARE CALCULATED
+
+ERRORS IN PARAMETERS
+
+This  solver  also  calculates different kinds of errors in parameters and
+fills corresponding fields of report:
+* Rep.CovPar        covariance matrix for parameters, array[K,K].
+* Rep.ErrPar        errors in parameters, array[K],
+                    errpar = sqrt(diag(CovPar))
+* Rep.ErrCurve      vector of fit errors - standard deviations of empirical
+                    best-fit curve from "ideal" best-fit curve built  with
+                    infinite number of samples, array[N].
+                    errcurve = sqrt(diag(F*CovPar*F')),
+                    where F is functions matrix.
+* Rep.Noise         vector of per-point estimates of noise, array[N]
+
+NOTE:       noise in the data is estimated as follows:
+            * for fitting without user-supplied  weights  all  points  are
+              assumed to have same level of noise, which is estimated from
+              the data
+            * for fitting with user-supplied weights we assume that  noise
+              level in I-th point is inversely proportional to Ith weight.
+              Coefficient of proportionality is estimated from the data.
+
+NOTE:       we apply small amount of regularization when we invert squared
+            Jacobian and calculate covariance matrix. It  guarantees  that
+            algorithm won't divide by zero  during  inversion,  but  skews
+            error estimates a bit (fractional error is about 10^-9).
+
+            However, we believe that this difference is insignificant  for
+            all practical purposes except for the situation when you  want
+            to compare ALGLIB results with "reference"  implementation  up
+            to the last significant digit.
+
+NOTE:       covariance matrix is estimated using  correction  for  degrees
+            of freedom (covariances are divided by N-M instead of dividing
+            by N).
 
   -- ALGLIB --
      Copyright 17.08.2009 by Bochkanov Sergey
@@ -5642,9 +7328,22 @@ void lsfitlinear(const real_1d_array &y, const real_2d_array &fmatrix, const ae_
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
+}
+
+
+void smp_lsfitlinear(const real_1d_array &y, const real_2d_array &fmatrix, const ae_int_t n, const ae_int_t m, ae_int_t &info, real_1d_array &c, lsfitreport &rep)
+{
+    alglib_impl::ae_state _alglib_env_state;
+    alglib_impl::ae_state_init(&_alglib_env_state);
+    try
     {
-        throw;
+        alglib_impl::_pexec_lsfitlinear(const_cast<alglib_impl::ae_vector*>(y.c_ptr()), const_cast<alglib_impl::ae_matrix*>(fmatrix.c_ptr()), n, m, &info, const_cast<alglib_impl::ae_vector*>(c.c_ptr()), const_cast<alglib_impl::lsfitreport*>(rep.c_ptr()), &_alglib_env_state);
+        alglib_impl::ae_state_clear(&_alglib_env_state);
+        return;
+    }
+    catch(alglib_impl::ae_error_type)
+    {
+        throw ap_error(_alglib_env_state.error_msg);
     }
 }
 
@@ -5654,6 +7353,35 @@ Linear least squares fitting.
 QR decomposition is used to reduce task to MxM, then triangular solver  or
 SVD-based solver is used depending on condition number of the  system.  It
 allows to maximize speed and retain decent accuracy.
+
+IMPORTANT: if you want to perform  polynomial  fitting,  it  may  be  more
+           convenient to use PolynomialFit() function. This function gives
+           best  results  on  polynomial  problems  and  solves  numerical
+           stability  issues  which  arise  when   you   fit   high-degree
+           polynomials to your data.
+
+COMMERCIAL EDITION OF ALGLIB:
+
+  ! Commercial version of ALGLIB includes two  important  improvements  of
+  ! this function, which can be used from C++ and C#:
+  ! * Intel MKL support (lightweight Intel MKL is shipped with ALGLIB)
+  ! * multithreading support
+  !
+  ! Intel MKL gives approximately constant  (with  respect  to  number  of
+  ! worker threads) acceleration factor which depends on CPU  being  used,
+  ! problem  size  and  "baseline"  ALGLIB  edition  which  is  used   for
+  ! comparison.
+  !
+  ! Speed-up provided by multithreading greatly depends  on  problem  size
+  ! - only large problems (number of coefficients is more than 500) can be
+  ! efficiently multithreaded.
+  !
+  ! Generally, commercial ALGLIB is several times faster than  open-source
+  ! generic C edition, and many times faster than open-source C# edition.
+  !
+  ! We recommend you to read 'Working with commercial version' section  of
+  ! ALGLIB Reference Manual in order to find out how to  use  performance-
+  ! related features provided by commercial edition of ALGLIB.
 
 INPUT PARAMETERS:
     Y       -   array[0..N-1] Function values in  N  points.
@@ -5670,11 +7398,49 @@ OUTPUT PARAMETERS:
     C       -   decomposition coefficients, array[0..M-1]
     Rep     -   fitting report. Following fields are set:
                 * Rep.TaskRCond     reciprocal of condition number
+                * R2                non-adjusted coefficient of determination
+                                    (non-weighted)
                 * RMSError          rms error on the (X,Y).
                 * AvgError          average error on the (X,Y).
                 * AvgRelError       average relative error on the non-zero Y
                 * MaxError          maximum error
                                     NON-WEIGHTED ERRORS ARE CALCULATED
+
+ERRORS IN PARAMETERS
+
+This  solver  also  calculates different kinds of errors in parameters and
+fills corresponding fields of report:
+* Rep.CovPar        covariance matrix for parameters, array[K,K].
+* Rep.ErrPar        errors in parameters, array[K],
+                    errpar = sqrt(diag(CovPar))
+* Rep.ErrCurve      vector of fit errors - standard deviations of empirical
+                    best-fit curve from "ideal" best-fit curve built  with
+                    infinite number of samples, array[N].
+                    errcurve = sqrt(diag(F*CovPar*F')),
+                    where F is functions matrix.
+* Rep.Noise         vector of per-point estimates of noise, array[N]
+
+NOTE:       noise in the data is estimated as follows:
+            * for fitting without user-supplied  weights  all  points  are
+              assumed to have same level of noise, which is estimated from
+              the data
+            * for fitting with user-supplied weights we assume that  noise
+              level in I-th point is inversely proportional to Ith weight.
+              Coefficient of proportionality is estimated from the data.
+
+NOTE:       we apply small amount of regularization when we invert squared
+            Jacobian and calculate covariance matrix. It  guarantees  that
+            algorithm won't divide by zero  during  inversion,  but  skews
+            error estimates a bit (fractional error is about 10^-9).
+
+            However, we believe that this difference is insignificant  for
+            all practical purposes except for the situation when you  want
+            to compare ALGLIB results with "reference"  implementation  up
+            to the last significant digit.
+
+NOTE:       covariance matrix is estimated using  correction  for  degrees
+            of freedom (covariances are divided by N-M instead of dividing
+            by N).
 
   -- ALGLIB --
      Copyright 17.08.2009 by Bochkanov Sergey
@@ -5700,9 +7466,29 @@ void lsfitlinear(const real_1d_array &y, const real_2d_array &fmatrix, ae_int_t 
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
+}
+
+
+void smp_lsfitlinear(const real_1d_array &y, const real_2d_array &fmatrix, ae_int_t &info, real_1d_array &c, lsfitreport &rep)
+{
+    alglib_impl::ae_state _alglib_env_state;    
+    ae_int_t n;
+    ae_int_t m;
+    if( (y.length()!=fmatrix.rows()))
+        throw ap_error("Error while calling 'lsfitlinear': looks like one of arguments has wrong size");
+    n = y.length();
+    m = fmatrix.cols();
+    alglib_impl::ae_state_init(&_alglib_env_state);
+    try
     {
-        throw;
+        alglib_impl::_pexec_lsfitlinear(const_cast<alglib_impl::ae_vector*>(y.c_ptr()), const_cast<alglib_impl::ae_matrix*>(fmatrix.c_ptr()), n, m, &info, const_cast<alglib_impl::ae_vector*>(c.c_ptr()), const_cast<alglib_impl::lsfitreport*>(rep.c_ptr()), &_alglib_env_state);
+
+        alglib_impl::ae_state_clear(&_alglib_env_state);
+        return;
+    }
+    catch(alglib_impl::ae_error_type)
+    {
+        throw ap_error(_alglib_env_state.error_msg);
     }
 }
 
@@ -5713,6 +7499,35 @@ This  is  variation  of LSFitLinear(),  which searchs for min|A*x=b| given
 that  K  additional  constaints  C*x=bc are satisfied. It reduces original
 task to modified one: min|B*y-d| WITHOUT constraints,  then  LSFitLinear()
 is called.
+
+IMPORTANT: if you want to perform  polynomial  fitting,  it  may  be  more
+           convenient to use PolynomialFit() function. This function gives
+           best  results  on  polynomial  problems  and  solves  numerical
+           stability  issues  which  arise  when   you   fit   high-degree
+           polynomials to your data.
+
+COMMERCIAL EDITION OF ALGLIB:
+
+  ! Commercial version of ALGLIB includes two  important  improvements  of
+  ! this function, which can be used from C++ and C#:
+  ! * Intel MKL support (lightweight Intel MKL is shipped with ALGLIB)
+  ! * multithreading support
+  !
+  ! Intel MKL gives approximately constant  (with  respect  to  number  of
+  ! worker threads) acceleration factor which depends on CPU  being  used,
+  ! problem  size  and  "baseline"  ALGLIB  edition  which  is  used   for
+  ! comparison.
+  !
+  ! Speed-up provided by multithreading greatly depends  on  problem  size
+  ! - only large problems (number of coefficients is more than 500) can be
+  ! efficiently multithreaded.
+  !
+  ! Generally, commercial ALGLIB is several times faster than  open-source
+  ! generic C edition, and many times faster than open-source C# edition.
+  !
+  ! We recommend you to read 'Working with commercial version' section  of
+  ! ALGLIB Reference Manual in order to find out how to  use  performance-
+  ! related features provided by commercial edition of ALGLIB.
 
 INPUT PARAMETERS:
     Y       -   array[0..N-1] Function values in  N  points.
@@ -5737,6 +7552,8 @@ OUTPUT PARAMETERS:
                 *  1    task is solved
     C       -   decomposition coefficients, array[0..M-1]
     Rep     -   fitting report. Following fields are set:
+                * R2                non-adjusted coefficient of determination
+                                    (non-weighted)
                 * RMSError          rms error on the (X,Y).
                 * AvgError          average error on the (X,Y).
                 * AvgRelError       average relative error on the non-zero Y
@@ -5745,6 +7562,47 @@ OUTPUT PARAMETERS:
 
 IMPORTANT:
     this subroitine doesn't calculate task's condition number for K<>0.
+
+ERRORS IN PARAMETERS
+
+This  solver  also  calculates different kinds of errors in parameters and
+fills corresponding fields of report:
+* Rep.CovPar        covariance matrix for parameters, array[K,K].
+* Rep.ErrPar        errors in parameters, array[K],
+                    errpar = sqrt(diag(CovPar))
+* Rep.ErrCurve      vector of fit errors - standard deviations of empirical
+                    best-fit curve from "ideal" best-fit curve built  with
+                    infinite number of samples, array[N].
+                    errcurve = sqrt(diag(F*CovPar*F')),
+                    where F is functions matrix.
+* Rep.Noise         vector of per-point estimates of noise, array[N]
+
+IMPORTANT:  errors  in  parameters  are  calculated  without  taking  into
+            account boundary/linear constraints! Presence  of  constraints
+            changes distribution of errors, but there is no  easy  way  to
+            account for constraints when you calculate covariance matrix.
+
+NOTE:       noise in the data is estimated as follows:
+            * for fitting without user-supplied  weights  all  points  are
+              assumed to have same level of noise, which is estimated from
+              the data
+            * for fitting with user-supplied weights we assume that  noise
+              level in I-th point is inversely proportional to Ith weight.
+              Coefficient of proportionality is estimated from the data.
+
+NOTE:       we apply small amount of regularization when we invert squared
+            Jacobian and calculate covariance matrix. It  guarantees  that
+            algorithm won't divide by zero  during  inversion,  but  skews
+            error estimates a bit (fractional error is about 10^-9).
+
+            However, we believe that this difference is insignificant  for
+            all practical purposes except for the situation when you  want
+            to compare ALGLIB results with "reference"  implementation  up
+            to the last significant digit.
+
+NOTE:       covariance matrix is estimated using  correction  for  degrees
+            of freedom (covariances are divided by N-M instead of dividing
+            by N).
 
   -- ALGLIB --
      Copyright 07.09.2009 by Bochkanov Sergey
@@ -5763,9 +7621,22 @@ void lsfitlinearc(const real_1d_array &y, const real_2d_array &fmatrix, const re
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
+}
+
+
+void smp_lsfitlinearc(const real_1d_array &y, const real_2d_array &fmatrix, const real_2d_array &cmatrix, const ae_int_t n, const ae_int_t m, const ae_int_t k, ae_int_t &info, real_1d_array &c, lsfitreport &rep)
+{
+    alglib_impl::ae_state _alglib_env_state;
+    alglib_impl::ae_state_init(&_alglib_env_state);
+    try
     {
-        throw;
+        alglib_impl::_pexec_lsfitlinearc(const_cast<alglib_impl::ae_vector*>(y.c_ptr()), const_cast<alglib_impl::ae_matrix*>(fmatrix.c_ptr()), const_cast<alglib_impl::ae_matrix*>(cmatrix.c_ptr()), n, m, k, &info, const_cast<alglib_impl::ae_vector*>(c.c_ptr()), const_cast<alglib_impl::lsfitreport*>(rep.c_ptr()), &_alglib_env_state);
+        alglib_impl::ae_state_clear(&_alglib_env_state);
+        return;
+    }
+    catch(alglib_impl::ae_error_type)
+    {
+        throw ap_error(_alglib_env_state.error_msg);
     }
 }
 
@@ -5776,6 +7647,35 @@ This  is  variation  of LSFitLinear(),  which searchs for min|A*x=b| given
 that  K  additional  constaints  C*x=bc are satisfied. It reduces original
 task to modified one: min|B*y-d| WITHOUT constraints,  then  LSFitLinear()
 is called.
+
+IMPORTANT: if you want to perform  polynomial  fitting,  it  may  be  more
+           convenient to use PolynomialFit() function. This function gives
+           best  results  on  polynomial  problems  and  solves  numerical
+           stability  issues  which  arise  when   you   fit   high-degree
+           polynomials to your data.
+
+COMMERCIAL EDITION OF ALGLIB:
+
+  ! Commercial version of ALGLIB includes two  important  improvements  of
+  ! this function, which can be used from C++ and C#:
+  ! * Intel MKL support (lightweight Intel MKL is shipped with ALGLIB)
+  ! * multithreading support
+  !
+  ! Intel MKL gives approximately constant  (with  respect  to  number  of
+  ! worker threads) acceleration factor which depends on CPU  being  used,
+  ! problem  size  and  "baseline"  ALGLIB  edition  which  is  used   for
+  ! comparison.
+  !
+  ! Speed-up provided by multithreading greatly depends  on  problem  size
+  ! - only large problems (number of coefficients is more than 500) can be
+  ! efficiently multithreaded.
+  !
+  ! Generally, commercial ALGLIB is several times faster than  open-source
+  ! generic C edition, and many times faster than open-source C# edition.
+  !
+  ! We recommend you to read 'Working with commercial version' section  of
+  ! ALGLIB Reference Manual in order to find out how to  use  performance-
+  ! related features provided by commercial edition of ALGLIB.
 
 INPUT PARAMETERS:
     Y       -   array[0..N-1] Function values in  N  points.
@@ -5800,6 +7700,8 @@ OUTPUT PARAMETERS:
                 *  1    task is solved
     C       -   decomposition coefficients, array[0..M-1]
     Rep     -   fitting report. Following fields are set:
+                * R2                non-adjusted coefficient of determination
+                                    (non-weighted)
                 * RMSError          rms error on the (X,Y).
                 * AvgError          average error on the (X,Y).
                 * AvgRelError       average relative error on the non-zero Y
@@ -5808,6 +7710,47 @@ OUTPUT PARAMETERS:
 
 IMPORTANT:
     this subroitine doesn't calculate task's condition number for K<>0.
+
+ERRORS IN PARAMETERS
+
+This  solver  also  calculates different kinds of errors in parameters and
+fills corresponding fields of report:
+* Rep.CovPar        covariance matrix for parameters, array[K,K].
+* Rep.ErrPar        errors in parameters, array[K],
+                    errpar = sqrt(diag(CovPar))
+* Rep.ErrCurve      vector of fit errors - standard deviations of empirical
+                    best-fit curve from "ideal" best-fit curve built  with
+                    infinite number of samples, array[N].
+                    errcurve = sqrt(diag(F*CovPar*F')),
+                    where F is functions matrix.
+* Rep.Noise         vector of per-point estimates of noise, array[N]
+
+IMPORTANT:  errors  in  parameters  are  calculated  without  taking  into
+            account boundary/linear constraints! Presence  of  constraints
+            changes distribution of errors, but there is no  easy  way  to
+            account for constraints when you calculate covariance matrix.
+
+NOTE:       noise in the data is estimated as follows:
+            * for fitting without user-supplied  weights  all  points  are
+              assumed to have same level of noise, which is estimated from
+              the data
+            * for fitting with user-supplied weights we assume that  noise
+              level in I-th point is inversely proportional to Ith weight.
+              Coefficient of proportionality is estimated from the data.
+
+NOTE:       we apply small amount of regularization when we invert squared
+            Jacobian and calculate covariance matrix. It  guarantees  that
+            algorithm won't divide by zero  during  inversion,  but  skews
+            error estimates a bit (fractional error is about 10^-9).
+
+            However, we believe that this difference is insignificant  for
+            all practical purposes except for the situation when you  want
+            to compare ALGLIB results with "reference"  implementation  up
+            to the last significant digit.
+
+NOTE:       covariance matrix is estimated using  correction  for  degrees
+            of freedom (covariances are divided by N-M instead of dividing
+            by N).
 
   -- ALGLIB --
      Copyright 07.09.2009 by Bochkanov Sergey
@@ -5837,9 +7780,33 @@ void lsfitlinearc(const real_1d_array &y, const real_2d_array &fmatrix, const re
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
+}
+
+
+void smp_lsfitlinearc(const real_1d_array &y, const real_2d_array &fmatrix, const real_2d_array &cmatrix, ae_int_t &info, real_1d_array &c, lsfitreport &rep)
+{
+    alglib_impl::ae_state _alglib_env_state;    
+    ae_int_t n;
+    ae_int_t m;
+    ae_int_t k;
+    if( (y.length()!=fmatrix.rows()))
+        throw ap_error("Error while calling 'lsfitlinearc': looks like one of arguments has wrong size");
+    if( (fmatrix.cols()!=cmatrix.cols()-1))
+        throw ap_error("Error while calling 'lsfitlinearc': looks like one of arguments has wrong size");
+    n = y.length();
+    m = fmatrix.cols();
+    k = cmatrix.rows();
+    alglib_impl::ae_state_init(&_alglib_env_state);
+    try
     {
-        throw;
+        alglib_impl::_pexec_lsfitlinearc(const_cast<alglib_impl::ae_vector*>(y.c_ptr()), const_cast<alglib_impl::ae_matrix*>(fmatrix.c_ptr()), const_cast<alglib_impl::ae_matrix*>(cmatrix.c_ptr()), n, m, k, &info, const_cast<alglib_impl::ae_vector*>(c.c_ptr()), const_cast<alglib_impl::lsfitreport*>(rep.c_ptr()), &_alglib_env_state);
+
+        alglib_impl::ae_state_clear(&_alglib_env_state);
+        return;
+    }
+    catch(alglib_impl::ae_error_type)
+    {
+        throw ap_error(_alglib_env_state.error_msg);
     }
 }
 
@@ -5894,10 +7861,6 @@ void lsfitcreatewf(const real_2d_array &x, const real_1d_array &y, const real_1d
     catch(alglib_impl::ae_error_type)
     {
         throw ap_error(_alglib_env_state.error_msg);
-    }
-    catch(...)
-    {
-        throw;
     }
 }
 
@@ -5962,10 +7925,6 @@ void lsfitcreatewf(const real_2d_array &x, const real_1d_array &y, const real_1d
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
-    {
-        throw;
-    }
 }
 
 /*************************************************************************
@@ -6018,10 +7977,6 @@ void lsfitcreatef(const real_2d_array &x, const real_1d_array &y, const real_1d_
     catch(alglib_impl::ae_error_type)
     {
         throw ap_error(_alglib_env_state.error_msg);
-    }
-    catch(...)
-    {
-        throw;
     }
 }
 
@@ -6085,10 +8040,6 @@ void lsfitcreatef(const real_2d_array &x, const real_1d_array &y, const real_1d_
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
-    {
-        throw;
-    }
 }
 
 /*************************************************************************
@@ -6149,10 +8100,6 @@ void lsfitcreatewfg(const real_2d_array &x, const real_1d_array &y, const real_1
     catch(alglib_impl::ae_error_type)
     {
         throw ap_error(_alglib_env_state.error_msg);
-    }
-    catch(...)
-    {
-        throw;
     }
 }
 
@@ -6224,10 +8171,6 @@ void lsfitcreatewfg(const real_2d_array &x, const real_1d_array &y, const real_1
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
-    {
-        throw;
-    }
 }
 
 /*************************************************************************
@@ -6281,10 +8224,6 @@ void lsfitcreatefg(const real_2d_array &x, const real_1d_array &y, const real_1d
     catch(alglib_impl::ae_error_type)
     {
         throw ap_error(_alglib_env_state.error_msg);
-    }
-    catch(...)
-    {
-        throw;
     }
 }
 
@@ -6349,10 +8288,6 @@ void lsfitcreatefg(const real_2d_array &x, const real_1d_array &y, const real_1d
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
-    {
-        throw;
-    }
 }
 
 /*************************************************************************
@@ -6399,10 +8334,6 @@ void lsfitcreatewfgh(const real_2d_array &x, const real_1d_array &y, const real_
     catch(alglib_impl::ae_error_type)
     {
         throw ap_error(_alglib_env_state.error_msg);
-    }
-    catch(...)
-    {
-        throw;
     }
 }
 
@@ -6460,10 +8391,6 @@ void lsfitcreatewfgh(const real_2d_array &x, const real_1d_array &y, const real_
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
-    {
-        throw;
-    }
 }
 
 /*************************************************************************
@@ -6510,10 +8437,6 @@ void lsfitcreatefgh(const real_2d_array &x, const real_1d_array &y, const real_1
     catch(alglib_impl::ae_error_type)
     {
         throw ap_error(_alglib_env_state.error_msg);
-    }
-    catch(...)
-    {
-        throw;
     }
 }
 
@@ -6571,10 +8494,6 @@ void lsfitcreatefgh(const real_2d_array &x, const real_1d_array &y, const real_1
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
-    {
-        throw;
-    }
 }
 
 /*************************************************************************
@@ -6620,10 +8539,6 @@ void lsfitsetcond(const lsfitstate &state, const double epsf, const double epsx,
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
-    {
-        throw;
-    }
 }
 
 /*************************************************************************
@@ -6661,10 +8576,6 @@ void lsfitsetstpmax(const lsfitstate &state, const double stpmax)
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
-    {
-        throw;
-    }
 }
 
 /*************************************************************************
@@ -6694,10 +8605,6 @@ void lsfitsetxrep(const lsfitstate &state, const bool needxrep)
     catch(alglib_impl::ae_error_type)
     {
         throw ap_error(_alglib_env_state.error_msg);
-    }
-    catch(...)
-    {
-        throw;
     }
 }
 
@@ -6741,10 +8648,6 @@ void lsfitsetscale(const lsfitstate &state, const real_1d_array &s)
     catch(alglib_impl::ae_error_type)
     {
         throw ap_error(_alglib_env_state.error_msg);
-    }
-    catch(...)
-    {
-        throw;
     }
 }
 
@@ -6790,10 +8693,6 @@ void lsfitsetbc(const lsfitstate &state, const real_1d_array &bndl, const real_1
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
-    {
-        throw;
-    }
 }
 
 /*************************************************************************
@@ -6814,10 +8713,6 @@ bool lsfititeration(const lsfitstate &state)
     catch(alglib_impl::ae_error_type)
     {
         throw ap_error(_alglib_env_state.error_msg);
-    }
-    catch(...)
-    {
-        throw;
     }
 }
 
@@ -6853,10 +8748,6 @@ void lsfitfit(lsfitstate &state,
     catch(alglib_impl::ae_error_type)
     {
         throw ap_error(_alglib_env_state.error_msg);
-    }
-    catch(...)
-    {
-        throw;
     }
 }
 
@@ -6900,10 +8791,6 @@ void lsfitfit(lsfitstate &state,
     catch(alglib_impl::ae_error_type)
     {
         throw ap_error(_alglib_env_state.error_msg);
-    }
-    catch(...)
-    {
-        throw;
     }
 }
 
@@ -6956,10 +8843,6 @@ void lsfitfit(lsfitstate &state,
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
-    {
-        throw;
-    }
 }
 
 
@@ -6973,7 +8856,7 @@ INPUT PARAMETERS:
     State   -   algorithm state
 
 OUTPUT PARAMETERS:
-    Info    -   completetion code:
+    Info    -   completion code:
                     * -7    gradient verification failed.
                             See LSFitSetGradientCheck() for more information.
                     *  1    relative function improvement is no more than
@@ -6984,8 +8867,9 @@ OUTPUT PARAMETERS:
                     *  7    stopping conditions are too stringent,
                             further improvement is impossible
     C       -   array[0..K-1], solution
-    Rep     -   optimization report. Following fields are set:
-                * Rep.TerminationType completetion code:
+    Rep     -   optimization report. On success following fields are set:
+                * R2                non-adjusted coefficient of determination
+                                    (non-weighted)
                 * RMSError          rms error on the (X,Y).
                 * AvgError          average error on the (X,Y).
                 * AvgRelError       average relative error on the non-zero Y
@@ -6993,6 +8877,46 @@ OUTPUT PARAMETERS:
                                     NON-WEIGHTED ERRORS ARE CALCULATED
                 * WRMSError         weighted rms error on the (X,Y).
 
+ERRORS IN PARAMETERS
+
+This  solver  also  calculates different kinds of errors in parameters and
+fills corresponding fields of report:
+* Rep.CovPar        covariance matrix for parameters, array[K,K].
+* Rep.ErrPar        errors in parameters, array[K],
+                    errpar = sqrt(diag(CovPar))
+* Rep.ErrCurve      vector of fit errors - standard deviations of empirical
+                    best-fit curve from "ideal" best-fit curve built  with
+                    infinite number of samples, array[N].
+                    errcurve = sqrt(diag(J*CovPar*J')),
+                    where J is Jacobian matrix.
+* Rep.Noise         vector of per-point estimates of noise, array[N]
+
+IMPORTANT:  errors  in  parameters  are  calculated  without  taking  into
+            account boundary/linear constraints! Presence  of  constraints
+            changes distribution of errors, but there is no  easy  way  to
+            account for constraints when you calculate covariance matrix.
+
+NOTE:       noise in the data is estimated as follows:
+            * for fitting without user-supplied  weights  all  points  are
+              assumed to have same level of noise, which is estimated from
+              the data
+            * for fitting with user-supplied weights we assume that  noise
+              level in I-th point is inversely proportional to Ith weight.
+              Coefficient of proportionality is estimated from the data.
+
+NOTE:       we apply small amount of regularization when we invert squared
+            Jacobian and calculate covariance matrix. It  guarantees  that
+            algorithm won't divide by zero  during  inversion,  but  skews
+            error estimates a bit (fractional error is about 10^-9).
+
+            However, we believe that this difference is insignificant  for
+            all practical purposes except for the situation when you  want
+            to compare ALGLIB results with "reference"  implementation  up
+            to the last significant digit.
+
+NOTE:       covariance matrix is estimated using  correction  for  degrees
+            of freedom (covariances are divided by N-M instead of dividing
+            by N).
 
   -- ALGLIB --
      Copyright 17.08.2009 by Bochkanov Sergey
@@ -7010,10 +8934,6 @@ void lsfitresults(const lsfitstate &state, ae_int_t &info, real_1d_array &c, lsf
     catch(alglib_impl::ae_error_type)
     {
         throw ap_error(_alglib_env_state.error_msg);
-    }
-    catch(...)
-    {
-        throw;
     }
 }
 
@@ -7082,10 +9002,6 @@ void lsfitsetgradientcheck(const lsfitstate &state, const double teststep)
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
-    {
-        throw;
-    }
 }
 
 /*************************************************************************
@@ -7099,8 +9015,7 @@ _pspline2interpolant_owner::_pspline2interpolant_owner()
     p_struct = (alglib_impl::pspline2interpolant*)alglib_impl::ae_malloc(sizeof(alglib_impl::pspline2interpolant), NULL);
     if( p_struct==NULL )
         throw ap_error("ALGLIB: malloc error");
-    if( !alglib_impl::_pspline2interpolant_init(p_struct, NULL, ae_false) )
-        throw ap_error("ALGLIB: malloc error");
+    alglib_impl::_pspline2interpolant_init(p_struct, NULL);
 }
 
 _pspline2interpolant_owner::_pspline2interpolant_owner(const _pspline2interpolant_owner &rhs)
@@ -7108,8 +9023,7 @@ _pspline2interpolant_owner::_pspline2interpolant_owner(const _pspline2interpolan
     p_struct = (alglib_impl::pspline2interpolant*)alglib_impl::ae_malloc(sizeof(alglib_impl::pspline2interpolant), NULL);
     if( p_struct==NULL )
         throw ap_error("ALGLIB: malloc error");
-    if( !alglib_impl::_pspline2interpolant_init_copy(p_struct, const_cast<alglib_impl::pspline2interpolant*>(rhs.p_struct), NULL, ae_false) )
-        throw ap_error("ALGLIB: malloc error");
+    alglib_impl::_pspline2interpolant_init_copy(p_struct, const_cast<alglib_impl::pspline2interpolant*>(rhs.p_struct), NULL);
 }
 
 _pspline2interpolant_owner& _pspline2interpolant_owner::operator=(const _pspline2interpolant_owner &rhs)
@@ -7117,8 +9031,7 @@ _pspline2interpolant_owner& _pspline2interpolant_owner::operator=(const _pspline
     if( this==&rhs )
         return *this;
     alglib_impl::_pspline2interpolant_clear(p_struct);
-    if( !alglib_impl::_pspline2interpolant_init_copy(p_struct, const_cast<alglib_impl::pspline2interpolant*>(rhs.p_struct), NULL, ae_false) )
-        throw ap_error("ALGLIB: malloc error");
+    alglib_impl::_pspline2interpolant_init_copy(p_struct, const_cast<alglib_impl::pspline2interpolant*>(rhs.p_struct), NULL);
     return *this;
 }
 
@@ -7169,8 +9082,7 @@ _pspline3interpolant_owner::_pspline3interpolant_owner()
     p_struct = (alglib_impl::pspline3interpolant*)alglib_impl::ae_malloc(sizeof(alglib_impl::pspline3interpolant), NULL);
     if( p_struct==NULL )
         throw ap_error("ALGLIB: malloc error");
-    if( !alglib_impl::_pspline3interpolant_init(p_struct, NULL, ae_false) )
-        throw ap_error("ALGLIB: malloc error");
+    alglib_impl::_pspline3interpolant_init(p_struct, NULL);
 }
 
 _pspline3interpolant_owner::_pspline3interpolant_owner(const _pspline3interpolant_owner &rhs)
@@ -7178,8 +9090,7 @@ _pspline3interpolant_owner::_pspline3interpolant_owner(const _pspline3interpolan
     p_struct = (alglib_impl::pspline3interpolant*)alglib_impl::ae_malloc(sizeof(alglib_impl::pspline3interpolant), NULL);
     if( p_struct==NULL )
         throw ap_error("ALGLIB: malloc error");
-    if( !alglib_impl::_pspline3interpolant_init_copy(p_struct, const_cast<alglib_impl::pspline3interpolant*>(rhs.p_struct), NULL, ae_false) )
-        throw ap_error("ALGLIB: malloc error");
+    alglib_impl::_pspline3interpolant_init_copy(p_struct, const_cast<alglib_impl::pspline3interpolant*>(rhs.p_struct), NULL);
 }
 
 _pspline3interpolant_owner& _pspline3interpolant_owner::operator=(const _pspline3interpolant_owner &rhs)
@@ -7187,8 +9098,7 @@ _pspline3interpolant_owner& _pspline3interpolant_owner::operator=(const _pspline
     if( this==&rhs )
         return *this;
     alglib_impl::_pspline3interpolant_clear(p_struct);
-    if( !alglib_impl::_pspline3interpolant_init_copy(p_struct, const_cast<alglib_impl::pspline3interpolant*>(rhs.p_struct), NULL, ae_false) )
-        throw ap_error("ALGLIB: malloc error");
+    alglib_impl::_pspline3interpolant_init_copy(p_struct, const_cast<alglib_impl::pspline3interpolant*>(rhs.p_struct), NULL);
     return *this;
 }
 
@@ -7273,10 +9183,6 @@ void pspline2build(const real_2d_array &xy, const ae_int_t n, const ae_int_t st,
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
-    {
-        throw;
-    }
 }
 
 /*************************************************************************
@@ -7302,10 +9208,6 @@ void pspline3build(const real_2d_array &xy, const ae_int_t n, const ae_int_t st,
     catch(alglib_impl::ae_error_type)
     {
         throw ap_error(_alglib_env_state.error_msg);
-    }
-    catch(...)
-    {
-        throw;
     }
 }
 
@@ -7357,10 +9259,6 @@ void pspline2buildperiodic(const real_2d_array &xy, const ae_int_t n, const ae_i
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
-    {
-        throw;
-    }
 }
 
 /*************************************************************************
@@ -7387,10 +9285,6 @@ void pspline3buildperiodic(const real_2d_array &xy, const ae_int_t n, const ae_i
     catch(alglib_impl::ae_error_type)
     {
         throw ap_error(_alglib_env_state.error_msg);
-    }
-    catch(...)
-    {
-        throw;
     }
 }
 
@@ -7433,10 +9327,6 @@ void pspline2parametervalues(const pspline2interpolant &p, ae_int_t &n, real_1d_
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
-    {
-        throw;
-    }
 }
 
 /*************************************************************************
@@ -7460,10 +9350,6 @@ void pspline3parametervalues(const pspline3interpolant &p, ae_int_t &n, real_1d_
     catch(alglib_impl::ae_error_type)
     {
         throw ap_error(_alglib_env_state.error_msg);
-    }
-    catch(...)
-    {
-        throw;
     }
 }
 
@@ -7501,10 +9387,6 @@ void pspline2calc(const pspline2interpolant &p, const double t, double &x, doubl
     catch(alglib_impl::ae_error_type)
     {
         throw ap_error(_alglib_env_state.error_msg);
-    }
-    catch(...)
-    {
-        throw;
     }
 }
 
@@ -7544,10 +9426,6 @@ void pspline3calc(const pspline3interpolant &p, const double t, double &x, doubl
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
-    {
-        throw;
-    }
 }
 
 /*************************************************************************
@@ -7586,10 +9464,6 @@ void pspline2tangent(const pspline2interpolant &p, const double t, double &x, do
     catch(alglib_impl::ae_error_type)
     {
         throw ap_error(_alglib_env_state.error_msg);
-    }
-    catch(...)
-    {
-        throw;
     }
 }
 
@@ -7631,10 +9505,6 @@ void pspline3tangent(const pspline3interpolant &p, const double t, double &x, do
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
-    {
-        throw;
-    }
 }
 
 /*************************************************************************
@@ -7672,10 +9542,6 @@ void pspline2diff(const pspline2interpolant &p, const double t, double &x, doubl
     catch(alglib_impl::ae_error_type)
     {
         throw ap_error(_alglib_env_state.error_msg);
-    }
-    catch(...)
-    {
-        throw;
     }
 }
 
@@ -7717,10 +9583,6 @@ void pspline3diff(const pspline3interpolant &p, const double t, double &x, doubl
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
-    {
-        throw;
-    }
 }
 
 /*************************************************************************
@@ -7760,10 +9622,6 @@ void pspline2diff2(const pspline2interpolant &p, const double t, double &x, doub
     catch(alglib_impl::ae_error_type)
     {
         throw ap_error(_alglib_env_state.error_msg);
-    }
-    catch(...)
-    {
-        throw;
     }
 }
 
@@ -7808,10 +9666,6 @@ void pspline3diff2(const pspline3interpolant &p, const double t, double &x, doub
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
-    {
-        throw;
-    }
 }
 
 /*************************************************************************
@@ -7844,10 +9698,6 @@ double pspline2arclength(const pspline2interpolant &p, const double a, const dou
     catch(alglib_impl::ae_error_type)
     {
         throw ap_error(_alglib_env_state.error_msg);
-    }
-    catch(...)
-    {
-        throw;
     }
 }
 
@@ -7882,9 +9732,81 @@ double pspline3arclength(const pspline3interpolant &p, const double a, const dou
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
+}
+
+/*************************************************************************
+This  subroutine fits piecewise linear curve to points with Ramer-Douglas-
+Peucker algorithm. This  function  performs PARAMETRIC fit, i.e. it can be
+used to fit curves like circles.
+
+On  input  it  accepts dataset which describes parametric multidimensional
+curve X(t), with X being vector, and t taking values in [0,N), where N  is
+a number of points in dataset. As result, it returns reduced  dataset  X2,
+which can be used to build  parametric  curve  X2(t),  which  approximates
+X(t) with desired precision (or has specified number of sections).
+
+
+INPUT PARAMETERS:
+    X       -   array of multidimensional points:
+                * at least N elements, leading N elements are used if more
+                  than N elements were specified
+                * order of points is IMPORTANT because  it  is  parametric
+                  fit
+                * each row of array is one point which has D coordinates
+    N       -   number of elements in X
+    D       -   number of dimensions (elements per row of X)
+    StopM   -   stopping condition - desired number of sections:
+                * at most M sections are generated by this function
+                * less than M sections can be generated if we have N<M
+                  (or some X are non-distinct).
+                * zero StopM means that algorithm does not stop after
+                  achieving some pre-specified section count
+    StopEps -   stopping condition - desired precision:
+                * algorithm stops after error in each section is at most Eps
+                * zero Eps means that algorithm does not stop after
+                  achieving some pre-specified precision
+
+OUTPUT PARAMETERS:
+    X2      -   array of corner points for piecewise approximation,
+                has length NSections+1 or zero (for NSections=0).
+    Idx2    -   array of indexes (parameter values):
+                * has length NSections+1 or zero (for NSections=0).
+                * each element of Idx2 corresponds to same-numbered
+                  element of X2
+                * each element of Idx2 is index of  corresponding  element
+                  of X2 at original array X, i.e. I-th  row  of  X2  is
+                  Idx2[I]-th row of X.
+                * elements of Idx2 can be treated as parameter values
+                  which should be used when building new parametric curve
+                * Idx2[0]=0, Idx2[NSections]=N-1
+    NSections-  number of sections found by algorithm, NSections<=M,
+                NSections can be zero for degenerate datasets
+                (N<=1 or all X[] are non-distinct).
+
+NOTE: algorithm stops after:
+      a) dividing curve into StopM sections
+      b) achieving required precision StopEps
+      c) dividing curve into N-1 sections
+      If both StopM and StopEps are non-zero, algorithm is stopped by  the
+      FIRST criterion which is satisfied. In case both StopM  and  StopEps
+      are zero, algorithm stops because of (c).
+
+  -- ALGLIB --
+     Copyright 02.10.2014 by Bochkanov Sergey
+*************************************************************************/
+void parametricrdpfixed(const real_2d_array &x, const ae_int_t n, const ae_int_t d, const ae_int_t stopm, const double stopeps, real_2d_array &x2, integer_1d_array &idx2, ae_int_t &nsections)
+{
+    alglib_impl::ae_state _alglib_env_state;
+    alglib_impl::ae_state_init(&_alglib_env_state);
+    try
     {
-        throw;
+        alglib_impl::parametricrdpfixed(const_cast<alglib_impl::ae_matrix*>(x.c_ptr()), n, d, stopm, stopeps, const_cast<alglib_impl::ae_matrix*>(x2.c_ptr()), const_cast<alglib_impl::ae_vector*>(idx2.c_ptr()), &nsections, &_alglib_env_state);
+        alglib_impl::ae_state_clear(&_alglib_env_state);
+        return;
+    }
+    catch(alglib_impl::ae_error_type)
+    {
+        throw ap_error(_alglib_env_state.error_msg);
     }
 }
 
@@ -7899,8 +9821,7 @@ _rbfmodel_owner::_rbfmodel_owner()
     p_struct = (alglib_impl::rbfmodel*)alglib_impl::ae_malloc(sizeof(alglib_impl::rbfmodel), NULL);
     if( p_struct==NULL )
         throw ap_error("ALGLIB: malloc error");
-    if( !alglib_impl::_rbfmodel_init(p_struct, NULL, ae_false) )
-        throw ap_error("ALGLIB: malloc error");
+    alglib_impl::_rbfmodel_init(p_struct, NULL);
 }
 
 _rbfmodel_owner::_rbfmodel_owner(const _rbfmodel_owner &rhs)
@@ -7908,8 +9829,7 @@ _rbfmodel_owner::_rbfmodel_owner(const _rbfmodel_owner &rhs)
     p_struct = (alglib_impl::rbfmodel*)alglib_impl::ae_malloc(sizeof(alglib_impl::rbfmodel), NULL);
     if( p_struct==NULL )
         throw ap_error("ALGLIB: malloc error");
-    if( !alglib_impl::_rbfmodel_init_copy(p_struct, const_cast<alglib_impl::rbfmodel*>(rhs.p_struct), NULL, ae_false) )
-        throw ap_error("ALGLIB: malloc error");
+    alglib_impl::_rbfmodel_init_copy(p_struct, const_cast<alglib_impl::rbfmodel*>(rhs.p_struct), NULL);
 }
 
 _rbfmodel_owner& _rbfmodel_owner::operator=(const _rbfmodel_owner &rhs)
@@ -7917,8 +9837,7 @@ _rbfmodel_owner& _rbfmodel_owner::operator=(const _rbfmodel_owner &rhs)
     if( this==&rhs )
         return *this;
     alglib_impl::_rbfmodel_clear(p_struct);
-    if( !alglib_impl::_rbfmodel_init_copy(p_struct, const_cast<alglib_impl::rbfmodel*>(rhs.p_struct), NULL, ae_false) )
-        throw ap_error("ALGLIB: malloc error");
+    alglib_impl::_rbfmodel_init_copy(p_struct, const_cast<alglib_impl::rbfmodel*>(rhs.p_struct), NULL);
     return *this;
 }
 
@@ -7968,8 +9887,7 @@ _rbfreport_owner::_rbfreport_owner()
     p_struct = (alglib_impl::rbfreport*)alglib_impl::ae_malloc(sizeof(alglib_impl::rbfreport), NULL);
     if( p_struct==NULL )
         throw ap_error("ALGLIB: malloc error");
-    if( !alglib_impl::_rbfreport_init(p_struct, NULL, ae_false) )
-        throw ap_error("ALGLIB: malloc error");
+    alglib_impl::_rbfreport_init(p_struct, NULL);
 }
 
 _rbfreport_owner::_rbfreport_owner(const _rbfreport_owner &rhs)
@@ -7977,8 +9895,7 @@ _rbfreport_owner::_rbfreport_owner(const _rbfreport_owner &rhs)
     p_struct = (alglib_impl::rbfreport*)alglib_impl::ae_malloc(sizeof(alglib_impl::rbfreport), NULL);
     if( p_struct==NULL )
         throw ap_error("ALGLIB: malloc error");
-    if( !alglib_impl::_rbfreport_init_copy(p_struct, const_cast<alglib_impl::rbfreport*>(rhs.p_struct), NULL, ae_false) )
-        throw ap_error("ALGLIB: malloc error");
+    alglib_impl::_rbfreport_init_copy(p_struct, const_cast<alglib_impl::rbfreport*>(rhs.p_struct), NULL);
 }
 
 _rbfreport_owner& _rbfreport_owner::operator=(const _rbfreport_owner &rhs)
@@ -7986,8 +9903,7 @@ _rbfreport_owner& _rbfreport_owner::operator=(const _rbfreport_owner &rhs)
     if( this==&rhs )
         return *this;
     alglib_impl::_rbfreport_clear(p_struct);
-    if( !alglib_impl::_rbfreport_init_copy(p_struct, const_cast<alglib_impl::rbfreport*>(rhs.p_struct), NULL, ae_false) )
-        throw ap_error("ALGLIB: malloc error");
+    alglib_impl::_rbfreport_init_copy(p_struct, const_cast<alglib_impl::rbfreport*>(rhs.p_struct), NULL);
     return *this;
 }
 
@@ -8074,10 +9990,6 @@ void rbfserialize(rbfmodel &obj, std::string &s_out)
     {
         throw ap_error(state.error_msg);
     }
-    catch(...)
-    {
-        throw;
-    }
 }
 /*************************************************************************
 This function unserializes data structure from string.
@@ -8100,10 +10012,6 @@ void rbfunserialize(std::string &s_in, rbfmodel &obj)
     catch(alglib_impl::ae_error_type)
     {
         throw ap_error(state.error_msg);
-    }
-    catch(...)
-    {
-        throw;
     }
 }
 
@@ -8170,10 +10078,6 @@ void rbfcreate(const ae_int_t nx, const ae_int_t ny, rbfmodel &s)
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
-    {
-        throw;
-    }
 }
 
 /*************************************************************************
@@ -8215,10 +10119,6 @@ void rbfsetpoints(const rbfmodel &s, const real_2d_array &xy, const ae_int_t n)
     catch(alglib_impl::ae_error_type)
     {
         throw ap_error(_alglib_env_state.error_msg);
-    }
-    catch(...)
-    {
-        throw;
     }
 }
 
@@ -8265,10 +10165,6 @@ void rbfsetpoints(const rbfmodel &s, const real_2d_array &xy)
     catch(alglib_impl::ae_error_type)
     {
         throw ap_error(_alglib_env_state.error_msg);
-    }
-    catch(...)
-    {
-        throw;
     }
 }
 
@@ -8338,10 +10234,6 @@ void rbfsetalgoqnn(const rbfmodel &s, const double q, const double z)
     catch(alglib_impl::ae_error_type)
     {
         throw ap_error(_alglib_env_state.error_msg);
-    }
-    catch(...)
-    {
-        throw;
     }
 }
 
@@ -8417,10 +10309,6 @@ void rbfsetalgoqnn(const rbfmodel &s)
     catch(alglib_impl::ae_error_type)
     {
         throw ap_error(_alglib_env_state.error_msg);
-    }
-    catch(...)
-    {
-        throw;
     }
 }
 
@@ -8527,10 +10415,6 @@ void rbfsetalgomultilayer(const rbfmodel &s, const double rbase, const ae_int_t 
     catch(alglib_impl::ae_error_type)
     {
         throw ap_error(_alglib_env_state.error_msg);
-    }
-    catch(...)
-    {
-        throw;
     }
 }
 
@@ -8642,10 +10526,6 @@ void rbfsetalgomultilayer(const rbfmodel &s, const double rbase, const ae_int_t 
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
-    {
-        throw;
-    }
 }
 
 /*************************************************************************
@@ -8676,10 +10556,6 @@ void rbfsetlinterm(const rbfmodel &s)
     catch(alglib_impl::ae_error_type)
     {
         throw ap_error(_alglib_env_state.error_msg);
-    }
-    catch(...)
-    {
-        throw;
     }
 }
 
@@ -8712,10 +10588,6 @@ void rbfsetconstterm(const rbfmodel &s)
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
-    {
-        throw;
-    }
 }
 
 /*************************************************************************
@@ -8746,10 +10618,6 @@ void rbfsetzeroterm(const rbfmodel &s)
     catch(alglib_impl::ae_error_type)
     {
         throw ap_error(_alglib_env_state.error_msg);
-    }
-    catch(...)
-    {
-        throw;
     }
 }
 
@@ -8801,10 +10669,6 @@ void rbfbuildmodel(const rbfmodel &s, rbfreport &rep)
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
-    {
-        throw;
-    }
 }
 
 /*************************************************************************
@@ -8849,10 +10713,6 @@ double rbfcalc2(const rbfmodel &s, const double x0, const double x1)
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
-    {
-        throw;
-    }
 }
 
 /*************************************************************************
@@ -8893,10 +10753,6 @@ double rbfcalc3(const rbfmodel &s, const double x0, const double x1, const doubl
     catch(alglib_impl::ae_error_type)
     {
         throw ap_error(_alglib_env_state.error_msg);
-    }
-    catch(...)
-    {
-        throw;
     }
 }
 
@@ -8939,10 +10795,6 @@ void rbfcalc(const rbfmodel &s, const real_1d_array &x, real_1d_array &y)
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
-    {
-        throw;
-    }
 }
 
 /*************************************************************************
@@ -8978,10 +10830,6 @@ void rbfcalcbuf(const rbfmodel &s, const real_1d_array &x, real_1d_array &y)
     catch(alglib_impl::ae_error_type)
     {
         throw ap_error(_alglib_env_state.error_msg);
-    }
-    catch(...)
-    {
-        throw;
     }
 }
 
@@ -9022,10 +10870,6 @@ void rbfgridcalc2(const rbfmodel &s, const real_1d_array &x0, const ae_int_t n0,
     catch(alglib_impl::ae_error_type)
     {
         throw ap_error(_alglib_env_state.error_msg);
-    }
-    catch(...)
-    {
-        throw;
     }
 }
 
@@ -9068,10 +10912,6 @@ void rbfunpack(const rbfmodel &s, ae_int_t &nx, ae_int_t &ny, real_2d_array &xwr
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
-    {
-        throw;
-    }
 }
 
 /*************************************************************************
@@ -9082,8 +10922,7 @@ _spline2dinterpolant_owner::_spline2dinterpolant_owner()
     p_struct = (alglib_impl::spline2dinterpolant*)alglib_impl::ae_malloc(sizeof(alglib_impl::spline2dinterpolant), NULL);
     if( p_struct==NULL )
         throw ap_error("ALGLIB: malloc error");
-    if( !alglib_impl::_spline2dinterpolant_init(p_struct, NULL, ae_false) )
-        throw ap_error("ALGLIB: malloc error");
+    alglib_impl::_spline2dinterpolant_init(p_struct, NULL);
 }
 
 _spline2dinterpolant_owner::_spline2dinterpolant_owner(const _spline2dinterpolant_owner &rhs)
@@ -9091,8 +10930,7 @@ _spline2dinterpolant_owner::_spline2dinterpolant_owner(const _spline2dinterpolan
     p_struct = (alglib_impl::spline2dinterpolant*)alglib_impl::ae_malloc(sizeof(alglib_impl::spline2dinterpolant), NULL);
     if( p_struct==NULL )
         throw ap_error("ALGLIB: malloc error");
-    if( !alglib_impl::_spline2dinterpolant_init_copy(p_struct, const_cast<alglib_impl::spline2dinterpolant*>(rhs.p_struct), NULL, ae_false) )
-        throw ap_error("ALGLIB: malloc error");
+    alglib_impl::_spline2dinterpolant_init_copy(p_struct, const_cast<alglib_impl::spline2dinterpolant*>(rhs.p_struct), NULL);
 }
 
 _spline2dinterpolant_owner& _spline2dinterpolant_owner::operator=(const _spline2dinterpolant_owner &rhs)
@@ -9100,8 +10938,7 @@ _spline2dinterpolant_owner& _spline2dinterpolant_owner::operator=(const _spline2
     if( this==&rhs )
         return *this;
     alglib_impl::_spline2dinterpolant_clear(p_struct);
-    if( !alglib_impl::_spline2dinterpolant_init_copy(p_struct, const_cast<alglib_impl::spline2dinterpolant*>(rhs.p_struct), NULL, ae_false) )
-        throw ap_error("ALGLIB: malloc error");
+    alglib_impl::_spline2dinterpolant_init_copy(p_struct, const_cast<alglib_impl::spline2dinterpolant*>(rhs.p_struct), NULL);
     return *this;
 }
 
@@ -9169,10 +11006,6 @@ double spline2dcalc(const spline2dinterpolant &c, const double x, const double y
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
-    {
-        throw;
-    }
 }
 
 /*************************************************************************
@@ -9206,10 +11039,6 @@ void spline2ddiff(const spline2dinterpolant &c, const double x, const double y, 
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
-    {
-        throw;
-    }
 }
 
 /*************************************************************************
@@ -9238,10 +11067,6 @@ void spline2dlintransxy(const spline2dinterpolant &c, const double ax, const dou
     catch(alglib_impl::ae_error_type)
     {
         throw ap_error(_alglib_env_state.error_msg);
-    }
-    catch(...)
-    {
-        throw;
     }
 }
 
@@ -9272,10 +11097,6 @@ void spline2dlintransf(const spline2dinterpolant &c, const double a, const doubl
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
-    {
-        throw;
-    }
 }
 
 /*************************************************************************
@@ -9303,10 +11124,6 @@ void spline2dcopy(const spline2dinterpolant &c, spline2dinterpolant &cc)
     catch(alglib_impl::ae_error_type)
     {
         throw ap_error(_alglib_env_state.error_msg);
-    }
-    catch(...)
-    {
-        throw;
     }
 }
 
@@ -9343,10 +11160,6 @@ void spline2dresamplebicubic(const real_2d_array &a, const ae_int_t oldheight, c
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
-    {
-        throw;
-    }
 }
 
 /*************************************************************************
@@ -9381,10 +11194,6 @@ void spline2dresamplebilinear(const real_2d_array &a, const ae_int_t oldheight, 
     catch(alglib_impl::ae_error_type)
     {
         throw ap_error(_alglib_env_state.error_msg);
-    }
-    catch(...)
-    {
-        throw;
     }
 }
 
@@ -9422,10 +11231,6 @@ void spline2dbuildbilinearv(const real_1d_array &x, const ae_int_t n, const real
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
-    {
-        throw;
-    }
 }
 
 /*************************************************************************
@@ -9462,10 +11267,6 @@ void spline2dbuildbicubicv(const real_1d_array &x, const ae_int_t n, const real_
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
-    {
-        throw;
-    }
 }
 
 /*************************************************************************
@@ -9498,10 +11299,6 @@ void spline2dcalcvbuf(const spline2dinterpolant &c, const double x, const double
     catch(alglib_impl::ae_error_type)
     {
         throw ap_error(_alglib_env_state.error_msg);
-    }
-    catch(...)
-    {
-        throw;
     }
 }
 
@@ -9536,10 +11333,6 @@ void spline2dcalcv(const spline2dinterpolant &c, const double x, const double y,
     catch(alglib_impl::ae_error_type)
     {
         throw ap_error(_alglib_env_state.error_msg);
-    }
-    catch(...)
-    {
-        throw;
     }
 }
 
@@ -9595,10 +11388,6 @@ void spline2dunpackv(const spline2dinterpolant &c, ae_int_t &m, ae_int_t &n, ae_
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
-    {
-        throw;
-    }
 }
 
 /*************************************************************************
@@ -9623,10 +11412,6 @@ void spline2dbuildbilinear(const real_1d_array &x, const real_1d_array &y, const
     catch(alglib_impl::ae_error_type)
     {
         throw ap_error(_alglib_env_state.error_msg);
-    }
-    catch(...)
-    {
-        throw;
     }
 }
 
@@ -9653,10 +11438,6 @@ void spline2dbuildbicubic(const real_1d_array &x, const real_1d_array &y, const 
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
-    {
-        throw;
-    }
 }
 
 /*************************************************************************
@@ -9682,10 +11463,6 @@ void spline2dunpack(const spline2dinterpolant &c, ae_int_t &m, ae_int_t &n, real
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
-    {
-        throw;
-    }
 }
 
 /*************************************************************************
@@ -9696,8 +11473,7 @@ _spline3dinterpolant_owner::_spline3dinterpolant_owner()
     p_struct = (alglib_impl::spline3dinterpolant*)alglib_impl::ae_malloc(sizeof(alglib_impl::spline3dinterpolant), NULL);
     if( p_struct==NULL )
         throw ap_error("ALGLIB: malloc error");
-    if( !alglib_impl::_spline3dinterpolant_init(p_struct, NULL, ae_false) )
-        throw ap_error("ALGLIB: malloc error");
+    alglib_impl::_spline3dinterpolant_init(p_struct, NULL);
 }
 
 _spline3dinterpolant_owner::_spline3dinterpolant_owner(const _spline3dinterpolant_owner &rhs)
@@ -9705,8 +11481,7 @@ _spline3dinterpolant_owner::_spline3dinterpolant_owner(const _spline3dinterpolan
     p_struct = (alglib_impl::spline3dinterpolant*)alglib_impl::ae_malloc(sizeof(alglib_impl::spline3dinterpolant), NULL);
     if( p_struct==NULL )
         throw ap_error("ALGLIB: malloc error");
-    if( !alglib_impl::_spline3dinterpolant_init_copy(p_struct, const_cast<alglib_impl::spline3dinterpolant*>(rhs.p_struct), NULL, ae_false) )
-        throw ap_error("ALGLIB: malloc error");
+    alglib_impl::_spline3dinterpolant_init_copy(p_struct, const_cast<alglib_impl::spline3dinterpolant*>(rhs.p_struct), NULL);
 }
 
 _spline3dinterpolant_owner& _spline3dinterpolant_owner::operator=(const _spline3dinterpolant_owner &rhs)
@@ -9714,8 +11489,7 @@ _spline3dinterpolant_owner& _spline3dinterpolant_owner::operator=(const _spline3
     if( this==&rhs )
         return *this;
     alglib_impl::_spline3dinterpolant_clear(p_struct);
-    if( !alglib_impl::_spline3dinterpolant_init_copy(p_struct, const_cast<alglib_impl::spline3dinterpolant*>(rhs.p_struct), NULL, ae_false) )
-        throw ap_error("ALGLIB: malloc error");
+    alglib_impl::_spline3dinterpolant_init_copy(p_struct, const_cast<alglib_impl::spline3dinterpolant*>(rhs.p_struct), NULL);
     return *this;
 }
 
@@ -9784,10 +11558,6 @@ double spline3dcalc(const spline3dinterpolant &c, const double x, const double y
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
-    {
-        throw;
-    }
 }
 
 /*************************************************************************
@@ -9819,10 +11589,6 @@ void spline3dlintransxyz(const spline3dinterpolant &c, const double ax, const do
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
-    {
-        throw;
-    }
 }
 
 /*************************************************************************
@@ -9851,10 +11617,6 @@ void spline3dlintransf(const spline3dinterpolant &c, const double a, const doubl
     catch(alglib_impl::ae_error_type)
     {
         throw ap_error(_alglib_env_state.error_msg);
-    }
-    catch(...)
-    {
-        throw;
     }
 }
 
@@ -9907,10 +11669,6 @@ void spline3dresampletrilinear(const real_1d_array &a, const ae_int_t oldzcount,
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
-    {
-        throw;
-    }
 }
 
 /*************************************************************************
@@ -9959,10 +11717,6 @@ void spline3dbuildtrilinearv(const real_1d_array &x, const ae_int_t n, const rea
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
-    {
-        throw;
-    }
 }
 
 /*************************************************************************
@@ -9996,10 +11750,6 @@ void spline3dcalcvbuf(const spline3dinterpolant &c, const double x, const double
     catch(alglib_impl::ae_error_type)
     {
         throw ap_error(_alglib_env_state.error_msg);
-    }
-    catch(...)
-    {
-        throw;
     }
 }
 
@@ -10035,10 +11785,6 @@ void spline3dcalcv(const spline3dinterpolant &c, const double x, const double y,
     catch(alglib_impl::ae_error_type)
     {
         throw ap_error(_alglib_env_state.error_msg);
-    }
-    catch(...)
-    {
-        throw;
     }
 }
 
@@ -10104,10 +11850,6 @@ void spline3dunpackv(const spline3dinterpolant &c, ae_int_t &n, ae_int_t &m, ae_
     catch(alglib_impl::ae_error_type)
     {
         throw ap_error(_alglib_env_state.error_msg);
-    }
-    catch(...)
-    {
-        throw;
     }
 }
 }
@@ -10211,7 +11953,32 @@ static double spline1d_rescaleval(double a0,
      ae_state *_state);
 
 
-static ae_int_t lsfit_rfsmax = 10;
+static void lsfit_rdpanalyzesection(/* Real    */ ae_vector* x,
+     /* Real    */ ae_vector* y,
+     ae_int_t i0,
+     ae_int_t i1,
+     ae_int_t* worstidx,
+     double* worsterror,
+     ae_state *_state);
+static void lsfit_rdprecursive(/* Real    */ ae_vector* x,
+     /* Real    */ ae_vector* y,
+     ae_int_t i0,
+     ae_int_t i1,
+     double eps,
+     /* Real    */ ae_vector* xout,
+     /* Real    */ ae_vector* yout,
+     ae_int_t* nout,
+     ae_state *_state);
+static void lsfit_logisticfitinternal(/* Real    */ ae_vector* x,
+     /* Real    */ ae_vector* y,
+     ae_int_t n,
+     ae_bool is4pl,
+     double lambdav,
+     minlmstate* state,
+     minlmreport* replm,
+     /* Real    */ ae_vector* p1,
+     double* flast,
+     ae_state *_state);
 static void lsfit_spline1dfitinternal(ae_int_t st,
      /* Real    */ ae_vector* x,
      /* Real    */ ae_vector* y,
@@ -10268,17 +12035,37 @@ static void lsfit_barycentricfitwcfixedd(/* Real    */ ae_vector* x,
      barycentricinterpolant* b,
      barycentricfitreport* rep,
      ae_state *_state);
+static void lsfit_clearreport(lsfitreport* rep, ae_state *_state);
+static void lsfit_estimateerrors(/* Real    */ ae_matrix* f1,
+     /* Real    */ ae_vector* f0,
+     /* Real    */ ae_vector* y,
+     /* Real    */ ae_vector* w,
+     /* Real    */ ae_vector* x,
+     /* Real    */ ae_vector* s,
+     ae_int_t n,
+     ae_int_t k,
+     lsfitreport* rep,
+     /* Real    */ ae_matrix* z,
+     ae_int_t zkind,
+     ae_state *_state);
 
 
-static void pspline_pspline2par(/* Real    */ ae_matrix* xy,
+static void parametric_pspline2par(/* Real    */ ae_matrix* xy,
      ae_int_t n,
      ae_int_t pt,
      /* Real    */ ae_vector* p,
      ae_state *_state);
-static void pspline_pspline3par(/* Real    */ ae_matrix* xy,
+static void parametric_pspline3par(/* Real    */ ae_matrix* xy,
      ae_int_t n,
      ae_int_t pt,
      /* Real    */ ae_vector* p,
+     ae_state *_state);
+static void parametric_rdpanalyzesectionpar(/* Real    */ ae_matrix* xy,
+     ae_int_t i0,
+     ae_int_t i1,
+     ae_int_t d,
+     ae_int_t* worstidx,
+     double* worsterror,
      ae_state *_state);
 
 
@@ -10288,13 +12075,7 @@ static double rbf_rbffarradius = 6;
 static double rbf_rbfnearradius = 2.1;
 static double rbf_rbfmlradius = 3;
 static ae_int_t rbf_rbffirstversion = 0;
-static void rbf_rbfgridregular(rbfmodel* s, double h, ae_state *_state);
 static void rbf_rbfgridpoints(rbfmodel* s, ae_state *_state);
-static void rbf_rbfgridspecial(rbfmodel* s,
-     /* Real    */ ae_matrix* cxy,
-     ae_int_t nc,
-     ae_state *_state);
-static void rbf_rbfradfixed(rbfmodel* s, double r, ae_state *_state);
 static void rbf_rbfradnn(rbfmodel* s,
      double q,
      double z,
@@ -10390,7 +12171,6 @@ double idwcalc(idwinterpolant* z,
      /* Real    */ ae_vector* x,
      ae_state *_state)
 {
-    ae_int_t nx;
     ae_int_t i;
     ae_int_t k;
     double r;
@@ -10419,7 +12199,6 @@ double idwcalc(idwinterpolant* z,
         /*
          * NQ/NW-based model
          */
-        nx = z->nx;
         k = kdtreequeryknn(&z->tree, x, z->nw, ae_true, _state);
         kdtreequeryresultsdistances(&z->tree, &z->rbuf, _state);
         kdtreequeryresultstags(&z->tree, &z->tbuf, _state);
@@ -10430,7 +12209,6 @@ double idwcalc(idwinterpolant* z,
         /*
          * R-based model
          */
-        nx = z->nx;
         k = kdtreequeryrnn(&z->tree, x, z->r, ae_true, _state);
         kdtreequeryresultsdistances(&z->tree, &z->rbuf, _state);
         kdtreequeryresultstags(&z->tree, &z->tbuf, _state);
@@ -10464,8 +12242,8 @@ double idwcalc(idwinterpolant* z,
      */
     r = z->rbuf.ptr.p_double[k-1];
     d0 = z->rbuf.ptr.p_double[0];
-    result = 0;
-    s = 0;
+    result = (double)(0);
+    s = (double)(0);
     for(i=0; i<=k-1; i++)
     {
         di = z->rbuf.ptr.p_double[i];
@@ -10478,7 +12256,7 @@ double idwcalc(idwinterpolant* z,
              * us same result, but 'll expose us to the risk of
              * division by zero).
              */
-            w = 1;
+            w = (double)(1);
         }
         else
         {
@@ -10591,15 +12369,15 @@ void idwbuildmodifiedshepard(/* Real    */ ae_matrix* xy,
 
     ae_frame_make(_state, &_frame_block);
     _idwinterpolant_clear(z);
-    ae_vector_init(&x, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&qrbuf, 0, DT_REAL, _state, ae_true);
-    ae_matrix_init(&qxybuf, 0, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&y, 0, DT_REAL, _state, ae_true);
-    ae_matrix_init(&fmatrix, 0, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&w, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&qsol, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&temp, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&tags, 0, DT_INT, _state, ae_true);
+    ae_vector_init(&x, 0, DT_REAL, _state);
+    ae_vector_init(&qrbuf, 0, DT_REAL, _state);
+    ae_matrix_init(&qxybuf, 0, 0, DT_REAL, _state);
+    ae_vector_init(&y, 0, DT_REAL, _state);
+    ae_matrix_init(&fmatrix, 0, 0, DT_REAL, _state);
+    ae_vector_init(&w, 0, DT_REAL, _state);
+    ae_vector_init(&qsol, 0, DT_REAL, _state);
+    ae_vector_init(&temp, 0, DT_REAL, _state);
+    ae_vector_init(&tags, 0, DT_INT, _state);
 
     
     /*
@@ -10621,14 +12399,14 @@ void idwbuildmodifiedshepard(/* Real    */ ae_matrix* xy,
     if( d==1 )
     {
         nq = ae_maxint(nq, ae_iceil(idwint_idwqfactor*(1+nx), _state)+1, _state);
-        nq = ae_maxint(nq, ae_round(ae_pow(2, nx, _state), _state)+1, _state);
+        nq = ae_maxint(nq, ae_round(ae_pow((double)(2), (double)(nx), _state), _state)+1, _state);
     }
     if( d==2 )
     {
         nq = ae_maxint(nq, ae_iceil(idwint_idwqfactor*(nx+2)*(nx+1)/2, _state)+1, _state);
-        nq = ae_maxint(nq, ae_round(ae_pow(2, nx, _state), _state)+1, _state);
+        nq = ae_maxint(nq, ae_round(ae_pow((double)(2), (double)(nx), _state), _state)+1, _state);
     }
-    nw = ae_maxint(nw, ae_round(ae_pow(2, nx, _state), _state)+1, _state);
+    nw = ae_maxint(nw, ae_round(ae_pow((double)(2), (double)(nx), _state), _state)+1, _state);
     nq = ae_minint(nq, n, _state);
     nw = ae_minint(nw, n, _state);
     
@@ -10731,7 +12509,7 @@ void idwbuildmodifiedshepard(/* Real    */ ae_matrix* xy,
                  * us same result, but 'll expose us to the risk of
                  * division by zero).
                  */
-                w.ptr.p_double[j] = 1;
+                w.ptr.p_double[j] = (double)(1);
             }
             else
             {
@@ -10757,9 +12535,9 @@ void idwbuildmodifiedshepard(/* Real    */ ae_matrix* xy,
              */
             for(j=0; j<=nx-1; j++)
             {
-                x.ptr.p_double[j] = 0;
+                x.ptr.p_double[j] = (double)(0);
             }
-            s = 0;
+            s = (double)(0);
             for(j=0; j<=k-1; j++)
             {
                 
@@ -10768,7 +12546,7 @@ void idwbuildmodifiedshepard(/* Real    */ ae_matrix* xy,
                  *     grad_k = (y_j-y_k)*(x_j-x_k)/sqr(norm(x_j-x_k))
                  *     grad   = sum(wk*grad_k)/sum(w_k)
                  */
-                v = 0;
+                v = (double)(0);
                 for(j2=0; j2<=nx-1; j2++)
                 {
                     v = v+ae_sqr(qxybuf.ptr.pp_double[j][j2]-xy->ptr.pp_double[i][j2], _state);
@@ -10779,7 +12557,7 @@ void idwbuildmodifiedshepard(/* Real    */ ae_matrix* xy,
                  * underflow. If it is, we assume than J-th gradient is zero
                  * (i.e. don't add anything)
                  */
-                if( ae_fp_neq(v,0) )
+                if( ae_fp_neq(v,(double)(0)) )
                 {
                     for(j2=0; j2<=nx-1; j2++)
                     {
@@ -10871,7 +12649,7 @@ void idwbuildmodifiedshepard(/* Real    */ ae_matrix* xy,
                 z->debugsolverfailures = z->debugsolverfailures+1;
                 for(j=0; j<=nc-1; j++)
                 {
-                    z->q.ptr.pp_double[i][nx+1+j] = 0;
+                    z->q.ptr.pp_double[i][nx+1+j] = (double)(0);
                 }
             }
         }
@@ -10920,7 +12698,7 @@ void idwbuildmodifiedshepardr(/* Real    */ ae_matrix* xy,
 
     ae_frame_make(_state, &_frame_block);
     _idwinterpolant_clear(z);
-    ae_vector_init(&tags, 0, DT_INT, _state, ae_true);
+    ae_vector_init(&tags, 0, DT_INT, _state);
 
     
     /*
@@ -10928,7 +12706,7 @@ void idwbuildmodifiedshepardr(/* Real    */ ae_matrix* xy,
      */
     ae_assert(n>0, "IDWBuildModifiedShepardR: N<=0!", _state);
     ae_assert(nx>=1, "IDWBuildModifiedShepardR: NX<1!", _state);
-    ae_assert(ae_fp_greater(r,0), "IDWBuildModifiedShepardR: R<=0!", _state);
+    ae_assert(ae_fp_greater(r,(double)(0)), "IDWBuildModifiedShepardR: R<=0!", _state);
     
     /*
      * primary initialization of Z
@@ -11053,15 +12831,15 @@ void idwbuildnoisy(/* Real    */ ae_matrix* xy,
 
     ae_frame_make(_state, &_frame_block);
     _idwinterpolant_clear(z);
-    ae_vector_init(&x, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&qrbuf, 0, DT_REAL, _state, ae_true);
-    ae_matrix_init(&qxybuf, 0, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&y, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&w, 0, DT_REAL, _state, ae_true);
-    ae_matrix_init(&fmatrix, 0, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&qsol, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&tags, 0, DT_INT, _state, ae_true);
-    ae_vector_init(&temp, 0, DT_REAL, _state, ae_true);
+    ae_vector_init(&x, 0, DT_REAL, _state);
+    ae_vector_init(&qrbuf, 0, DT_REAL, _state);
+    ae_matrix_init(&qxybuf, 0, 0, DT_REAL, _state);
+    ae_vector_init(&y, 0, DT_REAL, _state);
+    ae_vector_init(&w, 0, DT_REAL, _state);
+    ae_matrix_init(&fmatrix, 0, 0, DT_REAL, _state);
+    ae_vector_init(&qsol, 0, DT_REAL, _state);
+    ae_vector_init(&tags, 0, DT_INT, _state);
+    ae_vector_init(&temp, 0, DT_REAL, _state);
 
     
     /*
@@ -11088,7 +12866,7 @@ void idwbuildnoisy(/* Real    */ ae_matrix* xy,
     {
         nq = ae_maxint(nq, ae_iceil(idwint_idwqfactor*(nx+2)*(nx+1)/2, _state)+1, _state);
     }
-    nw = ae_maxint(nw, ae_round(ae_pow(2, nx, _state), _state)+1, _state);
+    nw = ae_maxint(nw, ae_round(ae_pow((double)(2), (double)(nx), _state), _state)+1, _state);
     nq = ae_minint(nq, n, _state);
     nw = ae_minint(nw, n, _state);
     
@@ -11176,7 +12954,7 @@ void idwbuildnoisy(/* Real    */ ae_matrix* xy,
                     fmatrix.ptr.pp_double[j][1+j2] = qxybuf.ptr.pp_double[j][j2]-xy->ptr.pp_double[i][j2];
                 }
                 y.ptr.p_double[j] = qxybuf.ptr.pp_double[j][nx];
-                w.ptr.p_double[j] = 1;
+                w.ptr.p_double[j] = (double)(1);
             }
             nc = 1+nx;
         }
@@ -11189,7 +12967,7 @@ void idwbuildnoisy(/* Real    */ ae_matrix* xy,
              */
             for(j=0; j<=k-1; j++)
             {
-                fmatrix.ptr.pp_double[j][0] = 1;
+                fmatrix.ptr.pp_double[j][0] = (double)(1);
                 offs = 1;
                 for(j2=0; j2<=nx-1; j2++)
                 {
@@ -11205,7 +12983,7 @@ void idwbuildnoisy(/* Real    */ ae_matrix* xy,
                     }
                 }
                 y.ptr.p_double[j] = qxybuf.ptr.pp_double[j][nx];
-                w.ptr.p_double[j] = 1;
+                w.ptr.p_double[j] = (double)(1);
             }
             nc = 1+nx+ae_round(nx*(nx+1)*0.5, _state);
         }
@@ -11235,7 +13013,7 @@ void idwbuildnoisy(/* Real    */ ae_matrix* xy,
              * zero values to handle it.
              */
             z->debugsolverfailures = z->debugsolverfailures+1;
-            v = 0;
+            v = (double)(0);
             for(j=0; j<=k-1; j++)
             {
                 v = v+qxybuf.ptr.pp_double[j][nx];
@@ -11243,7 +13021,7 @@ void idwbuildnoisy(/* Real    */ ae_matrix* xy,
             z->q.ptr.pp_double[i][nx] = v/k;
             for(j=0; j<=nc-2; j++)
             {
-                z->q.ptr.pp_double[i][nx+1+j] = 0;
+                z->q.ptr.pp_double[i][nx+1+j] = (double)(0);
             }
         }
     }
@@ -11326,7 +13104,7 @@ static void idwint_idwinit1(ae_int_t n,
 
     z->debugsolverfailures = 0;
     z->debugworstrcond = 1.0;
-    z->debugbestrcond = 0;
+    z->debugbestrcond = (double)(0);
     z->n = n;
     z->nx = nx;
     z->d = 0;
@@ -11402,8 +13180,8 @@ static void idwint_idwinternalsolver(/* Real    */ ae_vector* y,
 
     ae_frame_make(_state, &_frame_block);
     *info = 0;
-    ae_vector_init(&b, 0, DT_REAL, _state, ae_true);
-    _densesolverlsreport_init(&srep, _state, ae_true);
+    ae_vector_init(&b, 0, DT_REAL, _state);
+    _densesolverlsreport_init(&srep, _state);
 
     
     /*
@@ -11438,7 +13216,7 @@ static void idwint_idwinternalsolver(/* Real    */ ae_vector* y,
                 ae_v_move(&temp->ptr.p_double[1], 1, &fmatrix->ptr.pp_double[i][i], fmatrix->stride, ae_v_len(1,n-i));
                 generatereflection(temp, n-i, &tau, _state);
                 fmatrix->ptr.pp_double[i][i] = temp->ptr.p_double[1];
-                temp->ptr.p_double[1] = 1;
+                temp->ptr.p_double[1] = (double)(1);
                 for(j=i+1; j<=m; j++)
                 {
                     v = ae_v_dotproduct(&fmatrix->ptr.pp_double[i][j], fmatrix->stride, &temp->ptr.p_double[1], 1, ae_v_len(i,n-1));
@@ -11507,59 +13285,64 @@ static void idwint_idwinternalsolver(/* Real    */ ae_vector* y,
 }
 
 
-ae_bool _idwinterpolant_init(idwinterpolant* p, ae_state *_state, ae_bool make_automatic)
+void _idwinterpolant_init(void* _p, ae_state *_state)
 {
-    if( !_kdtree_init(&p->tree, _state, make_automatic) )
-        return ae_false;
-    if( !ae_matrix_init(&p->q, 0, 0, DT_REAL, _state, make_automatic) )
-        return ae_false;
-    if( !ae_vector_init(&p->xbuf, 0, DT_REAL, _state, make_automatic) )
-        return ae_false;
-    if( !ae_vector_init(&p->tbuf, 0, DT_INT, _state, make_automatic) )
-        return ae_false;
-    if( !ae_vector_init(&p->rbuf, 0, DT_REAL, _state, make_automatic) )
-        return ae_false;
-    if( !ae_matrix_init(&p->xybuf, 0, 0, DT_REAL, _state, make_automatic) )
-        return ae_false;
-    return ae_true;
+    idwinterpolant *p = (idwinterpolant*)_p;
+    ae_touch_ptr((void*)p);
+    _kdtree_init(&p->tree, _state);
+    ae_matrix_init(&p->q, 0, 0, DT_REAL, _state);
+    ae_vector_init(&p->xbuf, 0, DT_REAL, _state);
+    ae_vector_init(&p->tbuf, 0, DT_INT, _state);
+    ae_vector_init(&p->rbuf, 0, DT_REAL, _state);
+    ae_matrix_init(&p->xybuf, 0, 0, DT_REAL, _state);
 }
 
 
-ae_bool _idwinterpolant_init_copy(idwinterpolant* dst, idwinterpolant* src, ae_state *_state, ae_bool make_automatic)
+void _idwinterpolant_init_copy(void* _dst, void* _src, ae_state *_state)
 {
+    idwinterpolant *dst = (idwinterpolant*)_dst;
+    idwinterpolant *src = (idwinterpolant*)_src;
     dst->n = src->n;
     dst->nx = src->nx;
     dst->d = src->d;
     dst->r = src->r;
     dst->nw = src->nw;
-    if( !_kdtree_init_copy(&dst->tree, &src->tree, _state, make_automatic) )
-        return ae_false;
+    _kdtree_init_copy(&dst->tree, &src->tree, _state);
     dst->modeltype = src->modeltype;
-    if( !ae_matrix_init_copy(&dst->q, &src->q, _state, make_automatic) )
-        return ae_false;
-    if( !ae_vector_init_copy(&dst->xbuf, &src->xbuf, _state, make_automatic) )
-        return ae_false;
-    if( !ae_vector_init_copy(&dst->tbuf, &src->tbuf, _state, make_automatic) )
-        return ae_false;
-    if( !ae_vector_init_copy(&dst->rbuf, &src->rbuf, _state, make_automatic) )
-        return ae_false;
-    if( !ae_matrix_init_copy(&dst->xybuf, &src->xybuf, _state, make_automatic) )
-        return ae_false;
+    ae_matrix_init_copy(&dst->q, &src->q, _state);
+    ae_vector_init_copy(&dst->xbuf, &src->xbuf, _state);
+    ae_vector_init_copy(&dst->tbuf, &src->tbuf, _state);
+    ae_vector_init_copy(&dst->rbuf, &src->rbuf, _state);
+    ae_matrix_init_copy(&dst->xybuf, &src->xybuf, _state);
     dst->debugsolverfailures = src->debugsolverfailures;
     dst->debugworstrcond = src->debugworstrcond;
     dst->debugbestrcond = src->debugbestrcond;
-    return ae_true;
 }
 
 
-void _idwinterpolant_clear(idwinterpolant* p)
+void _idwinterpolant_clear(void* _p)
 {
+    idwinterpolant *p = (idwinterpolant*)_p;
+    ae_touch_ptr((void*)p);
     _kdtree_clear(&p->tree);
     ae_matrix_clear(&p->q);
     ae_vector_clear(&p->xbuf);
     ae_vector_clear(&p->tbuf);
     ae_vector_clear(&p->rbuf);
     ae_matrix_clear(&p->xybuf);
+}
+
+
+void _idwinterpolant_destroy(void* _p)
+{
+    idwinterpolant *p = (idwinterpolant*)_p;
+    ae_touch_ptr((void*)p);
+    _kdtree_destroy(&p->tree);
+    ae_matrix_destroy(&p->q);
+    ae_vector_destroy(&p->xbuf);
+    ae_vector_destroy(&p->tbuf);
+    ae_vector_destroy(&p->rbuf);
+    ae_matrix_destroy(&p->xybuf);
 }
 
 
@@ -11634,8 +13417,8 @@ double barycentriccalc(barycentricinterpolant* b,
             s = v;
         }
     }
-    s1 = 0;
-    s2 = 0;
+    s1 = (double)(0);
+    s2 = (double)(0);
     for(i=0; i<=b->n-1; i++)
     {
         v = s/(t-b->x.ptr.p_double[i]);
@@ -11717,16 +13500,16 @@ void barycentricdiff1(barycentricinterpolant* b,
     if( b->n==1 )
     {
         *f = b->sy*b->y.ptr.p_double[0];
-        *df = 0;
+        *df = (double)(0);
         return;
     }
-    if( ae_fp_eq(b->sy,0) )
+    if( ae_fp_eq(b->sy,(double)(0)) )
     {
-        *f = 0;
-        *df = 0;
+        *f = (double)(0);
+        *df = (double)(0);
         return;
     }
-    ae_assert(ae_fp_greater(b->sy,0), "BarycentricDiff1: internal error", _state);
+    ae_assert(ae_fp_greater(b->sy,(double)(0)), "BarycentricDiff1: internal error", _state);
     
     /*
      * We assume than N>1 and B.SY>0. Find:
@@ -11754,19 +13537,19 @@ void barycentricdiff1(barycentricinterpolant* b,
      */
     xscale1 = 1/(xmax-xmin);
     xoffs1 = -xmin/(xmax-xmin)+1;
-    xscale2 = 2;
-    xoffs2 = -3;
+    xscale2 = (double)(2);
+    xoffs2 = (double)(-3);
     t = t*xscale1+xoffs1;
     t = t*xscale2+xoffs2;
     xk = b->x.ptr.p_double[k];
     xk = xk*xscale1+xoffs1;
     xk = xk*xscale2+xoffs2;
     v = t-xk;
-    n0 = 0;
-    n1 = 0;
-    d0 = 0;
-    d1 = 0;
-    xprev = -2;
+    n0 = (double)(0);
+    n1 = (double)(0);
+    d0 = (double)(0);
+    d1 = (double)(0);
+    xprev = (double)(-2);
     for(i=0; i<=b->n-1; i++)
     {
         xi = b->x.ptr.p_double[i];
@@ -11782,8 +13565,8 @@ void barycentricdiff1(barycentricinterpolant* b,
         }
         else
         {
-            s0 = 1;
-            s1 = 0;
+            s0 = (double)(1);
+            s1 = (double)(0);
         }
         vv = b->w.ptr.p_double[i]*b->y.ptr.p_double[i];
         n0 = n0+s0*vv;
@@ -11794,7 +13577,7 @@ void barycentricdiff1(barycentricinterpolant* b,
     }
     *f = b->sy*n0/d0;
     *df = (n1*d0-n0*d1)/ae_sqr(d0, _state);
-    if( ae_fp_neq(*df,0) )
+    if( ae_fp_neq(*df,(double)(0)) )
     {
         *df = ae_sign(*df, _state)*ae_exp(ae_log(ae_fabs(*df, _state), _state)+ae_log(b->sy, _state)+ae_log(xscale1, _state)+ae_log(xscale2, _state), _state);
     }
@@ -11868,15 +13651,15 @@ void barycentricdiff2(barycentricinterpolant* b,
     if( b->n==1 )
     {
         *f = b->sy*b->y.ptr.p_double[0];
-        *df = 0;
-        *d2f = 0;
+        *df = (double)(0);
+        *d2f = (double)(0);
         return;
     }
-    if( ae_fp_eq(b->sy,0) )
+    if( ae_fp_eq(b->sy,(double)(0)) )
     {
-        *f = 0;
-        *df = 0;
-        *d2f = 0;
+        *f = (double)(0);
+        *df = (double)(0);
+        *d2f = (double)(0);
         return;
     }
     
@@ -11885,10 +13668,10 @@ void barycentricdiff2(barycentricinterpolant* b,
      * 1. pivot point (X[i] closest to T)
      * 2. width of interval containing X[i]
      */
-    ae_assert(ae_fp_greater(b->sy,0), "BarycentricDiff: internal error", _state);
-    *f = 0;
-    *df = 0;
-    *d2f = 0;
+    ae_assert(ae_fp_greater(b->sy,(double)(0)), "BarycentricDiff: internal error", _state);
+    *f = (double)(0);
+    *df = (double)(0);
+    *d2f = (double)(0);
     v = ae_fabs(b->x.ptr.p_double[0]-t, _state);
     k = 0;
     for(i=1; i<=b->n-1; i++)
@@ -11906,12 +13689,12 @@ void barycentricdiff2(barycentricinterpolant* b,
      */
     xk = b->x.ptr.p_double[k];
     v = t-xk;
-    n0 = 0;
-    n1 = 0;
-    n2 = 0;
-    d0 = 0;
-    d1 = 0;
-    d2 = 0;
+    n0 = (double)(0);
+    n1 = (double)(0);
+    n2 = (double)(0);
+    d0 = (double)(0);
+    d1 = (double)(0);
+    d2 = (double)(0);
     for(i=0; i<=b->n-1; i++)
     {
         if( i!=k )
@@ -11924,9 +13707,9 @@ void barycentricdiff2(barycentricinterpolant* b,
         }
         else
         {
-            s0 = 1;
-            s1 = 0;
-            s2 = 0;
+            s0 = (double)(1);
+            s1 = (double)(0);
+            s2 = (double)(0);
         }
         vv = b->w.ptr.p_double[i]*b->y.ptr.p_double[i];
         n0 = n0+s0*vv;
@@ -11970,13 +13753,13 @@ void barycentriclintransx(barycentricinterpolant* b,
     /*
      * special case, replace by constant F(CB)
      */
-    if( ae_fp_eq(ca,0) )
+    if( ae_fp_eq(ca,(double)(0)) )
     {
         b->sy = barycentriccalc(b, cb, _state);
-        v = 1;
+        v = (double)(1);
         for(i=0; i<=b->n-1; i++)
         {
-            b->y.ptr.p_double[i] = 1;
+            b->y.ptr.p_double[i] = (double)(1);
             b->w.ptr.p_double[i] = v;
             v = -v;
         }
@@ -11990,7 +13773,7 @@ void barycentriclintransx(barycentricinterpolant* b,
     {
         b->x.ptr.p_double[i] = (b->x.ptr.p_double[i]-cb)/ca;
     }
-    if( ae_fp_less(ca,0) )
+    if( ae_fp_less(ca,(double)(0)) )
     {
         for(i=0; i<=b->n-1; i++)
         {
@@ -12043,12 +13826,12 @@ void barycentriclintransy(barycentricinterpolant* b,
     {
         b->y.ptr.p_double[i] = ca*b->sy*b->y.ptr.p_double[i]+cb;
     }
-    b->sy = 0;
+    b->sy = (double)(0);
     for(i=0; i<=b->n-1; i++)
     {
         b->sy = ae_maxreal(b->sy, ae_fabs(b->y.ptr.p_double[i], _state), _state);
     }
-    if( ae_fp_greater(b->sy,0) )
+    if( ae_fp_greater(b->sy,(double)(0)) )
     {
         v = 1/b->sy;
         ae_v_muld(&b->y.ptr.p_double[0], 1, ae_v_len(0,b->n-1), v);
@@ -12191,10 +13974,10 @@ void barycentricbuildfloaterhormann(/* Real    */ ae_vector* x,
 
     ae_frame_make(_state, &_frame_block);
     _barycentricinterpolant_clear(b);
-    ae_vector_init(&perm, 0, DT_INT, _state, ae_true);
-    ae_vector_init(&wtemp, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&sortrbuf, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&sortrbuf2, 0, DT_REAL, _state, ae_true);
+    ae_vector_init(&perm, 0, DT_INT, _state);
+    ae_vector_init(&wtemp, 0, DT_REAL, _state);
+    ae_vector_init(&sortrbuf, 0, DT_REAL, _state);
+    ae_vector_init(&sortrbuf2, 0, DT_REAL, _state);
 
     ae_assert(n>0, "BarycentricFloaterHormann: N<=0!", _state);
     ae_assert(d>=0, "BarycentricFloaterHormann: incorrect D!", _state);
@@ -12218,7 +14001,7 @@ void barycentricbuildfloaterhormann(/* Real    */ ae_vector* x,
         ae_vector_set_length(&b->w, n, _state);
         b->x.ptr.p_double[0] = x->ptr.p_double[0];
         b->y.ptr.p_double[0] = y->ptr.p_double[0];
-        b->w.ptr.p_double[0] = 1;
+        b->w.ptr.p_double[0] = (double)(1);
         ratint_barycentricnormalize(b, _state);
         ae_frame_leave(_state);
         return;
@@ -12237,7 +14020,7 @@ void barycentricbuildfloaterhormann(/* Real    */ ae_vector* x,
      * Calculate Wk
      */
     ae_vector_set_length(&b->w, n, _state);
-    s0 = 1;
+    s0 = (double)(1);
     for(k=1; k<=d; k++)
     {
         s0 = -s0;
@@ -12248,10 +14031,10 @@ void barycentricbuildfloaterhormann(/* Real    */ ae_vector* x,
         /*
          * Wk
          */
-        s = 0;
+        s = (double)(0);
         for(i=ae_maxint(k-d, 0, _state); i<=ae_minint(k, n-1-d, _state); i++)
         {
-            v = 1;
+            v = (double)(1);
             for(j=i; j<=i+d; j++)
             {
                 if( j!=k )
@@ -12329,29 +14112,29 @@ static void ratint_barycentricnormalize(barycentricinterpolant* b,
     double v;
 
     ae_frame_make(_state, &_frame_block);
-    ae_vector_init(&p1, 0, DT_INT, _state, ae_true);
-    ae_vector_init(&p2, 0, DT_INT, _state, ae_true);
+    ae_vector_init(&p1, 0, DT_INT, _state);
+    ae_vector_init(&p2, 0, DT_INT, _state);
 
     
     /*
      * Normalize task: |Y|<=1, |W|<=1, sort X[]
      */
-    b->sy = 0;
+    b->sy = (double)(0);
     for(i=0; i<=b->n-1; i++)
     {
         b->sy = ae_maxreal(b->sy, ae_fabs(b->y.ptr.p_double[i], _state), _state);
     }
-    if( ae_fp_greater(b->sy,0)&&ae_fp_greater(ae_fabs(b->sy-1, _state),10*ae_machineepsilon) )
+    if( ae_fp_greater(b->sy,(double)(0))&&ae_fp_greater(ae_fabs(b->sy-1, _state),10*ae_machineepsilon) )
     {
         v = 1/b->sy;
         ae_v_muld(&b->y.ptr.p_double[0], 1, ae_v_len(0,b->n-1), v);
     }
-    v = 0;
+    v = (double)(0);
     for(i=0; i<=b->n-1; i++)
     {
         v = ae_maxreal(v, ae_fabs(b->w.ptr.p_double[i], _state), _state);
     }
-    if( ae_fp_greater(v,0)&&ae_fp_greater(ae_fabs(v-1, _state),10*ae_machineepsilon) )
+    if( ae_fp_greater(v,(double)(0))&&ae_fp_greater(ae_fabs(v-1, _state),10*ae_machineepsilon) )
     {
         v = 1/v;
         ae_v_muld(&b->w.ptr.p_double[0], 1, ae_v_len(0,b->n-1), v);
@@ -12378,37 +14161,45 @@ static void ratint_barycentricnormalize(barycentricinterpolant* b,
 }
 
 
-ae_bool _barycentricinterpolant_init(barycentricinterpolant* p, ae_state *_state, ae_bool make_automatic)
+void _barycentricinterpolant_init(void* _p, ae_state *_state)
 {
-    if( !ae_vector_init(&p->x, 0, DT_REAL, _state, make_automatic) )
-        return ae_false;
-    if( !ae_vector_init(&p->y, 0, DT_REAL, _state, make_automatic) )
-        return ae_false;
-    if( !ae_vector_init(&p->w, 0, DT_REAL, _state, make_automatic) )
-        return ae_false;
-    return ae_true;
+    barycentricinterpolant *p = (barycentricinterpolant*)_p;
+    ae_touch_ptr((void*)p);
+    ae_vector_init(&p->x, 0, DT_REAL, _state);
+    ae_vector_init(&p->y, 0, DT_REAL, _state);
+    ae_vector_init(&p->w, 0, DT_REAL, _state);
 }
 
 
-ae_bool _barycentricinterpolant_init_copy(barycentricinterpolant* dst, barycentricinterpolant* src, ae_state *_state, ae_bool make_automatic)
+void _barycentricinterpolant_init_copy(void* _dst, void* _src, ae_state *_state)
 {
+    barycentricinterpolant *dst = (barycentricinterpolant*)_dst;
+    barycentricinterpolant *src = (barycentricinterpolant*)_src;
     dst->n = src->n;
     dst->sy = src->sy;
-    if( !ae_vector_init_copy(&dst->x, &src->x, _state, make_automatic) )
-        return ae_false;
-    if( !ae_vector_init_copy(&dst->y, &src->y, _state, make_automatic) )
-        return ae_false;
-    if( !ae_vector_init_copy(&dst->w, &src->w, _state, make_automatic) )
-        return ae_false;
-    return ae_true;
+    ae_vector_init_copy(&dst->x, &src->x, _state);
+    ae_vector_init_copy(&dst->y, &src->y, _state);
+    ae_vector_init_copy(&dst->w, &src->w, _state);
 }
 
 
-void _barycentricinterpolant_clear(barycentricinterpolant* p)
+void _barycentricinterpolant_clear(void* _p)
 {
+    barycentricinterpolant *p = (barycentricinterpolant*)_p;
+    ae_touch_ptr((void*)p);
     ae_vector_clear(&p->x);
     ae_vector_clear(&p->y);
     ae_vector_clear(&p->w);
+}
+
+
+void _barycentricinterpolant_destroy(void* _p)
+{
+    barycentricinterpolant *p = (barycentricinterpolant*)_p;
+    ae_touch_ptr((void*)p);
+    ae_vector_destroy(&p->x);
+    ae_vector_destroy(&p->y);
+    ae_vector_destroy(&p->w);
 }
 
 
@@ -12455,10 +14246,10 @@ void polynomialbar2cheb(barycentricinterpolant* p,
 
     ae_frame_make(_state, &_frame_block);
     ae_vector_clear(t);
-    ae_vector_init(&vp, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&vx, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&tk, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&tk1, 0, DT_REAL, _state, ae_true);
+    ae_vector_init(&vp, 0, DT_REAL, _state);
+    ae_vector_init(&vx, 0, DT_REAL, _state);
+    ae_vector_init(&tk, 0, DT_REAL, _state);
+    ae_vector_init(&tk1, 0, DT_REAL, _state);
 
     ae_assert(ae_isfinite(a, _state), "PolynomialBar2Cheb: A is not finite!", _state);
     ae_assert(ae_isfinite(b, _state), "PolynomialBar2Cheb: B is not finite!", _state);
@@ -12480,7 +14271,7 @@ void polynomialbar2cheb(barycentricinterpolant* p,
      * T[0]
      */
     ae_vector_set_length(t, p->n, _state);
-    v = 0;
+    v = (double)(0);
     for(i=0; i<=p->n-1; i++)
     {
         v = v+vp.ptr.p_double[i];
@@ -12504,7 +14295,7 @@ void polynomialbar2cheb(barycentricinterpolant* p,
         for(i=0; i<=p->n-1; i++)
         {
             tk.ptr.p_double[i] = vx.ptr.p_double[i];
-            tk1.ptr.p_double[i] = 1;
+            tk1.ptr.p_double[i] = (double)(1);
         }
         for(k=1; k<=p->n-1; k++)
         {
@@ -12569,7 +14360,7 @@ void polynomialcheb2bar(/* Real    */ ae_vector* t,
 
     ae_frame_make(_state, &_frame_block);
     _barycentricinterpolant_clear(p);
-    ae_vector_init(&y, 0, DT_REAL, _state, ae_true);
+    ae_vector_init(&y, 0, DT_REAL, _state);
 
     ae_assert(ae_isfinite(a, _state), "PolynomialBar2Cheb: A is not finite!", _state);
     ae_assert(ae_isfinite(b, _state), "PolynomialBar2Cheb: B is not finite!", _state);
@@ -12590,7 +14381,7 @@ void polynomialcheb2bar(/* Real    */ ae_vector* t,
          */
         vx = ae_cos(ae_pi*(i+0.5)/n, _state);
         vy = t->ptr.p_double[0];
-        tk1 = 1;
+        tk1 = (double)(1);
         tk = vx;
         for(k=1; k<=n-1; k++)
         {
@@ -12667,36 +14458,94 @@ void polynomialbar2pow(barycentricinterpolant* p,
     ae_vector tk1;
     ae_vector t;
     double v;
+    double c0;
+    double s0;
+    double va;
+    double vb;
+    ae_vector vai;
+    ae_vector vbi;
+    double minx;
+    double maxx;
 
     ae_frame_make(_state, &_frame_block);
     ae_vector_clear(a);
-    ae_vector_init(&vp, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&vx, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&tk, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&tk1, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&t, 0, DT_REAL, _state, ae_true);
+    ae_vector_init(&vp, 0, DT_REAL, _state);
+    ae_vector_init(&vx, 0, DT_REAL, _state);
+    ae_vector_init(&tk, 0, DT_REAL, _state);
+    ae_vector_init(&tk1, 0, DT_REAL, _state);
+    ae_vector_init(&t, 0, DT_REAL, _state);
+    ae_vector_init(&vai, 0, DT_REAL, _state);
+    ae_vector_init(&vbi, 0, DT_REAL, _state);
 
+    
+    /*
+     * We have barycentric model built using set of points X[], and we
+     * want to convert it to power basis centered about point  C  with
+     * scale S: I-th basis function is ((X-C)/S)^i.
+     *
+     * We use following three-stage algorithm:
+     *
+     * 1. we build Chebyshev representation of polynomial using
+     *    intermediate center C0 and scale S0, which are derived from X[]:
+     *    C0 = 0.5*(min(X)+max(X)), S0 = 0.5*(max(X)-min(X)). Chebyshev
+     *    representation is built by sampling points around center C0,
+     *    with typical distance between them proportional to S0.
+     * 2. then we transform form Chebyshev basis to intermediate power
+     *    basis, using same center/scale C0/S0.
+     * 3. after that, we apply linear transformation to intermediate
+     *    power basis which moves it to final center/scale C/S.
+     *
+     * The idea of such multi-stage algorithm is that it is much easier to
+     * transform barycentric model to Chebyshev basis, and only later to
+     * power basis, than transforming it directly to power basis. It is
+     * also more numerically stable to sample points using intermediate C0/S0,
+     * which are derived from user-supplied model, than using "final" C/S,
+     * which may be unsuitable for sampling (say, if S=1, we may have stability
+     * problems when working with models built from dataset with non-unit
+     * scale of abscissas).
+     */
     ae_assert(ae_isfinite(c, _state), "PolynomialBar2Pow: C is not finite!", _state);
     ae_assert(ae_isfinite(s, _state), "PolynomialBar2Pow: S is not finite!", _state);
-    ae_assert(ae_fp_neq(s,0), "PolynomialBar2Pow: S=0!", _state);
+    ae_assert(ae_fp_neq(s,(double)(0)), "PolynomialBar2Pow: S=0!", _state);
     ae_assert(p->n>0, "PolynomialBar2Pow: P is not correctly initialized barycentric interpolant!", _state);
     
     /*
-     * Calculate function values on a Chebyshev grid
+     * Select intermediate center/scale
      */
-    ae_vector_set_length(&vp, p->n, _state);
+    minx = p->x.ptr.p_double[0];
+    maxx = p->x.ptr.p_double[0];
+    for(i=1; i<=p->n-1; i++)
+    {
+        minx = ae_minreal(minx, p->x.ptr.p_double[i], _state);
+        maxx = ae_maxreal(maxx, p->x.ptr.p_double[i], _state);
+    }
+    if( ae_fp_eq(minx,maxx) )
+    {
+        c0 = minx;
+        s0 = 1.0;
+    }
+    else
+    {
+        c0 = 0.5*(maxx+minx);
+        s0 = 0.5*(maxx-minx);
+    }
+    
+    /*
+     * Calculate function values on a Chebyshev grid using intermediate C0/S0
+     */
+    ae_vector_set_length(&vp, p->n+1, _state);
     ae_vector_set_length(&vx, p->n, _state);
     for(i=0; i<=p->n-1; i++)
     {
         vx.ptr.p_double[i] = ae_cos(ae_pi*(i+0.5)/p->n, _state);
-        vp.ptr.p_double[i] = barycentriccalc(p, s*vx.ptr.p_double[i]+c, _state);
+        vp.ptr.p_double[i] = barycentriccalc(p, s0*vx.ptr.p_double[i]+c0, _state);
     }
     
     /*
      * T[0]
      */
     ae_vector_set_length(&t, p->n, _state);
-    v = 0;
+    v = (double)(0);
     for(i=0; i<=p->n-1; i++)
     {
         v = v+vp.ptr.p_double[i];
@@ -12720,7 +14569,7 @@ void polynomialbar2pow(barycentricinterpolant* p,
         for(i=0; i<=p->n-1; i++)
         {
             tk.ptr.p_double[i] = vx.ptr.p_double[i];
-            tk1.ptr.p_double[i] = 1;
+            tk1.ptr.p_double[i] = (double)(1);
         }
         for(k=1; k<=p->n-1; k++)
         {
@@ -12749,18 +14598,18 @@ void polynomialbar2pow(barycentricinterpolant* p,
     ae_vector_set_length(a, p->n, _state);
     for(i=0; i<=p->n-1; i++)
     {
-        a->ptr.p_double[i] = 0;
+        a->ptr.p_double[i] = (double)(0);
     }
-    d = 0;
+    d = (double)(0);
     for(i=0; i<=p->n-1; i++)
     {
         for(k=i; k<=p->n-1; k++)
         {
             e = a->ptr.p_double[k];
-            a->ptr.p_double[k] = 0;
+            a->ptr.p_double[k] = (double)(0);
             if( i<=1&&k==i )
             {
-                a->ptr.p_double[k] = 1;
+                a->ptr.p_double[k] = (double)(1);
             }
             else
             {
@@ -12776,7 +14625,7 @@ void polynomialbar2pow(barycentricinterpolant* p,
             d = e;
         }
         d = a->ptr.p_double[i];
-        e = 0;
+        e = (double)(0);
         k = i;
         while(k<=p->n-1)
         {
@@ -12784,6 +14633,64 @@ void polynomialbar2pow(barycentricinterpolant* p,
             k = k+2;
         }
         a->ptr.p_double[i] = e;
+    }
+    
+    /*
+     * Apply linear transformation which converts basis from intermediate
+     * one Fi=((x-C0)/S0)^i to final one Fi=((x-C)/S)^i.
+     *
+     * We have y=(x-C0)/S0, z=(x-C)/S, and coefficients A[] for basis Fi(y).
+     * Because we have y=A*z+B, for A=s/s0 and B=c/s0-c0/s0, we can perform
+     * substitution and get coefficients A_new[] in basis Fi(z).
+     */
+    ae_assert(vp.cnt>=p->n+1, "PolynomialBar2Pow: internal error", _state);
+    ae_assert(t.cnt>=p->n, "PolynomialBar2Pow: internal error", _state);
+    for(i=0; i<=p->n-1; i++)
+    {
+        t.ptr.p_double[i] = 0.0;
+    }
+    va = s/s0;
+    vb = c/s0-c0/s0;
+    ae_vector_set_length(&vai, p->n, _state);
+    ae_vector_set_length(&vbi, p->n, _state);
+    vai.ptr.p_double[0] = (double)(1);
+    vbi.ptr.p_double[0] = (double)(1);
+    for(k=1; k<=p->n-1; k++)
+    {
+        vai.ptr.p_double[k] = vai.ptr.p_double[k-1]*va;
+        vbi.ptr.p_double[k] = vbi.ptr.p_double[k-1]*vb;
+    }
+    for(k=0; k<=p->n-1; k++)
+    {
+        
+        /*
+         * Generate set of binomial coefficients in VP[]
+         */
+        if( k>0 )
+        {
+            vp.ptr.p_double[k] = (double)(1);
+            for(i=k-1; i>=1; i--)
+            {
+                vp.ptr.p_double[i] = vp.ptr.p_double[i]+vp.ptr.p_double[i-1];
+            }
+            vp.ptr.p_double[0] = (double)(1);
+        }
+        else
+        {
+            vp.ptr.p_double[0] = (double)(1);
+        }
+        
+        /*
+         * Update T[] with expansion of K-th basis function
+         */
+        for(i=0; i<=k; i++)
+        {
+            t.ptr.p_double[i] = t.ptr.p_double[i]+a->ptr.p_double[k]*vai.ptr.p_double[i]*vbi.ptr.p_double[k-i]*vp.ptr.p_double[i];
+        }
+    }
+    for(k=0; k<=p->n-1; k++)
+    {
+        a->ptr.p_double[k] = t.ptr.p_double[k];
     }
     ae_frame_leave(_state);
 }
@@ -12842,11 +14749,11 @@ void polynomialpow2bar(/* Real    */ ae_vector* a,
 
     ae_frame_make(_state, &_frame_block);
     _barycentricinterpolant_clear(p);
-    ae_vector_init(&y, 0, DT_REAL, _state, ae_true);
+    ae_vector_init(&y, 0, DT_REAL, _state);
 
     ae_assert(ae_isfinite(c, _state), "PolynomialPow2Bar: C is not finite!", _state);
     ae_assert(ae_isfinite(s, _state), "PolynomialPow2Bar: S is not finite!", _state);
-    ae_assert(ae_fp_neq(s,0), "PolynomialPow2Bar: S is zero!", _state);
+    ae_assert(ae_fp_neq(s,(double)(0)), "PolynomialPow2Bar: S is zero!", _state);
     ae_assert(n>=1, "PolynomialPow2Bar: N<1", _state);
     ae_assert(a->cnt>=n, "PolynomialPow2Bar: Length(A)<N", _state);
     ae_assert(isfinitevector(a, n, _state), "PolynomialPow2Bar: A[] contains INF or NAN", _state);
@@ -12917,14 +14824,14 @@ void polynomialbuild(/* Real    */ ae_vector* x,
     ae_vector sortrbuf2;
 
     ae_frame_make(_state, &_frame_block);
-    ae_vector_init_copy(&_x, x, _state, ae_true);
+    ae_vector_init_copy(&_x, x, _state);
     x = &_x;
-    ae_vector_init_copy(&_y, y, _state, ae_true);
+    ae_vector_init_copy(&_y, y, _state);
     y = &_y;
     _barycentricinterpolant_clear(p);
-    ae_vector_init(&w, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&sortrbuf, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&sortrbuf2, 0, DT_REAL, _state, ae_true);
+    ae_vector_init(&w, 0, DT_REAL, _state);
+    ae_vector_init(&sortrbuf, 0, DT_REAL, _state);
+    ae_vector_init(&sortrbuf2, 0, DT_REAL, _state);
 
     ae_assert(n>0, "PolynomialBuild: N<=0!", _state);
     ae_assert(x->cnt>=n, "PolynomialBuild: Length(X)<N!", _state);
@@ -12943,7 +14850,7 @@ void polynomialbuild(/* Real    */ ae_vector* x,
     b = x->ptr.p_double[0];
     for(j=0; j<=n-1; j++)
     {
-        w.ptr.p_double[j] = 1;
+        w.ptr.p_double[j] = (double)(1);
         a = ae_minreal(a, x->ptr.p_double[j], _state);
         b = ae_maxreal(b, x->ptr.p_double[j], _state);
     }
@@ -13014,8 +14921,8 @@ void polynomialbuildeqdist(double a,
 
     ae_frame_make(_state, &_frame_block);
     _barycentricinterpolant_clear(p);
-    ae_vector_init(&w, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&x, 0, DT_REAL, _state, ae_true);
+    ae_vector_init(&w, 0, DT_REAL, _state);
+    ae_vector_init(&x, 0, DT_REAL, _state);
 
     ae_assert(n>0, "PolynomialBuildEqDist: N<=0!", _state);
     ae_assert(y->cnt>=n, "PolynomialBuildEqDist: Length(Y)<N!", _state);
@@ -13033,7 +14940,7 @@ void polynomialbuildeqdist(double a,
         ae_vector_set_length(&x, 1, _state);
         ae_vector_set_length(&w, 1, _state);
         x.ptr.p_double[0] = 0.5*(b+a);
-        w.ptr.p_double[0] = 1;
+        w.ptr.p_double[0] = (double)(1);
         barycentricbuildxyw(&x, y, &w, 1, p, _state);
         ae_frame_leave(_state);
         return;
@@ -13044,7 +14951,7 @@ void polynomialbuildeqdist(double a,
      */
     ae_vector_set_length(&x, n, _state);
     ae_vector_set_length(&w, n, _state);
-    v = 1;
+    v = (double)(1);
     for(i=0; i<=n-1; i++)
     {
         w.ptr.p_double[i] = v;
@@ -13093,8 +15000,8 @@ void polynomialbuildcheb1(double a,
 
     ae_frame_make(_state, &_frame_block);
     _barycentricinterpolant_clear(p);
-    ae_vector_init(&w, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&x, 0, DT_REAL, _state, ae_true);
+    ae_vector_init(&w, 0, DT_REAL, _state);
+    ae_vector_init(&x, 0, DT_REAL, _state);
 
     ae_assert(n>0, "PolynomialBuildCheb1: N<=0!", _state);
     ae_assert(y->cnt>=n, "PolynomialBuildCheb1: Length(Y)<N!", _state);
@@ -13111,7 +15018,7 @@ void polynomialbuildcheb1(double a,
         ae_vector_set_length(&x, 1, _state);
         ae_vector_set_length(&w, 1, _state);
         x.ptr.p_double[0] = 0.5*(b+a);
-        w.ptr.p_double[0] = 1;
+        w.ptr.p_double[0] = (double)(1);
         barycentricbuildxyw(&x, y, &w, 1, p, _state);
         ae_frame_leave(_state);
         return;
@@ -13122,7 +15029,7 @@ void polynomialbuildcheb1(double a,
      */
     ae_vector_set_length(&x, n, _state);
     ae_vector_set_length(&w, n, _state);
-    v = 1;
+    v = (double)(1);
     for(i=0; i<=n-1; i++)
     {
         t = ae_tan(0.5*ae_pi*(2*i+1)/(2*n), _state);
@@ -13170,8 +15077,8 @@ void polynomialbuildcheb2(double a,
 
     ae_frame_make(_state, &_frame_block);
     _barycentricinterpolant_clear(p);
-    ae_vector_init(&w, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&x, 0, DT_REAL, _state, ae_true);
+    ae_vector_init(&w, 0, DT_REAL, _state);
+    ae_vector_init(&x, 0, DT_REAL, _state);
 
     ae_assert(n>0, "PolynomialBuildCheb2: N<=0!", _state);
     ae_assert(y->cnt>=n, "PolynomialBuildCheb2: Length(Y)<N!", _state);
@@ -13188,7 +15095,7 @@ void polynomialbuildcheb2(double a,
         ae_vector_set_length(&x, 1, _state);
         ae_vector_set_length(&w, 1, _state);
         x.ptr.p_double[0] = 0.5*(b+a);
-        w.ptr.p_double[0] = 1;
+        w.ptr.p_double[0] = (double)(1);
         barycentricbuildxyw(&x, y, &w, 1, p, _state);
         ae_frame_leave(_state);
         return;
@@ -13199,7 +15106,7 @@ void polynomialbuildcheb2(double a,
      */
     ae_vector_set_length(&x, n, _state);
     ae_vector_set_length(&w, n, _state);
-    v = 1;
+    v = (double)(1);
     for(i=0; i<=n-1; i++)
     {
         if( i==0||i==n-1 )
@@ -13304,7 +15211,7 @@ double polynomialcalceqdist(double a,
             j = i;
         }
     }
-    if( ae_fp_eq(s,0) )
+    if( ae_fp_eq(s,(double)(0)) )
     {
         result = f->ptr.p_double[j];
         return result;
@@ -13322,8 +15229,8 @@ double polynomialcalceqdist(double a,
     /*
      * Calculate using safe or fast barycentric formula
      */
-    s1 = 0;
-    s2 = 0;
+    s1 = (double)(0);
+    s2 = (double)(0);
     w = 1.0;
     h = (b-a)/(n-1);
     for(i=0; i<=n-1; i++)
@@ -13483,7 +15390,7 @@ double polynomialcalccheb1(double a,
             j = i;
         }
     }
-    if( ae_fp_eq(s,0) )
+    if( ae_fp_eq(s,(double)(0)) )
     {
         result = f->ptr.p_double[j];
         return result;
@@ -13501,8 +15408,8 @@ double polynomialcalccheb1(double a,
     /*
      * Calculate using safe or fast barycentric formula
      */
-    s1 = 0;
-    s2 = 0;
+    s1 = (double)(0);
+    s2 = (double)(0);
     ca = ae_cos(a0, _state);
     sa = ae_sin(a0, _state);
     p1 = 1.0;
@@ -13680,7 +15587,7 @@ double polynomialcalccheb2(double a,
             j = i;
         }
     }
-    if( ae_fp_eq(s,0) )
+    if( ae_fp_eq(s,(double)(0)) )
     {
         result = f->ptr.p_double[j];
         return result;
@@ -13698,8 +15605,8 @@ double polynomialcalccheb2(double a,
     /*
      * Calculate using safe or fast barycentric formula
      */
-    s1 = 0;
-    s2 = 0;
+    s1 = (double)(0);
+    s2 = (double)(0);
     ca = ae_cos(a0, _state);
     sa = ae_sin(a0, _state);
     p1 = 1.0;
@@ -13786,9 +15693,9 @@ void spline1dbuildlinear(/* Real    */ ae_vector* x,
     ae_int_t i;
 
     ae_frame_make(_state, &_frame_block);
-    ae_vector_init_copy(&_x, x, _state, ae_true);
+    ae_vector_init_copy(&_x, x, _state);
     x = &_x;
-    ae_vector_init_copy(&_y, y, _state, ae_true);
+    ae_vector_init_copy(&_y, y, _state);
     y = &_y;
     _spline1dinterpolant_clear(c);
 
@@ -13821,8 +15728,8 @@ void spline1dbuildlinear(/* Real    */ ae_vector* x,
     {
         c->c.ptr.p_double[4*i+0] = y->ptr.p_double[i];
         c->c.ptr.p_double[4*i+1] = (y->ptr.p_double[i+1]-y->ptr.p_double[i])/(x->ptr.p_double[i+1]-x->ptr.p_double[i]);
-        c->c.ptr.p_double[4*i+2] = 0;
-        c->c.ptr.p_double[4*i+3] = 0;
+        c->c.ptr.p_double[4*i+2] = (double)(0);
+        c->c.ptr.p_double[4*i+3] = (double)(0);
     }
     c->c.ptr.p_double[4*(n-1)+0] = y->ptr.p_double[n-1];
     c->c.ptr.p_double[4*(n-1)+1] = c->c.ptr.p_double[4*(n-2)+1];
@@ -13906,18 +15813,18 @@ void spline1dbuildcubic(/* Real    */ ae_vector* x,
     ae_int_t ylen;
 
     ae_frame_make(_state, &_frame_block);
-    ae_vector_init_copy(&_x, x, _state, ae_true);
+    ae_vector_init_copy(&_x, x, _state);
     x = &_x;
-    ae_vector_init_copy(&_y, y, _state, ae_true);
+    ae_vector_init_copy(&_y, y, _state);
     y = &_y;
     _spline1dinterpolant_clear(c);
-    ae_vector_init(&a1, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&a2, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&a3, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&b, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&dt, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&d, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&p, 0, DT_INT, _state, ae_true);
+    ae_vector_init(&a1, 0, DT_REAL, _state);
+    ae_vector_init(&a2, 0, DT_REAL, _state);
+    ae_vector_init(&a3, 0, DT_REAL, _state);
+    ae_vector_init(&b, 0, DT_REAL, _state);
+    ae_vector_init(&dt, 0, DT_REAL, _state);
+    ae_vector_init(&d, 0, DT_REAL, _state);
+    ae_vector_init(&p, 0, DT_INT, _state);
 
     
     /*
@@ -14056,17 +15963,17 @@ void spline1dgriddiffcubic(/* Real    */ ae_vector* x,
     ae_int_t ylen;
 
     ae_frame_make(_state, &_frame_block);
-    ae_vector_init_copy(&_x, x, _state, ae_true);
+    ae_vector_init_copy(&_x, x, _state);
     x = &_x;
-    ae_vector_init_copy(&_y, y, _state, ae_true);
+    ae_vector_init_copy(&_y, y, _state);
     y = &_y;
     ae_vector_clear(d);
-    ae_vector_init(&a1, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&a2, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&a3, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&b, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&dt, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&p, 0, DT_INT, _state, ae_true);
+    ae_vector_init(&a1, 0, DT_REAL, _state);
+    ae_vector_init(&a2, 0, DT_REAL, _state);
+    ae_vector_init(&a3, 0, DT_REAL, _state);
+    ae_vector_init(&b, 0, DT_REAL, _state);
+    ae_vector_init(&dt, 0, DT_REAL, _state);
+    ae_vector_init(&p, 0, DT_INT, _state);
 
     
     /*
@@ -14214,24 +16121,22 @@ void spline1dgriddiff2cubic(/* Real    */ ae_vector* x,
     double delta;
     double delta2;
     double delta3;
-    double s0;
-    double s1;
     double s2;
     double s3;
 
     ae_frame_make(_state, &_frame_block);
-    ae_vector_init_copy(&_x, x, _state, ae_true);
+    ae_vector_init_copy(&_x, x, _state);
     x = &_x;
-    ae_vector_init_copy(&_y, y, _state, ae_true);
+    ae_vector_init_copy(&_y, y, _state);
     y = &_y;
     ae_vector_clear(d1);
     ae_vector_clear(d2);
-    ae_vector_init(&a1, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&a2, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&a3, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&b, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&dt, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&p, 0, DT_INT, _state, ae_true);
+    ae_vector_init(&a1, 0, DT_REAL, _state);
+    ae_vector_init(&a2, 0, DT_REAL, _state);
+    ae_vector_init(&a3, 0, DT_REAL, _state);
+    ae_vector_init(&b, 0, DT_REAL, _state);
+    ae_vector_init(&dt, 0, DT_REAL, _state);
+    ae_vector_init(&p, 0, DT_INT, _state);
 
     
     /*
@@ -14278,9 +16183,9 @@ void spline1dgriddiff2cubic(/* Real    */ ae_vector* x,
      */
     spline1d_spline1dgriddiffcubicinternal(x, y, n, boundltype, boundl, boundrtype, boundr, d1, &a1, &a2, &a3, &b, &dt, _state);
     ae_vector_set_length(d2, n, _state);
-    delta = 0;
-    s2 = 0;
-    s3 = 0;
+    delta = (double)(0);
+    s2 = (double)(0);
+    s3 = (double)(0);
     for(i=0; i<=n-2; i++)
     {
         
@@ -14297,8 +16202,6 @@ void spline1dgriddiff2cubic(/* Real    */ ae_vector* x,
         delta = x->ptr.p_double[i+1]-x->ptr.p_double[i];
         delta2 = ae_sqr(delta, _state);
         delta3 = delta*delta2;
-        s0 = y->ptr.p_double[i];
-        s1 = d1->ptr.p_double[i];
         s2 = (3*(y->ptr.p_double[i+1]-y->ptr.p_double[i])-2*d1->ptr.p_double[i]*delta-d1->ptr.p_double[i+1]*delta)/delta2;
         s3 = (2*(y->ptr.p_double[i]-y->ptr.p_double[i+1])+d1->ptr.p_double[i]*delta+d1->ptr.p_double[i+1]*delta)/delta3;
         d2->ptr.p_double[i] = 2*s2;
@@ -14425,23 +16328,23 @@ void spline1dconvcubic(/* Real    */ ae_vector* x,
     double t2;
 
     ae_frame_make(_state, &_frame_block);
-    ae_vector_init_copy(&_x, x, _state, ae_true);
+    ae_vector_init_copy(&_x, x, _state);
     x = &_x;
-    ae_vector_init_copy(&_y, y, _state, ae_true);
+    ae_vector_init_copy(&_y, y, _state);
     y = &_y;
-    ae_vector_init_copy(&_x2, x2, _state, ae_true);
+    ae_vector_init_copy(&_x2, x2, _state);
     x2 = &_x2;
     ae_vector_clear(y2);
-    ae_vector_init(&a1, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&a2, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&a3, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&b, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&d, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&dt, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&d1, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&d2, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&p, 0, DT_INT, _state, ae_true);
-    ae_vector_init(&p2, 0, DT_INT, _state, ae_true);
+    ae_vector_init(&a1, 0, DT_REAL, _state);
+    ae_vector_init(&a2, 0, DT_REAL, _state);
+    ae_vector_init(&a3, 0, DT_REAL, _state);
+    ae_vector_init(&b, 0, DT_REAL, _state);
+    ae_vector_init(&d, 0, DT_REAL, _state);
+    ae_vector_init(&dt, 0, DT_REAL, _state);
+    ae_vector_init(&d1, 0, DT_REAL, _state);
+    ae_vector_init(&d2, 0, DT_REAL, _state);
+    ae_vector_init(&p, 0, DT_INT, _state);
+    ae_vector_init(&p2, 0, DT_INT, _state);
 
     
     /*
@@ -14621,23 +16524,23 @@ void spline1dconvdiffcubic(/* Real    */ ae_vector* x,
     double t2;
 
     ae_frame_make(_state, &_frame_block);
-    ae_vector_init_copy(&_x, x, _state, ae_true);
+    ae_vector_init_copy(&_x, x, _state);
     x = &_x;
-    ae_vector_init_copy(&_y, y, _state, ae_true);
+    ae_vector_init_copy(&_y, y, _state);
     y = &_y;
-    ae_vector_init_copy(&_x2, x2, _state, ae_true);
+    ae_vector_init_copy(&_x2, x2, _state);
     x2 = &_x2;
     ae_vector_clear(y2);
     ae_vector_clear(d2);
-    ae_vector_init(&a1, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&a2, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&a3, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&b, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&d, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&dt, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&rt1, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&p, 0, DT_INT, _state, ae_true);
-    ae_vector_init(&p2, 0, DT_INT, _state, ae_true);
+    ae_vector_init(&a1, 0, DT_REAL, _state);
+    ae_vector_init(&a2, 0, DT_REAL, _state);
+    ae_vector_init(&a3, 0, DT_REAL, _state);
+    ae_vector_init(&b, 0, DT_REAL, _state);
+    ae_vector_init(&d, 0, DT_REAL, _state);
+    ae_vector_init(&dt, 0, DT_REAL, _state);
+    ae_vector_init(&rt1, 0, DT_REAL, _state);
+    ae_vector_init(&p, 0, DT_INT, _state);
+    ae_vector_init(&p2, 0, DT_INT, _state);
 
     
     /*
@@ -14824,23 +16727,23 @@ void spline1dconvdiff2cubic(/* Real    */ ae_vector* x,
     double t2;
 
     ae_frame_make(_state, &_frame_block);
-    ae_vector_init_copy(&_x, x, _state, ae_true);
+    ae_vector_init_copy(&_x, x, _state);
     x = &_x;
-    ae_vector_init_copy(&_y, y, _state, ae_true);
+    ae_vector_init_copy(&_y, y, _state);
     y = &_y;
-    ae_vector_init_copy(&_x2, x2, _state, ae_true);
+    ae_vector_init_copy(&_x2, x2, _state);
     x2 = &_x2;
     ae_vector_clear(y2);
     ae_vector_clear(d2);
     ae_vector_clear(dd2);
-    ae_vector_init(&a1, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&a2, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&a3, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&b, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&d, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&dt, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&p, 0, DT_INT, _state, ae_true);
-    ae_vector_init(&p2, 0, DT_INT, _state, ae_true);
+    ae_vector_init(&a1, 0, DT_REAL, _state);
+    ae_vector_init(&a2, 0, DT_REAL, _state);
+    ae_vector_init(&a3, 0, DT_REAL, _state);
+    ae_vector_init(&b, 0, DT_REAL, _state);
+    ae_vector_init(&d, 0, DT_REAL, _state);
+    ae_vector_init(&dt, 0, DT_REAL, _state);
+    ae_vector_init(&p, 0, DT_INT, _state);
+    ae_vector_init(&p2, 0, DT_INT, _state);
 
     
     /*
@@ -14986,17 +16889,17 @@ void spline1dbuildcatmullrom(/* Real    */ ae_vector* x,
     ae_int_t i;
 
     ae_frame_make(_state, &_frame_block);
-    ae_vector_init_copy(&_x, x, _state, ae_true);
+    ae_vector_init_copy(&_x, x, _state);
     x = &_x;
-    ae_vector_init_copy(&_y, y, _state, ae_true);
+    ae_vector_init_copy(&_y, y, _state);
     y = &_y;
     _spline1dinterpolant_clear(c);
-    ae_vector_init(&d, 0, DT_REAL, _state, ae_true);
+    ae_vector_init(&d, 0, DT_REAL, _state);
 
     ae_assert(n>=2, "Spline1DBuildCatmullRom: N<2!", _state);
     ae_assert(boundtype==-1||boundtype==0, "Spline1DBuildCatmullRom: incorrect BoundType!", _state);
-    ae_assert(ae_fp_greater_eq(tension,0), "Spline1DBuildCatmullRom: Tension<0!", _state);
-    ae_assert(ae_fp_less_eq(tension,1), "Spline1DBuildCatmullRom: Tension>1!", _state);
+    ae_assert(ae_fp_greater_eq(tension,(double)(0)), "Spline1DBuildCatmullRom: Tension<0!", _state);
+    ae_assert(ae_fp_less_eq(tension,(double)(1)), "Spline1DBuildCatmullRom: Tension>1!", _state);
     ae_assert(x->cnt>=n, "Spline1DBuildCatmullRom: Length(X)<N!", _state);
     ae_assert(y->cnt>=n, "Spline1DBuildCatmullRom: Length(Y)<N!", _state);
     
@@ -15122,11 +17025,11 @@ void spline1dbuildhermite(/* Real    */ ae_vector* x,
     double delta3;
 
     ae_frame_make(_state, &_frame_block);
-    ae_vector_init_copy(&_x, x, _state, ae_true);
+    ae_vector_init_copy(&_x, x, _state);
     x = &_x;
-    ae_vector_init_copy(&_y, y, _state, ae_true);
+    ae_vector_init_copy(&_y, y, _state);
     y = &_y;
-    ae_vector_init_copy(&_d, d, _state, ae_true);
+    ae_vector_init_copy(&_d, d, _state);
     d = &_d;
     _spline1dinterpolant_clear(c);
 
@@ -15180,7 +17083,7 @@ INPUT PARAMETERS:
     X           -   spline nodes, array[0..N-1]
     Y           -   function values, array[0..N-1]
     N           -   points count (optional):
-                    * N>=5
+                    * N>=2
                     * if given, only first N points are used to build spline
                     * if not given, automatically detected from X/Y sizes
                       (len(X) must be equal to len(Y))
@@ -15211,16 +17114,16 @@ void spline1dbuildakima(/* Real    */ ae_vector* x,
     ae_vector diff;
 
     ae_frame_make(_state, &_frame_block);
-    ae_vector_init_copy(&_x, x, _state, ae_true);
+    ae_vector_init_copy(&_x, x, _state);
     x = &_x;
-    ae_vector_init_copy(&_y, y, _state, ae_true);
+    ae_vector_init_copy(&_y, y, _state);
     y = &_y;
     _spline1dinterpolant_clear(c);
-    ae_vector_init(&d, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&w, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&diff, 0, DT_REAL, _state, ae_true);
+    ae_vector_init(&d, 0, DT_REAL, _state);
+    ae_vector_init(&w, 0, DT_REAL, _state);
+    ae_vector_init(&diff, 0, DT_REAL, _state);
 
-    ae_assert(n>=5, "Spline1DBuildAkima: N<5!", _state);
+    ae_assert(n>=2, "Spline1DBuildAkima: N<2!", _state);
     ae_assert(x->cnt>=n, "Spline1DBuildAkima: Length(X)<N!", _state);
     ae_assert(y->cnt>=n, "Spline1DBuildAkima: Length(Y)<N!", _state);
     
@@ -15231,6 +17134,16 @@ void spline1dbuildakima(/* Real    */ ae_vector* x,
     ae_assert(isfinitevector(y, n, _state), "Spline1DBuildAkima: Y contains infinite or NAN values!", _state);
     spline1d_heapsortpoints(x, y, n, _state);
     ae_assert(aredistinct(x, n, _state), "Spline1DBuildAkima: at least two consequent points are too close!", _state);
+    
+    /*
+     * Handle special cases: N=2, N=3, N=4
+     */
+    if( n<=4 )
+    {
+        spline1dbuildcubic(x, y, n, 0, 0.0, 0, 0.0, c, _state);
+        ae_frame_leave(_state);
+        return;
+    }
     
     /*
      * Prepare W (weights), Diff (divided differences)
@@ -15252,7 +17165,7 @@ void spline1dbuildakima(/* Real    */ ae_vector* x,
     ae_vector_set_length(&d, n, _state);
     for(i=2; i<=n-3; i++)
     {
-        if( ae_fp_neq(ae_fabs(w.ptr.p_double[i-1], _state)+ae_fabs(w.ptr.p_double[i+1], _state),0) )
+        if( ae_fp_neq(ae_fabs(w.ptr.p_double[i-1], _state)+ae_fabs(w.ptr.p_double[i+1], _state),(double)(0)) )
         {
             d.ptr.p_double[i] = (w.ptr.p_double[i+1]*diff.ptr.p_double[i-1]+w.ptr.p_double[i-1]*diff.ptr.p_double[i])/(w.ptr.p_double[i+1]+w.ptr.p_double[i-1]);
         }
@@ -15545,9 +17458,9 @@ void spline1dlintransx(spline1dinterpolant* c,
     ae_int_t contval;
 
     ae_frame_make(_state, &_frame_block);
-    ae_vector_init(&x, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&y, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&d, 0, DT_REAL, _state, ae_true);
+    ae_vector_init(&x, 0, DT_REAL, _state);
+    ae_vector_init(&y, 0, DT_REAL, _state);
+    ae_vector_init(&d, 0, DT_REAL, _state);
 
     ae_assert(c->k==3, "Spline1DLinTransX: internal error", _state);
     n = c->n;
@@ -15559,7 +17472,7 @@ void spline1dlintransx(spline1dinterpolant* c,
      * Unpack, X, Y, dY/dX.
      * Scale and pack with Spline1DBuildHermite again.
      */
-    if( ae_fp_eq(a,0) )
+    if( ae_fp_eq(a,(double)(0)) )
     {
         
         /*
@@ -15690,7 +17603,7 @@ double spline1dintegrate(spline1dinterpolant* c,
         /*
          * compute integral(S(x)dx,A,B)
          */
-        intab = 0;
+        intab = (double)(0);
         for(i=0; i<=c->n-2; i++)
         {
             w = c->x.ptr.p_double[i+1]-c->x.ptr.p_double[i];
@@ -15712,7 +17625,7 @@ double spline1dintegrate(spline1dinterpolant* c,
     }
     else
     {
-        additionalterm = 0;
+        additionalterm = (double)(0);
     }
     
     /*
@@ -15736,7 +17649,7 @@ double spline1dintegrate(spline1dinterpolant* c,
     /*
      * Integration
      */
-    result = 0;
+    result = (double)(0);
     for(i=0; i<=l-1; i++)
     {
         w = c->x.ptr.p_double[i+1]-c->x.ptr.p_double[i];
@@ -15848,12 +17761,12 @@ void spline1dconvdiffinternal(/* Real    */ ae_vector* xold,
      * (variables are initialized in the loop below),
      * but without them compiler will complain about uninitialized locals
      */
-    c0 = 0;
-    c1 = 0;
-    c2 = 0;
-    c3 = 0;
-    a = 0;
-    b = 0;
+    c0 = (double)(0);
+    c1 = (double)(0);
+    c2 = (double)(0);
+    c3 = (double)(0);
+    a = (double)(0);
+    b = (double)(0);
     
     /*
      * Cycle
@@ -16009,11 +17922,11 @@ void spline1drootsandextrema(spline1dinterpolant* c,
     ae_vector_clear(et);
     *ne = 0;
     *de = ae_false;
-    ae_vector_init(&tr, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&tmpr, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&tmpe, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&tmpet, 0, DT_INT, _state, ae_true);
-    ae_vector_init(&tmpc, 0, DT_REAL, _state, ae_true);
+    ae_vector_init(&tr, 0, DT_REAL, _state);
+    ae_vector_init(&tmpr, 0, DT_REAL, _state);
+    ae_vector_init(&tmpe, 0, DT_REAL, _state);
+    ae_vector_init(&tmpet, 0, DT_INT, _state);
+    ae_vector_init(&tmpc, 0, DT_REAL, _state);
 
     
     /*
@@ -16588,10 +18501,10 @@ void heapsortdpoints(/* Real    */ ae_vector* x,
     ae_int_t i;
 
     ae_frame_make(_state, &_frame_block);
-    ae_vector_init(&rbuf, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&ibuf, 0, DT_INT, _state, ae_true);
-    ae_vector_init(&rbuf2, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&ibuf2, 0, DT_INT, _state, ae_true);
+    ae_vector_init(&rbuf, 0, DT_REAL, _state);
+    ae_vector_init(&ibuf, 0, DT_INT, _state);
+    ae_vector_init(&rbuf2, 0, DT_REAL, _state);
+    ae_vector_init(&ibuf2, 0, DT_INT, _state);
 
     ae_vector_set_length(&ibuf, n, _state);
     ae_vector_set_length(&rbuf, n, _state);
@@ -16676,14 +18589,14 @@ void solvepolinom2(double p0,
      *check case, when A=0
      *we are considering the linear equation
      */
-    if( ae_fp_eq(a,0) )
+    if( ae_fp_eq(a,(double)(0)) )
     {
         
         /*
          *B<>0 and root inside [0;1]
          *one root
          */
-        if( (ae_fp_neq(b,0)&&ae_sign(c, _state)*ae_sign(b, _state)<=0)&&ae_fp_greater_eq(ae_fabs(b, _state),ae_fabs(c, _state)) )
+        if( (ae_fp_neq(b,(double)(0))&&ae_sign(c, _state)*ae_sign(b, _state)<=0)&&ae_fp_greater_eq(ae_fabs(b, _state),ae_fabs(c, _state)) )
         {
             *x0 = -c/b;
             *nr = 1;
@@ -16717,13 +18630,13 @@ void solvepolinom2(double p0,
             *nr = 1;
             extr = -b/(2*a);
             dd = b*b-4*a*c;
-            if( ae_fp_less(dd,0) )
+            if( ae_fp_less(dd,(double)(0)) )
             {
                 return;
             }
             *x0 = (-b-ae_sqrt(dd, _state))/(2*a);
             *x1 = (-b+ae_sqrt(dd, _state))/(2*a);
-            if( (ae_fp_greater_eq(extr,1)&&ae_fp_less_eq(*x1,extr))||(ae_fp_less_eq(extr,0)&&ae_fp_greater_eq(*x1,extr)) )
+            if( (ae_fp_greater_eq(extr,(double)(1))&&ae_fp_less_eq(*x1,extr))||(ae_fp_less_eq(extr,(double)(0))&&ae_fp_greater_eq(*x1,extr)) )
             {
                 *x0 = *x1;
             }
@@ -16733,15 +18646,15 @@ void solvepolinom2(double p0,
         /*
          *consider case, when the one is 0
          */
-        if( ae_fp_eq(m0,0) )
+        if( ae_fp_eq(m0,(double)(0)) )
         {
-            *x0 = 0;
+            *x0 = (double)(0);
             *nr = 1;
             return;
         }
-        if( ae_fp_eq(m1,0) )
+        if( ae_fp_eq(m1,(double)(0)) )
         {
-            *x0 = 1;
+            *x0 = (double)(1);
             *nr = 1;
             return;
         }
@@ -16752,10 +18665,10 @@ void solvepolinom2(double p0,
         /*
          *consider case, when both of derivatives is 0
          */
-        if( ae_fp_eq(m0,0)&&ae_fp_eq(m1,0) )
+        if( ae_fp_eq(m0,(double)(0))&&ae_fp_eq(m1,(double)(0)) )
         {
-            *x0 = 0;
-            *x1 = 1;
+            *x0 = (double)(0);
+            *x1 = (double)(1);
             *nr = 2;
             return;
         }
@@ -16763,12 +18676,12 @@ void solvepolinom2(double p0,
         /*
          *consider case, when derivative at 0 is 0, and derivative at 1 is't 0
          */
-        if( ae_fp_eq(m0,0)&&ae_fp_neq(m1,0) )
+        if( ae_fp_eq(m0,(double)(0))&&ae_fp_neq(m1,(double)(0)) )
         {
             dd = b*b-4*a*c;
-            if( ae_fp_less(dd,0) )
+            if( ae_fp_less(dd,(double)(0)) )
             {
-                *x0 = 0;
+                *x0 = (double)(0);
                 *nr = 1;
                 return;
             }
@@ -16778,7 +18691,7 @@ void solvepolinom2(double p0,
             exf = a*extr*extr+b*extr+c;
             if( ae_sign(exf, _state)*ae_sign(m1, _state)>0 )
             {
-                *x0 = 0;
+                *x0 = (double)(0);
                 *nr = 1;
                 return;
             }
@@ -16786,11 +18699,11 @@ void solvepolinom2(double p0,
             {
                 if( ae_fp_greater(extr,*x0) )
                 {
-                    *x0 = 0;
+                    *x0 = (double)(0);
                 }
                 else
                 {
-                    *x1 = 0;
+                    *x1 = (double)(0);
                 }
                 *nr = 2;
                 
@@ -16806,12 +18719,12 @@ void solvepolinom2(double p0,
                 return;
             }
         }
-        if( ae_fp_eq(m1,0)&&ae_fp_neq(m0,0) )
+        if( ae_fp_eq(m1,(double)(0))&&ae_fp_neq(m0,(double)(0)) )
         {
             dd = b*b-4*a*c;
-            if( ae_fp_less(dd,0) )
+            if( ae_fp_less(dd,(double)(0)) )
             {
-                *x0 = 1;
+                *x0 = (double)(1);
                 *nr = 1;
                 return;
             }
@@ -16821,7 +18734,7 @@ void solvepolinom2(double p0,
             exf = a*extr*extr+b*extr+c;
             if( ae_sign(exf, _state)*ae_sign(m0, _state)>0 )
             {
-                *x0 = 1;
+                *x0 = (double)(1);
                 *nr = 1;
                 return;
             }
@@ -16829,11 +18742,11 @@ void solvepolinom2(double p0,
             {
                 if( ae_fp_less(extr,*x0) )
                 {
-                    *x0 = 1;
+                    *x0 = (double)(1);
                 }
                 else
                 {
-                    *x1 = 1;
+                    *x1 = (double)(1);
                 }
                 *nr = 2;
                 
@@ -16859,7 +18772,7 @@ void solvepolinom2(double p0,
                 return;
             }
             dd = b*b-4*a*c;
-            if( ae_fp_less(dd,0) )
+            if( ae_fp_less(dd,(double)(0)) )
             {
                 *nr = 0;
                 return;
@@ -16985,13 +18898,13 @@ void solvecubicpolinom(double pa,
      *case 1    
      *function can be identicaly to ZERO
      */
-    if( ((ae_fp_eq(ma,0)&&ae_fp_eq(mb,0))&&ae_fp_eq(pa,pb))&&ae_fp_eq(pa,0) )
+    if( ((ae_fp_eq(ma,(double)(0))&&ae_fp_eq(mb,(double)(0)))&&ae_fp_eq(pa,pb))&&ae_fp_eq(pa,(double)(0)) )
     {
         *nr = -1;
         *ne = -1;
         return;
     }
-    if( (ae_fp_eq(ma,0)&&ae_fp_eq(mb,0))&&ae_fp_eq(pa,pb) )
+    if( (ae_fp_eq(ma,(double)(0))&&ae_fp_eq(mb,(double)(0)))&&ae_fp_eq(pa,pb) )
     {
         *nr = 0;
         *ne = -1;
@@ -17000,8 +18913,8 @@ void solvecubicpolinom(double pa,
     tmpma = ma*(b-a);
     tmpmb = mb*(b-a);
     solvepolinom2(pa, tmpma, pb, tmpmb, ex0, ex1, ne, _state);
-    *ex0 = spline1d_rescaleval(0, 1, a, b, *ex0, _state);
-    *ex1 = spline1d_rescaleval(0, 1, a, b, *ex1, _state);
+    *ex0 = spline1d_rescaleval((double)(0), (double)(1), a, b, *ex0, _state);
+    *ex1 = spline1d_rescaleval((double)(0), (double)(1), a, b, *ex1, _state);
     
     /*
      *case 3.1
@@ -17009,10 +18922,10 @@ void solvecubicpolinom(double pa,
      */
     if( *ne==0 )
     {
-        *nr = bisectmethod(pa, tmpma, pb, tmpmb, 0, 1, x0, _state);
+        *nr = bisectmethod(pa, tmpma, pb, tmpmb, (double)(0), (double)(1), x0, _state);
         if( *nr==1 )
         {
-            *x0 = spline1d_rescaleval(0, 1, a, b, *x0, _state);
+            *x0 = spline1d_rescaleval((double)(0), (double)(1), a, b, *x0, _state);
         }
         return;
     }
@@ -17025,10 +18938,10 @@ void solvecubicpolinom(double pa,
     {
         if( ae_fp_eq(*ex0,a)||ae_fp_eq(*ex0,b) )
         {
-            *nr = bisectmethod(pa, tmpma, pb, tmpmb, 0, 1, x0, _state);
+            *nr = bisectmethod(pa, tmpma, pb, tmpmb, (double)(0), (double)(1), x0, _state);
             if( *nr==1 )
             {
-                *x0 = spline1d_rescaleval(0, 1, a, b, *x0, _state);
+                *x0 = spline1d_rescaleval((double)(0), (double)(1), a, b, *x0, _state);
             }
             return;
         }
@@ -17036,17 +18949,17 @@ void solvecubicpolinom(double pa,
         {
             *nr = 0;
             i = 0;
-            tex0 = spline1d_rescaleval(a, b, 0, 1, *ex0, _state);
-            *nr = bisectmethod(pa, tmpma, pb, tmpmb, 0, tex0, x0, _state)+(*nr);
+            tex0 = spline1d_rescaleval(a, b, (double)(0), (double)(1), *ex0, _state);
+            *nr = bisectmethod(pa, tmpma, pb, tmpmb, (double)(0), tex0, x0, _state)+(*nr);
             if( *nr>i )
             {
-                tempdata->ptr.p_double[i] = spline1d_rescaleval(0, tex0, a, *ex0, *x0, _state);
+                tempdata->ptr.p_double[i] = spline1d_rescaleval((double)(0), tex0, a, *ex0, *x0, _state);
                 i = i+1;
             }
-            *nr = bisectmethod(pa, tmpma, pb, tmpmb, tex0, 1, x0, _state)+(*nr);
+            *nr = bisectmethod(pa, tmpma, pb, tmpmb, tex0, (double)(1), x0, _state)+(*nr);
             if( *nr>i )
             {
-                *x0 = spline1d_rescaleval(tex0, 1, *ex0, b, *x0, _state);
+                *x0 = spline1d_rescaleval(tex0, (double)(1), *ex0, b, *x0, _state);
                 if( i>0 )
                 {
                     if( ae_fp_neq(*x0,tempdata->ptr.p_double[i-1]) )
@@ -17090,10 +19003,10 @@ void solvecubicpolinom(double pa,
          */
         if( ae_fp_eq(*ex0,a)&&ae_fp_eq(*ex1,b) )
         {
-            *nr = bisectmethod(pa, tmpma, pb, tmpmb, 0, 1, x0, _state);
+            *nr = bisectmethod(pa, tmpma, pb, tmpmb, (double)(0), (double)(1), x0, _state);
             if( *nr==1 )
             {
-                *x0 = spline1d_rescaleval(0, 1, a, b, *x0, _state);
+                *x0 = spline1d_rescaleval((double)(0), (double)(1), a, b, *x0, _state);
             }
             return;
         }
@@ -17101,17 +19014,17 @@ void solvecubicpolinom(double pa,
         {
             *nr = 0;
             i = 0;
-            tex1 = spline1d_rescaleval(a, b, 0, 1, *ex1, _state);
-            *nr = bisectmethod(pa, tmpma, pb, tmpmb, 0, tex1, x0, _state)+(*nr);
+            tex1 = spline1d_rescaleval(a, b, (double)(0), (double)(1), *ex1, _state);
+            *nr = bisectmethod(pa, tmpma, pb, tmpmb, (double)(0), tex1, x0, _state)+(*nr);
             if( *nr>i )
             {
-                tempdata->ptr.p_double[i] = spline1d_rescaleval(0, tex1, a, *ex1, *x0, _state);
+                tempdata->ptr.p_double[i] = spline1d_rescaleval((double)(0), tex1, a, *ex1, *x0, _state);
                 i = i+1;
             }
-            *nr = bisectmethod(pa, tmpma, pb, tmpmb, tex1, 1, x0, _state)+(*nr);
+            *nr = bisectmethod(pa, tmpma, pb, tmpmb, tex1, (double)(1), x0, _state)+(*nr);
             if( *nr>i )
             {
-                *x0 = spline1d_rescaleval(tex1, 1, *ex1, b, *x0, _state);
+                *x0 = spline1d_rescaleval(tex1, (double)(1), *ex1, b, *x0, _state);
                 if( ae_fp_neq(*x0,tempdata->ptr.p_double[i-1]) )
                 {
                     tempdata->ptr.p_double[i] = *x0;
@@ -17136,17 +19049,17 @@ void solvecubicpolinom(double pa,
         {
             *nr = 0;
             i = 0;
-            tex0 = spline1d_rescaleval(a, b, 0, 1, *ex0, _state);
-            *nr = bisectmethod(pa, tmpma, pb, tmpmb, 0, tex0, x0, _state)+(*nr);
+            tex0 = spline1d_rescaleval(a, b, (double)(0), (double)(1), *ex0, _state);
+            *nr = bisectmethod(pa, tmpma, pb, tmpmb, (double)(0), tex0, x0, _state)+(*nr);
             if( *nr>i )
             {
-                tempdata->ptr.p_double[i] = spline1d_rescaleval(0, tex0, a, *ex0, *x0, _state);
+                tempdata->ptr.p_double[i] = spline1d_rescaleval((double)(0), tex0, a, *ex0, *x0, _state);
                 i = i+1;
             }
-            *nr = bisectmethod(pa, tmpma, pb, tmpmb, tex0, 1, x0, _state)+(*nr);
+            *nr = bisectmethod(pa, tmpma, pb, tmpmb, tex0, (double)(1), x0, _state)+(*nr);
             if( *nr>i )
             {
-                *x0 = spline1d_rescaleval(tex0, 1, *ex0, b, *x0, _state);
+                *x0 = spline1d_rescaleval(tex0, (double)(1), *ex0, b, *x0, _state);
                 if( i>0 )
                 {
                     if( ae_fp_neq(*x0,tempdata->ptr.p_double[i-1]) )
@@ -17184,12 +19097,12 @@ void solvecubicpolinom(double pa,
              */
             *nr = 0;
             i = 0;
-            tex0 = spline1d_rescaleval(a, b, 0, 1, *ex0, _state);
-            tex1 = spline1d_rescaleval(a, b, 0, 1, *ex1, _state);
-            *nr = bisectmethod(pa, tmpma, pb, tmpmb, 0, tex0, x0, _state)+(*nr);
+            tex0 = spline1d_rescaleval(a, b, (double)(0), (double)(1), *ex0, _state);
+            tex1 = spline1d_rescaleval(a, b, (double)(0), (double)(1), *ex1, _state);
+            *nr = bisectmethod(pa, tmpma, pb, tmpmb, (double)(0), tex0, x0, _state)+(*nr);
             if( *nr>i )
             {
-                tempdata->ptr.p_double[i] = spline1d_rescaleval(0, tex0, a, *ex0, *x0, _state);
+                tempdata->ptr.p_double[i] = spline1d_rescaleval((double)(0), tex0, a, *ex0, *x0, _state);
                 i = i+1;
             }
             *nr = bisectmethod(pa, tmpma, pb, tmpmb, tex0, tex1, x0, _state)+(*nr);
@@ -17214,10 +19127,10 @@ void solvecubicpolinom(double pa,
                     i = i+1;
                 }
             }
-            *nr = bisectmethod(pa, tmpma, pb, tmpmb, tex1, 1, x0, _state)+(*nr);
+            *nr = bisectmethod(pa, tmpma, pb, tmpmb, tex1, (double)(1), x0, _state)+(*nr);
             if( *nr>i )
             {
-                *x0 = spline1d_rescaleval(tex1, 1, *ex1, b, *x0, _state);
+                *x0 = spline1d_rescaleval(tex1, (double)(1), *ex1, b, *x0, _state);
                 if( i>0 )
                 {
                     if( ae_fp_neq(*x0,tempdata->ptr.p_double[i-1]) )
@@ -17334,7 +19247,7 @@ ae_int_t bisectmethod(double pa,
     }
     else
     {
-        if( ae_fp_eq(lf,0) )
+        if( ae_fp_eq(lf,(double)(0)) )
         {
             *x = a;
             result = 1;
@@ -17342,7 +19255,7 @@ ae_int_t bisectmethod(double pa,
         }
         else
         {
-            if( ae_fp_eq(rf,0) )
+            if( ae_fp_eq(rf,(double)(0)) )
             {
                 *x = b;
                 result = 1;
@@ -17372,19 +19285,19 @@ ae_int_t bisectmethod(double pa,
             }
             else
             {
-                if( ae_fp_eq(lf,0) )
+                if( ae_fp_eq(lf,(double)(0)) )
                 {
                     *x = a0;
                     result = 1;
                     return result;
                 }
-                if( ae_fp_eq(rf,0) )
+                if( ae_fp_eq(rf,(double)(0)) )
                 {
                     *x = b0;
                     result = 1;
                     return result;
                 }
-                if( ae_fp_eq(mf,0) )
+                if( ae_fp_eq(mf,(double)(0)) )
                 {
                     *x = m;
                     result = 1;
@@ -17445,15 +19358,15 @@ void spline1dbuildmonotone(/* Real    */ ae_vector* x,
     ae_int_t j;
 
     ae_frame_make(_state, &_frame_block);
-    ae_vector_init_copy(&_x, x, _state, ae_true);
+    ae_vector_init_copy(&_x, x, _state);
     x = &_x;
-    ae_vector_init_copy(&_y, y, _state, ae_true);
+    ae_vector_init_copy(&_y, y, _state);
     y = &_y;
     _spline1dinterpolant_clear(c);
-    ae_vector_init(&d, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&ex, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&ey, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&p, 0, DT_INT, _state, ae_true);
+    ae_vector_init(&d, 0, DT_REAL, _state);
+    ae_vector_init(&ex, 0, DT_REAL, _state);
+    ae_vector_init(&ey, 0, DT_REAL, _state);
+    ae_vector_init(&p, 0, DT_INT, _state);
 
     
     /*
@@ -17489,14 +19402,14 @@ void spline1dbuildmonotone(/* Real    */ ae_vector* x,
      * Init sign of the function for first segment
      */
     i = 0;
-    ca = 0;
+    ca = (double)(0);
     do
     {
         ca = ey.ptr.p_double[i+1]-ey.ptr.p_double[i];
         i = i+1;
     }
-    while(!(ae_fp_neq(ca,0)||i>n-2));
-    if( ae_fp_neq(ca,0) )
+    while(!(ae_fp_neq(ca,(double)(0))||i>n-2));
+    if( ae_fp_neq(ca,(double)(0)) )
     {
         ca = ca/ae_fabs(ca, _state);
     }
@@ -17511,7 +19424,7 @@ void spline1dbuildmonotone(/* Real    */ ae_vector* x,
         for(j=i; j<=n-2; j++)
         {
             cb = ey.ptr.p_double[j+1]-ey.ptr.p_double[j];
-            if( ae_fp_greater_eq(ca*cb,0) )
+            if( ae_fp_greater_eq(ca*cb,(double)(0)) )
             {
                 tmpn = tmpn+1;
             }
@@ -17527,8 +19440,8 @@ void spline1dbuildmonotone(/* Real    */ ae_vector* x,
         /*
          * Calculate derivatives for current segment
          */
-        d.ptr.p_double[i] = 0;
-        d.ptr.p_double[sn-1] = 0;
+        d.ptr.p_double[i] = (double)(0);
+        d.ptr.p_double[sn-1] = (double)(0);
         for(j=i+1; j<=sn-2; j++)
         {
             d.ptr.p_double[j] = ((ey.ptr.p_double[j]-ey.ptr.p_double[j-1])/(ex.ptr.p_double[j]-ex.ptr.p_double[j-1])+(ey.ptr.p_double[j+1]-ey.ptr.p_double[j])/(ex.ptr.p_double[j+1]-ex.ptr.p_double[j]))/2;
@@ -17538,20 +19451,20 @@ void spline1dbuildmonotone(/* Real    */ ae_vector* x,
             delta = (ey.ptr.p_double[j+1]-ey.ptr.p_double[j])/(ex.ptr.p_double[j+1]-ex.ptr.p_double[j]);
             if( ae_fp_less_eq(ae_fabs(delta, _state),epsilon) )
             {
-                d.ptr.p_double[j] = 0;
-                d.ptr.p_double[j+1] = 0;
+                d.ptr.p_double[j] = (double)(0);
+                d.ptr.p_double[j+1] = (double)(0);
             }
             else
             {
                 alpha = d.ptr.p_double[j]/delta;
                 beta = d.ptr.p_double[j+1]/delta;
-                if( ae_fp_neq(alpha,0) )
+                if( ae_fp_neq(alpha,(double)(0)) )
                 {
                     cb = alpha*ae_sqrt(1+ae_sqr(beta/alpha, _state), _state);
                 }
                 else
                 {
-                    if( ae_fp_neq(beta,0) )
+                    if( ae_fp_neq(beta,(double)(0)) )
                     {
                         cb = beta;
                     }
@@ -17560,7 +19473,7 @@ void spline1dbuildmonotone(/* Real    */ ae_vector* x,
                         continue;
                     }
                 }
-                if( ae_fp_greater(cb,3) )
+                if( ae_fp_greater(cb,(double)(3)) )
                 {
                     d.ptr.p_double[j] = 3*alpha*delta/cb;
                     d.ptr.p_double[j+1] = 3*beta*delta/cb;
@@ -17652,8 +19565,8 @@ static void spline1d_spline1dgriddiffcubicinternal(/* Real    */ ae_vector* x,
     }
     if( (n==2&&boundltype==-1)&&boundrtype==-1 )
     {
-        d->ptr.p_double[0] = 0;
-        d->ptr.p_double[1] = 0;
+        d->ptr.p_double[0] = (double)(0);
+        d->ptr.p_double[1] = (double)(0);
         return;
     }
     
@@ -17706,23 +19619,23 @@ static void spline1d_spline1dgriddiffcubicinternal(/* Real    */ ae_vector* x,
          */
         if( boundltype==0 )
         {
-            a1->ptr.p_double[0] = 0;
-            a2->ptr.p_double[0] = 1;
-            a3->ptr.p_double[0] = 1;
+            a1->ptr.p_double[0] = (double)(0);
+            a2->ptr.p_double[0] = (double)(1);
+            a3->ptr.p_double[0] = (double)(1);
             b->ptr.p_double[0] = 2*(y->ptr.p_double[1]-y->ptr.p_double[0])/(x->ptr.p_double[1]-x->ptr.p_double[0]);
         }
         if( boundltype==1 )
         {
-            a1->ptr.p_double[0] = 0;
-            a2->ptr.p_double[0] = 1;
-            a3->ptr.p_double[0] = 0;
+            a1->ptr.p_double[0] = (double)(0);
+            a2->ptr.p_double[0] = (double)(1);
+            a3->ptr.p_double[0] = (double)(0);
             b->ptr.p_double[0] = boundl;
         }
         if( boundltype==2 )
         {
-            a1->ptr.p_double[0] = 0;
-            a2->ptr.p_double[0] = 2;
-            a3->ptr.p_double[0] = 1;
+            a1->ptr.p_double[0] = (double)(0);
+            a2->ptr.p_double[0] = (double)(2);
+            a3->ptr.p_double[0] = (double)(1);
             b->ptr.p_double[0] = 3*(y->ptr.p_double[1]-y->ptr.p_double[0])/(x->ptr.p_double[1]-x->ptr.p_double[0])-0.5*boundl*(x->ptr.p_double[1]-x->ptr.p_double[0]);
         }
         
@@ -17742,23 +19655,23 @@ static void spline1d_spline1dgriddiffcubicinternal(/* Real    */ ae_vector* x,
          */
         if( boundrtype==0 )
         {
-            a1->ptr.p_double[n-1] = 1;
-            a2->ptr.p_double[n-1] = 1;
-            a3->ptr.p_double[n-1] = 0;
+            a1->ptr.p_double[n-1] = (double)(1);
+            a2->ptr.p_double[n-1] = (double)(1);
+            a3->ptr.p_double[n-1] = (double)(0);
             b->ptr.p_double[n-1] = 2*(y->ptr.p_double[n-1]-y->ptr.p_double[n-2])/(x->ptr.p_double[n-1]-x->ptr.p_double[n-2]);
         }
         if( boundrtype==1 )
         {
-            a1->ptr.p_double[n-1] = 0;
-            a2->ptr.p_double[n-1] = 1;
-            a3->ptr.p_double[n-1] = 0;
+            a1->ptr.p_double[n-1] = (double)(0);
+            a2->ptr.p_double[n-1] = (double)(1);
+            a3->ptr.p_double[n-1] = (double)(0);
             b->ptr.p_double[n-1] = boundr;
         }
         if( boundrtype==2 )
         {
-            a1->ptr.p_double[n-1] = 1;
-            a2->ptr.p_double[n-1] = 2;
-            a3->ptr.p_double[n-1] = 0;
+            a1->ptr.p_double[n-1] = (double)(1);
+            a2->ptr.p_double[n-1] = (double)(2);
+            a3->ptr.p_double[n-1] = (double)(0);
             b->ptr.p_double[n-1] = 3*(y->ptr.p_double[n-1]-y->ptr.p_double[n-2])/(x->ptr.p_double[n-1]-x->ptr.p_double[n-2])+0.5*boundr*(x->ptr.p_double[n-1]-x->ptr.p_double[n-2]);
         }
         
@@ -17783,8 +19696,8 @@ static void spline1d_heapsortpoints(/* Real    */ ae_vector* x,
     ae_vector bufy;
 
     ae_frame_make(_state, &_frame_block);
-    ae_vector_init(&bufx, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&bufy, 0, DT_REAL, _state, ae_true);
+    ae_vector_init(&bufx, 0, DT_REAL, _state);
+    ae_vector_init(&bufy, 0, DT_REAL, _state);
 
     tagsortfastr(x, y, &bufx, &bufy, n, _state);
     ae_frame_leave(_state);
@@ -17815,8 +19728,8 @@ static void spline1d_heapsortppoints(/* Real    */ ae_vector* x,
     ae_int_t i;
 
     ae_frame_make(_state, &_frame_block);
-    ae_vector_init(&rbuf, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&ibuf, 0, DT_INT, _state, ae_true);
+    ae_vector_init(&rbuf, 0, DT_REAL, _state);
+    ae_vector_init(&ibuf, 0, DT_INT, _state);
 
     if( p->cnt<n )
     {
@@ -17864,9 +19777,9 @@ static void spline1d_solvetridiagonal(/* Real    */ ae_vector* a,
     double t;
 
     ae_frame_make(_state, &_frame_block);
-    ae_vector_init_copy(&_b, b, _state, ae_true);
+    ae_vector_init_copy(&_b, b, _state);
     b = &_b;
-    ae_vector_init_copy(&_d, d, _state, ae_true);
+    ae_vector_init_copy(&_d, d, _state);
     d = &_d;
 
     if( x->cnt<n )
@@ -17918,11 +19831,11 @@ static void spline1d_solvecyclictridiagonal(/* Real    */ ae_vector* a,
     ae_vector u;
 
     ae_frame_make(_state, &_frame_block);
-    ae_vector_init_copy(&_b, b, _state, ae_true);
+    ae_vector_init_copy(&_b, b, _state);
     b = &_b;
-    ae_vector_init(&y, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&z, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&u, 0, DT_REAL, _state, ae_true);
+    ae_vector_init(&y, 0, DT_REAL, _state);
+    ae_vector_init(&z, 0, DT_REAL, _state);
+    ae_vector_init(&u, 0, DT_REAL, _state);
 
     if( x->cnt<n )
     {
@@ -17936,7 +19849,7 @@ static void spline1d_solvecyclictridiagonal(/* Real    */ ae_vector* a,
     ae_vector_set_length(&u, n, _state);
     for(k=0; k<=n-1; k++)
     {
-        u.ptr.p_double[k] = 0;
+        u.ptr.p_double[k] = (double)(0);
     }
     u.ptr.p_double[0] = gamma;
     u.ptr.p_double[n-1] = alpha;
@@ -18082,37 +19995,428 @@ static double spline1d_rescaleval(double a0,
 }
 
 
-ae_bool _spline1dinterpolant_init(spline1dinterpolant* p, ae_state *_state, ae_bool make_automatic)
+void _spline1dinterpolant_init(void* _p, ae_state *_state)
 {
-    if( !ae_vector_init(&p->x, 0, DT_REAL, _state, make_automatic) )
-        return ae_false;
-    if( !ae_vector_init(&p->c, 0, DT_REAL, _state, make_automatic) )
-        return ae_false;
-    return ae_true;
+    spline1dinterpolant *p = (spline1dinterpolant*)_p;
+    ae_touch_ptr((void*)p);
+    ae_vector_init(&p->x, 0, DT_REAL, _state);
+    ae_vector_init(&p->c, 0, DT_REAL, _state);
 }
 
 
-ae_bool _spline1dinterpolant_init_copy(spline1dinterpolant* dst, spline1dinterpolant* src, ae_state *_state, ae_bool make_automatic)
+void _spline1dinterpolant_init_copy(void* _dst, void* _src, ae_state *_state)
 {
+    spline1dinterpolant *dst = (spline1dinterpolant*)_dst;
+    spline1dinterpolant *src = (spline1dinterpolant*)_src;
     dst->periodic = src->periodic;
     dst->n = src->n;
     dst->k = src->k;
     dst->continuity = src->continuity;
-    if( !ae_vector_init_copy(&dst->x, &src->x, _state, make_automatic) )
-        return ae_false;
-    if( !ae_vector_init_copy(&dst->c, &src->c, _state, make_automatic) )
-        return ae_false;
-    return ae_true;
+    ae_vector_init_copy(&dst->x, &src->x, _state);
+    ae_vector_init_copy(&dst->c, &src->c, _state);
 }
 
 
-void _spline1dinterpolant_clear(spline1dinterpolant* p)
+void _spline1dinterpolant_clear(void* _p)
 {
+    spline1dinterpolant *p = (spline1dinterpolant*)_p;
+    ae_touch_ptr((void*)p);
     ae_vector_clear(&p->x);
     ae_vector_clear(&p->c);
 }
 
 
+void _spline1dinterpolant_destroy(void* _p)
+{
+    spline1dinterpolant *p = (spline1dinterpolant*)_p;
+    ae_touch_ptr((void*)p);
+    ae_vector_destroy(&p->x);
+    ae_vector_destroy(&p->c);
+}
+
+
+
+
+/*************************************************************************
+This  subroutine fits piecewise linear curve to points with Ramer-Douglas-
+Peucker algorithm, which stops after generating specified number of linear
+sections.
+
+IMPORTANT:
+* it does NOT perform least-squares fitting; it  builds  curve,  but  this
+  curve does not minimize some least squares metric.  See  description  of
+  RDP algorithm (say, in Wikipedia) for more details on WHAT is performed.
+* this function does NOT work with parametric curves  (i.e.  curves  which
+  can be represented as {X(t),Y(t)}. It works with curves   which  can  be
+  represented as Y(X). Thus,  it  is  impossible  to  model  figures  like
+  circles  with  this  functions.
+  If  you  want  to  work  with  parametric   curves,   you   should   use
+  ParametricRDPFixed() function provided  by  "Parametric"  subpackage  of
+  "Interpolation" package.
+
+INPUT PARAMETERS:
+    X       -   array of X-coordinates:
+                * at least N elements
+                * can be unordered (points are automatically sorted)
+                * this function may accept non-distinct X (see below for
+                  more information on handling of such inputs)
+    Y       -   array of Y-coordinates:
+                * at least N elements
+    N       -   number of elements in X/Y
+    M       -   desired number of sections:
+                * at most M sections are generated by this function
+                * less than M sections can be generated if we have N<M
+                  (or some X are non-distinct).
+
+OUTPUT PARAMETERS:
+    X2      -   X-values of corner points for piecewise approximation,
+                has length NSections+1 or zero (for NSections=0).
+    Y2      -   Y-values of corner points,
+                has length NSections+1 or zero (for NSections=0).
+    NSections-  number of sections found by algorithm, NSections<=M,
+                NSections can be zero for degenerate datasets
+                (N<=1 or all X[] are non-distinct).
+
+NOTE: X2/Y2 are ordered arrays, i.e. (X2[0],Y2[0]) is  a  first  point  of
+      curve, (X2[NSection-1],Y2[NSection-1]) is the last point.
+
+  -- ALGLIB --
+     Copyright 02.10.2014 by Bochkanov Sergey
+*************************************************************************/
+void lstfitpiecewiselinearrdpfixed(/* Real    */ ae_vector* x,
+     /* Real    */ ae_vector* y,
+     ae_int_t n,
+     ae_int_t m,
+     /* Real    */ ae_vector* x2,
+     /* Real    */ ae_vector* y2,
+     ae_int_t* nsections,
+     ae_state *_state)
+{
+    ae_frame _frame_block;
+    ae_vector _x;
+    ae_vector _y;
+    ae_int_t i;
+    ae_int_t j;
+    ae_int_t k;
+    ae_int_t k0;
+    ae_int_t k1;
+    ae_int_t k2;
+    ae_vector buf0;
+    ae_vector buf1;
+    ae_matrix sections;
+    ae_vector points;
+    double v;
+    ae_int_t worstidx;
+    double worsterror;
+    ae_int_t idx0;
+    ae_int_t idx1;
+    double e0;
+    double e1;
+    ae_vector heaperrors;
+    ae_vector heaptags;
+
+    ae_frame_make(_state, &_frame_block);
+    ae_vector_init_copy(&_x, x, _state);
+    x = &_x;
+    ae_vector_init_copy(&_y, y, _state);
+    y = &_y;
+    ae_vector_clear(x2);
+    ae_vector_clear(y2);
+    *nsections = 0;
+    ae_vector_init(&buf0, 0, DT_REAL, _state);
+    ae_vector_init(&buf1, 0, DT_REAL, _state);
+    ae_matrix_init(&sections, 0, 0, DT_REAL, _state);
+    ae_vector_init(&points, 0, DT_REAL, _state);
+    ae_vector_init(&heaperrors, 0, DT_REAL, _state);
+    ae_vector_init(&heaptags, 0, DT_INT, _state);
+
+    ae_assert(n>=0, "LSTFitPiecewiseLinearRDPFixed: N<0", _state);
+    ae_assert(m>=1, "LSTFitPiecewiseLinearRDPFixed: M<1", _state);
+    ae_assert(x->cnt>=n, "LSTFitPiecewiseLinearRDPFixed: Length(X)<N", _state);
+    ae_assert(y->cnt>=n, "LSTFitPiecewiseLinearRDPFixed: Length(Y)<N", _state);
+    if( n<=1 )
+    {
+        *nsections = 0;
+        ae_frame_leave(_state);
+        return;
+    }
+    
+    /*
+     * Sort points.
+     * Handle possible ties (tied values are replaced by their mean)
+     */
+    tagsortfastr(x, y, &buf0, &buf1, n, _state);
+    i = 0;
+    while(i<=n-1)
+    {
+        j = i+1;
+        v = y->ptr.p_double[i];
+        while(j<=n-1&&ae_fp_eq(x->ptr.p_double[j],x->ptr.p_double[i]))
+        {
+            v = v+y->ptr.p_double[j];
+            j = j+1;
+        }
+        v = v/(j-i);
+        for(k=i; k<=j-1; k++)
+        {
+            y->ptr.p_double[k] = v;
+        }
+        i = j;
+    }
+    
+    /*
+     * Handle degenerate case x[0]=x[N-1]
+     */
+    if( ae_fp_eq(x->ptr.p_double[n-1],x->ptr.p_double[0]) )
+    {
+        *nsections = 0;
+        ae_frame_leave(_state);
+        return;
+    }
+    
+    /*
+     * Prepare first section
+     */
+    lsfit_rdpanalyzesection(x, y, 0, n-1, &worstidx, &worsterror, _state);
+    ae_matrix_set_length(&sections, m, 4, _state);
+    ae_vector_set_length(&heaperrors, m, _state);
+    ae_vector_set_length(&heaptags, m, _state);
+    *nsections = 1;
+    sections.ptr.pp_double[0][0] = (double)(0);
+    sections.ptr.pp_double[0][1] = (double)(n-1);
+    sections.ptr.pp_double[0][2] = (double)(worstidx);
+    sections.ptr.pp_double[0][3] = worsterror;
+    heaperrors.ptr.p_double[0] = worsterror;
+    heaptags.ptr.p_int[0] = 0;
+    ae_assert(ae_fp_eq(sections.ptr.pp_double[0][1],(double)(n-1)), "RDP algorithm: integrity check failed", _state);
+    
+    /*
+     * Main loop.
+     * Repeatedly find section with worst error and divide it.
+     * Terminate after M-th section, or because of other reasons (see loop internals).
+     */
+    while(*nsections<m)
+    {
+        
+        /*
+         * Break if worst section has zero error.
+         * Store index of worst section to K.
+         */
+        if( ae_fp_eq(heaperrors.ptr.p_double[0],(double)(0)) )
+        {
+            break;
+        }
+        k = heaptags.ptr.p_int[0];
+        
+        /*
+         * K-th section is divided in two:
+         * * first  one spans interval from X[Sections[K,0]] to X[Sections[K,2]]
+         * * second one spans interval from X[Sections[K,2]] to X[Sections[K,1]]
+         *
+         * First section is stored at K-th position, second one is appended to the table.
+         * Then we update heap which stores pairs of (error,section_index)
+         */
+        k0 = ae_round(sections.ptr.pp_double[k][0], _state);
+        k1 = ae_round(sections.ptr.pp_double[k][1], _state);
+        k2 = ae_round(sections.ptr.pp_double[k][2], _state);
+        lsfit_rdpanalyzesection(x, y, k0, k2, &idx0, &e0, _state);
+        lsfit_rdpanalyzesection(x, y, k2, k1, &idx1, &e1, _state);
+        sections.ptr.pp_double[k][0] = (double)(k0);
+        sections.ptr.pp_double[k][1] = (double)(k2);
+        sections.ptr.pp_double[k][2] = (double)(idx0);
+        sections.ptr.pp_double[k][3] = e0;
+        tagheapreplacetopi(&heaperrors, &heaptags, *nsections, e0, k, _state);
+        sections.ptr.pp_double[*nsections][0] = (double)(k2);
+        sections.ptr.pp_double[*nsections][1] = (double)(k1);
+        sections.ptr.pp_double[*nsections][2] = (double)(idx1);
+        sections.ptr.pp_double[*nsections][3] = e1;
+        tagheappushi(&heaperrors, &heaptags, nsections, e1, *nsections, _state);
+    }
+    
+    /*
+     * Convert from sections to points
+     */
+    ae_vector_set_length(&points, *nsections+1, _state);
+    k = ae_round(sections.ptr.pp_double[0][1], _state);
+    for(i=0; i<=*nsections-1; i++)
+    {
+        points.ptr.p_double[i] = (double)(ae_round(sections.ptr.pp_double[i][0], _state));
+        if( ae_fp_greater(x->ptr.p_double[ae_round(sections.ptr.pp_double[i][1], _state)],x->ptr.p_double[k]) )
+        {
+            k = ae_round(sections.ptr.pp_double[i][1], _state);
+        }
+    }
+    points.ptr.p_double[*nsections] = (double)(k);
+    tagsortfast(&points, &buf0, *nsections+1, _state);
+    
+    /*
+     * Output sections:
+     * * first NSection elements of X2/Y2 are filled by x/y at left boundaries of sections
+     * * last element of X2/Y2 is filled by right boundary of rightmost section
+     * * X2/Y2 is sorted by ascending of X2
+     */
+    ae_vector_set_length(x2, *nsections+1, _state);
+    ae_vector_set_length(y2, *nsections+1, _state);
+    for(i=0; i<=*nsections; i++)
+    {
+        x2->ptr.p_double[i] = x->ptr.p_double[ae_round(points.ptr.p_double[i], _state)];
+        y2->ptr.p_double[i] = y->ptr.p_double[ae_round(points.ptr.p_double[i], _state)];
+    }
+    ae_frame_leave(_state);
+}
+
+
+/*************************************************************************
+This  subroutine fits piecewise linear curve to points with Ramer-Douglas-
+Peucker algorithm, which stops after achieving desired precision.
+
+IMPORTANT:
+* it performs non-least-squares fitting; it builds curve, but  this  curve
+  does not minimize some least squares  metric.  See  description  of  RDP
+  algorithm (say, in Wikipedia) for more details on WHAT is performed.
+* this function does NOT work with parametric curves  (i.e.  curves  which
+  can be represented as {X(t),Y(t)}. It works with curves   which  can  be
+  represented as Y(X). Thus, it is impossible to model figures like circles
+  with this functions.
+  If  you  want  to  work  with  parametric   curves,   you   should   use
+  ParametricRDPFixed() function provided  by  "Parametric"  subpackage  of
+  "Interpolation" package.
+
+INPUT PARAMETERS:
+    X       -   array of X-coordinates:
+                * at least N elements
+                * can be unordered (points are automatically sorted)
+                * this function may accept non-distinct X (see below for
+                  more information on handling of such inputs)
+    Y       -   array of Y-coordinates:
+                * at least N elements
+    N       -   number of elements in X/Y
+    Eps     -   positive number, desired precision.
+    
+
+OUTPUT PARAMETERS:
+    X2      -   X-values of corner points for piecewise approximation,
+                has length NSections+1 or zero (for NSections=0).
+    Y2      -   Y-values of corner points,
+                has length NSections+1 or zero (for NSections=0).
+    NSections-  number of sections found by algorithm,
+                NSections can be zero for degenerate datasets
+                (N<=1 or all X[] are non-distinct).
+
+NOTE: X2/Y2 are ordered arrays, i.e. (X2[0],Y2[0]) is  a  first  point  of
+      curve, (X2[NSection-1],Y2[NSection-1]) is the last point.
+
+  -- ALGLIB --
+     Copyright 02.10.2014 by Bochkanov Sergey
+*************************************************************************/
+void lstfitpiecewiselinearrdp(/* Real    */ ae_vector* x,
+     /* Real    */ ae_vector* y,
+     ae_int_t n,
+     double eps,
+     /* Real    */ ae_vector* x2,
+     /* Real    */ ae_vector* y2,
+     ae_int_t* nsections,
+     ae_state *_state)
+{
+    ae_frame _frame_block;
+    ae_vector _x;
+    ae_vector _y;
+    ae_int_t i;
+    ae_int_t j;
+    ae_int_t k;
+    ae_vector buf0;
+    ae_vector buf1;
+    ae_vector xtmp;
+    ae_vector ytmp;
+    double v;
+    ae_int_t npts;
+
+    ae_frame_make(_state, &_frame_block);
+    ae_vector_init_copy(&_x, x, _state);
+    x = &_x;
+    ae_vector_init_copy(&_y, y, _state);
+    y = &_y;
+    ae_vector_clear(x2);
+    ae_vector_clear(y2);
+    *nsections = 0;
+    ae_vector_init(&buf0, 0, DT_REAL, _state);
+    ae_vector_init(&buf1, 0, DT_REAL, _state);
+    ae_vector_init(&xtmp, 0, DT_REAL, _state);
+    ae_vector_init(&ytmp, 0, DT_REAL, _state);
+
+    ae_assert(n>=0, "LSTFitPiecewiseLinearRDP: N<0", _state);
+    ae_assert(ae_fp_greater(eps,(double)(0)), "LSTFitPiecewiseLinearRDP: Eps<=0", _state);
+    ae_assert(x->cnt>=n, "LSTFitPiecewiseLinearRDP: Length(X)<N", _state);
+    ae_assert(y->cnt>=n, "LSTFitPiecewiseLinearRDP: Length(Y)<N", _state);
+    if( n<=1 )
+    {
+        *nsections = 0;
+        ae_frame_leave(_state);
+        return;
+    }
+    
+    /*
+     * Sort points.
+     * Handle possible ties (tied values are replaced by their mean)
+     */
+    tagsortfastr(x, y, &buf0, &buf1, n, _state);
+    i = 0;
+    while(i<=n-1)
+    {
+        j = i+1;
+        v = y->ptr.p_double[i];
+        while(j<=n-1&&ae_fp_eq(x->ptr.p_double[j],x->ptr.p_double[i]))
+        {
+            v = v+y->ptr.p_double[j];
+            j = j+1;
+        }
+        v = v/(j-i);
+        for(k=i; k<=j-1; k++)
+        {
+            y->ptr.p_double[k] = v;
+        }
+        i = j;
+    }
+    
+    /*
+     * Handle degenerate case x[0]=x[N-1]
+     */
+    if( ae_fp_eq(x->ptr.p_double[n-1],x->ptr.p_double[0]) )
+    {
+        *nsections = 0;
+        ae_frame_leave(_state);
+        return;
+    }
+    
+    /*
+     * Prepare data for recursive algorithm
+     */
+    ae_vector_set_length(&xtmp, n, _state);
+    ae_vector_set_length(&ytmp, n, _state);
+    npts = 2;
+    xtmp.ptr.p_double[0] = x->ptr.p_double[0];
+    ytmp.ptr.p_double[0] = y->ptr.p_double[0];
+    xtmp.ptr.p_double[1] = x->ptr.p_double[n-1];
+    ytmp.ptr.p_double[1] = y->ptr.p_double[n-1];
+    lsfit_rdprecursive(x, y, 0, n-1, eps, &xtmp, &ytmp, &npts, _state);
+    
+    /*
+     * Output sections:
+     * * first NSection elements of X2/Y2 are filled by x/y at left boundaries of sections
+     * * last element of X2/Y2 is filled by right boundary of rightmost section
+     * * X2/Y2 is sorted by ascending of X2
+     */
+    *nsections = npts-1;
+    ae_vector_set_length(x2, npts, _state);
+    ae_vector_set_length(y2, npts, _state);
+    for(i=0; i<=*nsections; i++)
+    {
+        x2->ptr.p_double[i] = xtmp.ptr.p_double[i];
+        y2->ptr.p_double[i] = ytmp.ptr.p_double[i];
+    }
+    tagsortfastr(x2, y2, &buf0, &buf1, npts, _state);
+    ae_frame_leave(_state);
+}
 
 
 /*************************************************************************
@@ -18125,6 +20429,29 @@ computational scheme is O(N*M^2), mostly dominated by least squares solver
 
 SEE ALSO:
     PolynomialFitWC()
+    
+COMMERCIAL EDITION OF ALGLIB:
+
+  ! Commercial version of ALGLIB includes two  important  improvements  of
+  ! this function, which can be used from C++ and C#:
+  ! * Intel MKL support (lightweight Intel MKL is shipped with ALGLIB)
+  ! * multithreading support
+  !
+  ! Intel MKL gives approximately constant  (with  respect  to  number  of
+  ! worker threads) acceleration factor which depends on CPU  being  used,
+  ! problem  size  and  "baseline"  ALGLIB  edition  which  is  used   for
+  ! comparison.
+  !
+  ! Speed-up provided by multithreading greatly depends  on  problem  size
+  ! - only large problems (number of coefficients is more than 500) can be
+  ! efficiently multithreaded.
+  !
+  ! Generally, commercial ALGLIB is several times faster than  open-source
+  ! generic C edition, and many times faster than open-source C# edition.
+  !
+  ! We recommend you to read 'Working with commercial version' section  of
+  ! ALGLIB Reference Manual in order to find out how to  use  performance-
+  ! related features provided by commercial edition of ALGLIB.
 
 INPUT PARAMETERS:
     X   -   points, array[0..N-1].
@@ -18176,10 +20503,10 @@ void polynomialfit(/* Real    */ ae_vector* x,
     *info = 0;
     _barycentricinterpolant_clear(p);
     _polynomialfitreport_clear(rep);
-    ae_vector_init(&w, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&xc, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&yc, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&dc, 0, DT_INT, _state, ae_true);
+    ae_vector_init(&w, 0, DT_REAL, _state);
+    ae_vector_init(&xc, 0, DT_REAL, _state);
+    ae_vector_init(&yc, 0, DT_REAL, _state);
+    ae_vector_init(&dc, 0, DT_INT, _state);
 
     ae_assert(n>0, "PolynomialFit: N<=0!", _state);
     ae_assert(m>0, "PolynomialFit: M<=0!", _state);
@@ -18190,10 +20517,25 @@ void polynomialfit(/* Real    */ ae_vector* x,
     ae_vector_set_length(&w, n, _state);
     for(i=0; i<=n-1; i++)
     {
-        w.ptr.p_double[i] = 1;
+        w.ptr.p_double[i] = (double)(1);
     }
     polynomialfitwc(x, y, &w, n, &xc, &yc, &dc, 0, m, info, p, rep, _state);
     ae_frame_leave(_state);
+}
+
+
+/*************************************************************************
+Single-threaded stub. HPC ALGLIB replaces it by multithreaded code.
+*************************************************************************/
+void _pexec_polynomialfit(/* Real    */ ae_vector* x,
+    /* Real    */ ae_vector* y,
+    ae_int_t n,
+    ae_int_t m,
+    ae_int_t* info,
+    barycentricinterpolant* p,
+    polynomialfitreport* rep, ae_state *_state)
+{
+    polynomialfit(x,y,n,m,info,p,rep, _state);
 }
 
 
@@ -18209,6 +20551,29 @@ computational scheme is O(N*M^2), mostly dominated by least squares solver
 
 SEE ALSO:
     PolynomialFit()
+    
+COMMERCIAL EDITION OF ALGLIB:
+
+  ! Commercial version of ALGLIB includes two  important  improvements  of
+  ! this function, which can be used from C++ and C#:
+  ! * Intel MKL support (lightweight Intel MKL is shipped with ALGLIB)
+  ! * multithreading support
+  !
+  ! Intel MKL gives approximately constant  (with  respect  to  number  of
+  ! worker threads) acceleration factor which depends on CPU  being  used,
+  ! problem  size  and  "baseline"  ALGLIB  edition  which  is  used   for
+  ! comparison.
+  !
+  ! Speed-up provided by multithreading greatly depends  on  problem  size
+  ! - only large problems (number of coefficients is more than 500) can be
+  ! efficiently multithreaded.
+  !
+  ! Generally, commercial ALGLIB is several times faster than  open-source
+  ! generic C edition, and many times faster than open-source C# edition.
+  !
+  ! We recommend you to read 'Working with commercial version' section  of
+  ! ALGLIB Reference Manual in order to find out how to  use  performance-
+  ! related features provided by commercial edition of ALGLIB.
 
 INPUT PARAMETERS:
     X   -   points, array[0..N-1].
@@ -18318,29 +20683,29 @@ void polynomialfitwc(/* Real    */ ae_vector* x,
     lsfitreport lrep;
 
     ae_frame_make(_state, &_frame_block);
-    ae_vector_init_copy(&_x, x, _state, ae_true);
+    ae_vector_init_copy(&_x, x, _state);
     x = &_x;
-    ae_vector_init_copy(&_y, y, _state, ae_true);
+    ae_vector_init_copy(&_y, y, _state);
     y = &_y;
-    ae_vector_init_copy(&_w, w, _state, ae_true);
+    ae_vector_init_copy(&_w, w, _state);
     w = &_w;
-    ae_vector_init_copy(&_xc, xc, _state, ae_true);
+    ae_vector_init_copy(&_xc, xc, _state);
     xc = &_xc;
-    ae_vector_init_copy(&_yc, yc, _state, ae_true);
+    ae_vector_init_copy(&_yc, yc, _state);
     yc = &_yc;
     *info = 0;
     _barycentricinterpolant_clear(p);
     _polynomialfitreport_clear(rep);
-    ae_vector_init(&xoriginal, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&yoriginal, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&y2, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&w2, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&tmp, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&tmp2, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&bx, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&by, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&bw, 0, DT_REAL, _state, ae_true);
-    _lsfitreport_init(&lrep, _state, ae_true);
+    ae_vector_init(&xoriginal, 0, DT_REAL, _state);
+    ae_vector_init(&yoriginal, 0, DT_REAL, _state);
+    ae_vector_init(&y2, 0, DT_REAL, _state);
+    ae_vector_init(&w2, 0, DT_REAL, _state);
+    ae_vector_init(&tmp, 0, DT_REAL, _state);
+    ae_vector_init(&tmp2, 0, DT_REAL, _state);
+    ae_vector_init(&bx, 0, DT_REAL, _state);
+    ae_vector_init(&by, 0, DT_REAL, _state);
+    ae_vector_init(&bw, 0, DT_REAL, _state);
+    _lsfitreport_init(&lrep, _state);
 
     ae_assert(n>0, "PolynomialFitWC: N<=0!", _state);
     ae_assert(m>0, "PolynomialFitWC: M<=0!", _state);
@@ -18387,7 +20752,7 @@ void polynomialfitwc(/* Real    */ ae_vector* x,
     ae_vector_set_length(&by, m, _state);
     ae_vector_set_length(&bw, m, _state);
     ae_vector_set_length(&tmp2, m, _state);
-    s = 1;
+    s = (double)(1);
     for(i=0; i<=m-1; i++)
     {
         if( m!=1 )
@@ -18396,14 +20761,14 @@ void polynomialfitwc(/* Real    */ ae_vector* x,
         }
         else
         {
-            u = 0;
+            u = (double)(0);
         }
-        v = 0;
+        v = (double)(0);
         for(j=0; j<=m-1; j++)
         {
             if( j==0 )
             {
-                tmp2.ptr.p_double[j] = 1;
+                tmp2.ptr.p_double[j] = (double)(1);
             }
             else
             {
@@ -18440,11 +20805,11 @@ void polynomialfitwc(/* Real    */ ae_vector* x,
     rep->rmserror = lrep.rmserror*(sb-sa);
     rep->avgerror = lrep.avgerror*(sb-sa);
     rep->maxerror = lrep.maxerror*(sb-sa);
-    rep->avgrelerror = 0;
+    rep->avgrelerror = (double)(0);
     relcnt = 0;
     for(i=0; i<=n-1; i++)
     {
-        if( ae_fp_neq(yoriginal.ptr.p_double[i],0) )
+        if( ae_fp_neq(yoriginal.ptr.p_double[i],(double)(0)) )
         {
             rep->avgrelerror = rep->avgrelerror+ae_fabs(barycentriccalc(p, xoriginal.ptr.p_double[i], _state)-yoriginal.ptr.p_double[i], _state)/ae_fabs(yoriginal.ptr.p_double[i], _state);
             relcnt = relcnt+1;
@@ -18454,6 +20819,1316 @@ void polynomialfitwc(/* Real    */ ae_vector* x,
     {
         rep->avgrelerror = rep->avgrelerror/relcnt;
     }
+    ae_frame_leave(_state);
+}
+
+
+/*************************************************************************
+Single-threaded stub. HPC ALGLIB replaces it by multithreaded code.
+*************************************************************************/
+void _pexec_polynomialfitwc(/* Real    */ ae_vector* x,
+    /* Real    */ ae_vector* y,
+    /* Real    */ ae_vector* w,
+    ae_int_t n,
+    /* Real    */ ae_vector* xc,
+    /* Real    */ ae_vector* yc,
+    /* Integer */ ae_vector* dc,
+    ae_int_t k,
+    ae_int_t m,
+    ae_int_t* info,
+    barycentricinterpolant* p,
+    polynomialfitreport* rep, ae_state *_state)
+{
+    polynomialfitwc(x,y,w,n,xc,yc,dc,k,m,info,p,rep, _state);
+}
+
+
+/*************************************************************************
+This function calculates value of four-parameter logistic (4PL)  model  at
+specified point X. 4PL model has following form:
+
+    F(x|A,B,C,D) = D+(A-D)/(1+Power(x/C,B))
+
+INPUT PARAMETERS:
+    X       -   current point, X>=0:
+                * zero X is correctly handled even for B<=0
+                * negative X results in exception.
+    A, B, C, D- parameters of 4PL model:
+                * A is unconstrained
+                * B is unconstrained; zero or negative values are handled
+                  correctly.
+                * C>0, non-positive value results in exception
+                * D is unconstrained
+                
+RESULT:
+    model value at X
+
+NOTE: if B=0, denominator is assumed to be equal to 2.0 even  for  zero  X
+      (strictly speaking, 0^0 is undefined).
+
+NOTE: this function also throws exception  if  all  input  parameters  are
+      correct, but overflow was detected during calculations.
+      
+NOTE: this function performs a lot of checks;  if  you  need  really  high
+      performance, consider evaluating model  yourself,  without  checking
+      for degenerate cases.
+      
+    
+  -- ALGLIB PROJECT --
+     Copyright 14.05.2014 by Bochkanov Sergey
+*************************************************************************/
+double logisticcalc4(double x,
+     double a,
+     double b,
+     double c,
+     double d,
+     ae_state *_state)
+{
+    double result;
+
+
+    ae_assert(ae_isfinite(x, _state), "LogisticCalc4: X is not finite", _state);
+    ae_assert(ae_isfinite(a, _state), "LogisticCalc4: A is not finite", _state);
+    ae_assert(ae_isfinite(b, _state), "LogisticCalc4: B is not finite", _state);
+    ae_assert(ae_isfinite(c, _state), "LogisticCalc4: C is not finite", _state);
+    ae_assert(ae_isfinite(d, _state), "LogisticCalc4: D is not finite", _state);
+    ae_assert(ae_fp_greater_eq(x,(double)(0)), "LogisticCalc4: X is negative", _state);
+    ae_assert(ae_fp_greater(c,(double)(0)), "LogisticCalc4: C is non-positive", _state);
+    
+    /*
+     * Check for degenerate cases
+     */
+    if( ae_fp_eq(b,(double)(0)) )
+    {
+        result = 0.5*(a+d);
+        return result;
+    }
+    if( ae_fp_eq(x,(double)(0)) )
+    {
+        if( ae_fp_greater(b,(double)(0)) )
+        {
+            result = a;
+        }
+        else
+        {
+            result = d;
+        }
+        return result;
+    }
+    
+    /*
+     * General case
+     */
+    result = d+(a-d)/(1.0+ae_pow(x/c, b, _state));
+    ae_assert(ae_isfinite(result, _state), "LogisticCalc4: overflow during calculations", _state);
+    return result;
+}
+
+
+/*************************************************************************
+This function calculates value of five-parameter logistic (5PL)  model  at
+specified point X. 5PL model has following form:
+
+    F(x|A,B,C,D,G) = D+(A-D)/Power(1+Power(x/C,B),G)
+
+INPUT PARAMETERS:
+    X       -   current point, X>=0:
+                * zero X is correctly handled even for B<=0
+                * negative X results in exception.
+    A, B, C, D, G- parameters of 5PL model:
+                * A is unconstrained
+                * B is unconstrained; zero or negative values are handled
+                  correctly.
+                * C>0, non-positive value results in exception
+                * D is unconstrained
+                * G>0, non-positive value results in exception
+                
+RESULT:
+    model value at X
+
+NOTE: if B=0, denominator is assumed to be equal to Power(2.0,G) even  for
+      zero X (strictly speaking, 0^0 is undefined).
+
+NOTE: this function also throws exception  if  all  input  parameters  are
+      correct, but overflow was detected during calculations.
+      
+NOTE: this function performs a lot of checks;  if  you  need  really  high
+      performance, consider evaluating model  yourself,  without  checking
+      for degenerate cases.
+      
+    
+  -- ALGLIB PROJECT --
+     Copyright 14.05.2014 by Bochkanov Sergey
+*************************************************************************/
+double logisticcalc5(double x,
+     double a,
+     double b,
+     double c,
+     double d,
+     double g,
+     ae_state *_state)
+{
+    double result;
+
+
+    ae_assert(ae_isfinite(x, _state), "LogisticCalc5: X is not finite", _state);
+    ae_assert(ae_isfinite(a, _state), "LogisticCalc5: A is not finite", _state);
+    ae_assert(ae_isfinite(b, _state), "LogisticCalc5: B is not finite", _state);
+    ae_assert(ae_isfinite(c, _state), "LogisticCalc5: C is not finite", _state);
+    ae_assert(ae_isfinite(d, _state), "LogisticCalc5: D is not finite", _state);
+    ae_assert(ae_isfinite(g, _state), "LogisticCalc5: G is not finite", _state);
+    ae_assert(ae_fp_greater_eq(x,(double)(0)), "LogisticCalc5: X is negative", _state);
+    ae_assert(ae_fp_greater(c,(double)(0)), "LogisticCalc5: C is non-positive", _state);
+    ae_assert(ae_fp_greater(g,(double)(0)), "LogisticCalc5: G is non-positive", _state);
+    
+    /*
+     * Check for degenerate cases
+     */
+    if( ae_fp_eq(b,(double)(0)) )
+    {
+        result = d+(a-d)/ae_pow(2.0, g, _state);
+        return result;
+    }
+    if( ae_fp_eq(x,(double)(0)) )
+    {
+        if( ae_fp_greater(b,(double)(0)) )
+        {
+            result = a;
+        }
+        else
+        {
+            result = d;
+        }
+        return result;
+    }
+    
+    /*
+     * General case
+     */
+    result = d+(a-d)/ae_pow(1.0+ae_pow(x/c, b, _state), g, _state);
+    ae_assert(ae_isfinite(result, _state), "LogisticCalc5: overflow during calculations", _state);
+    return result;
+}
+
+
+/*************************************************************************
+This function fits four-parameter logistic (4PL) model  to  data  provided
+by user. 4PL model has following form:
+
+    F(x|A,B,C,D) = D+(A-D)/(1+Power(x/C,B))
+
+Here:
+    * A, D - unconstrained (see LogisticFit4EC() for constrained 4PL)
+    * B>=0
+    * C>0
+    
+IMPORTANT: output of this function is constrained in  such  way that  B>0.
+           Because 4PL model is symmetric with respect to B, there  is  no
+           need to explore  B<0.  Constraining  B  makes  algorithm easier
+           to stabilize and debug.
+           Users  who  for  some  reason  prefer to work with negative B's
+           should transform output themselves (swap A and D, replace B  by
+           -B).
+           
+4PL fitting is implemented as follows:
+* we perform small number of restarts from random locations which helps to
+  solve problem of bad local extrema. Locations are only partially  random
+  - we use input data to determine good  initial  guess,  but  we  include
+  controlled amount of randomness.
+* we perform Levenberg-Marquardt fitting with very  tight  constraints  on
+  parameters B and C - it allows us to find good  initial  guess  for  the
+  second stage without risk of running into "flat spot".
+* second  Levenberg-Marquardt  round  is   performed   without   excessive
+  constraints. Results from the previous round are used as initial guess.
+* after fitting is done, we compare results with best values found so far,
+  rewrite "best solution" if needed, and move to next random location.
+  
+Overall algorithm is very stable and is not prone to  bad  local  extrema.
+Furthermore, it automatically scales when input data have  very  large  or
+very small range.
+
+INPUT PARAMETERS:
+    X       -   array[N], stores X-values.
+                MUST include only non-negative numbers  (but  may  include
+                zero values). Can be unsorted.
+    Y       -   array[N], values to fit.
+    N       -   number of points. If N is less than  length  of  X/Y, only
+                leading N elements are used.
+                
+OUTPUT PARAMETERS:
+    A, B, C, D- parameters of 4PL model
+    Rep     -   fitting report. This structure has many fields,  but  ONLY
+                ONES LISTED BELOW ARE SET:
+                * Rep.IterationsCount - number of iterations performed
+                * Rep.RMSError - root-mean-square error
+                * Rep.AvgError - average absolute error
+                * Rep.AvgRelError - average relative error (calculated for
+                  non-zero Y-values)
+                * Rep.MaxError - maximum absolute error
+                * Rep.R2 - coefficient of determination,  R-squared.  This
+                  coefficient   is  calculated  as  R2=1-RSS/TSS  (in case
+                  of nonlinear  regression  there  are  multiple  ways  to
+                  define R2, each of them giving different results).
+                  
+NOTE: after  you  obtained  coefficients,  you  can  evaluate  model  with
+      LogisticCalc4() function.
+
+NOTE: if you need better control over fitting process than provided by this
+      function, you may use LogisticFit45X().
+                
+NOTE: step is automatically scaled according to scale of parameters  being
+      fitted before we compare its length with EpsX. Thus,  this  function
+      can be used to fit data with very small or very large values without
+      changing EpsX.
+    
+
+  -- ALGLIB PROJECT --
+     Copyright 14.02.2014 by Bochkanov Sergey
+*************************************************************************/
+void logisticfit4(/* Real    */ ae_vector* x,
+     /* Real    */ ae_vector* y,
+     ae_int_t n,
+     double* a,
+     double* b,
+     double* c,
+     double* d,
+     lsfitreport* rep,
+     ae_state *_state)
+{
+    ae_frame _frame_block;
+    ae_vector _x;
+    ae_vector _y;
+    double g;
+
+    ae_frame_make(_state, &_frame_block);
+    ae_vector_init_copy(&_x, x, _state);
+    x = &_x;
+    ae_vector_init_copy(&_y, y, _state);
+    y = &_y;
+    *a = 0;
+    *b = 0;
+    *c = 0;
+    *d = 0;
+    _lsfitreport_clear(rep);
+
+    logisticfit45x(x, y, n, _state->v_nan, _state->v_nan, ae_true, 0.0, 0.0, 0, a, b, c, d, &g, rep, _state);
+    ae_frame_leave(_state);
+}
+
+
+/*************************************************************************
+This function fits four-parameter logistic (4PL) model  to  data  provided
+by user, with optional constraints on parameters A and D.  4PL  model  has
+following form:
+
+    F(x|A,B,C,D) = D+(A-D)/(1+Power(x/C,B))
+
+Here:
+    * A, D - with optional equality constraints
+    * B>=0
+    * C>0
+    
+IMPORTANT: output of this function is constrained in  such  way that  B>0.
+           Because 4PL model is symmetric with respect to B, there  is  no
+           need to explore  B<0.  Constraining  B  makes  algorithm easier
+           to stabilize and debug.
+           Users  who  for  some  reason  prefer to work with negative B's
+           should transform output themselves (swap A and D, replace B  by
+           -B).
+           
+4PL fitting is implemented as follows:
+* we perform small number of restarts from random locations which helps to
+  solve problem of bad local extrema. Locations are only partially  random
+  - we use input data to determine good  initial  guess,  but  we  include
+  controlled amount of randomness.
+* we perform Levenberg-Marquardt fitting with very  tight  constraints  on
+  parameters B and C - it allows us to find good  initial  guess  for  the
+  second stage without risk of running into "flat spot".
+* second  Levenberg-Marquardt  round  is   performed   without   excessive
+  constraints. Results from the previous round are used as initial guess.
+* after fitting is done, we compare results with best values found so far,
+  rewrite "best solution" if needed, and move to next random location.
+  
+Overall algorithm is very stable and is not prone to  bad  local  extrema.
+Furthermore, it automatically scales when input data have  very  large  or
+very small range.
+
+INPUT PARAMETERS:
+    X       -   array[N], stores X-values.
+                MUST include only non-negative numbers  (but  may  include
+                zero values). Can be unsorted.
+    Y       -   array[N], values to fit.
+    N       -   number of points. If N is less than  length  of  X/Y, only
+                leading N elements are used.
+    CnstrLeft-  optional equality constraint for model value at the   left
+                boundary (at X=0). Specify NAN (Not-a-Number)  if  you  do
+                not need constraint on the model value at X=0 (in C++  you
+                can pass alglib::fp_nan as parameter, in  C#  it  will  be
+                Double.NaN).
+                See  below,  section  "EQUALITY  CONSTRAINTS"   for   more
+                information about constraints.
+    CnstrRight- optional equality constraint for model value at X=infinity.
+                Specify NAN (Not-a-Number) if you do not  need  constraint
+                on the model value (in C++  you can pass alglib::fp_nan as
+                parameter, in  C# it will  be Double.NaN).
+                See  below,  section  "EQUALITY  CONSTRAINTS"   for   more
+                information about constraints.
+                
+OUTPUT PARAMETERS:
+    A, B, C, D- parameters of 4PL model
+    Rep     -   fitting report. This structure has many fields,  but  ONLY
+                ONES LISTED BELOW ARE SET:
+                * Rep.IterationsCount - number of iterations performed
+                * Rep.RMSError - root-mean-square error
+                * Rep.AvgError - average absolute error
+                * Rep.AvgRelError - average relative error (calculated for
+                  non-zero Y-values)
+                * Rep.MaxError - maximum absolute error
+                * Rep.R2 - coefficient of determination,  R-squared.  This
+                  coefficient   is  calculated  as  R2=1-RSS/TSS  (in case
+                  of nonlinear  regression  there  are  multiple  ways  to
+                  define R2, each of them giving different results).
+
+NOTE: after  you  obtained  coefficients,  you  can  evaluate  model  with
+      LogisticCalc4() function.
+
+NOTE: if you need better control over fitting process than provided by this
+      function, you may use LogisticFit45X().
+                
+NOTE: step is automatically scaled according to scale of parameters  being
+      fitted before we compare its length with EpsX. Thus,  this  function
+      can be used to fit data with very small or very large values without
+      changing EpsX.
+
+EQUALITY CONSTRAINTS ON PARAMETERS
+
+4PL/5PL solver supports equality constraints on model values at  the  left
+boundary (X=0) and right  boundary  (X=infinity).  These  constraints  are
+completely optional and you can specify both of them, only  one  -  or  no
+constraints at all.
+
+Parameter  CnstrLeft  contains  left  constraint (or NAN for unconstrained
+fitting), and CnstrRight contains right  one.  For  4PL,  left  constraint
+ALWAYS corresponds to parameter A, and right one is ALWAYS  constraint  on
+D. That's because 4PL model is normalized in such way that B>=0.
+    
+
+  -- ALGLIB PROJECT --
+     Copyright 14.02.2014 by Bochkanov Sergey
+*************************************************************************/
+void logisticfit4ec(/* Real    */ ae_vector* x,
+     /* Real    */ ae_vector* y,
+     ae_int_t n,
+     double cnstrleft,
+     double cnstrright,
+     double* a,
+     double* b,
+     double* c,
+     double* d,
+     lsfitreport* rep,
+     ae_state *_state)
+{
+    ae_frame _frame_block;
+    ae_vector _x;
+    ae_vector _y;
+    double g;
+
+    ae_frame_make(_state, &_frame_block);
+    ae_vector_init_copy(&_x, x, _state);
+    x = &_x;
+    ae_vector_init_copy(&_y, y, _state);
+    y = &_y;
+    *a = 0;
+    *b = 0;
+    *c = 0;
+    *d = 0;
+    _lsfitreport_clear(rep);
+
+    logisticfit45x(x, y, n, cnstrleft, cnstrright, ae_true, 0.0, 0.0, 0, a, b, c, d, &g, rep, _state);
+    ae_frame_leave(_state);
+}
+
+
+/*************************************************************************
+This function fits five-parameter logistic (5PL) model  to  data  provided
+by user. 5PL model has following form:
+
+    F(x|A,B,C,D,G) = D+(A-D)/Power(1+Power(x/C,B),G)
+
+Here:
+    * A, D - unconstrained
+    * B - unconstrained
+    * C>0
+    * G>0
+    
+IMPORTANT: unlike in  4PL  fitting,  output  of  this  function   is   NOT
+           constrained in  such  way that B is guaranteed to be  positive.
+           Furthermore,  unlike  4PL,  5PL  model  is  NOT  symmetric with
+           respect to B, so you can NOT transform model to equivalent one,
+           with B having desired sign (>0 or <0).
+    
+5PL fitting is implemented as follows:
+* we perform small number of restarts from random locations which helps to
+  solve problem of bad local extrema. Locations are only partially  random
+  - we use input data to determine good  initial  guess,  but  we  include
+  controlled amount of randomness.
+* we perform Levenberg-Marquardt fitting with very  tight  constraints  on
+  parameters B and C - it allows us to find good  initial  guess  for  the
+  second stage without risk of running into "flat spot".  Parameter  G  is
+  fixed at G=1.
+* second  Levenberg-Marquardt  round  is   performed   without   excessive
+  constraints on B and C, but with G still equal to 1.  Results  from  the
+  previous round are used as initial guess.
+* third Levenberg-Marquardt round relaxes constraints on G  and  tries  two
+  different models - one with B>0 and one with B<0.
+* after fitting is done, we compare results with best values found so far,
+  rewrite "best solution" if needed, and move to next random location.
+  
+Overall algorithm is very stable and is not prone to  bad  local  extrema.
+Furthermore, it automatically scales when input data have  very  large  or
+very small range.
+
+INPUT PARAMETERS:
+    X       -   array[N], stores X-values.
+                MUST include only non-negative numbers  (but  may  include
+                zero values). Can be unsorted.
+    Y       -   array[N], values to fit.
+    N       -   number of points. If N is less than  length  of  X/Y, only
+                leading N elements are used.
+                
+OUTPUT PARAMETERS:
+    A,B,C,D,G-  parameters of 5PL model
+    Rep     -   fitting report. This structure has many fields,  but  ONLY
+                ONES LISTED BELOW ARE SET:
+                * Rep.IterationsCount - number of iterations performed
+                * Rep.RMSError - root-mean-square error
+                * Rep.AvgError - average absolute error
+                * Rep.AvgRelError - average relative error (calculated for
+                  non-zero Y-values)
+                * Rep.MaxError - maximum absolute error
+                * Rep.R2 - coefficient of determination,  R-squared.  This
+                  coefficient   is  calculated  as  R2=1-RSS/TSS  (in case
+                  of nonlinear  regression  there  are  multiple  ways  to
+                  define R2, each of them giving different results).
+
+NOTE: after  you  obtained  coefficients,  you  can  evaluate  model  with
+      LogisticCalc5() function.
+
+NOTE: if you need better control over fitting process than provided by this
+      function, you may use LogisticFit45X().
+                
+NOTE: step is automatically scaled according to scale of parameters  being
+      fitted before we compare its length with EpsX. Thus,  this  function
+      can be used to fit data with very small or very large values without
+      changing EpsX.
+    
+
+  -- ALGLIB PROJECT --
+     Copyright 14.02.2014 by Bochkanov Sergey
+*************************************************************************/
+void logisticfit5(/* Real    */ ae_vector* x,
+     /* Real    */ ae_vector* y,
+     ae_int_t n,
+     double* a,
+     double* b,
+     double* c,
+     double* d,
+     double* g,
+     lsfitreport* rep,
+     ae_state *_state)
+{
+    ae_frame _frame_block;
+    ae_vector _x;
+    ae_vector _y;
+
+    ae_frame_make(_state, &_frame_block);
+    ae_vector_init_copy(&_x, x, _state);
+    x = &_x;
+    ae_vector_init_copy(&_y, y, _state);
+    y = &_y;
+    *a = 0;
+    *b = 0;
+    *c = 0;
+    *d = 0;
+    *g = 0;
+    _lsfitreport_clear(rep);
+
+    logisticfit45x(x, y, n, _state->v_nan, _state->v_nan, ae_false, 0.0, 0.0, 0, a, b, c, d, g, rep, _state);
+    ae_frame_leave(_state);
+}
+
+
+/*************************************************************************
+This function fits five-parameter logistic (5PL) model  to  data  provided
+by user, subject to optional equality constraints on parameters A  and  D.
+5PL model has following form:
+
+    F(x|A,B,C,D,G) = D+(A-D)/Power(1+Power(x/C,B),G)
+
+Here:
+    * A, D - with optional equality constraints
+    * B - unconstrained
+    * C>0
+    * G>0
+    
+IMPORTANT: unlike in  4PL  fitting,  output  of  this  function   is   NOT
+           constrained in  such  way that B is guaranteed to be  positive.
+           Furthermore,  unlike  4PL,  5PL  model  is  NOT  symmetric with
+           respect to B, so you can NOT transform model to equivalent one,
+           with B having desired sign (>0 or <0).
+    
+5PL fitting is implemented as follows:
+* we perform small number of restarts from random locations which helps to
+  solve problem of bad local extrema. Locations are only partially  random
+  - we use input data to determine good  initial  guess,  but  we  include
+  controlled amount of randomness.
+* we perform Levenberg-Marquardt fitting with very  tight  constraints  on
+  parameters B and C - it allows us to find good  initial  guess  for  the
+  second stage without risk of running into "flat spot".  Parameter  G  is
+  fixed at G=1.
+* second  Levenberg-Marquardt  round  is   performed   without   excessive
+  constraints on B and C, but with G still equal to 1.  Results  from  the
+  previous round are used as initial guess.
+* third Levenberg-Marquardt round relaxes constraints on G  and  tries  two
+  different models - one with B>0 and one with B<0.
+* after fitting is done, we compare results with best values found so far,
+  rewrite "best solution" if needed, and move to next random location.
+  
+Overall algorithm is very stable and is not prone to  bad  local  extrema.
+Furthermore, it automatically scales when input data have  very  large  or
+very small range.
+
+INPUT PARAMETERS:
+    X       -   array[N], stores X-values.
+                MUST include only non-negative numbers  (but  may  include
+                zero values). Can be unsorted.
+    Y       -   array[N], values to fit.
+    N       -   number of points. If N is less than  length  of  X/Y, only
+                leading N elements are used.
+    CnstrLeft-  optional equality constraint for model value at the   left
+                boundary (at X=0). Specify NAN (Not-a-Number)  if  you  do
+                not need constraint on the model value at X=0 (in C++  you
+                can pass alglib::fp_nan as parameter, in  C#  it  will  be
+                Double.NaN).
+                See  below,  section  "EQUALITY  CONSTRAINTS"   for   more
+                information about constraints.
+    CnstrRight- optional equality constraint for model value at X=infinity.
+                Specify NAN (Not-a-Number) if you do not  need  constraint
+                on the model value (in C++  you can pass alglib::fp_nan as
+                parameter, in  C# it will  be Double.NaN).
+                See  below,  section  "EQUALITY  CONSTRAINTS"   for   more
+                information about constraints.
+                
+OUTPUT PARAMETERS:
+    A,B,C,D,G-  parameters of 5PL model
+    Rep     -   fitting report. This structure has many fields,  but  ONLY
+                ONES LISTED BELOW ARE SET:
+                * Rep.IterationsCount - number of iterations performed
+                * Rep.RMSError - root-mean-square error
+                * Rep.AvgError - average absolute error
+                * Rep.AvgRelError - average relative error (calculated for
+                  non-zero Y-values)
+                * Rep.MaxError - maximum absolute error
+                * Rep.R2 - coefficient of determination,  R-squared.  This
+                  coefficient   is  calculated  as  R2=1-RSS/TSS  (in case
+                  of nonlinear  regression  there  are  multiple  ways  to
+                  define R2, each of them giving different results).
+
+NOTE: after  you  obtained  coefficients,  you  can  evaluate  model  with
+      LogisticCalc5() function.
+
+NOTE: if you need better control over fitting process than provided by this
+      function, you may use LogisticFit45X().
+                
+NOTE: step is automatically scaled according to scale of parameters  being
+      fitted before we compare its length with EpsX. Thus,  this  function
+      can be used to fit data with very small or very large values without
+      changing EpsX.
+
+EQUALITY CONSTRAINTS ON PARAMETERS
+
+5PL solver supports equality constraints on model  values  at   the   left
+boundary (X=0) and right  boundary  (X=infinity).  These  constraints  are
+completely optional and you can specify both of them, only  one  -  or  no
+constraints at all.
+
+Parameter  CnstrLeft  contains  left  constraint (or NAN for unconstrained
+fitting), and CnstrRight contains right  one.
+
+Unlike 4PL one, 5PL model is NOT symmetric with respect to  change in sign
+of B. Thus, negative B's are possible, and left constraint  may  constrain
+parameter A (for positive B's)  -  or  parameter  D  (for  negative  B's).
+Similarly changes meaning of right constraint.
+
+You do not have to decide what parameter to  constrain  -  algorithm  will
+automatically determine correct parameters as fitting progresses. However,
+question highlighted above is important when you interpret fitting results.
+    
+
+  -- ALGLIB PROJECT --
+     Copyright 14.02.2014 by Bochkanov Sergey
+*************************************************************************/
+void logisticfit5ec(/* Real    */ ae_vector* x,
+     /* Real    */ ae_vector* y,
+     ae_int_t n,
+     double cnstrleft,
+     double cnstrright,
+     double* a,
+     double* b,
+     double* c,
+     double* d,
+     double* g,
+     lsfitreport* rep,
+     ae_state *_state)
+{
+    ae_frame _frame_block;
+    ae_vector _x;
+    ae_vector _y;
+
+    ae_frame_make(_state, &_frame_block);
+    ae_vector_init_copy(&_x, x, _state);
+    x = &_x;
+    ae_vector_init_copy(&_y, y, _state);
+    y = &_y;
+    *a = 0;
+    *b = 0;
+    *c = 0;
+    *d = 0;
+    *g = 0;
+    _lsfitreport_clear(rep);
+
+    logisticfit45x(x, y, n, cnstrleft, cnstrright, ae_false, 0.0, 0.0, 0, a, b, c, d, g, rep, _state);
+    ae_frame_leave(_state);
+}
+
+
+/*************************************************************************
+This is "expert" 4PL/5PL fitting function, which can be used if  you  need
+better control over fitting process than provided  by  LogisticFit4()  or
+LogisticFit5().
+
+This function fits model of the form
+
+    F(x|A,B,C,D)   = D+(A-D)/(1+Power(x/C,B))           (4PL model)
+
+or
+
+    F(x|A,B,C,D,G) = D+(A-D)/Power(1+Power(x/C,B),G)    (5PL model)
+    
+Here:
+    * A, D - unconstrained
+    * B>=0 for 4PL, unconstrained for 5PL
+    * C>0
+    * G>0 (if present)
+
+INPUT PARAMETERS:
+    X       -   array[N], stores X-values.
+                MUST include only non-negative numbers  (but  may  include
+                zero values). Can be unsorted.
+    Y       -   array[N], values to fit.
+    N       -   number of points. If N is less than  length  of  X/Y, only
+                leading N elements are used.
+    CnstrLeft-  optional equality constraint for model value at the   left
+                boundary (at X=0). Specify NAN (Not-a-Number)  if  you  do
+                not need constraint on the model value at X=0 (in C++  you
+                can pass alglib::fp_nan as parameter, in  C#  it  will  be
+                Double.NaN).
+                See  below,  section  "EQUALITY  CONSTRAINTS"   for   more
+                information about constraints.
+    CnstrRight- optional equality constraint for model value at X=infinity.
+                Specify NAN (Not-a-Number) if you do not  need  constraint
+                on the model value (in C++  you can pass alglib::fp_nan as
+                parameter, in  C# it will  be Double.NaN).
+                See  below,  section  "EQUALITY  CONSTRAINTS"   for   more
+                information about constraints.
+    Is4PL   -   whether 4PL or 5PL models are fitted
+    LambdaV -   regularization coefficient, LambdaV>=0.
+                Set it to zero unless you know what you are doing.
+    EpsX    -   stopping condition (step size), EpsX>=0.
+                Zero value means that small step is automatically chosen.
+                See notes below for more information.
+    RsCnt   -   number of repeated restarts from  random  points.  4PL/5PL
+                models are prone to problem of bad local extrema. Utilizing
+                multiple random restarts allows  us  to  improve algorithm
+                convergence.
+                RsCnt>=0.
+                Zero value means that function automatically choose  small
+                amount of restarts (recommended).
+                
+OUTPUT PARAMETERS:
+    A, B, C, D- parameters of 4PL model
+    G       -   parameter of 5PL model; for Is4PL=True, G=1 is returned.
+    Rep     -   fitting report. This structure has many fields,  but  ONLY
+                ONES LISTED BELOW ARE SET:
+                * Rep.IterationsCount - number of iterations performed
+                * Rep.RMSError - root-mean-square error
+                * Rep.AvgError - average absolute error
+                * Rep.AvgRelError - average relative error (calculated for
+                  non-zero Y-values)
+                * Rep.MaxError - maximum absolute error
+                * Rep.R2 - coefficient of determination,  R-squared.  This
+                  coefficient   is  calculated  as  R2=1-RSS/TSS  (in case
+                  of nonlinear  regression  there  are  multiple  ways  to
+                  define R2, each of them giving different results).
+                
+NOTE: after  you  obtained  coefficients,  you  can  evaluate  model  with
+      LogisticCalc5() function.
+
+NOTE: step is automatically scaled according to scale of parameters  being
+      fitted before we compare its length with EpsX. Thus,  this  function
+      can be used to fit data with very small or very large values without
+      changing EpsX.
+
+EQUALITY CONSTRAINTS ON PARAMETERS
+
+4PL/5PL solver supports equality constraints on model values at  the  left
+boundary (X=0) and right  boundary  (X=infinity).  These  constraints  are
+completely optional and you can specify both of them, only  one  -  or  no
+constraints at all.
+
+Parameter  CnstrLeft  contains  left  constraint (or NAN for unconstrained
+fitting), and CnstrRight contains right  one.  For  4PL,  left  constraint
+ALWAYS corresponds to parameter A, and right one is ALWAYS  constraint  on
+D. That's because 4PL model is normalized in such way that B>=0.
+
+For 5PL model things are different. Unlike  4PL  one,  5PL  model  is  NOT
+symmetric with respect to  change  in  sign  of  B. Thus, negative B's are
+possible, and left constraint may constrain parameter A (for positive B's)
+- or parameter D (for negative B's). Similarly changes  meaning  of  right
+constraint.
+
+You do not have to decide what parameter to  constrain  -  algorithm  will
+automatically determine correct parameters as fitting progresses. However,
+question highlighted above is important when you interpret fitting results.
+    
+
+  -- ALGLIB PROJECT --
+     Copyright 14.02.2014 by Bochkanov Sergey
+*************************************************************************/
+void logisticfit45x(/* Real    */ ae_vector* x,
+     /* Real    */ ae_vector* y,
+     ae_int_t n,
+     double cnstrleft,
+     double cnstrright,
+     ae_bool is4pl,
+     double lambdav,
+     double epsx,
+     ae_int_t rscnt,
+     double* a,
+     double* b,
+     double* c,
+     double* d,
+     double* g,
+     lsfitreport* rep,
+     ae_state *_state)
+{
+    ae_frame _frame_block;
+    ae_vector _x;
+    ae_vector _y;
+    ae_int_t i;
+    ae_int_t k;
+    ae_int_t innerit;
+    ae_int_t outerit;
+    ae_int_t nz;
+    double v;
+    double b00;
+    double b01;
+    double b10;
+    double b11;
+    double b30;
+    double b31;
+    ae_vector p0;
+    ae_vector p1;
+    ae_vector p2;
+    ae_vector bndl;
+    ae_vector bndu;
+    ae_vector s;
+    ae_matrix z;
+    hqrndstate rs;
+    minlmstate state;
+    minlmreport replm;
+    ae_int_t maxits;
+    double fbest;
+    double flast;
+    double flast2;
+    double scalex;
+    double scaley;
+    ae_vector bufx;
+    ae_vector bufy;
+    double rss;
+    double tss;
+    double meany;
+
+    ae_frame_make(_state, &_frame_block);
+    ae_vector_init_copy(&_x, x, _state);
+    x = &_x;
+    ae_vector_init_copy(&_y, y, _state);
+    y = &_y;
+    *a = 0;
+    *b = 0;
+    *c = 0;
+    *d = 0;
+    *g = 0;
+    _lsfitreport_clear(rep);
+    ae_vector_init(&p0, 0, DT_REAL, _state);
+    ae_vector_init(&p1, 0, DT_REAL, _state);
+    ae_vector_init(&p2, 0, DT_REAL, _state);
+    ae_vector_init(&bndl, 0, DT_REAL, _state);
+    ae_vector_init(&bndu, 0, DT_REAL, _state);
+    ae_vector_init(&s, 0, DT_REAL, _state);
+    ae_matrix_init(&z, 0, 0, DT_REAL, _state);
+    _hqrndstate_init(&rs, _state);
+    _minlmstate_init(&state, _state);
+    _minlmreport_init(&replm, _state);
+    ae_vector_init(&bufx, 0, DT_REAL, _state);
+    ae_vector_init(&bufy, 0, DT_REAL, _state);
+
+    ae_assert(ae_isfinite(epsx, _state), "LogisticFitX: EpsX is infinite/NAN", _state);
+    ae_assert(ae_isfinite(lambdav, _state), "LogisticFitX: LambdaV is infinite/NAN", _state);
+    ae_assert(ae_isfinite(cnstrleft, _state)||ae_isnan(cnstrleft, _state), "LogisticFitX: CnstrLeft is NOT finite or NAN", _state);
+    ae_assert(ae_isfinite(cnstrright, _state)||ae_isnan(cnstrright, _state), "LogisticFitX: CnstrRight is NOT finite or NAN", _state);
+    ae_assert(ae_fp_greater_eq(lambdav,(double)(0)), "LogisticFitX: negative LambdaV", _state);
+    ae_assert(n>0, "LogisticFitX: N<=0", _state);
+    ae_assert(rscnt>=0, "LogisticFitX: RsCnt<0", _state);
+    ae_assert(ae_fp_greater_eq(epsx,(double)(0)), "LogisticFitX: EpsX<0", _state);
+    ae_assert(x->cnt>=n, "LogisticFitX: Length(X)<N", _state);
+    ae_assert(y->cnt>=n, "LogisticFitX: Length(Y)<N", _state);
+    ae_assert(isfinitevector(x, n, _state), "LogisticFitX: X contains infinite/NAN values", _state);
+    ae_assert(isfinitevector(y, n, _state), "LogisticFitX: X contains infinite/NAN values", _state);
+    hqrndseed(2211, 1033044, &rs, _state);
+    lsfit_clearreport(rep, _state);
+    if( ae_fp_eq(epsx,(double)(0)) )
+    {
+        epsx = 1.0E-10;
+    }
+    if( rscnt==0 )
+    {
+        rscnt = 4;
+    }
+    maxits = 1000;
+    
+    /*
+     * Sort points by X.
+     * Determine number of zero and non-zero values.
+     */
+    tagsortfastr(x, y, &bufx, &bufy, n, _state);
+    ae_assert(ae_fp_greater_eq(x->ptr.p_double[0],(double)(0)), "LogisticFitX: some X[] are negative", _state);
+    nz = n;
+    for(i=0; i<=n-1; i++)
+    {
+        if( ae_fp_greater(x->ptr.p_double[i],(double)(0)) )
+        {
+            nz = i;
+            break;
+        }
+    }
+    
+    /*
+     * For NZ=N (all X[] are zero) special code is used.
+     * For NZ<N we use general-purpose code.
+     */
+    rep->iterationscount = 0;
+    if( nz==n )
+    {
+        
+        /*
+         * NZ=N, degenerate problem.
+         * No need to run optimizer.
+         */
+        v = 0.0;
+        for(i=0; i<=n-1; i++)
+        {
+            v = v+y->ptr.p_double[i];
+        }
+        v = v/n;
+        if( ae_isfinite(cnstrleft, _state) )
+        {
+            *a = cnstrleft;
+        }
+        else
+        {
+            *a = v;
+        }
+        *b = (double)(1);
+        *c = (double)(1);
+        if( ae_isfinite(cnstrright, _state) )
+        {
+            *d = cnstrright;
+        }
+        else
+        {
+            *d = *a;
+        }
+        *g = (double)(1);
+    }
+    else
+    {
+        
+        /*
+         * Non-degenerate problem.
+         * Determine scale of data.
+         */
+        scalex = x->ptr.p_double[nz+(n-nz)/2];
+        ae_assert(ae_fp_greater(scalex,(double)(0)), "LogisticFitX: internal error", _state);
+        v = 0.0;
+        for(i=0; i<=n-1; i++)
+        {
+            v = v+y->ptr.p_double[i];
+        }
+        v = v/n;
+        scaley = 0.0;
+        for(i=0; i<=n-1; i++)
+        {
+            scaley = scaley+ae_sqr(y->ptr.p_double[i]-v, _state);
+        }
+        scaley = ae_sqrt(scaley/n, _state);
+        if( ae_fp_eq(scaley,(double)(0)) )
+        {
+            scaley = 1.0;
+        }
+        ae_vector_set_length(&s, 5, _state);
+        s.ptr.p_double[0] = scaley;
+        s.ptr.p_double[1] = 0.1;
+        s.ptr.p_double[2] = scalex;
+        s.ptr.p_double[3] = scaley;
+        s.ptr.p_double[4] = 0.1;
+        ae_vector_set_length(&p0, 5, _state);
+        p0.ptr.p_double[0] = (double)(0);
+        p0.ptr.p_double[1] = (double)(0);
+        p0.ptr.p_double[2] = (double)(0);
+        p0.ptr.p_double[3] = (double)(0);
+        p0.ptr.p_double[4] = (double)(0);
+        ae_vector_set_length(&bndl, 5, _state);
+        ae_vector_set_length(&bndu, 5, _state);
+        minlmcreatevj(5, n+5, &p0, &state, _state);
+        minlmsetscale(&state, &s, _state);
+        minlmsetcond(&state, 0.0, 0.0, epsx, maxits, _state);
+        minlmsetxrep(&state, ae_true, _state);
+        
+        /*
+         * Main loop - includes THREE (!) nested iterations:
+         *
+         * 1. Inner iteration is minimization of target function from
+         *    the current initial point P1 subject to boundary constraints
+         *    given by arrays BndL and BndU.
+         *
+         * 2. Middle iteration changes boundary constraints from tight to
+         *    relaxed ones:
+         *    * at the first middle iteration we optimize with "tight"
+         *      constraints on parameters B and C (P[1] and P[2]). It
+         *      allows us to find good initial point for the next middle
+         *      iteration without risk of running into "hard" points (B=0, C=0).
+         *      Initial point is initialized by outer iteration.
+         *      Solution is placed to P1.
+         *    * at the second middle iteration we relax boundary constraints
+         *      on B and C. Solution P1 from the first middle iteration is
+         *      used as initial point for the second one.
+         *    * both first and second iterations are 4PL models, even when
+         *      we fit 5PL.
+         *    * additionally, for 5PL models, we use results from the second
+         *      middle iteration is initial guess for 5PL fit.
+         *    * after middle iteration is over we compare quality of the
+         *      solution stored in P1 and offload it to A/B/C/D/G, if it
+         *      is better.
+         *
+         * 3. Outer iteration (starts below) changes following parameters:
+         *    * initial point
+         *    * "tight" constraints BndL/BndU
+         *    * "relaxed" constraints BndL/BndU
+         *
+         * Below we prepare combined matrix Z of optimization settings for
+         * outer/middle iterations:
+         *
+         *     [ P00 BndL00 BndU00 BndL01 BndU01 ]
+         *     [                                 ]
+         *     [ P10 BndL10 BndU10 BndL11 BndU11 ]
+         *
+         * Here:
+         * * Pi0 is initial point for I-th outer iteration
+         * * BndLij is lower boundary for I-th outer iteration, J-th inner iteration
+         * * BndUij - same as BndLij
+         */
+        ae_matrix_set_length(&z, rscnt, 5+4*5, _state);
+        for(i=0; i<=rscnt-1; i++)
+        {
+            if( ae_isfinite(cnstrleft, _state) )
+            {
+                z.ptr.pp_double[i][0] = cnstrleft;
+            }
+            else
+            {
+                z.ptr.pp_double[i][0] = y->ptr.p_double[0]+0.25*scaley*(hqrnduniformr(&rs, _state)-0.5);
+            }
+            z.ptr.pp_double[i][1] = 0.5+hqrnduniformr(&rs, _state);
+            z.ptr.pp_double[i][2] = x->ptr.p_double[nz+hqrnduniformi(&rs, n-nz, _state)];
+            if( ae_isfinite(cnstrright, _state) )
+            {
+                z.ptr.pp_double[i][3] = cnstrright;
+            }
+            else
+            {
+                z.ptr.pp_double[i][3] = y->ptr.p_double[n-1]+0.25*scaley*(hqrnduniformr(&rs, _state)-0.5);
+            }
+            z.ptr.pp_double[i][4] = 1.0;
+            if( ae_isfinite(cnstrleft, _state) )
+            {
+                z.ptr.pp_double[i][5+0] = cnstrleft;
+                z.ptr.pp_double[i][10+0] = cnstrleft;
+            }
+            else
+            {
+                z.ptr.pp_double[i][5+0] = _state->v_neginf;
+                z.ptr.pp_double[i][10+0] = _state->v_posinf;
+            }
+            z.ptr.pp_double[i][5+1] = 0.5;
+            z.ptr.pp_double[i][10+1] = 2.0;
+            z.ptr.pp_double[i][5+2] = 0.5*scalex;
+            z.ptr.pp_double[i][10+2] = 2.0*scalex;
+            if( ae_isfinite(cnstrright, _state) )
+            {
+                z.ptr.pp_double[i][5+3] = cnstrright;
+                z.ptr.pp_double[i][10+3] = cnstrright;
+            }
+            else
+            {
+                z.ptr.pp_double[i][5+3] = _state->v_neginf;
+                z.ptr.pp_double[i][10+3] = _state->v_posinf;
+            }
+            z.ptr.pp_double[i][5+4] = 1.0;
+            z.ptr.pp_double[i][10+4] = 1.0;
+            if( ae_isfinite(cnstrleft, _state) )
+            {
+                z.ptr.pp_double[i][15+0] = cnstrleft;
+                z.ptr.pp_double[i][20+0] = cnstrleft;
+            }
+            else
+            {
+                z.ptr.pp_double[i][15+0] = _state->v_neginf;
+                z.ptr.pp_double[i][20+0] = _state->v_posinf;
+            }
+            z.ptr.pp_double[i][15+1] = 0.01;
+            z.ptr.pp_double[i][20+1] = _state->v_posinf;
+            z.ptr.pp_double[i][15+2] = ae_machineepsilon*scalex;
+            z.ptr.pp_double[i][20+2] = _state->v_posinf;
+            if( ae_isfinite(cnstrright, _state) )
+            {
+                z.ptr.pp_double[i][15+3] = cnstrright;
+                z.ptr.pp_double[i][20+3] = cnstrright;
+            }
+            else
+            {
+                z.ptr.pp_double[i][15+3] = _state->v_neginf;
+                z.ptr.pp_double[i][20+3] = _state->v_posinf;
+            }
+            z.ptr.pp_double[i][15+4] = 1.0;
+            z.ptr.pp_double[i][20+4] = 1.0;
+        }
+        
+        /*
+         * Run outer iterations
+         */
+        *a = (double)(0);
+        *b = (double)(1);
+        *c = (double)(1);
+        *d = (double)(1);
+        *g = (double)(1);
+        fbest = ae_maxrealnumber;
+        ae_vector_set_length(&p1, 5, _state);
+        ae_vector_set_length(&p2, 5, _state);
+        for(outerit=0; outerit<=z.rows-1; outerit++)
+        {
+            
+            /*
+             * Beginning of the middle iterations.
+             * Prepare initial point P1.
+             */
+            for(i=0; i<=4; i++)
+            {
+                p1.ptr.p_double[i] = z.ptr.pp_double[outerit][i];
+            }
+            flast = ae_maxrealnumber;
+            for(innerit=0; innerit<=1; innerit++)
+            {
+                
+                /*
+                 * Set current boundary constraints.
+                 * Run inner iteration.
+                 */
+                for(i=0; i<=4; i++)
+                {
+                    bndl.ptr.p_double[i] = z.ptr.pp_double[outerit][5+innerit*10+0+i];
+                    bndu.ptr.p_double[i] = z.ptr.pp_double[outerit][5+innerit*10+5+i];
+                }
+                minlmsetbc(&state, &bndl, &bndu, _state);
+                lsfit_logisticfitinternal(x, y, n, ae_true, lambdav, &state, &replm, &p1, &flast, _state);
+                rep->iterationscount = rep->iterationscount+replm.iterationscount;
+            }
+            
+            /*
+             * Middle iteration: try to fit with 5-parameter logistic model (if needed).
+             *
+             * We perform two attempts to fit: one with B>0, another one with B<0.
+             * For PL4, these are equivalent up to transposition of A/D, but for 5PL
+             * sign of B is very important.
+             *
+             * NOTE: results of 4PL fit are used as initial point for 5PL.
+             */
+            if( !is4pl )
+            {
+                
+                /*
+                 * Loosen constraints on G,
+                 * save constraints on A/B/D to B0/B1
+                 */
+                bndl.ptr.p_double[4] = 0.1;
+                bndu.ptr.p_double[4] = 10.0;
+                b00 = bndl.ptr.p_double[0];
+                b01 = bndu.ptr.p_double[0];
+                b10 = bndl.ptr.p_double[1];
+                b11 = bndu.ptr.p_double[1];
+                b30 = bndl.ptr.p_double[3];
+                b31 = bndu.ptr.p_double[3];
+                
+                /*
+                 * First attempt: fitting with positive B
+                 */
+                p2.ptr.p_double[0] = p1.ptr.p_double[0];
+                p2.ptr.p_double[1] = p1.ptr.p_double[1];
+                p2.ptr.p_double[2] = p1.ptr.p_double[2];
+                p2.ptr.p_double[3] = p1.ptr.p_double[3];
+                p2.ptr.p_double[4] = p1.ptr.p_double[4];
+                bndl.ptr.p_double[0] = b00;
+                bndu.ptr.p_double[0] = b01;
+                bndl.ptr.p_double[1] = b10;
+                bndu.ptr.p_double[1] = b11;
+                bndl.ptr.p_double[3] = b30;
+                bndu.ptr.p_double[3] = b31;
+                minlmsetbc(&state, &bndl, &bndu, _state);
+                lsfit_logisticfitinternal(x, y, n, ae_false, lambdav, &state, &replm, &p2, &flast2, _state);
+                rep->iterationscount = rep->iterationscount+replm.iterationscount;
+                if( ae_fp_less(flast2,flast) )
+                {
+                    for(i=0; i<=4; i++)
+                    {
+                        p1.ptr.p_double[i] = p2.ptr.p_double[i];
+                    }
+                    flast = flast2;
+                }
+                
+                /*
+                 * First attempt: fitting with negative B
+                 */
+                p2.ptr.p_double[0] = p1.ptr.p_double[3];
+                p2.ptr.p_double[1] = -p1.ptr.p_double[1];
+                p2.ptr.p_double[2] = p1.ptr.p_double[2];
+                p2.ptr.p_double[3] = p1.ptr.p_double[0];
+                p2.ptr.p_double[4] = p1.ptr.p_double[4];
+                bndl.ptr.p_double[0] = b30;
+                bndu.ptr.p_double[0] = b31;
+                bndl.ptr.p_double[1] = -b11;
+                bndu.ptr.p_double[1] = -b10;
+                bndl.ptr.p_double[3] = b00;
+                bndu.ptr.p_double[3] = b01;
+                minlmsetbc(&state, &bndl, &bndu, _state);
+                lsfit_logisticfitinternal(x, y, n, ae_false, lambdav, &state, &replm, &p2, &flast2, _state);
+                rep->iterationscount = rep->iterationscount+replm.iterationscount;
+                if( ae_fp_less(flast2,flast) )
+                {
+                    for(i=0; i<=4; i++)
+                    {
+                        p1.ptr.p_double[i] = p2.ptr.p_double[i];
+                    }
+                    flast = flast2;
+                }
+            }
+            
+            /*
+             * Middle iteration is done, compare its results with best value
+             * found so far.
+             */
+            if( ae_fp_less(flast,fbest) )
+            {
+                *a = p1.ptr.p_double[0];
+                *b = p1.ptr.p_double[1];
+                *c = p1.ptr.p_double[2];
+                *d = p1.ptr.p_double[3];
+                *g = p1.ptr.p_double[4];
+                fbest = flast;
+            }
+        }
+    }
+    
+    /*
+     * Calculate errors
+     */
+    rep->rmserror = (double)(0);
+    rep->avgerror = (double)(0);
+    rep->avgrelerror = (double)(0);
+    rep->maxerror = (double)(0);
+    k = 0;
+    rss = 0.0;
+    tss = 0.0;
+    meany = 0.0;
+    for(i=0; i<=n-1; i++)
+    {
+        meany = meany+y->ptr.p_double[i];
+    }
+    meany = meany/n;
+    for(i=0; i<=n-1; i++)
+    {
+        
+        /*
+         * Calculate residual from regression
+         */
+        if( ae_fp_greater(x->ptr.p_double[i],(double)(0)) )
+        {
+            v = *d+(*a-(*d))/ae_pow(1.0+ae_pow(x->ptr.p_double[i]/(*c), *b, _state), *g, _state)-y->ptr.p_double[i];
+        }
+        else
+        {
+            if( ae_fp_greater_eq(*b,(double)(0)) )
+            {
+                v = *a-y->ptr.p_double[i];
+            }
+            else
+            {
+                v = *d-y->ptr.p_double[i];
+            }
+        }
+        
+        /*
+         * Update RSS (residual sum of squares) and TSS (total sum of squares)
+         * which are used to calculate coefficient of determination.
+         *
+         * NOTE: we use formula R2 = 1-RSS/TSS because it has nice property of
+         *       being equal to 0.0 if and only if model perfectly fits data.
+         *
+         *       When we fit nonlinear models, there are exist multiple ways of
+         *       determining R2, each of them giving different results. Formula
+         *       above is the most intuitive one.
+         */
+        rss = rss+v*v;
+        tss = tss+ae_sqr(y->ptr.p_double[i]-meany, _state);
+        
+        /*
+         * Update errors
+         */
+        rep->rmserror = rep->rmserror+ae_sqr(v, _state);
+        rep->avgerror = rep->avgerror+ae_fabs(v, _state);
+        if( ae_fp_neq(y->ptr.p_double[i],(double)(0)) )
+        {
+            rep->avgrelerror = rep->avgrelerror+ae_fabs(v/y->ptr.p_double[i], _state);
+            k = k+1;
+        }
+        rep->maxerror = ae_maxreal(rep->maxerror, ae_fabs(v, _state), _state);
+    }
+    rep->rmserror = ae_sqrt(rep->rmserror/n, _state);
+    rep->avgerror = rep->avgerror/n;
+    if( k>0 )
+    {
+        rep->avgrelerror = rep->avgrelerror/k;
+    }
+    rep->r2 = 1.0-rss/tss;
     ae_frame_leave(_state);
 }
 
@@ -18472,6 +22147,29 @@ solver  is  used.  Complexity  of  this  computational  scheme is O(N*M^2)
 SEE ALSO
 * BarycentricFitFloaterHormann(), "lightweight" fitting without invididual
   weights and constraints.
+  
+COMMERCIAL EDITION OF ALGLIB:
+
+  ! Commercial version of ALGLIB includes two  important  improvements  of
+  ! this function, which can be used from C++ and C#:
+  ! * Intel MKL support (lightweight Intel MKL is shipped with ALGLIB)
+  ! * multithreading support
+  !
+  ! Intel MKL gives approximately constant  (with  respect  to  number  of
+  ! worker threads) acceleration factor which depends on CPU  being  used,
+  ! problem  size  and  "baseline"  ALGLIB  edition  which  is  used   for
+  ! comparison.
+  !
+  ! Speed-up provided by multithreading greatly depends  on  problem  size
+  ! - only large problems (number of coefficients is more than 500) can be
+  ! efficiently multithreaded.
+  !
+  ! Generally, commercial ALGLIB is several times faster than  open-source
+  ! generic C edition, and many times faster than open-source C# edition.
+  !
+  ! We recommend you to read 'Working with commercial version' section  of
+  ! ALGLIB Reference Manual in order to find out how to  use  performance-
+  ! related features provided by commercial edition of ALGLIB.
 
 INPUT PARAMETERS:
     X   -   points, array[0..N-1].
@@ -18569,8 +22267,8 @@ void barycentricfitfloaterhormannwc(/* Real    */ ae_vector* x,
     *info = 0;
     _barycentricinterpolant_clear(b);
     _barycentricfitreport_clear(rep);
-    _barycentricinterpolant_init(&locb, _state, ae_true);
-    _barycentricfitreport_init(&locrep, _state, ae_true);
+    _barycentricinterpolant_init(&locb, _state);
+    _barycentricfitreport_init(&locrep, _state);
 
     ae_assert(n>0, "BarycentricFitFloaterHormannWC: N<=0!", _state);
     ae_assert(m>0, "BarycentricFitFloaterHormannWC: M<=0!", _state);
@@ -18612,7 +22310,7 @@ void barycentricfitfloaterhormannwc(/* Real    */ ae_vector* x,
             /*
              * Calculate weghted RMS
              */
-            wrmscur = 0;
+            wrmscur = (double)(0);
             for(i=0; i<=n-1; i++)
             {
                 wrmscur = wrmscur+ae_sqr(w->ptr.p_double[i]*(y->ptr.p_double[i]-barycentriccalc(&locb, x->ptr.p_double[i], _state)), _state);
@@ -18644,6 +22342,26 @@ void barycentricfitfloaterhormannwc(/* Real    */ ae_vector* x,
 
 
 /*************************************************************************
+Single-threaded stub. HPC ALGLIB replaces it by multithreaded code.
+*************************************************************************/
+void _pexec_barycentricfitfloaterhormannwc(/* Real    */ ae_vector* x,
+    /* Real    */ ae_vector* y,
+    /* Real    */ ae_vector* w,
+    ae_int_t n,
+    /* Real    */ ae_vector* xc,
+    /* Real    */ ae_vector* yc,
+    /* Integer */ ae_vector* dc,
+    ae_int_t k,
+    ae_int_t m,
+    ae_int_t* info,
+    barycentricinterpolant* b,
+    barycentricfitreport* rep, ae_state *_state)
+{
+    barycentricfitfloaterhormannwc(x,y,w,n,xc,yc,dc,k,m,info,b,rep, _state);
+}
+
+
+/*************************************************************************
 Rational least squares fitting using  Floater-Hormann  rational  functions
 with optimal D chosen from [0,9].
 
@@ -18652,6 +22370,29 @@ functions. Different values of D are tried, optimal  D  (least  root  mean
 square error) is chosen.  Task  is  linear, so linear least squares solver
 is used. Complexity  of  this  computational  scheme is  O(N*M^2)  (mostly
 dominated by the least squares solver).
+
+COMMERCIAL EDITION OF ALGLIB:
+
+  ! Commercial version of ALGLIB includes two  important  improvements  of
+  ! this function, which can be used from C++ and C#:
+  ! * Intel MKL support (lightweight Intel MKL is shipped with ALGLIB)
+  ! * multithreading support
+  !
+  ! Intel MKL gives approximately constant  (with  respect  to  number  of
+  ! worker threads) acceleration factor which depends on CPU  being  used,
+  ! problem  size  and  "baseline"  ALGLIB  edition  which  is  used   for
+  ! comparison.
+  !
+  ! Speed-up provided by multithreading greatly depends  on  problem  size
+  ! - only large problems (number of coefficients is more than 500) can be
+  ! efficiently multithreaded.
+  !
+  ! Generally, commercial ALGLIB is several times faster than  open-source
+  ! generic C edition, and many times faster than open-source C# edition.
+  !
+  ! We recommend you to read 'Working with commercial version' section  of
+  ! ALGLIB Reference Manual in order to find out how to  use  performance-
+  ! related features provided by commercial edition of ALGLIB.
 
 INPUT PARAMETERS:
     X   -   points, array[0..N-1].
@@ -18698,10 +22439,10 @@ void barycentricfitfloaterhormann(/* Real    */ ae_vector* x,
     *info = 0;
     _barycentricinterpolant_clear(b);
     _barycentricfitreport_clear(rep);
-    ae_vector_init(&w, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&xc, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&yc, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&dc, 0, DT_INT, _state, ae_true);
+    ae_vector_init(&w, 0, DT_REAL, _state);
+    ae_vector_init(&xc, 0, DT_REAL, _state);
+    ae_vector_init(&yc, 0, DT_REAL, _state);
+    ae_vector_init(&dc, 0, DT_INT, _state);
 
     ae_assert(n>0, "BarycentricFitFloaterHormann: N<=0!", _state);
     ae_assert(m>0, "BarycentricFitFloaterHormann: M<=0!", _state);
@@ -18712,7 +22453,7 @@ void barycentricfitfloaterhormann(/* Real    */ ae_vector* x,
     ae_vector_set_length(&w, n, _state);
     for(i=0; i<=n-1; i++)
     {
-        w.ptr.p_double[i] = 1;
+        w.ptr.p_double[i] = (double)(1);
     }
     barycentricfitfloaterhormannwc(x, y, &w, n, &xc, &yc, &dc, 0, m, info, b, rep, _state);
     ae_frame_leave(_state);
@@ -18720,36 +22461,100 @@ void barycentricfitfloaterhormann(/* Real    */ ae_vector* x,
 
 
 /*************************************************************************
-Rational least squares fitting using  Floater-Hormann  rational  functions
-with optimal D chosen from [0,9].
+Single-threaded stub. HPC ALGLIB replaces it by multithreaded code.
+*************************************************************************/
+void _pexec_barycentricfitfloaterhormann(/* Real    */ ae_vector* x,
+    /* Real    */ ae_vector* y,
+    ae_int_t n,
+    ae_int_t m,
+    ae_int_t* info,
+    barycentricinterpolant* b,
+    barycentricfitreport* rep, ae_state *_state)
+{
+    barycentricfitfloaterhormann(x,y,n,m,info,b,rep, _state);
+}
 
-Equidistant  grid  with M node on [min(x),max(x)]  is  used to build basis
-functions. Different values of D are tried, optimal  D  (least  root  mean
-square error) is chosen.  Task  is  linear, so linear least squares solver
-is used. Complexity  of  this  computational  scheme is  O(N*M^2)  (mostly
-dominated by the least squares solver).
 
+/*************************************************************************
+Fitting by penalized cubic spline.
+
+Equidistant grid with M nodes on [min(x,xc),max(x,xc)] is  used  to  build
+basis functions. Basis functions are cubic splines with  natural  boundary
+conditions. Problem is regularized by  adding non-linearity penalty to the
+usual least squares penalty function:
+
+    S(x) = arg min { LS + P }, where
+    LS   = SUM { w[i]^2*(y[i] - S(x[i]))^2 } - least squares penalty
+    P    = C*10^rho*integral{ S''(x)^2*dx } - non-linearity penalty
+    rho  - tunable constant given by user
+    C    - automatically determined scale parameter,
+           makes penalty invariant with respect to scaling of X, Y, W.
+
+COMMERCIAL EDITION OF ALGLIB:
+
+  ! Commercial version of ALGLIB includes two  important  improvements  of
+  ! this function, which can be used from C++ and C#:
+  ! * Intel MKL support (lightweight Intel MKL is shipped with ALGLIB)
+  ! * multithreading support
+  !
+  ! Intel MKL gives approximately constant  (with  respect  to  number  of
+  ! worker threads) acceleration factor which depends on CPU  being  used,
+  ! problem  size  and  "baseline"  ALGLIB  edition  which  is  used   for
+  ! comparison.
+  !
+  ! Speed-up provided by multithreading greatly depends  on  problem  size
+  ! - only large problems (number of coefficients is more than 500) can be
+  ! efficiently multithreaded.
+  !
+  ! Generally, commercial ALGLIB is several times faster than  open-source
+  ! generic C edition, and many times faster than open-source C# edition.
+  !
+  ! We recommend you to read 'Working with commercial version' section  of
+  ! ALGLIB Reference Manual in order to find out how to  use  performance-
+  ! related features provided by commercial edition of ALGLIB.
+           
 INPUT PARAMETERS:
     X   -   points, array[0..N-1].
     Y   -   function values, array[0..N-1].
-    N   -   number of points, N>0.
-    M   -   number of basis functions ( = number_of_nodes), M>=2.
+    N   -   number of points (optional):
+            * N>0
+            * if given, only first N elements of X/Y are processed
+            * if not given, automatically determined from X/Y sizes
+    M   -   number of basis functions ( = number_of_nodes), M>=4.
+    Rho -   regularization  constant  passed   by   user.   It   penalizes
+            nonlinearity in the regression spline. It  is  logarithmically
+            scaled,  i.e.  actual  value  of  regularization  constant  is
+            calculated as 10^Rho. It is automatically scaled so that:
+            * Rho=2.0 corresponds to moderate amount of nonlinearity
+            * generally, it should be somewhere in the [-8.0,+8.0]
+            If you do not want to penalize nonlineary,
+            pass small Rho. Values as low as -15 should work.
 
 OUTPUT PARAMETERS:
     Info-   same format as in LSFitLinearWC() subroutine.
             * Info>0    task is solved
             * Info<=0   an error occured:
-                        -4 means inconvergence of internal SVD
-                        -3 means inconsistent constraints
-    B   -   barycentric interpolant.
-    Rep -   report, same format as in LSFitLinearWC() subroutine.
-            Following fields are set:
-            * DBest         best value of the D parameter
+                        -4 means inconvergence of internal SVD or
+                           Cholesky decomposition; problem may be
+                           too ill-conditioned (very rare)
+    S   -   spline interpolant.
+    Rep -   Following fields are set:
             * RMSError      rms error on the (X,Y).
             * AvgError      average error on the (X,Y).
             * AvgRelError   average relative error on the non-zero Y
             * MaxError      maximum error
                             NON-WEIGHTED ERRORS ARE CALCULATED
+
+IMPORTANT:
+    this subroitine doesn't calculate task's condition number for K<>0.
+
+NOTE 1: additional nodes are added to the spline outside  of  the  fitting
+interval to force linearity when x<min(x,xc) or x>max(x,xc).  It  is  done
+for consistency - we penalize non-linearity  at [min(x,xc),max(x,xc)],  so
+it is natural to force linearity outside of this interval.
+
+NOTE 2: function automatically sorts points,  so  caller may pass unsorted
+array.
 
   -- ALGLIB PROJECT --
      Copyright 18.08.2009 by Bochkanov Sergey
@@ -18771,14 +22576,14 @@ void spline1dfitpenalized(/* Real    */ ae_vector* x,
     ae_int_t i;
 
     ae_frame_make(_state, &_frame_block);
-    ae_vector_init_copy(&_x, x, _state, ae_true);
+    ae_vector_init_copy(&_x, x, _state);
     x = &_x;
-    ae_vector_init_copy(&_y, y, _state, ae_true);
+    ae_vector_init_copy(&_y, y, _state);
     y = &_y;
     *info = 0;
     _spline1dinterpolant_clear(s);
     _spline1dfitreport_clear(rep);
-    ae_vector_init(&w, 0, DT_REAL, _state, ae_true);
+    ae_vector_init(&w, 0, DT_REAL, _state);
 
     ae_assert(n>=1, "Spline1DFitPenalized: N<1!", _state);
     ae_assert(m>=4, "Spline1DFitPenalized: M<4!", _state);
@@ -18790,10 +22595,26 @@ void spline1dfitpenalized(/* Real    */ ae_vector* x,
     ae_vector_set_length(&w, n, _state);
     for(i=0; i<=n-1; i++)
     {
-        w.ptr.p_double[i] = 1;
+        w.ptr.p_double[i] = (double)(1);
     }
     spline1dfitpenalizedw(x, y, &w, n, m, rho, info, s, rep, _state);
     ae_frame_leave(_state);
+}
+
+
+/*************************************************************************
+Single-threaded stub. HPC ALGLIB replaces it by multithreaded code.
+*************************************************************************/
+void _pexec_spline1dfitpenalized(/* Real    */ ae_vector* x,
+    /* Real    */ ae_vector* y,
+    ae_int_t n,
+    ae_int_t m,
+    double rho,
+    ae_int_t* info,
+    spline1dinterpolant* s,
+    spline1dfitreport* rep, ae_state *_state)
+{
+    spline1dfitpenalized(x,y,n,m,rho,info,s,rep, _state);
 }
 
 
@@ -18812,6 +22633,29 @@ usual least squares penalty function:
     C    - automatically determined scale parameter,
            makes penalty invariant with respect to scaling of X, Y, W.
 
+COMMERCIAL EDITION OF ALGLIB:
+
+  ! Commercial version of ALGLIB includes two  important  improvements  of
+  ! this function, which can be used from C++ and C#:
+  ! * Intel MKL support (lightweight Intel MKL is shipped with ALGLIB)
+  ! * multithreading support
+  !
+  ! Intel MKL gives approximately constant  (with  respect  to  number  of
+  ! worker threads) acceleration factor which depends on CPU  being  used,
+  ! problem  size  and  "baseline"  ALGLIB  edition  which  is  used   for
+  ! comparison.
+  !
+  ! Speed-up provided by multithreading greatly depends  on  problem  size
+  ! - only large problems (number of coefficients is more than 500) can be
+  ! efficiently multithreaded.
+  !
+  ! Generally, commercial ALGLIB is several times faster than  open-source
+  ! generic C edition, and many times faster than open-source C# edition.
+  !
+  ! We recommend you to read 'Working with commercial version' section  of
+  ! ALGLIB Reference Manual in order to find out how to  use  performance-
+  ! related features provided by commercial edition of ALGLIB.
+           
 INPUT PARAMETERS:
     X   -   points, array[0..N-1].
     Y   -   function values, array[0..N-1].
@@ -18922,39 +22766,39 @@ void spline1dfitpenalizedw(/* Real    */ ae_vector* x,
     ae_vector tmp0;
 
     ae_frame_make(_state, &_frame_block);
-    ae_vector_init_copy(&_x, x, _state, ae_true);
+    ae_vector_init_copy(&_x, x, _state);
     x = &_x;
-    ae_vector_init_copy(&_y, y, _state, ae_true);
+    ae_vector_init_copy(&_y, y, _state);
     y = &_y;
-    ae_vector_init_copy(&_w, w, _state, ae_true);
+    ae_vector_init_copy(&_w, w, _state);
     w = &_w;
     *info = 0;
     _spline1dinterpolant_clear(s);
     _spline1dfitreport_clear(rep);
-    ae_vector_init(&xoriginal, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&yoriginal, 0, DT_REAL, _state, ae_true);
-    ae_matrix_init(&fmatrix, 0, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&fcolumn, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&y2, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&w2, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&xc, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&yc, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&dc, 0, DT_INT, _state, ae_true);
-    ae_matrix_init(&amatrix, 0, 0, DT_REAL, _state, ae_true);
-    ae_matrix_init(&d2matrix, 0, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&bx, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&by, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&bd1, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&bd2, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&tx, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&ty, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&td, 0, DT_REAL, _state, ae_true);
-    _spline1dinterpolant_init(&bs, _state, ae_true);
-    ae_matrix_init(&nmatrix, 0, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&rightpart, 0, DT_REAL, _state, ae_true);
-    _fblslincgstate_init(&cgstate, _state, ae_true);
-    ae_vector_init(&c, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&tmp0, 0, DT_REAL, _state, ae_true);
+    ae_vector_init(&xoriginal, 0, DT_REAL, _state);
+    ae_vector_init(&yoriginal, 0, DT_REAL, _state);
+    ae_matrix_init(&fmatrix, 0, 0, DT_REAL, _state);
+    ae_vector_init(&fcolumn, 0, DT_REAL, _state);
+    ae_vector_init(&y2, 0, DT_REAL, _state);
+    ae_vector_init(&w2, 0, DT_REAL, _state);
+    ae_vector_init(&xc, 0, DT_REAL, _state);
+    ae_vector_init(&yc, 0, DT_REAL, _state);
+    ae_vector_init(&dc, 0, DT_INT, _state);
+    ae_matrix_init(&amatrix, 0, 0, DT_REAL, _state);
+    ae_matrix_init(&d2matrix, 0, 0, DT_REAL, _state);
+    ae_vector_init(&bx, 0, DT_REAL, _state);
+    ae_vector_init(&by, 0, DT_REAL, _state);
+    ae_vector_init(&bd1, 0, DT_REAL, _state);
+    ae_vector_init(&bd2, 0, DT_REAL, _state);
+    ae_vector_init(&tx, 0, DT_REAL, _state);
+    ae_vector_init(&ty, 0, DT_REAL, _state);
+    ae_vector_init(&td, 0, DT_REAL, _state);
+    _spline1dinterpolant_init(&bs, _state);
+    ae_matrix_init(&nmatrix, 0, 0, DT_REAL, _state);
+    ae_vector_init(&rightpart, 0, DT_REAL, _state);
+    _fblslincgstate_init(&cgstate, _state);
+    ae_vector_init(&c, 0, DT_REAL, _state);
+    ae_vector_init(&tmp0, 0, DT_REAL, _state);
 
     ae_assert(n>=1, "Spline1DFitPenalizedW: N<1!", _state);
     ae_assert(m>=4, "Spline1DFitPenalizedW: M<4!", _state);
@@ -18969,7 +22813,7 @@ void spline1dfitpenalizedw(/* Real    */ ae_vector* x,
     /*
      * Prepare LambdaV
      */
-    v = -ae_log(ae_machineepsilon, _state)/ae_log(10, _state);
+    v = -ae_log(ae_machineepsilon, _state)/ae_log((double)(10), _state);
     if( ae_fp_less(rho,-v) )
     {
         rho = -v;
@@ -18978,7 +22822,7 @@ void spline1dfitpenalizedw(/* Real    */ ae_vector* x,
     {
         rho = v;
     }
-    lambdav = ae_pow(10, rho, _state);
+    lambdav = ae_pow((double)(10), rho, _state);
     
     /*
      * Sort X, Y, W
@@ -19010,7 +22854,7 @@ void spline1dfitpenalizedw(/* Real    */ ae_vector* x,
      * * TmpAMatrix by second derivatives of I-th function at J-th point
      * * CMatrix by constraints
      */
-    fdmax = 0;
+    fdmax = (double)(0);
     for(b=0; b<=m-1; b++)
     {
         
@@ -19020,9 +22864,9 @@ void spline1dfitpenalizedw(/* Real    */ ae_vector* x,
         for(j=0; j<=m-1; j++)
         {
             bx.ptr.p_double[j] = (double)(2*j)/(double)(m-1)-1;
-            by.ptr.p_double[j] = 0;
+            by.ptr.p_double[j] = (double)(0);
         }
-        by.ptr.p_double[b] = 1;
+        by.ptr.p_double[b] = (double)(1);
         spline1dgriddiff2cubic(&bx, &by, m, 2, 0.0, 2, 0.0, &bd1, &bd2, _state);
         spline1dbuildcubic(&bx, &by, m, 2, 0.0, 2, 0.0, &bs, _state);
         
@@ -19032,7 +22876,7 @@ void spline1dfitpenalizedw(/* Real    */ ae_vector* x,
          */
         spline1dconvcubic(&bx, &by, m, 2, 0.0, 2, 0.0, x, n, &fcolumn, _state);
         ae_v_move(&fmatrix.ptr.pp_double[0][b], fmatrix.stride, &fcolumn.ptr.p_double[0], 1, ae_v_len(0,n-1));
-        v = 0;
+        v = (double)(0);
         for(i=0; i<=n-1; i++)
         {
             v = v+ae_sqr(w->ptr.p_double[i]*fcolumn.ptr.p_double[i], _state);
@@ -19060,7 +22904,7 @@ void spline1dfitpenalizedw(/* Real    */ ae_vector* x,
              * i-th and j-th basis splines.
              * B_i and B_j are piecewise linear functions.
              */
-            v = 0;
+            v = (double)(0);
             for(b=0; b<=m-2; b++)
             {
                 fa = d2matrix.ptr.pp_double[i][b];
@@ -19073,7 +22917,7 @@ void spline1dfitpenalizedw(/* Real    */ ae_vector* x,
             amatrix.ptr.pp_double[j][i] = v;
         }
     }
-    admax = 0;
+    admax = (double)(0);
     for(i=0; i<=m-1; i++)
     {
         admax = ae_maxreal(admax, ae_fabs(amatrix.ptr.pp_double[i][i], _state), _state);
@@ -19109,7 +22953,7 @@ void spline1dfitpenalizedw(/* Real    */ ae_vector* x,
     }
     for(i=0; i<=m-1; i++)
     {
-        rightpart.ptr.p_double[i] = 0;
+        rightpart.ptr.p_double[i] = (double)(0);
     }
     for(i=0; i<=n-1; i++)
     {
@@ -19153,18 +22997,18 @@ void spline1dfitpenalizedw(/* Real    */ ae_vector* x,
     /*
      * Fill report
      */
-    rep->rmserror = 0;
-    rep->avgerror = 0;
-    rep->avgrelerror = 0;
-    rep->maxerror = 0;
-    relcnt = 0;
+    rep->rmserror = (double)(0);
+    rep->avgerror = (double)(0);
+    rep->avgrelerror = (double)(0);
+    rep->maxerror = (double)(0);
+    relcnt = (double)(0);
     spline1dconvcubic(&bx, &rightpart, m, 2, 0.0, 2, 0.0, x, n, &fcolumn, _state);
     for(i=0; i<=n-1; i++)
     {
         v = (sb-sa)*fcolumn.ptr.p_double[i]+sa;
         rep->rmserror = rep->rmserror+ae_sqr(v-yoriginal.ptr.p_double[i], _state);
         rep->avgerror = rep->avgerror+ae_fabs(v-yoriginal.ptr.p_double[i], _state);
-        if( ae_fp_neq(yoriginal.ptr.p_double[i],0) )
+        if( ae_fp_neq(yoriginal.ptr.p_double[i],(double)(0)) )
         {
             rep->avgrelerror = rep->avgrelerror+ae_fabs(v-yoriginal.ptr.p_double[i], _state)/ae_fabs(yoriginal.ptr.p_double[i], _state);
             relcnt = relcnt+1;
@@ -19173,11 +23017,28 @@ void spline1dfitpenalizedw(/* Real    */ ae_vector* x,
     }
     rep->rmserror = ae_sqrt(rep->rmserror/n, _state);
     rep->avgerror = rep->avgerror/n;
-    if( ae_fp_neq(relcnt,0) )
+    if( ae_fp_neq(relcnt,(double)(0)) )
     {
         rep->avgrelerror = rep->avgrelerror/relcnt;
     }
     ae_frame_leave(_state);
+}
+
+
+/*************************************************************************
+Single-threaded stub. HPC ALGLIB replaces it by multithreaded code.
+*************************************************************************/
+void _pexec_spline1dfitpenalizedw(/* Real    */ ae_vector* x,
+    /* Real    */ ae_vector* y,
+    /* Real    */ ae_vector* w,
+    ae_int_t n,
+    ae_int_t m,
+    double rho,
+    ae_int_t* info,
+    spline1dinterpolant* s,
+    spline1dfitreport* rep, ae_state *_state)
+{
+    spline1dfitpenalizedw(x,y,w,n,m,rho,info,s,rep, _state);
 }
 
 
@@ -19200,6 +23061,29 @@ SEE ALSO
     Spline1DFitCubic()      -   "lightweight" fitting  by  cubic  splines,
                                 without invididual weights and constraints
 
+COMMERCIAL EDITION OF ALGLIB:
+
+  ! Commercial version of ALGLIB includes two  important  improvements  of
+  ! this function, which can be used from C++ and C#:
+  ! * Intel MKL support (lightweight Intel MKL is shipped with ALGLIB)
+  ! * multithreading support
+  !
+  ! Intel MKL gives approximately constant  (with  respect  to  number  of
+  ! worker threads) acceleration factor which depends on CPU  being  used,
+  ! problem  size  and  "baseline"  ALGLIB  edition  which  is  used   for
+  ! comparison.
+  !
+  ! Speed-up provided by multithreading greatly depends  on  problem  size
+  ! - only large problems (number of coefficients is more than 500) can be
+  ! efficiently multithreaded.
+  !
+  ! Generally, commercial ALGLIB is several times faster than  open-source
+  ! generic C edition, and many times faster than open-source C# edition.
+  !
+  ! We recommend you to read 'Working with commercial version' section  of
+  ! ALGLIB Reference Manual in order to find out how to  use  performance-
+  ! related features provided by commercial edition of ALGLIB.
+                                
 INPUT PARAMETERS:
     X   -   points, array[0..N-1].
     Y   -   function values, array[0..N-1].
@@ -19324,6 +23208,26 @@ void spline1dfitcubicwc(/* Real    */ ae_vector* x,
 
 
 /*************************************************************************
+Single-threaded stub. HPC ALGLIB replaces it by multithreaded code.
+*************************************************************************/
+void _pexec_spline1dfitcubicwc(/* Real    */ ae_vector* x,
+    /* Real    */ ae_vector* y,
+    /* Real    */ ae_vector* w,
+    ae_int_t n,
+    /* Real    */ ae_vector* xc,
+    /* Real    */ ae_vector* yc,
+    /* Integer */ ae_vector* dc,
+    ae_int_t k,
+    ae_int_t m,
+    ae_int_t* info,
+    spline1dinterpolant* s,
+    spline1dfitreport* rep, ae_state *_state)
+{
+    spline1dfitcubicwc(x,y,w,n,xc,yc,dc,k,m,info,s,rep, _state);
+}
+
+
+/*************************************************************************
 Weighted  fitting  by Hermite spline,  with constraints on function values
 or first derivatives.
 
@@ -19340,6 +23244,29 @@ SEE ALSO
     Spline1DFitHermite()    -   "lightweight" Hermite fitting, without
                                 invididual weights and constraints
 
+COMMERCIAL EDITION OF ALGLIB:
+
+  ! Commercial version of ALGLIB includes two  important  improvements  of
+  ! this function, which can be used from C++ and C#:
+  ! * Intel MKL support (lightweight Intel MKL is shipped with ALGLIB)
+  ! * multithreading support
+  !
+  ! Intel MKL gives approximately constant  (with  respect  to  number  of
+  ! worker threads) acceleration factor which depends on CPU  being  used,
+  ! problem  size  and  "baseline"  ALGLIB  edition  which  is  used   for
+  ! comparison.
+  !
+  ! Speed-up provided by multithreading greatly depends  on  problem  size
+  ! - only large problems (number of coefficients is more than 500) can be
+  ! efficiently multithreaded.
+  !
+  ! Generally, commercial ALGLIB is several times faster than  open-source
+  ! generic C edition, and many times faster than open-source C# edition.
+  !
+  ! We recommend you to read 'Working with commercial version' section  of
+  ! ALGLIB Reference Manual in order to find out how to  use  performance-
+  ! related features provided by commercial edition of ALGLIB.
+                                
 INPUT PARAMETERS:
     X   -   points, array[0..N-1].
     Y   -   function values, array[0..N-1].
@@ -19472,11 +23399,54 @@ void spline1dfithermitewc(/* Real    */ ae_vector* x,
 
 
 /*************************************************************************
+Single-threaded stub. HPC ALGLIB replaces it by multithreaded code.
+*************************************************************************/
+void _pexec_spline1dfithermitewc(/* Real    */ ae_vector* x,
+    /* Real    */ ae_vector* y,
+    /* Real    */ ae_vector* w,
+    ae_int_t n,
+    /* Real    */ ae_vector* xc,
+    /* Real    */ ae_vector* yc,
+    /* Integer */ ae_vector* dc,
+    ae_int_t k,
+    ae_int_t m,
+    ae_int_t* info,
+    spline1dinterpolant* s,
+    spline1dfitreport* rep, ae_state *_state)
+{
+    spline1dfithermitewc(x,y,w,n,xc,yc,dc,k,m,info,s,rep, _state);
+}
+
+
+/*************************************************************************
 Least squares fitting by cubic spline.
 
 This subroutine is "lightweight" alternative for more complex and feature-
 rich Spline1DFitCubicWC().  See  Spline1DFitCubicWC() for more information
 about subroutine parameters (we don't duplicate it here because of length)
+
+COMMERCIAL EDITION OF ALGLIB:
+
+  ! Commercial version of ALGLIB includes two  important  improvements  of
+  ! this function, which can be used from C++ and C#:
+  ! * Intel MKL support (lightweight Intel MKL is shipped with ALGLIB)
+  ! * multithreading support
+  !
+  ! Intel MKL gives approximately constant  (with  respect  to  number  of
+  ! worker threads) acceleration factor which depends on CPU  being  used,
+  ! problem  size  and  "baseline"  ALGLIB  edition  which  is  used   for
+  ! comparison.
+  !
+  ! Speed-up provided by multithreading greatly depends  on  problem  size
+  ! - only large problems (number of coefficients is more than 500) can be
+  ! efficiently multithreaded.
+  !
+  ! Generally, commercial ALGLIB is several times faster than  open-source
+  ! generic C edition, and many times faster than open-source C# edition.
+  !
+  ! We recommend you to read 'Working with commercial version' section  of
+  ! ALGLIB Reference Manual in order to find out how to  use  performance-
+  ! related features provided by commercial edition of ALGLIB.
 
   -- ALGLIB PROJECT --
      Copyright 18.08.2009 by Bochkanov Sergey
@@ -19501,10 +23471,10 @@ void spline1dfitcubic(/* Real    */ ae_vector* x,
     *info = 0;
     _spline1dinterpolant_clear(s);
     _spline1dfitreport_clear(rep);
-    ae_vector_init(&w, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&xc, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&yc, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&dc, 0, DT_INT, _state, ae_true);
+    ae_vector_init(&w, 0, DT_REAL, _state);
+    ae_vector_init(&xc, 0, DT_REAL, _state);
+    ae_vector_init(&yc, 0, DT_REAL, _state);
+    ae_vector_init(&dc, 0, DT_INT, _state);
 
     ae_assert(n>=1, "Spline1DFitCubic: N<1!", _state);
     ae_assert(m>=4, "Spline1DFitCubic: M<4!", _state);
@@ -19515,10 +23485,25 @@ void spline1dfitcubic(/* Real    */ ae_vector* x,
     ae_vector_set_length(&w, n, _state);
     for(i=0; i<=n-1; i++)
     {
-        w.ptr.p_double[i] = 1;
+        w.ptr.p_double[i] = (double)(1);
     }
     spline1dfitcubicwc(x, y, &w, n, &xc, &yc, &dc, 0, m, info, s, rep, _state);
     ae_frame_leave(_state);
+}
+
+
+/*************************************************************************
+Single-threaded stub. HPC ALGLIB replaces it by multithreaded code.
+*************************************************************************/
+void _pexec_spline1dfitcubic(/* Real    */ ae_vector* x,
+    /* Real    */ ae_vector* y,
+    ae_int_t n,
+    ae_int_t m,
+    ae_int_t* info,
+    spline1dinterpolant* s,
+    spline1dfitreport* rep, ae_state *_state)
+{
+    spline1dfitcubic(x,y,n,m,info,s,rep, _state);
 }
 
 
@@ -19529,6 +23514,29 @@ This subroutine is "lightweight" alternative for more complex and feature-
 rich Spline1DFitHermiteWC().  See Spline1DFitHermiteWC()  description  for
 more information about subroutine parameters (we don't duplicate  it  here
 because of length).
+
+COMMERCIAL EDITION OF ALGLIB:
+
+  ! Commercial version of ALGLIB includes two  important  improvements  of
+  ! this function, which can be used from C++ and C#:
+  ! * Intel MKL support (lightweight Intel MKL is shipped with ALGLIB)
+  ! * multithreading support
+  !
+  ! Intel MKL gives approximately constant  (with  respect  to  number  of
+  ! worker threads) acceleration factor which depends on CPU  being  used,
+  ! problem  size  and  "baseline"  ALGLIB  edition  which  is  used   for
+  ! comparison.
+  !
+  ! Speed-up provided by multithreading greatly depends  on  problem  size
+  ! - only large problems (number of coefficients is more than 500) can be
+  ! efficiently multithreaded.
+  !
+  ! Generally, commercial ALGLIB is several times faster than  open-source
+  ! generic C edition, and many times faster than open-source C# edition.
+  !
+  ! We recommend you to read 'Working with commercial version' section  of
+  ! ALGLIB Reference Manual in order to find out how to  use  performance-
+  ! related features provided by commercial edition of ALGLIB.
 
   -- ALGLIB PROJECT --
      Copyright 18.08.2009 by Bochkanov Sergey
@@ -19553,10 +23561,10 @@ void spline1dfithermite(/* Real    */ ae_vector* x,
     *info = 0;
     _spline1dinterpolant_clear(s);
     _spline1dfitreport_clear(rep);
-    ae_vector_init(&w, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&xc, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&yc, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&dc, 0, DT_INT, _state, ae_true);
+    ae_vector_init(&w, 0, DT_REAL, _state);
+    ae_vector_init(&xc, 0, DT_REAL, _state);
+    ae_vector_init(&yc, 0, DT_REAL, _state);
+    ae_vector_init(&dc, 0, DT_INT, _state);
 
     ae_assert(n>=1, "Spline1DFitHermite: N<1!", _state);
     ae_assert(m>=4, "Spline1DFitHermite: M<4!", _state);
@@ -19568,10 +23576,25 @@ void spline1dfithermite(/* Real    */ ae_vector* x,
     ae_vector_set_length(&w, n, _state);
     for(i=0; i<=n-1; i++)
     {
-        w.ptr.p_double[i] = 1;
+        w.ptr.p_double[i] = (double)(1);
     }
     spline1dfithermitewc(x, y, &w, n, &xc, &yc, &dc, 0, m, info, s, rep, _state);
     ae_frame_leave(_state);
+}
+
+
+/*************************************************************************
+Single-threaded stub. HPC ALGLIB replaces it by multithreaded code.
+*************************************************************************/
+void _pexec_spline1dfithermite(/* Real    */ ae_vector* x,
+    /* Real    */ ae_vector* y,
+    ae_int_t n,
+    ae_int_t m,
+    ae_int_t* info,
+    spline1dinterpolant* s,
+    spline1dfitreport* rep, ae_state *_state)
+{
+    spline1dfithermite(x,y,n,m,info,s,rep, _state);
 }
 
 
@@ -19581,6 +23604,35 @@ Weighted linear least squares fitting.
 QR decomposition is used to reduce task to MxM, then triangular solver  or
 SVD-based solver is used depending on condition number of the  system.  It
 allows to maximize speed and retain decent accuracy.
+
+IMPORTANT: if you want to perform  polynomial  fitting,  it  may  be  more
+           convenient to use PolynomialFit() function. This function gives
+           best  results  on  polynomial  problems  and  solves  numerical
+           stability  issues  which  arise  when   you   fit   high-degree
+           polynomials to your data.
+           
+COMMERCIAL EDITION OF ALGLIB:
+
+  ! Commercial version of ALGLIB includes two  important  improvements  of
+  ! this function, which can be used from C++ and C#:
+  ! * Intel MKL support (lightweight Intel MKL is shipped with ALGLIB)
+  ! * multithreading support
+  !
+  ! Intel MKL gives approximately constant  (with  respect  to  number  of
+  ! worker threads) acceleration factor which depends on CPU  being  used,
+  ! problem  size  and  "baseline"  ALGLIB  edition  which  is  used   for
+  ! comparison.
+  !
+  ! Speed-up provided by multithreading greatly depends  on  problem  size
+  ! - only large problems (number of coefficients is more than 500) can be
+  ! efficiently multithreaded.
+  !
+  ! Generally, commercial ALGLIB is several times faster than  open-source
+  ! generic C edition, and many times faster than open-source C# edition.
+  !
+  ! We recommend you to read 'Working with commercial version' section  of
+  ! ALGLIB Reference Manual in order to find out how to  use  performance-
+  ! related features provided by commercial edition of ALGLIB.
 
 INPUT PARAMETERS:
     Y       -   array[0..N-1] Function values in  N  points.
@@ -19602,12 +23654,50 @@ OUTPUT PARAMETERS:
     C       -   decomposition coefficients, array[0..M-1]
     Rep     -   fitting report. Following fields are set:
                 * Rep.TaskRCond     reciprocal of condition number
+                * R2                non-adjusted coefficient of determination
+                                    (non-weighted)
                 * RMSError          rms error on the (X,Y).
                 * AvgError          average error on the (X,Y).
                 * AvgRelError       average relative error on the non-zero Y
                 * MaxError          maximum error
                                     NON-WEIGHTED ERRORS ARE CALCULATED
-
+                
+ERRORS IN PARAMETERS                
+                
+This  solver  also  calculates different kinds of errors in parameters and
+fills corresponding fields of report:
+* Rep.CovPar        covariance matrix for parameters, array[K,K].
+* Rep.ErrPar        errors in parameters, array[K],
+                    errpar = sqrt(diag(CovPar))
+* Rep.ErrCurve      vector of fit errors - standard deviations of empirical
+                    best-fit curve from "ideal" best-fit curve built  with
+                    infinite number of samples, array[N].
+                    errcurve = sqrt(diag(F*CovPar*F')),
+                    where F is functions matrix.
+* Rep.Noise         vector of per-point estimates of noise, array[N]
+            
+NOTE:       noise in the data is estimated as follows:
+            * for fitting without user-supplied  weights  all  points  are
+              assumed to have same level of noise, which is estimated from
+              the data
+            * for fitting with user-supplied weights we assume that  noise
+              level in I-th point is inversely proportional to Ith weight.
+              Coefficient of proportionality is estimated from the data.
+            
+NOTE:       we apply small amount of regularization when we invert squared
+            Jacobian and calculate covariance matrix. It  guarantees  that
+            algorithm won't divide by zero  during  inversion,  but  skews
+            error estimates a bit (fractional error is about 10^-9).
+            
+            However, we believe that this difference is insignificant  for
+            all practical purposes except for the situation when you  want
+            to compare ALGLIB results with "reference"  implementation  up
+            to the last significant digit.
+            
+NOTE:       covariance matrix is estimated using  correction  for  degrees
+            of freedom (covariances are divided by N-M instead of dividing
+            by N).
+                                    
   -- ALGLIB --
      Copyright 17.08.2009 by Bochkanov Sergey
 *************************************************************************/
@@ -19640,12 +23730,57 @@ void lsfitlinearw(/* Real    */ ae_vector* y,
 
 
 /*************************************************************************
+Single-threaded stub. HPC ALGLIB replaces it by multithreaded code.
+*************************************************************************/
+void _pexec_lsfitlinearw(/* Real    */ ae_vector* y,
+    /* Real    */ ae_vector* w,
+    /* Real    */ ae_matrix* fmatrix,
+    ae_int_t n,
+    ae_int_t m,
+    ae_int_t* info,
+    /* Real    */ ae_vector* c,
+    lsfitreport* rep, ae_state *_state)
+{
+    lsfitlinearw(y,w,fmatrix,n,m,info,c,rep, _state);
+}
+
+
+/*************************************************************************
 Weighted constained linear least squares fitting.
 
 This  is  variation  of LSFitLinearW(), which searchs for min|A*x=b| given
 that  K  additional  constaints  C*x=bc are satisfied. It reduces original
 task to modified one: min|B*y-d| WITHOUT constraints,  then LSFitLinearW()
 is called.
+
+IMPORTANT: if you want to perform  polynomial  fitting,  it  may  be  more
+           convenient to use PolynomialFit() function. This function gives
+           best  results  on  polynomial  problems  and  solves  numerical
+           stability  issues  which  arise  when   you   fit   high-degree
+           polynomials to your data.
+           
+COMMERCIAL EDITION OF ALGLIB:
+
+  ! Commercial version of ALGLIB includes two  important  improvements  of
+  ! this function, which can be used from C++ and C#:
+  ! * Intel MKL support (lightweight Intel MKL is shipped with ALGLIB)
+  ! * multithreading support
+  !
+  ! Intel MKL gives approximately constant  (with  respect  to  number  of
+  ! worker threads) acceleration factor which depends on CPU  being  used,
+  ! problem  size  and  "baseline"  ALGLIB  edition  which  is  used   for
+  ! comparison.
+  !
+  ! Speed-up provided by multithreading greatly depends  on  problem  size
+  ! - only large problems (number of coefficients is more than 500) can be
+  ! efficiently multithreaded.
+  !
+  ! Generally, commercial ALGLIB is several times faster than  open-source
+  ! generic C edition, and many times faster than open-source C# edition.
+  !
+  ! We recommend you to read 'Working with commercial version' section  of
+  ! ALGLIB Reference Manual in order to find out how to  use  performance-
+  ! related features provided by commercial edition of ALGLIB.
 
 INPUT PARAMETERS:
     Y       -   array[0..N-1] Function values in  N  points.
@@ -19674,6 +23809,8 @@ OUTPUT PARAMETERS:
                 *  1    task is solved
     C       -   decomposition coefficients, array[0..M-1]
     Rep     -   fitting report. Following fields are set:
+                * R2                non-adjusted coefficient of determination
+                                    (non-weighted)
                 * RMSError          rms error on the (X,Y).
                 * AvgError          average error on the (X,Y).
                 * AvgRelError       average relative error on the non-zero Y
@@ -19682,6 +23819,47 @@ OUTPUT PARAMETERS:
 
 IMPORTANT:
     this subroitine doesn't calculate task's condition number for K<>0.
+                
+ERRORS IN PARAMETERS                
+                
+This  solver  also  calculates different kinds of errors in parameters and
+fills corresponding fields of report:
+* Rep.CovPar        covariance matrix for parameters, array[K,K].
+* Rep.ErrPar        errors in parameters, array[K],
+                    errpar = sqrt(diag(CovPar))
+* Rep.ErrCurve      vector of fit errors - standard deviations of empirical
+                    best-fit curve from "ideal" best-fit curve built  with
+                    infinite number of samples, array[N].
+                    errcurve = sqrt(diag(F*CovPar*F')),
+                    where F is functions matrix.
+* Rep.Noise         vector of per-point estimates of noise, array[N]
+
+IMPORTANT:  errors  in  parameters  are  calculated  without  taking  into
+            account boundary/linear constraints! Presence  of  constraints
+            changes distribution of errors, but there is no  easy  way  to
+            account for constraints when you calculate covariance matrix.
+            
+NOTE:       noise in the data is estimated as follows:
+            * for fitting without user-supplied  weights  all  points  are
+              assumed to have same level of noise, which is estimated from
+              the data
+            * for fitting with user-supplied weights we assume that  noise
+              level in I-th point is inversely proportional to Ith weight.
+              Coefficient of proportionality is estimated from the data.
+            
+NOTE:       we apply small amount of regularization when we invert squared
+            Jacobian and calculate covariance matrix. It  guarantees  that
+            algorithm won't divide by zero  during  inversion,  but  skews
+            error estimates a bit (fractional error is about 10^-9).
+            
+            However, we believe that this difference is insignificant  for
+            all practical purposes except for the situation when you  want
+            to compare ALGLIB results with "reference"  implementation  up
+            to the last significant digit.
+            
+NOTE:       covariance matrix is estimated using  correction  for  degrees
+            of freedom (covariances are divided by N-M instead of dividing
+            by N).
 
   -- ALGLIB --
      Copyright 07.09.2009 by Bochkanov Sergey
@@ -19711,18 +23889,18 @@ void lsfitlinearwc(/* Real    */ ae_vector* y,
     double v;
 
     ae_frame_make(_state, &_frame_block);
-    ae_vector_init_copy(&_y, y, _state, ae_true);
+    ae_vector_init_copy(&_y, y, _state);
     y = &_y;
-    ae_matrix_init_copy(&_cmatrix, cmatrix, _state, ae_true);
+    ae_matrix_init_copy(&_cmatrix, cmatrix, _state);
     cmatrix = &_cmatrix;
     *info = 0;
     ae_vector_clear(c);
     _lsfitreport_clear(rep);
-    ae_vector_init(&tau, 0, DT_REAL, _state, ae_true);
-    ae_matrix_init(&q, 0, 0, DT_REAL, _state, ae_true);
-    ae_matrix_init(&f2, 0, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&tmp, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&c0, 0, DT_REAL, _state, ae_true);
+    ae_vector_init(&tau, 0, DT_REAL, _state);
+    ae_matrix_init(&q, 0, 0, DT_REAL, _state);
+    ae_matrix_init(&f2, 0, 0, DT_REAL, _state);
+    ae_vector_init(&tmp, 0, DT_REAL, _state);
+    ae_vector_init(&c0, 0, DT_REAL, _state);
 
     ae_assert(n>=1, "LSFitLinearWC: N<1!", _state);
     ae_assert(m>=1, "LSFitLinearWC: M<1!", _state);
@@ -19790,14 +23968,14 @@ void lsfitlinearwc(/* Real    */ ae_vector* y,
             }
             else
             {
-                v = 0;
+                v = (double)(0);
             }
             tmp.ptr.p_double[i] = (cmatrix->ptr.pp_double[i][m]-v)/cmatrix->ptr.pp_double[i][i];
         }
         ae_vector_set_length(&c0, m, _state);
         for(i=0; i<=m-1; i++)
         {
-            c0.ptr.p_double[i] = 0;
+            c0.ptr.p_double[i] = (double)(0);
         }
         for(i=0; i<=k-1; i++)
         {
@@ -19811,9 +23989,9 @@ void lsfitlinearwc(/* Real    */ ae_vector* y,
         ae_vector_set_length(&tmp, ae_maxint(n, m, _state)+1, _state);
         ae_matrix_set_length(&f2, n, m-k, _state);
         matrixvectormultiply(fmatrix, 0, n-1, 0, m-1, ae_false, &c0, 0, m-1, -1.0, y, 0, n-1, 1.0, _state);
-        matrixmatrixmultiply(fmatrix, 0, n-1, 0, m-1, ae_false, &q, k, m-1, 0, m-1, ae_true, 1.0, &f2, 0, n-1, 0, m-k-1, 0.0, &tmp, _state);
+        rmatrixgemm(n, m-k, m, 1.0, fmatrix, 0, 0, 0, &q, k, 0, 1, 0.0, &f2, 0, 0, _state);
         lsfit_lsfitlinearinternal(y, w, &f2, n, m-k, info, &tmp, rep, _state);
-        rep->taskrcond = -1;
+        rep->taskrcond = (double)(-1);
         if( *info<=0 )
         {
             ae_frame_leave(_state);
@@ -19832,11 +24010,58 @@ void lsfitlinearwc(/* Real    */ ae_vector* y,
 
 
 /*************************************************************************
+Single-threaded stub. HPC ALGLIB replaces it by multithreaded code.
+*************************************************************************/
+void _pexec_lsfitlinearwc(/* Real    */ ae_vector* y,
+    /* Real    */ ae_vector* w,
+    /* Real    */ ae_matrix* fmatrix,
+    /* Real    */ ae_matrix* cmatrix,
+    ae_int_t n,
+    ae_int_t m,
+    ae_int_t k,
+    ae_int_t* info,
+    /* Real    */ ae_vector* c,
+    lsfitreport* rep, ae_state *_state)
+{
+    lsfitlinearwc(y,w,fmatrix,cmatrix,n,m,k,info,c,rep, _state);
+}
+
+
+/*************************************************************************
 Linear least squares fitting.
 
 QR decomposition is used to reduce task to MxM, then triangular solver  or
 SVD-based solver is used depending on condition number of the  system.  It
 allows to maximize speed and retain decent accuracy.
+
+IMPORTANT: if you want to perform  polynomial  fitting,  it  may  be  more
+           convenient to use PolynomialFit() function. This function gives
+           best  results  on  polynomial  problems  and  solves  numerical
+           stability  issues  which  arise  when   you   fit   high-degree
+           polynomials to your data.
+           
+COMMERCIAL EDITION OF ALGLIB:
+
+  ! Commercial version of ALGLIB includes two  important  improvements  of
+  ! this function, which can be used from C++ and C#:
+  ! * Intel MKL support (lightweight Intel MKL is shipped with ALGLIB)
+  ! * multithreading support
+  !
+  ! Intel MKL gives approximately constant  (with  respect  to  number  of
+  ! worker threads) acceleration factor which depends on CPU  being  used,
+  ! problem  size  and  "baseline"  ALGLIB  edition  which  is  used   for
+  ! comparison.
+  !
+  ! Speed-up provided by multithreading greatly depends  on  problem  size
+  ! - only large problems (number of coefficients is more than 500) can be
+  ! efficiently multithreaded.
+  !
+  ! Generally, commercial ALGLIB is several times faster than  open-source
+  ! generic C edition, and many times faster than open-source C# edition.
+  !
+  ! We recommend you to read 'Working with commercial version' section  of
+  ! ALGLIB Reference Manual in order to find out how to  use  performance-
+  ! related features provided by commercial edition of ALGLIB.
 
 INPUT PARAMETERS:
     Y       -   array[0..N-1] Function values in  N  points.
@@ -19853,11 +24078,49 @@ OUTPUT PARAMETERS:
     C       -   decomposition coefficients, array[0..M-1]
     Rep     -   fitting report. Following fields are set:
                 * Rep.TaskRCond     reciprocal of condition number
+                * R2                non-adjusted coefficient of determination
+                                    (non-weighted)
                 * RMSError          rms error on the (X,Y).
                 * AvgError          average error on the (X,Y).
                 * AvgRelError       average relative error on the non-zero Y
                 * MaxError          maximum error
                                     NON-WEIGHTED ERRORS ARE CALCULATED
+                
+ERRORS IN PARAMETERS                
+                
+This  solver  also  calculates different kinds of errors in parameters and
+fills corresponding fields of report:
+* Rep.CovPar        covariance matrix for parameters, array[K,K].
+* Rep.ErrPar        errors in parameters, array[K],
+                    errpar = sqrt(diag(CovPar))
+* Rep.ErrCurve      vector of fit errors - standard deviations of empirical
+                    best-fit curve from "ideal" best-fit curve built  with
+                    infinite number of samples, array[N].
+                    errcurve = sqrt(diag(F*CovPar*F')),
+                    where F is functions matrix.
+* Rep.Noise         vector of per-point estimates of noise, array[N]
+            
+NOTE:       noise in the data is estimated as follows:
+            * for fitting without user-supplied  weights  all  points  are
+              assumed to have same level of noise, which is estimated from
+              the data
+            * for fitting with user-supplied weights we assume that  noise
+              level in I-th point is inversely proportional to Ith weight.
+              Coefficient of proportionality is estimated from the data.
+            
+NOTE:       we apply small amount of regularization when we invert squared
+            Jacobian and calculate covariance matrix. It  guarantees  that
+            algorithm won't divide by zero  during  inversion,  but  skews
+            error estimates a bit (fractional error is about 10^-9).
+            
+            However, we believe that this difference is insignificant  for
+            all practical purposes except for the situation when you  want
+            to compare ALGLIB results with "reference"  implementation  up
+            to the last significant digit.
+            
+NOTE:       covariance matrix is estimated using  correction  for  degrees
+            of freedom (covariances are divided by N-M instead of dividing
+            by N).
 
   -- ALGLIB --
      Copyright 17.08.2009 by Bochkanov Sergey
@@ -19879,7 +24142,7 @@ void lsfitlinear(/* Real    */ ae_vector* y,
     *info = 0;
     ae_vector_clear(c);
     _lsfitreport_clear(rep);
-    ae_vector_init(&w, 0, DT_REAL, _state, ae_true);
+    ae_vector_init(&w, 0, DT_REAL, _state);
 
     ae_assert(n>=1, "LSFitLinear: N<1!", _state);
     ae_assert(m>=1, "LSFitLinear: M<1!", _state);
@@ -19891,10 +24154,25 @@ void lsfitlinear(/* Real    */ ae_vector* y,
     ae_vector_set_length(&w, n, _state);
     for(i=0; i<=n-1; i++)
     {
-        w.ptr.p_double[i] = 1;
+        w.ptr.p_double[i] = (double)(1);
     }
     lsfit_lsfitlinearinternal(y, &w, fmatrix, n, m, info, c, rep, _state);
     ae_frame_leave(_state);
+}
+
+
+/*************************************************************************
+Single-threaded stub. HPC ALGLIB replaces it by multithreaded code.
+*************************************************************************/
+void _pexec_lsfitlinear(/* Real    */ ae_vector* y,
+    /* Real    */ ae_matrix* fmatrix,
+    ae_int_t n,
+    ae_int_t m,
+    ae_int_t* info,
+    /* Real    */ ae_vector* c,
+    lsfitreport* rep, ae_state *_state)
+{
+    lsfitlinear(y,fmatrix,n,m,info,c,rep, _state);
 }
 
 
@@ -19905,6 +24183,35 @@ This  is  variation  of LSFitLinear(),  which searchs for min|A*x=b| given
 that  K  additional  constaints  C*x=bc are satisfied. It reduces original
 task to modified one: min|B*y-d| WITHOUT constraints,  then  LSFitLinear()
 is called.
+
+IMPORTANT: if you want to perform  polynomial  fitting,  it  may  be  more
+           convenient to use PolynomialFit() function. This function gives
+           best  results  on  polynomial  problems  and  solves  numerical
+           stability  issues  which  arise  when   you   fit   high-degree
+           polynomials to your data.
+           
+COMMERCIAL EDITION OF ALGLIB:
+
+  ! Commercial version of ALGLIB includes two  important  improvements  of
+  ! this function, which can be used from C++ and C#:
+  ! * Intel MKL support (lightweight Intel MKL is shipped with ALGLIB)
+  ! * multithreading support
+  !
+  ! Intel MKL gives approximately constant  (with  respect  to  number  of
+  ! worker threads) acceleration factor which depends on CPU  being  used,
+  ! problem  size  and  "baseline"  ALGLIB  edition  which  is  used   for
+  ! comparison.
+  !
+  ! Speed-up provided by multithreading greatly depends  on  problem  size
+  ! - only large problems (number of coefficients is more than 500) can be
+  ! efficiently multithreaded.
+  !
+  ! Generally, commercial ALGLIB is several times faster than  open-source
+  ! generic C edition, and many times faster than open-source C# edition.
+  !
+  ! We recommend you to read 'Working with commercial version' section  of
+  ! ALGLIB Reference Manual in order to find out how to  use  performance-
+  ! related features provided by commercial edition of ALGLIB.
 
 INPUT PARAMETERS:
     Y       -   array[0..N-1] Function values in  N  points.
@@ -19929,6 +24236,8 @@ OUTPUT PARAMETERS:
                 *  1    task is solved
     C       -   decomposition coefficients, array[0..M-1]
     Rep     -   fitting report. Following fields are set:
+                * R2                non-adjusted coefficient of determination
+                                    (non-weighted)
                 * RMSError          rms error on the (X,Y).
                 * AvgError          average error on the (X,Y).
                 * AvgRelError       average relative error on the non-zero Y
@@ -19937,6 +24246,47 @@ OUTPUT PARAMETERS:
 
 IMPORTANT:
     this subroitine doesn't calculate task's condition number for K<>0.
+                
+ERRORS IN PARAMETERS                
+                
+This  solver  also  calculates different kinds of errors in parameters and
+fills corresponding fields of report:
+* Rep.CovPar        covariance matrix for parameters, array[K,K].
+* Rep.ErrPar        errors in parameters, array[K],
+                    errpar = sqrt(diag(CovPar))
+* Rep.ErrCurve      vector of fit errors - standard deviations of empirical
+                    best-fit curve from "ideal" best-fit curve built  with
+                    infinite number of samples, array[N].
+                    errcurve = sqrt(diag(F*CovPar*F')),
+                    where F is functions matrix.
+* Rep.Noise         vector of per-point estimates of noise, array[N]
+
+IMPORTANT:  errors  in  parameters  are  calculated  without  taking  into
+            account boundary/linear constraints! Presence  of  constraints
+            changes distribution of errors, but there is no  easy  way  to
+            account for constraints when you calculate covariance matrix.
+            
+NOTE:       noise in the data is estimated as follows:
+            * for fitting without user-supplied  weights  all  points  are
+              assumed to have same level of noise, which is estimated from
+              the data
+            * for fitting with user-supplied weights we assume that  noise
+              level in I-th point is inversely proportional to Ith weight.
+              Coefficient of proportionality is estimated from the data.
+            
+NOTE:       we apply small amount of regularization when we invert squared
+            Jacobian and calculate covariance matrix. It  guarantees  that
+            algorithm won't divide by zero  during  inversion,  but  skews
+            error estimates a bit (fractional error is about 10^-9).
+            
+            However, we believe that this difference is insignificant  for
+            all practical purposes except for the situation when you  want
+            to compare ALGLIB results with "reference"  implementation  up
+            to the last significant digit.
+            
+NOTE:       covariance matrix is estimated using  correction  for  degrees
+            of freedom (covariances are divided by N-M instead of dividing
+            by N).
 
   -- ALGLIB --
      Copyright 07.09.2009 by Bochkanov Sergey
@@ -19958,12 +24308,12 @@ void lsfitlinearc(/* Real    */ ae_vector* y,
     ae_int_t i;
 
     ae_frame_make(_state, &_frame_block);
-    ae_vector_init_copy(&_y, y, _state, ae_true);
+    ae_vector_init_copy(&_y, y, _state);
     y = &_y;
     *info = 0;
     ae_vector_clear(c);
     _lsfitreport_clear(rep);
-    ae_vector_init(&w, 0, DT_REAL, _state, ae_true);
+    ae_vector_init(&w, 0, DT_REAL, _state);
 
     ae_assert(n>=1, "LSFitLinearC: N<1!", _state);
     ae_assert(m>=1, "LSFitLinearC: M<1!", _state);
@@ -19979,10 +24329,27 @@ void lsfitlinearc(/* Real    */ ae_vector* y,
     ae_vector_set_length(&w, n, _state);
     for(i=0; i<=n-1; i++)
     {
-        w.ptr.p_double[i] = 1;
+        w.ptr.p_double[i] = (double)(1);
     }
     lsfitlinearwc(y, &w, fmatrix, cmatrix, n, m, k, info, c, rep, _state);
     ae_frame_leave(_state);
+}
+
+
+/*************************************************************************
+Single-threaded stub. HPC ALGLIB replaces it by multithreaded code.
+*************************************************************************/
+void _pexec_lsfitlinearc(/* Real    */ ae_vector* y,
+    /* Real    */ ae_matrix* fmatrix,
+    /* Real    */ ae_matrix* cmatrix,
+    ae_int_t n,
+    ae_int_t m,
+    ae_int_t k,
+    ae_int_t* info,
+    /* Real    */ ae_vector* c,
+    lsfitreport* rep, ae_state *_state)
+{
+    lsfitlinearc(y,fmatrix,cmatrix,n,m,k,info,c,rep, _state);
 }
 
 
@@ -20052,8 +24419,9 @@ void lsfitcreatewf(/* Real    */ ae_matrix* x,
     ae_assert(x->cols>=m, "LSFitCreateWF: cols(X)<M!", _state);
     ae_assert(apservisfinitematrix(x, n, m, _state), "LSFitCreateWF: X contains infinite or NaN values!", _state);
     ae_assert(ae_isfinite(diffstep, _state), "LSFitCreateWF: DiffStep is not finite!", _state);
-    ae_assert(ae_fp_greater(diffstep,0), "LSFitCreateWF: DiffStep<=0!", _state);
-    state->teststep = 0;
+    ae_assert(ae_fp_greater(diffstep,(double)(0)), "LSFitCreateWF: DiffStep<=0!", _state);
+    state->teststep = (double)(0);
+    state->diffstep = diffstep;
     state->npoints = n;
     state->nweights = n;
     state->wkind = 1;
@@ -20064,11 +24432,11 @@ void lsfitcreatewf(/* Real    */ ae_matrix* x,
     lsfitsetxrep(state, ae_false, _state);
     ae_matrix_set_length(&state->taskx, n, m, _state);
     ae_vector_set_length(&state->tasky, n, _state);
-    ae_vector_set_length(&state->w, n, _state);
+    ae_vector_set_length(&state->taskw, n, _state);
     ae_vector_set_length(&state->c, k, _state);
     ae_vector_set_length(&state->x, m, _state);
     ae_v_move(&state->c.ptr.p_double[0], 1, &c->ptr.p_double[0], 1, ae_v_len(0,k-1));
-    ae_v_move(&state->w.ptr.p_double[0], 1, &w->ptr.p_double[0], 1, ae_v_len(0,n-1));
+    ae_v_move(&state->taskw.ptr.p_double[0], 1, &w->ptr.p_double[0], 1, ae_v_len(0,n-1));
     for(i=0; i<=n-1; i++)
     {
         ae_v_move(&state->taskx.ptr.pp_double[i][0], 1, &x->ptr.pp_double[i][0], 1, ae_v_len(0,m-1));
@@ -20088,7 +24456,7 @@ void lsfitcreatewf(/* Real    */ ae_matrix* x,
     state->prevalgo = -1;
     minlmcreatev(k, n, &state->c, diffstep, &state->optstate, _state);
     lsfit_lsfitclearrequestfields(state, _state);
-    ae_vector_set_length(&state->rstate.ia, 4+1, _state);
+    ae_vector_set_length(&state->rstate.ia, 6+1, _state);
     ae_vector_set_length(&state->rstate.ra, 8+1, _state);
     state->rstate.stage = -1;
 }
@@ -20159,8 +24527,9 @@ void lsfitcreatef(/* Real    */ ae_matrix* x,
     ae_assert(x->cols>=m, "LSFitCreateF: cols(X)<M!", _state);
     ae_assert(apservisfinitematrix(x, n, m, _state), "LSFitCreateF: X contains infinite or NaN values!", _state);
     ae_assert(ae_isfinite(diffstep, _state), "LSFitCreateF: DiffStep is not finite!", _state);
-    ae_assert(ae_fp_greater(diffstep,0), "LSFitCreateF: DiffStep<=0!", _state);
-    state->teststep = 0;
+    ae_assert(ae_fp_greater(diffstep,(double)(0)), "LSFitCreateF: DiffStep<=0!", _state);
+    state->teststep = (double)(0);
+    state->diffstep = diffstep;
     state->npoints = n;
     state->wkind = 0;
     state->m = m;
@@ -20192,7 +24561,7 @@ void lsfitcreatef(/* Real    */ ae_matrix* x,
     state->prevalgo = -1;
     minlmcreatev(k, n, &state->c, diffstep, &state->optstate, _state);
     lsfit_lsfitclearrequestfields(state, _state);
-    ae_vector_set_length(&state->rstate.ia, 4+1, _state);
+    ae_vector_set_length(&state->rstate.ia, 6+1, _state);
     ae_vector_set_length(&state->rstate.ra, 8+1, _state);
     state->rstate.stage = -1;
 }
@@ -20270,7 +24639,8 @@ void lsfitcreatewfg(/* Real    */ ae_matrix* x,
     ae_assert(x->rows>=n, "LSFitCreateWFG: rows(X)<N!", _state);
     ae_assert(x->cols>=m, "LSFitCreateWFG: cols(X)<M!", _state);
     ae_assert(apservisfinitematrix(x, n, m, _state), "LSFitCreateWFG: X contains infinite or NaN values!", _state);
-    state->teststep = 0;
+    state->teststep = (double)(0);
+    state->diffstep = (double)(0);
     state->npoints = n;
     state->nweights = n;
     state->wkind = 1;
@@ -20281,12 +24651,12 @@ void lsfitcreatewfg(/* Real    */ ae_matrix* x,
     lsfitsetxrep(state, ae_false, _state);
     ae_matrix_set_length(&state->taskx, n, m, _state);
     ae_vector_set_length(&state->tasky, n, _state);
-    ae_vector_set_length(&state->w, n, _state);
+    ae_vector_set_length(&state->taskw, n, _state);
     ae_vector_set_length(&state->c, k, _state);
     ae_vector_set_length(&state->x, m, _state);
     ae_vector_set_length(&state->g, k, _state);
     ae_v_move(&state->c.ptr.p_double[0], 1, &c->ptr.p_double[0], 1, ae_v_len(0,k-1));
-    ae_v_move(&state->w.ptr.p_double[0], 1, &w->ptr.p_double[0], 1, ae_v_len(0,n-1));
+    ae_v_move(&state->taskw.ptr.p_double[0], 1, &w->ptr.p_double[0], 1, ae_v_len(0,n-1));
     for(i=0; i<=n-1; i++)
     {
         ae_v_move(&state->taskx.ptr.pp_double[i][0], 1, &x->ptr.pp_double[i][0], 1, ae_v_len(0,m-1));
@@ -20313,7 +24683,7 @@ void lsfitcreatewfg(/* Real    */ ae_matrix* x,
         minlmcreatevj(k, n, &state->c, &state->optstate, _state);
     }
     lsfit_lsfitclearrequestfields(state, _state);
-    ae_vector_set_length(&state->rstate.ia, 4+1, _state);
+    ae_vector_set_length(&state->rstate.ia, 6+1, _state);
     ae_vector_set_length(&state->rstate.ra, 8+1, _state);
     state->rstate.stage = -1;
 }
@@ -20384,7 +24754,8 @@ void lsfitcreatefg(/* Real    */ ae_matrix* x,
     ae_assert(x->rows>=n, "LSFitCreateFG: rows(X)<N!", _state);
     ae_assert(x->cols>=m, "LSFitCreateFG: cols(X)<M!", _state);
     ae_assert(apservisfinitematrix(x, n, m, _state), "LSFitCreateFG: X contains infinite or NaN values!", _state);
-    state->teststep = 0;
+    state->teststep = (double)(0);
+    state->diffstep = (double)(0);
     state->npoints = n;
     state->wkind = 0;
     state->m = m;
@@ -20424,7 +24795,7 @@ void lsfitcreatefg(/* Real    */ ae_matrix* x,
         minlmcreatevj(k, n, &state->c, &state->optstate, _state);
     }
     lsfit_lsfitclearrequestfields(state, _state);
-    ae_vector_set_length(&state->rstate.ia, 4+1, _state);
+    ae_vector_set_length(&state->rstate.ia, 6+1, _state);
     ae_vector_set_length(&state->rstate.ra, 8+1, _state);
     state->rstate.stage = -1;
 }
@@ -20487,7 +24858,8 @@ void lsfitcreatewfgh(/* Real    */ ae_matrix* x,
     ae_assert(x->rows>=n, "LSFitCreateWFGH: rows(X)<N!", _state);
     ae_assert(x->cols>=m, "LSFitCreateWFGH: cols(X)<M!", _state);
     ae_assert(apservisfinitematrix(x, n, m, _state), "LSFitCreateWFGH: X contains infinite or NaN values!", _state);
-    state->teststep = 0;
+    state->teststep = (double)(0);
+    state->diffstep = (double)(0);
     state->npoints = n;
     state->nweights = n;
     state->wkind = 1;
@@ -20498,13 +24870,13 @@ void lsfitcreatewfgh(/* Real    */ ae_matrix* x,
     lsfitsetxrep(state, ae_false, _state);
     ae_matrix_set_length(&state->taskx, n, m, _state);
     ae_vector_set_length(&state->tasky, n, _state);
-    ae_vector_set_length(&state->w, n, _state);
+    ae_vector_set_length(&state->taskw, n, _state);
     ae_vector_set_length(&state->c, k, _state);
     ae_matrix_set_length(&state->h, k, k, _state);
     ae_vector_set_length(&state->x, m, _state);
     ae_vector_set_length(&state->g, k, _state);
     ae_v_move(&state->c.ptr.p_double[0], 1, &c->ptr.p_double[0], 1, ae_v_len(0,k-1));
-    ae_v_move(&state->w.ptr.p_double[0], 1, &w->ptr.p_double[0], 1, ae_v_len(0,n-1));
+    ae_v_move(&state->taskw.ptr.p_double[0], 1, &w->ptr.p_double[0], 1, ae_v_len(0,n-1));
     for(i=0; i<=n-1; i++)
     {
         ae_v_move(&state->taskx.ptr.pp_double[i][0], 1, &x->ptr.pp_double[i][0], 1, ae_v_len(0,m-1));
@@ -20524,7 +24896,7 @@ void lsfitcreatewfgh(/* Real    */ ae_matrix* x,
     state->prevalgo = -1;
     minlmcreatefgh(k, &state->c, &state->optstate, _state);
     lsfit_lsfitclearrequestfields(state, _state);
-    ae_vector_set_length(&state->rstate.ia, 4+1, _state);
+    ae_vector_set_length(&state->rstate.ia, 6+1, _state);
     ae_vector_set_length(&state->rstate.ra, 8+1, _state);
     state->rstate.stage = -1;
 }
@@ -20584,7 +24956,8 @@ void lsfitcreatefgh(/* Real    */ ae_matrix* x,
     ae_assert(x->rows>=n, "LSFitCreateFGH: rows(X)<N!", _state);
     ae_assert(x->cols>=m, "LSFitCreateFGH: cols(X)<M!", _state);
     ae_assert(apservisfinitematrix(x, n, m, _state), "LSFitCreateFGH: X contains infinite or NaN values!", _state);
-    state->teststep = 0;
+    state->teststep = (double)(0);
+    state->diffstep = (double)(0);
     state->npoints = n;
     state->wkind = 0;
     state->m = m;
@@ -20618,7 +24991,7 @@ void lsfitcreatefgh(/* Real    */ ae_matrix* x,
     state->prevalgo = -1;
     minlmcreatefgh(k, &state->c, &state->optstate, _state);
     lsfit_lsfitclearrequestfields(state, _state);
-    ae_vector_set_length(&state->rstate.ia, 4+1, _state);
+    ae_vector_set_length(&state->rstate.ia, 6+1, _state);
     ae_vector_set_length(&state->rstate.ra, 8+1, _state);
     state->rstate.stage = -1;
 }
@@ -20662,9 +25035,9 @@ void lsfitsetcond(lsfitstate* state,
 
 
     ae_assert(ae_isfinite(epsf, _state), "LSFitSetCond: EpsF is not finite!", _state);
-    ae_assert(ae_fp_greater_eq(epsf,0), "LSFitSetCond: negative EpsF!", _state);
+    ae_assert(ae_fp_greater_eq(epsf,(double)(0)), "LSFitSetCond: negative EpsF!", _state);
     ae_assert(ae_isfinite(epsx, _state), "LSFitSetCond: EpsX is not finite!", _state);
-    ae_assert(ae_fp_greater_eq(epsx,0), "LSFitSetCond: negative EpsX!", _state);
+    ae_assert(ae_fp_greater_eq(epsx,(double)(0)), "LSFitSetCond: negative EpsX!", _state);
     ae_assert(maxits>=0, "LSFitSetCond: negative MaxIts!", _state);
     state->epsf = epsf;
     state->epsx = epsx;
@@ -20697,7 +25070,7 @@ void lsfitsetstpmax(lsfitstate* state, double stpmax, ae_state *_state)
 {
 
 
-    ae_assert(ae_fp_greater_eq(stpmax,0), "LSFitSetStpMax: StpMax<0!", _state);
+    ae_assert(ae_fp_greater_eq(stpmax,(double)(0)), "LSFitSetStpMax: StpMax<0!", _state);
     state->stpmax = stpmax;
 }
 
@@ -20762,8 +25135,8 @@ void lsfitsetscale(lsfitstate* state,
     for(i=0; i<=state->k-1; i++)
     {
         ae_assert(ae_isfinite(s->ptr.p_double[i], _state), "LSFitSetScale: S contains infinite or NAN elements", _state);
-        ae_assert(ae_fp_neq(s->ptr.p_double[i],0), "LSFitSetScale: S contains infinite or NAN elements", _state);
-        state->s.ptr.p_double[i] = s->ptr.p_double[i];
+        ae_assert(ae_fp_neq(s->ptr.p_double[i],(double)(0)), "LSFitSetScale: S contains infinite or NAN elements", _state);
+        state->s.ptr.p_double[i] = ae_fabs(s->ptr.p_double[i], _state);
     }
 }
 
@@ -20876,6 +25249,8 @@ ae_bool lsfititeration(lsfitstate* state, ae_state *_state)
     double relcnt;
     ae_int_t i;
     ae_int_t j;
+    ae_int_t j1;
+    ae_int_t info;
     ae_bool result;
 
 
@@ -20897,6 +25272,8 @@ ae_bool lsfititeration(lsfitstate* state, ae_state *_state)
         k = state->rstate.ia.ptr.p_int[2];
         i = state->rstate.ia.ptr.p_int[3];
         j = state->rstate.ia.ptr.p_int[4];
+        j1 = state->rstate.ia.ptr.p_int[5];
+        info = state->rstate.ia.ptr.p_int[6];
         lx = state->rstate.ra.ptr.p_double[0];
         lf = state->rstate.ra.ptr.p_double[1];
         ld = state->rstate.ra.ptr.p_double[2];
@@ -20914,15 +25291,17 @@ ae_bool lsfititeration(lsfitstate* state, ae_state *_state)
         k = -834;
         i = 900;
         j = -287;
-        lx = 364;
-        lf = 214;
-        ld = -338;
-        rx = -686;
-        rf = 912;
-        rd = 585;
-        v = 497;
-        vv = -271;
-        relcnt = -581;
+        j1 = 364;
+        info = 214;
+        lx = -338;
+        lf = -686;
+        ld = 912;
+        rx = 585;
+        rf = 497;
+        rd = -271;
+        v = -581;
+        vv = 745;
+        relcnt = -533;
     }
     if( state->rstate.stage==0 )
     {
@@ -20964,6 +25343,22 @@ ae_bool lsfititeration(lsfitstate* state, ae_state *_state)
     {
         goto lbl_9;
     }
+    if( state->rstate.stage==10 )
+    {
+        goto lbl_10;
+    }
+    if( state->rstate.stage==11 )
+    {
+        goto lbl_11;
+    }
+    if( state->rstate.stage==12 )
+    {
+        goto lbl_12;
+    }
+    if( state->rstate.stage==13 )
+    {
+        goto lbl_13;
+    }
     
     /*
      * Routine body
@@ -20987,12 +25382,12 @@ ae_bool lsfititeration(lsfitstate* state, ae_state *_state)
     minlmsetbc(&state->optstate, &state->bndl, &state->bndu, _state);
     
     /*
-     *  Check, that transferred derivative value is right
+     *  Check that user-supplied gradient is correct
      */
     lsfit_lsfitclearrequestfields(state, _state);
-    if( !(ae_fp_greater(state->teststep,0)&&state->optalgo==1) )
+    if( !(ae_fp_greater(state->teststep,(double)(0))&&state->optalgo==1) )
     {
-        goto lbl_10;
+        goto lbl_14;
     }
     for(i=0; i<=k-1; i++)
     {
@@ -21007,18 +25402,18 @@ ae_bool lsfititeration(lsfitstate* state, ae_state *_state)
     }
     state->needfg = ae_true;
     i = 0;
-lbl_12:
+lbl_16:
     if( i>k-1 )
     {
-        goto lbl_14;
+        goto lbl_18;
     }
     ae_assert(ae_fp_less_eq(state->bndl.ptr.p_double[i],state->c.ptr.p_double[i])&&ae_fp_less_eq(state->c.ptr.p_double[i],state->bndu.ptr.p_double[i]), "LSFitIteration: internal error(State.C is out of bounds)", _state);
     v = state->c.ptr.p_double[i];
     j = 0;
-lbl_15:
+lbl_19:
     if( j>n-1 )
     {
-        goto lbl_17;
+        goto lbl_21;
     }
     ae_v_move(&state->x.ptr.p_double[0], 1, &state->taskx.ptr.pp_double[j][0], 1, ae_v_len(0,m-1));
     state->c.ptr.p_double[i] = v-state->teststep*state->s.ptr.p_double[i];
@@ -21064,35 +25459,50 @@ lbl_2:
         return result;
     }
     j = j+1;
-    goto lbl_15;
-lbl_17:
+    goto lbl_19;
+lbl_21:
     i = i+1;
-    goto lbl_12;
-lbl_14:
+    goto lbl_16;
+lbl_18:
     state->needfg = ae_false;
-lbl_10:
+lbl_14:
+    
+    /*
+     * Fill WCur by weights:
+     * * for WKind=0 unit weights are chosen
+     * * for WKind=1 we use user-supplied weights stored in State.TaskW
+     */
+    rvectorsetlengthatleast(&state->wcur, n, _state);
+    for(i=0; i<=n-1; i++)
+    {
+        state->wcur.ptr.p_double[i] = 1.0;
+        if( state->wkind==1 )
+        {
+            state->wcur.ptr.p_double[i] = state->taskw.ptr.p_double[i];
+        }
+    }
     
     /*
      * Optimize
      */
-lbl_18:
+lbl_22:
     if( !minlmiteration(&state->optstate, _state) )
     {
-        goto lbl_19;
+        goto lbl_23;
     }
     if( !state->optstate.needfi )
     {
-        goto lbl_20;
+        goto lbl_24;
     }
     
     /*
      * calculate f[] = wi*(f(xi,c)-yi)
      */
     i = 0;
-lbl_22:
+lbl_26:
     if( i>n-1 )
     {
-        goto lbl_24;
+        goto lbl_28;
     }
     ae_v_move(&state->c.ptr.p_double[0], 1, &state->optstate.x.ptr.p_double[0], 1, ae_v_len(0,k-1));
     ae_v_move(&state->x.ptr.p_double[0], 1, &state->taskx.ptr.pp_double[i][0], 1, ae_v_len(0,m-1));
@@ -21103,34 +25513,27 @@ lbl_22:
     goto lbl_rcomm;
 lbl_3:
     state->needf = ae_false;
-    if( state->wkind==1 )
-    {
-        vv = state->w.ptr.p_double[i];
-    }
-    else
-    {
-        vv = 1.0;
-    }
+    vv = state->wcur.ptr.p_double[i];
     state->optstate.fi.ptr.p_double[i] = vv*(state->f-state->tasky.ptr.p_double[i]);
     i = i+1;
+    goto lbl_26;
+lbl_28:
     goto lbl_22;
 lbl_24:
-    goto lbl_18;
-lbl_20:
     if( !state->optstate.needf )
     {
-        goto lbl_25;
+        goto lbl_29;
     }
     
     /*
      * calculate F = sum (wi*(f(xi,c)-yi))^2
      */
-    state->optstate.f = 0;
+    state->optstate.f = (double)(0);
     i = 0;
-lbl_27:
+lbl_31:
     if( i>n-1 )
     {
-        goto lbl_29;
+        goto lbl_33;
     }
     ae_v_move(&state->c.ptr.p_double[0], 1, &state->optstate.x.ptr.p_double[0], 1, ae_v_len(0,k-1));
     ae_v_move(&state->x.ptr.p_double[0], 1, &state->taskx.ptr.pp_double[i][0], 1, ae_v_len(0,m-1));
@@ -21141,38 +25544,31 @@ lbl_27:
     goto lbl_rcomm;
 lbl_4:
     state->needf = ae_false;
-    if( state->wkind==1 )
-    {
-        vv = state->w.ptr.p_double[i];
-    }
-    else
-    {
-        vv = 1.0;
-    }
+    vv = state->wcur.ptr.p_double[i];
     state->optstate.f = state->optstate.f+ae_sqr(vv*(state->f-state->tasky.ptr.p_double[i]), _state);
     i = i+1;
-    goto lbl_27;
+    goto lbl_31;
+lbl_33:
+    goto lbl_22;
 lbl_29:
-    goto lbl_18;
-lbl_25:
     if( !state->optstate.needfg )
     {
-        goto lbl_30;
+        goto lbl_34;
     }
     
     /*
      * calculate F/gradF
      */
-    state->optstate.f = 0;
+    state->optstate.f = (double)(0);
     for(i=0; i<=k-1; i++)
     {
-        state->optstate.g.ptr.p_double[i] = 0;
+        state->optstate.g.ptr.p_double[i] = (double)(0);
     }
     i = 0;
-lbl_32:
+lbl_36:
     if( i>n-1 )
     {
-        goto lbl_34;
+        goto lbl_38;
     }
     ae_v_move(&state->c.ptr.p_double[0], 1, &state->optstate.x.ptr.p_double[0], 1, ae_v_len(0,k-1));
     ae_v_move(&state->x.ptr.p_double[0], 1, &state->taskx.ptr.pp_double[i][0], 1, ae_v_len(0,m-1));
@@ -21183,35 +25579,28 @@ lbl_32:
     goto lbl_rcomm;
 lbl_5:
     state->needfg = ae_false;
-    if( state->wkind==1 )
-    {
-        vv = state->w.ptr.p_double[i];
-    }
-    else
-    {
-        vv = 1.0;
-    }
+    vv = state->wcur.ptr.p_double[i];
     state->optstate.f = state->optstate.f+ae_sqr(vv*(state->f-state->tasky.ptr.p_double[i]), _state);
     v = ae_sqr(vv, _state)*2*(state->f-state->tasky.ptr.p_double[i]);
     ae_v_addd(&state->optstate.g.ptr.p_double[0], 1, &state->g.ptr.p_double[0], 1, ae_v_len(0,k-1), v);
     i = i+1;
-    goto lbl_32;
+    goto lbl_36;
+lbl_38:
+    goto lbl_22;
 lbl_34:
-    goto lbl_18;
-lbl_30:
     if( !state->optstate.needfij )
     {
-        goto lbl_35;
+        goto lbl_39;
     }
     
     /*
      * calculate Fi/jac(Fi)
      */
     i = 0;
-lbl_37:
+lbl_41:
     if( i>n-1 )
     {
-        goto lbl_39;
+        goto lbl_43;
     }
     ae_v_move(&state->c.ptr.p_double[0], 1, &state->optstate.x.ptr.p_double[0], 1, ae_v_len(0,k-1));
     ae_v_move(&state->x.ptr.p_double[0], 1, &state->taskx.ptr.pp_double[i][0], 1, ae_v_len(0,m-1));
@@ -21222,46 +25611,39 @@ lbl_37:
     goto lbl_rcomm;
 lbl_6:
     state->needfg = ae_false;
-    if( state->wkind==1 )
-    {
-        vv = state->w.ptr.p_double[i];
-    }
-    else
-    {
-        vv = 1.0;
-    }
+    vv = state->wcur.ptr.p_double[i];
     state->optstate.fi.ptr.p_double[i] = vv*(state->f-state->tasky.ptr.p_double[i]);
     ae_v_moved(&state->optstate.j.ptr.pp_double[i][0], 1, &state->g.ptr.p_double[0], 1, ae_v_len(0,k-1), vv);
     i = i+1;
-    goto lbl_37;
+    goto lbl_41;
+lbl_43:
+    goto lbl_22;
 lbl_39:
-    goto lbl_18;
-lbl_35:
     if( !state->optstate.needfgh )
     {
-        goto lbl_40;
+        goto lbl_44;
     }
     
     /*
      * calculate F/grad(F)/hess(F)
      */
-    state->optstate.f = 0;
+    state->optstate.f = (double)(0);
     for(i=0; i<=k-1; i++)
     {
-        state->optstate.g.ptr.p_double[i] = 0;
+        state->optstate.g.ptr.p_double[i] = (double)(0);
     }
     for(i=0; i<=k-1; i++)
     {
         for(j=0; j<=k-1; j++)
         {
-            state->optstate.h.ptr.pp_double[i][j] = 0;
+            state->optstate.h.ptr.pp_double[i][j] = (double)(0);
         }
     }
     i = 0;
-lbl_42:
+lbl_46:
     if( i>n-1 )
     {
-        goto lbl_44;
+        goto lbl_48;
     }
     ae_v_move(&state->c.ptr.p_double[0], 1, &state->optstate.x.ptr.p_double[0], 1, ae_v_len(0,k-1));
     ae_v_move(&state->x.ptr.p_double[0], 1, &state->taskx.ptr.pp_double[i][0], 1, ae_v_len(0,m-1));
@@ -21272,14 +25654,7 @@ lbl_42:
     goto lbl_rcomm;
 lbl_7:
     state->needfgh = ae_false;
-    if( state->wkind==1 )
-    {
-        vv = state->w.ptr.p_double[i];
-    }
-    else
-    {
-        vv = 1.0;
-    }
+    vv = state->wcur.ptr.p_double[i];
     state->optstate.f = state->optstate.f+ae_sqr(vv*(state->f-state->tasky.ptr.p_double[i]), _state);
     v = ae_sqr(vv, _state)*2*(state->f-state->tasky.ptr.p_double[i]);
     ae_v_addd(&state->optstate.g.ptr.p_double[0], 1, &state->g.ptr.p_double[0], 1, ae_v_len(0,k-1), v);
@@ -21291,13 +25666,13 @@ lbl_7:
         ae_v_addd(&state->optstate.h.ptr.pp_double[j][0], 1, &state->h.ptr.pp_double[j][0], 1, ae_v_len(0,k-1), v);
     }
     i = i+1;
-    goto lbl_42;
+    goto lbl_46;
+lbl_48:
+    goto lbl_22;
 lbl_44:
-    goto lbl_18;
-lbl_40:
     if( !state->optstate.xupdated )
     {
-        goto lbl_45;
+        goto lbl_49;
     }
     
     /*
@@ -21311,10 +25686,10 @@ lbl_40:
     goto lbl_rcomm;
 lbl_8:
     state->xupdated = ae_false;
-    goto lbl_18;
-lbl_45:
-    goto lbl_18;
-lbl_19:
+    goto lbl_22;
+lbl_49:
+    goto lbl_22;
+lbl_23:
     minlmresults(&state->optstate, &state->c, &state->optrep, _state);
     state->repterminationtype = state->optrep.terminationtype;
     state->repiterationscount = state->optrep.iterationscount;
@@ -21324,19 +25699,23 @@ lbl_19:
      */
     if( state->repterminationtype<=0 )
     {
-        goto lbl_47;
+        goto lbl_51;
     }
-    state->reprmserror = 0;
-    state->repwrmserror = 0;
-    state->repavgerror = 0;
-    state->repavgrelerror = 0;
-    state->repmaxerror = 0;
-    relcnt = 0;
+    
+    /*
+     * Calculate RMS/Avg/Max/... errors
+     */
+    state->reprmserror = (double)(0);
+    state->repwrmserror = (double)(0);
+    state->repavgerror = (double)(0);
+    state->repavgrelerror = (double)(0);
+    state->repmaxerror = (double)(0);
+    relcnt = (double)(0);
     i = 0;
-lbl_49:
+lbl_53:
     if( i>n-1 )
     {
-        goto lbl_51;
+        goto lbl_55;
     }
     ae_v_move(&state->c.ptr.p_double[0], 1, &state->c.ptr.p_double[0], 1, ae_v_len(0,k-1));
     ae_v_move(&state->x.ptr.p_double[0], 1, &state->taskx.ptr.pp_double[i][0], 1, ae_v_len(0,m-1));
@@ -21348,34 +25727,133 @@ lbl_49:
 lbl_9:
     state->needf = ae_false;
     v = state->f;
-    if( state->wkind==1 )
-    {
-        vv = state->w.ptr.p_double[i];
-    }
-    else
-    {
-        vv = 1.0;
-    }
+    vv = state->wcur.ptr.p_double[i];
     state->reprmserror = state->reprmserror+ae_sqr(v-state->tasky.ptr.p_double[i], _state);
     state->repwrmserror = state->repwrmserror+ae_sqr(vv*(v-state->tasky.ptr.p_double[i]), _state);
     state->repavgerror = state->repavgerror+ae_fabs(v-state->tasky.ptr.p_double[i], _state);
-    if( ae_fp_neq(state->tasky.ptr.p_double[i],0) )
+    if( ae_fp_neq(state->tasky.ptr.p_double[i],(double)(0)) )
     {
         state->repavgrelerror = state->repavgrelerror+ae_fabs(v-state->tasky.ptr.p_double[i], _state)/ae_fabs(state->tasky.ptr.p_double[i], _state);
         relcnt = relcnt+1;
     }
     state->repmaxerror = ae_maxreal(state->repmaxerror, ae_fabs(v-state->tasky.ptr.p_double[i], _state), _state);
     i = i+1;
-    goto lbl_49;
-lbl_51:
+    goto lbl_53;
+lbl_55:
     state->reprmserror = ae_sqrt(state->reprmserror/n, _state);
     state->repwrmserror = ae_sqrt(state->repwrmserror/n, _state);
     state->repavgerror = state->repavgerror/n;
-    if( ae_fp_neq(relcnt,0) )
+    if( ae_fp_neq(relcnt,(double)(0)) )
     {
         state->repavgrelerror = state->repavgrelerror/relcnt;
     }
-lbl_47:
+    
+    /*
+     * Calculate covariance matrix
+     */
+    rmatrixsetlengthatleast(&state->tmpjac, n, k, _state);
+    rvectorsetlengthatleast(&state->tmpf, n, _state);
+    rvectorsetlengthatleast(&state->tmp, k, _state);
+    if( ae_fp_less_eq(state->diffstep,(double)(0)) )
+    {
+        goto lbl_56;
+    }
+    
+    /*
+     * Compute Jacobian by means of numerical differentiation
+     */
+    lsfit_lsfitclearrequestfields(state, _state);
+    state->needf = ae_true;
+    i = 0;
+lbl_58:
+    if( i>n-1 )
+    {
+        goto lbl_60;
+    }
+    ae_v_move(&state->x.ptr.p_double[0], 1, &state->taskx.ptr.pp_double[i][0], 1, ae_v_len(0,m-1));
+    state->pointindex = i;
+    state->rstate.stage = 10;
+    goto lbl_rcomm;
+lbl_10:
+    state->tmpf.ptr.p_double[i] = state->f;
+    j = 0;
+lbl_61:
+    if( j>k-1 )
+    {
+        goto lbl_63;
+    }
+    v = state->c.ptr.p_double[j];
+    lx = v-state->diffstep*state->s.ptr.p_double[j];
+    state->c.ptr.p_double[j] = lx;
+    if( ae_isfinite(state->bndl.ptr.p_double[j], _state) )
+    {
+        state->c.ptr.p_double[j] = ae_maxreal(state->c.ptr.p_double[j], state->bndl.ptr.p_double[j], _state);
+    }
+    state->rstate.stage = 11;
+    goto lbl_rcomm;
+lbl_11:
+    lf = state->f;
+    rx = v+state->diffstep*state->s.ptr.p_double[j];
+    state->c.ptr.p_double[j] = rx;
+    if( ae_isfinite(state->bndu.ptr.p_double[j], _state) )
+    {
+        state->c.ptr.p_double[j] = ae_minreal(state->c.ptr.p_double[j], state->bndu.ptr.p_double[j], _state);
+    }
+    state->rstate.stage = 12;
+    goto lbl_rcomm;
+lbl_12:
+    rf = state->f;
+    state->c.ptr.p_double[j] = v;
+    if( ae_fp_neq(rx,lx) )
+    {
+        state->tmpjac.ptr.pp_double[i][j] = (rf-lf)/(rx-lx);
+    }
+    else
+    {
+        state->tmpjac.ptr.pp_double[i][j] = (double)(0);
+    }
+    j = j+1;
+    goto lbl_61;
+lbl_63:
+    i = i+1;
+    goto lbl_58;
+lbl_60:
+    state->needf = ae_false;
+    goto lbl_57;
+lbl_56:
+    
+    /*
+     * Jacobian is calculated with user-provided analytic gradient
+     */
+    lsfit_lsfitclearrequestfields(state, _state);
+    state->needfg = ae_true;
+    i = 0;
+lbl_64:
+    if( i>n-1 )
+    {
+        goto lbl_66;
+    }
+    ae_v_move(&state->x.ptr.p_double[0], 1, &state->taskx.ptr.pp_double[i][0], 1, ae_v_len(0,m-1));
+    state->pointindex = i;
+    state->rstate.stage = 13;
+    goto lbl_rcomm;
+lbl_13:
+    state->tmpf.ptr.p_double[i] = state->f;
+    for(j=0; j<=k-1; j++)
+    {
+        state->tmpjac.ptr.pp_double[i][j] = state->g.ptr.p_double[j];
+    }
+    i = i+1;
+    goto lbl_64;
+lbl_66:
+    state->needfg = ae_false;
+lbl_57:
+    for(i=0; i<=k-1; i++)
+    {
+        state->tmp.ptr.p_double[i] = 0.0;
+    }
+    lsfit_estimateerrors(&state->tmpjac, &state->tmpf, &state->tasky, &state->wcur, &state->tmp, &state->s, n, k, &state->rep, &state->tmpjacw, 0, _state);
+lbl_51:
     result = ae_false;
     return result;
     
@@ -21389,6 +25867,8 @@ lbl_rcomm:
     state->rstate.ia.ptr.p_int[2] = k;
     state->rstate.ia.ptr.p_int[3] = i;
     state->rstate.ia.ptr.p_int[4] = j;
+    state->rstate.ia.ptr.p_int[5] = j1;
+    state->rstate.ia.ptr.p_int[6] = info;
     state->rstate.ra.ptr.p_double[0] = lx;
     state->rstate.ra.ptr.p_double[1] = lf;
     state->rstate.ra.ptr.p_double[2] = ld;
@@ -21411,7 +25891,7 @@ INPUT PARAMETERS:
     State   -   algorithm state
 
 OUTPUT PARAMETERS:
-    Info    -   completetion code:
+    Info    -   completion code:
                     * -7    gradient verification failed.
                             See LSFitSetGradientCheck() for more information.
                     *  1    relative function improvement is no more than
@@ -21422,15 +25902,56 @@ OUTPUT PARAMETERS:
                     *  7    stopping conditions are too stringent,
                             further improvement is impossible
     C       -   array[0..K-1], solution
-    Rep     -   optimization report. Following fields are set:
-                * Rep.TerminationType completetion code:
+    Rep     -   optimization report. On success following fields are set:
+                * R2                non-adjusted coefficient of determination
+                                    (non-weighted)
                 * RMSError          rms error on the (X,Y).
                 * AvgError          average error on the (X,Y).
                 * AvgRelError       average relative error on the non-zero Y
                 * MaxError          maximum error
                                     NON-WEIGHTED ERRORS ARE CALCULATED
                 * WRMSError         weighted rms error on the (X,Y).
+                
+ERRORS IN PARAMETERS                
+                
+This  solver  also  calculates different kinds of errors in parameters and
+fills corresponding fields of report:
+* Rep.CovPar        covariance matrix for parameters, array[K,K].
+* Rep.ErrPar        errors in parameters, array[K],
+                    errpar = sqrt(diag(CovPar))
+* Rep.ErrCurve      vector of fit errors - standard deviations of empirical
+                    best-fit curve from "ideal" best-fit curve built  with
+                    infinite number of samples, array[N].
+                    errcurve = sqrt(diag(J*CovPar*J')),
+                    where J is Jacobian matrix.
+* Rep.Noise         vector of per-point estimates of noise, array[N]
 
+IMPORTANT:  errors  in  parameters  are  calculated  without  taking  into
+            account boundary/linear constraints! Presence  of  constraints
+            changes distribution of errors, but there is no  easy  way  to
+            account for constraints when you calculate covariance matrix.
+            
+NOTE:       noise in the data is estimated as follows:
+            * for fitting without user-supplied  weights  all  points  are
+              assumed to have same level of noise, which is estimated from
+              the data
+            * for fitting with user-supplied weights we assume that  noise
+              level in I-th point is inversely proportional to Ith weight.
+              Coefficient of proportionality is estimated from the data.
+            
+NOTE:       we apply small amount of regularization when we invert squared
+            Jacobian and calculate covariance matrix. It  guarantees  that
+            algorithm won't divide by zero  during  inversion,  but  skews
+            error estimates a bit (fractional error is about 10^-9).
+            
+            However, we believe that this difference is insignificant  for
+            all practical purposes except for the situation when you  want
+            to compare ALGLIB results with "reference"  implementation  up
+            to the last significant digit.
+            
+NOTE:       covariance matrix is estimated using  correction  for  degrees
+            of freedom (covariances are divided by N-M instead of dividing
+            by N).
 
   -- ALGLIB --
      Copyright 17.08.2009 by Bochkanov Sergey
@@ -21441,11 +25962,14 @@ void lsfitresults(lsfitstate* state,
      lsfitreport* rep,
      ae_state *_state)
 {
+    ae_int_t i;
+    ae_int_t j;
 
     *info = 0;
     ae_vector_clear(c);
     _lsfitreport_clear(rep);
 
+    lsfit_clearreport(rep, _state);
     *info = state->repterminationtype;
     rep->varidx = state->repvaridx;
     if( *info>0 )
@@ -21458,6 +25982,24 @@ void lsfitresults(lsfitstate* state,
         rep->avgrelerror = state->repavgrelerror;
         rep->maxerror = state->repmaxerror;
         rep->iterationscount = state->repiterationscount;
+        ae_matrix_set_length(&rep->covpar, state->k, state->k, _state);
+        ae_vector_set_length(&rep->errpar, state->k, _state);
+        ae_vector_set_length(&rep->errcurve, state->npoints, _state);
+        ae_vector_set_length(&rep->noise, state->npoints, _state);
+        rep->r2 = state->rep.r2;
+        for(i=0; i<=state->k-1; i++)
+        {
+            for(j=0; j<=state->k-1; j++)
+            {
+                rep->covpar.ptr.pp_double[i][j] = state->rep.covpar.ptr.pp_double[i][j];
+            }
+            rep->errpar.ptr.p_double[i] = state->rep.errpar.ptr.p_double[i];
+        }
+        for(i=0; i<=state->npoints-1; i++)
+        {
+            rep->errcurve.ptr.p_double[i] = state->rep.errcurve.ptr.p_double[i];
+            rep->noise.ptr.p_double[i] = state->rep.noise.ptr.p_double[i];
+        }
     }
 }
 
@@ -21520,7 +26062,7 @@ void lsfitsetgradientcheck(lsfitstate* state,
 
 
     ae_assert(ae_isfinite(teststep, _state), "LSFitSetGradientCheck: TestStep contains NaN or Infinite", _state);
-    ae_assert(ae_fp_greater_eq(teststep,0), "LSFitSetGradientCheck: invalid argument TestStep(TestStep<0)", _state);
+    ae_assert(ae_fp_greater_eq(teststep,(double)(0)), "LSFitSetGradientCheck: invalid argument TestStep(TestStep<0)", _state);
     state->teststep = teststep;
 }
 
@@ -21593,14 +26135,14 @@ void lsfitscalexy(/* Real    */ ae_vector* x,
     }
     if( ae_fp_eq(xmin,xmax) )
     {
-        if( ae_fp_eq(xmin,0) )
+        if( ae_fp_eq(xmin,(double)(0)) )
         {
-            xmin = -1;
-            xmax = 1;
+            xmin = (double)(-1);
+            xmax = (double)(1);
         }
         else
         {
-            if( ae_fp_greater(xmin,0) )
+            if( ae_fp_greater(xmin,(double)(0)) )
             {
                 xmin = 0.5*xmin;
             }
@@ -21629,7 +26171,7 @@ void lsfitscalexy(/* Real    */ ae_vector* x,
     {
         ae_assert(dc->ptr.p_int[i]>=0, "LSFitScaleXY: internal error!", _state);
         xc->ptr.p_double[i] = 2*(xc->ptr.p_double[i]-0.5*(*xa+(*xb)))/(*xb-(*xa));
-        yc->ptr.p_double[i] = yc->ptr.p_double[i]*ae_pow(0.5*(*xb-(*xa)), dc->ptr.p_int[i], _state);
+        yc->ptr.p_double[i] = yc->ptr.p_double[i]*ae_pow(0.5*(*xb-(*xa)), (double)(dc->ptr.p_int[i]), _state);
     }
     
     /*
@@ -21642,13 +26184,13 @@ void lsfitscalexy(/* Real    */ ae_vector* x,
      */
     ae_vector_set_length(yoriginal, n, _state);
     ae_v_move(&yoriginal->ptr.p_double[0], 1, &y->ptr.p_double[0], 1, ae_v_len(0,n-1));
-    *sa = 0;
+    *sa = (double)(0);
     for(i=0; i<=n-1; i++)
     {
         *sa = *sa+y->ptr.p_double[i];
     }
     *sa = *sa/n;
-    *sb = 0;
+    *sb = (double)(0);
     for(i=0; i<=n-1; i++)
     {
         *sb = *sb+ae_sqr(y->ptr.p_double[i]-(*sa), _state);
@@ -21681,18 +26223,292 @@ void lsfitscalexy(/* Real    */ ae_vector* x,
     /*
      * Scale weights
      */
-    mx = 0;
+    mx = (double)(0);
     for(i=0; i<=n-1; i++)
     {
         mx = ae_maxreal(mx, ae_fabs(w->ptr.p_double[i], _state), _state);
     }
-    if( ae_fp_neq(mx,0) )
+    if( ae_fp_neq(mx,(double)(0)) )
     {
         for(i=0; i<=n-1; i++)
         {
             w->ptr.p_double[i] = w->ptr.p_double[i]/mx;
         }
     }
+}
+
+
+/*************************************************************************
+This function analyzes section of curve for processing by RDP algorithm:
+given set of points X,Y with indexes [I0,I1] it returns point with
+worst deviation from linear model (non-parametric version which sees curve
+as Y(x)).
+
+Input parameters:
+    X, Y        -   SORTED arrays.
+    I0,I1       -   interval (boundaries included) to process
+    Eps         -   desired precision
+    
+OUTPUT PARAMETERS:
+    WorstIdx    -   index of worst point
+    WorstError  -   error at worst point
+    
+NOTE: this function guarantees that it returns exactly zero for a section
+      with less than 3 points.
+
+  -- ALGLIB PROJECT --
+     Copyright 02.10.2014 by Bochkanov Sergey
+*************************************************************************/
+static void lsfit_rdpanalyzesection(/* Real    */ ae_vector* x,
+     /* Real    */ ae_vector* y,
+     ae_int_t i0,
+     ae_int_t i1,
+     ae_int_t* worstidx,
+     double* worsterror,
+     ae_state *_state)
+{
+    ae_int_t i;
+    double xleft;
+    double xright;
+    double vx;
+    double ve;
+    double a;
+    double b;
+
+    *worstidx = 0;
+    *worsterror = 0;
+
+    xleft = x->ptr.p_double[i0];
+    xright = x->ptr.p_double[i1];
+    if( i1-i0+1<3||ae_fp_eq(xright,xleft) )
+    {
+        *worstidx = i0;
+        *worsterror = 0.0;
+        return;
+    }
+    a = (y->ptr.p_double[i1]-y->ptr.p_double[i0])/(xright-xleft);
+    b = (y->ptr.p_double[i0]*xright-y->ptr.p_double[i1]*xleft)/(xright-xleft);
+    *worstidx = -1;
+    *worsterror = (double)(0);
+    for(i=i0+1; i<=i1-1; i++)
+    {
+        vx = x->ptr.p_double[i];
+        ve = ae_fabs(a*vx+b-y->ptr.p_double[i], _state);
+        if( (ae_fp_greater(vx,xleft)&&ae_fp_less(vx,xright))&&ae_fp_greater(ve,*worsterror) )
+        {
+            *worsterror = ve;
+            *worstidx = i;
+        }
+    }
+}
+
+
+/*************************************************************************
+Recursive splitting of interval [I0,I1] (right boundary included) with RDP
+algorithm (non-parametric version which sees curve as Y(x)).
+
+Input parameters:
+    X, Y        -   SORTED arrays.
+    I0,I1       -   interval (boundaries included) to process
+    Eps         -   desired precision
+    XOut,YOut   -   preallocated output arrays large enough to store result;
+                    XOut[0..1], YOut[0..1] contain first and last points of
+                    curve
+    NOut        -   must contain 2 on input
+    
+OUTPUT PARAMETERS:
+    XOut, YOut  -   curve generated by RDP algorithm, UNSORTED
+    NOut        -   number of points in curve
+
+  -- ALGLIB PROJECT --
+     Copyright 02.10.2014 by Bochkanov Sergey
+*************************************************************************/
+static void lsfit_rdprecursive(/* Real    */ ae_vector* x,
+     /* Real    */ ae_vector* y,
+     ae_int_t i0,
+     ae_int_t i1,
+     double eps,
+     /* Real    */ ae_vector* xout,
+     /* Real    */ ae_vector* yout,
+     ae_int_t* nout,
+     ae_state *_state)
+{
+    ae_int_t worstidx;
+    double worsterror;
+
+
+    ae_assert(ae_fp_greater(eps,(double)(0)), "RDPRecursive: internal error, Eps<0", _state);
+    lsfit_rdpanalyzesection(x, y, i0, i1, &worstidx, &worsterror, _state);
+    if( ae_fp_less_eq(worsterror,eps) )
+    {
+        return;
+    }
+    xout->ptr.p_double[*nout] = x->ptr.p_double[worstidx];
+    yout->ptr.p_double[*nout] = y->ptr.p_double[worstidx];
+    *nout = *nout+1;
+    if( worstidx-i0<i1-worstidx )
+    {
+        lsfit_rdprecursive(x, y, i0, worstidx, eps, xout, yout, nout, _state);
+        lsfit_rdprecursive(x, y, worstidx, i1, eps, xout, yout, nout, _state);
+    }
+    else
+    {
+        lsfit_rdprecursive(x, y, worstidx, i1, eps, xout, yout, nout, _state);
+        lsfit_rdprecursive(x, y, i0, worstidx, eps, xout, yout, nout, _state);
+    }
+}
+
+
+/*************************************************************************
+Internal 4PL/5PL fitting function.
+
+Accepts X, Y and already initialized and prepared MinLMState structure.
+On input P1 contains initial guess, on output it contains solution.  FLast
+stores function value at P1.
+*************************************************************************/
+static void lsfit_logisticfitinternal(/* Real    */ ae_vector* x,
+     /* Real    */ ae_vector* y,
+     ae_int_t n,
+     ae_bool is4pl,
+     double lambdav,
+     minlmstate* state,
+     minlmreport* replm,
+     /* Real    */ ae_vector* p1,
+     double* flast,
+     ae_state *_state)
+{
+    ae_int_t i;
+    ae_int_t j;
+    double ta;
+    double tb;
+    double tc;
+    double td;
+    double tg;
+    double vp;
+    double vp0;
+    double vp1;
+
+    *flast = 0;
+
+    minlmrestartfrom(state, p1, _state);
+    while(minlmiteration(state, _state))
+    {
+        ta = state->x.ptr.p_double[0];
+        tb = state->x.ptr.p_double[1];
+        tc = state->x.ptr.p_double[2];
+        td = state->x.ptr.p_double[3];
+        tg = state->x.ptr.p_double[4];
+        if( state->xupdated )
+        {
+            
+            /*
+             * Save best function value obtained so far.
+             */
+            *flast = state->f;
+            continue;
+        }
+        if( state->needfi )
+        {
+            
+            /*
+             * Function vector
+             */
+            for(i=0; i<=n-1; i++)
+            {
+                if( ae_fp_greater(x->ptr.p_double[i],(double)(0)) )
+                {
+                    state->fi.ptr.p_double[i] = td+(ta-td)/ae_pow(1.0+ae_pow(x->ptr.p_double[i]/tc, tb, _state), tg, _state)-y->ptr.p_double[i];
+                }
+                else
+                {
+                    if( ae_fp_greater_eq(tb,(double)(0)) )
+                    {
+                        state->fi.ptr.p_double[i] = ta-y->ptr.p_double[i];
+                    }
+                    else
+                    {
+                        state->fi.ptr.p_double[i] = td-y->ptr.p_double[i];
+                    }
+                }
+            }
+            for(i=0; i<=4; i++)
+            {
+                state->fi.ptr.p_double[n+i] = lambdav*state->x.ptr.p_double[i];
+            }
+            continue;
+        }
+        if( state->needfij )
+        {
+            
+            /*
+             * Function vector and Jacobian
+             */
+            for(i=0; i<=n-1; i++)
+            {
+                if( ae_fp_greater(x->ptr.p_double[i],(double)(0)) )
+                {
+                    if( is4pl )
+                    {
+                        vp = ae_pow(x->ptr.p_double[i]/tc, tb, _state);
+                        state->fi.ptr.p_double[i] = td+(ta-td)/(1+vp)-y->ptr.p_double[i];
+                        state->j.ptr.pp_double[i][0] = 1/(1+vp);
+                        state->j.ptr.pp_double[i][1] = -(ta-td)*vp*ae_log(x->ptr.p_double[i]/tc, _state)/ae_sqr(1+vp, _state);
+                        state->j.ptr.pp_double[i][2] = (ta-td)*(tb/tc)*vp/ae_sqr(1+vp, _state);
+                        state->j.ptr.pp_double[i][3] = 1-1/(1+vp);
+                        state->j.ptr.pp_double[i][4] = (double)(0);
+                    }
+                    else
+                    {
+                        vp0 = ae_pow(x->ptr.p_double[i]/tc, tb, _state);
+                        vp1 = ae_pow(1+vp0, tg, _state);
+                        state->fi.ptr.p_double[i] = td+(ta-td)/vp1-y->ptr.p_double[i];
+                        state->j.ptr.pp_double[i][0] = 1/vp1;
+                        state->j.ptr.pp_double[i][1] = (ta-td)*(-tg)*ae_pow(1+vp0, -tg-1, _state)*vp0*ae_log(x->ptr.p_double[i]/tc, _state);
+                        state->j.ptr.pp_double[i][2] = (ta-td)*(-tg)*ae_pow(1+vp0, -tg-1, _state)*vp0*(-tb/tc);
+                        state->j.ptr.pp_double[i][3] = 1-1/vp1;
+                        state->j.ptr.pp_double[i][4] = -(ta-td)/vp1*ae_log(1+vp0, _state);
+                    }
+                }
+                else
+                {
+                    if( ae_fp_greater_eq(tb,(double)(0)) )
+                    {
+                        state->fi.ptr.p_double[i] = ta-y->ptr.p_double[i];
+                        state->j.ptr.pp_double[i][0] = (double)(1);
+                        state->j.ptr.pp_double[i][1] = (double)(0);
+                        state->j.ptr.pp_double[i][2] = (double)(0);
+                        state->j.ptr.pp_double[i][3] = (double)(0);
+                        state->j.ptr.pp_double[i][4] = (double)(0);
+                    }
+                    else
+                    {
+                        state->fi.ptr.p_double[i] = td-y->ptr.p_double[i];
+                        state->j.ptr.pp_double[i][0] = (double)(0);
+                        state->j.ptr.pp_double[i][1] = (double)(0);
+                        state->j.ptr.pp_double[i][2] = (double)(0);
+                        state->j.ptr.pp_double[i][3] = (double)(1);
+                        state->j.ptr.pp_double[i][4] = (double)(0);
+                    }
+                }
+            }
+            for(i=0; i<=4; i++)
+            {
+                for(j=0; j<=4; j++)
+                {
+                    state->j.ptr.pp_double[n+i][j] = 0.0;
+                }
+            }
+            for(i=0; i<=4; i++)
+            {
+                state->fi.ptr.p_double[n+i] = lambdav*state->x.ptr.p_double[i];
+                state->j.ptr.pp_double[n+i][i] = lambdav;
+            }
+            continue;
+        }
+        ae_assert(ae_false, "LogisticFitX: internal error", _state);
+    }
+    minlmresultsbuf(state, p1, replm, _state);
+    ae_assert(replm->terminationtype>0, "LogisticFitX: internal error", _state);
 }
 
 
@@ -21751,31 +26567,31 @@ static void lsfit_spline1dfitinternal(ae_int_t st,
     double decay;
 
     ae_frame_make(_state, &_frame_block);
-    ae_vector_init_copy(&_x, x, _state, ae_true);
+    ae_vector_init_copy(&_x, x, _state);
     x = &_x;
-    ae_vector_init_copy(&_y, y, _state, ae_true);
+    ae_vector_init_copy(&_y, y, _state);
     y = &_y;
-    ae_vector_init_copy(&_w, w, _state, ae_true);
+    ae_vector_init_copy(&_w, w, _state);
     w = &_w;
-    ae_vector_init_copy(&_xc, xc, _state, ae_true);
+    ae_vector_init_copy(&_xc, xc, _state);
     xc = &_xc;
-    ae_vector_init_copy(&_yc, yc, _state, ae_true);
+    ae_vector_init_copy(&_yc, yc, _state);
     yc = &_yc;
     *info = 0;
     _spline1dinterpolant_clear(s);
     _spline1dfitreport_clear(rep);
-    ae_matrix_init(&fmatrix, 0, 0, DT_REAL, _state, ae_true);
-    ae_matrix_init(&cmatrix, 0, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&y2, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&w2, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&sx, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&sy, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&sd, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&tmp, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&xoriginal, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&yoriginal, 0, DT_REAL, _state, ae_true);
-    _lsfitreport_init(&lrep, _state, ae_true);
-    _spline1dinterpolant_init(&s2, _state, ae_true);
+    ae_matrix_init(&fmatrix, 0, 0, DT_REAL, _state);
+    ae_matrix_init(&cmatrix, 0, 0, DT_REAL, _state);
+    ae_vector_init(&y2, 0, DT_REAL, _state);
+    ae_vector_init(&w2, 0, DT_REAL, _state);
+    ae_vector_init(&sx, 0, DT_REAL, _state);
+    ae_vector_init(&sy, 0, DT_REAL, _state);
+    ae_vector_init(&sd, 0, DT_REAL, _state);
+    ae_vector_init(&tmp, 0, DT_REAL, _state);
+    ae_vector_init(&xoriginal, 0, DT_REAL, _state);
+    ae_vector_init(&yoriginal, 0, DT_REAL, _state);
+    _lsfitreport_init(&lrep, _state);
+    _spline1dinterpolant_init(&s2, _state);
 
     ae_assert(st==0||st==1, "Spline1DFit: internal error!", _state);
     if( st==0&&m<4 )
@@ -21899,21 +26715,21 @@ static void lsfit_spline1dfitinternal(ae_int_t st,
              */
             for(i=0; i<=m-2-1; i++)
             {
-                sy.ptr.p_double[i] = 0;
+                sy.ptr.p_double[i] = (double)(0);
             }
-            bl = 0;
-            br = 0;
+            bl = (double)(0);
+            br = (double)(0);
             if( j<m-2 )
             {
-                sy.ptr.p_double[j] = 1;
+                sy.ptr.p_double[j] = (double)(1);
             }
             if( j==m-2 )
             {
-                bl = 1;
+                bl = (double)(1);
             }
             if( j==m-1 )
             {
-                br = 1;
+                br = (double)(1);
             }
             spline1dbuildcubic(&sx, &sy, m-2, 1, bl, 1, br, &s2, _state);
         }
@@ -21925,16 +26741,16 @@ static void lsfit_spline1dfitinternal(ae_int_t st,
              */
             for(i=0; i<=m/2-1; i++)
             {
-                sy.ptr.p_double[i] = 0;
-                sd.ptr.p_double[i] = 0;
+                sy.ptr.p_double[i] = (double)(0);
+                sd.ptr.p_double[i] = (double)(0);
             }
             if( j%2==0 )
             {
-                sy.ptr.p_double[j/2] = 1;
+                sy.ptr.p_double[j/2] = (double)(1);
             }
             else
             {
-                sd.ptr.p_double[j/2] = 1;
+                sd.ptr.p_double[j/2] = (double)(1);
             }
             spline1dbuildhermite(&sx, &sy, &sd, m/2, &s2, _state);
         }
@@ -21978,7 +26794,7 @@ static void lsfit_spline1dfitinternal(ae_int_t st,
             }
             else
             {
-                fmatrix.ptr.pp_double[n+i][j] = 0;
+                fmatrix.ptr.pp_double[n+i][j] = (double)(0);
             }
         }
     }
@@ -21986,7 +26802,7 @@ static void lsfit_spline1dfitinternal(ae_int_t st,
     ae_vector_set_length(&w2, n+m, _state);
     ae_v_move(&y2.ptr.p_double[0], 1, &y->ptr.p_double[0], 1, ae_v_len(0,n-1));
     ae_v_move(&w2.ptr.p_double[0], 1, &w->ptr.p_double[0], 1, ae_v_len(0,n-1));
-    mx = 0;
+    mx = (double)(0);
     for(i=0; i<=n-1; i++)
     {
         mx = mx+ae_fabs(w->ptr.p_double[i], _state);
@@ -21994,7 +26810,7 @@ static void lsfit_spline1dfitinternal(ae_int_t st,
     mx = mx/n;
     for(i=0; i<=m-1; i++)
     {
-        y2.ptr.p_double[n+i] = 0;
+        y2.ptr.p_double[n+i] = (double)(0);
         w2.ptr.p_double[n+i] = mx;
     }
     
@@ -22060,11 +26876,11 @@ static void lsfit_spline1dfitinternal(ae_int_t st,
     rep->rmserror = lrep.rmserror*(sb-sa);
     rep->avgerror = lrep.avgerror*(sb-sa);
     rep->maxerror = lrep.maxerror*(sb-sa);
-    rep->avgrelerror = 0;
+    rep->avgrelerror = (double)(0);
     relcnt = 0;
     for(i=0; i<=n-1; i++)
     {
-        if( ae_fp_neq(yoriginal.ptr.p_double[i],0) )
+        if( ae_fp_neq(yoriginal.ptr.p_double[i],(double)(0)) )
         {
             rep->avgrelerror = rep->avgrelerror+ae_fabs(spline1dcalc(s, xoriginal.ptr.p_double[i], _state)-yoriginal.ptr.p_double[i], _state)/ae_fabs(yoriginal.ptr.p_double[i], _state);
             relcnt = relcnt+1;
@@ -22100,6 +26916,8 @@ static void lsfit_lsfitlinearinternal(/* Real    */ ae_vector* y,
     ae_vector b;
     ae_vector wmod;
     ae_vector tau;
+    ae_vector nzeros;
+    ae_vector s;
     ae_int_t i;
     ae_int_t j;
     double v;
@@ -22115,20 +26933,23 @@ static void lsfit_lsfitlinearinternal(/* Real    */ ae_vector* y,
     *info = 0;
     ae_vector_clear(c);
     _lsfitreport_clear(rep);
-    ae_matrix_init(&ft, 0, 0, DT_REAL, _state, ae_true);
-    ae_matrix_init(&q, 0, 0, DT_REAL, _state, ae_true);
-    ae_matrix_init(&l, 0, 0, DT_REAL, _state, ae_true);
-    ae_matrix_init(&r, 0, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&b, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&wmod, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&tau, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&sv, 0, DT_REAL, _state, ae_true);
-    ae_matrix_init(&u, 0, 0, DT_REAL, _state, ae_true);
-    ae_matrix_init(&vt, 0, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&tmp, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&utb, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&sutb, 0, DT_REAL, _state, ae_true);
+    ae_matrix_init(&ft, 0, 0, DT_REAL, _state);
+    ae_matrix_init(&q, 0, 0, DT_REAL, _state);
+    ae_matrix_init(&l, 0, 0, DT_REAL, _state);
+    ae_matrix_init(&r, 0, 0, DT_REAL, _state);
+    ae_vector_init(&b, 0, DT_REAL, _state);
+    ae_vector_init(&wmod, 0, DT_REAL, _state);
+    ae_vector_init(&tau, 0, DT_REAL, _state);
+    ae_vector_init(&nzeros, 0, DT_REAL, _state);
+    ae_vector_init(&s, 0, DT_REAL, _state);
+    ae_vector_init(&sv, 0, DT_REAL, _state);
+    ae_matrix_init(&u, 0, 0, DT_REAL, _state);
+    ae_matrix_init(&vt, 0, 0, DT_REAL, _state);
+    ae_vector_init(&tmp, 0, DT_REAL, _state);
+    ae_vector_init(&utb, 0, DT_REAL, _state);
+    ae_vector_init(&sutb, 0, DT_REAL, _state);
 
+    lsfit_clearreport(rep, _state);
     if( n<1||m<1 )
     {
         *info = -1;
@@ -22155,7 +26976,7 @@ static void lsfit_lsfitlinearinternal(/* Real    */ ae_vector* y,
             v = w->ptr.p_double[j];
             ae_v_moved(&ft.ptr.pp_double[j][0], 1, &fmatrix->ptr.pp_double[j][0], 1, ae_v_len(0,m-1), v);
             b.ptr.p_double[j] = w->ptr.p_double[j]*y->ptr.p_double[j];
-            wmod.ptr.p_double[j] = 1;
+            wmod.ptr.p_double[j] = (double)(1);
         }
         
         /*
@@ -22164,9 +26985,9 @@ static void lsfit_lsfitlinearinternal(/* Real    */ ae_vector* y,
         ae_vector_set_length(c, m, _state);
         for(i=0; i<=m-1; i++)
         {
-            c->ptr.p_double[i] = 0;
+            c->ptr.p_double[i] = (double)(0);
         }
-        rep->taskrcond = 0;
+        rep->taskrcond = (double)(0);
         rmatrixlq(&ft, n, m, &tau, _state);
         rmatrixlqunpackq(&ft, n, m, &tau, n, &q, _state);
         rmatrixlqunpackl(&ft, n, m, &l, _state);
@@ -22203,7 +27024,7 @@ static void lsfit_lsfitlinearinternal(/* Real    */ ae_vector* y,
     ae_vector_set_length(&tmp, m, _state);
     for(i=0; i<=m-1; i++)
     {
-        tmp.ptr.p_double[i] = 0;
+        tmp.ptr.p_double[i] = (double)(0);
     }
     for(i=0; i<=n-1; i++)
     {
@@ -22254,14 +27075,14 @@ static void lsfit_lsfitlinearinternal(/* Real    */ ae_vector* y,
         ae_vector_set_length(&sutb, m, _state);
         for(i=0; i<=m-1; i++)
         {
-            utb.ptr.p_double[i] = 0;
+            utb.ptr.p_double[i] = (double)(0);
         }
         for(i=0; i<=m-1; i++)
         {
             v = b.ptr.p_double[i];
             ae_v_addd(&utb.ptr.p_double[0], 1, &u.ptr.pp_double[i][0], 1, ae_v_len(0,m-1), v);
         }
-        if( ae_fp_greater(sv.ptr.p_double[0],0) )
+        if( ae_fp_greater(sv.ptr.p_double[0],(double)(0)) )
         {
             rep->taskrcond = sv.ptr.p_double[m-1]/sv.ptr.p_double[0];
             for(i=0; i<=m-1; i++)
@@ -22272,22 +27093,22 @@ static void lsfit_lsfitlinearinternal(/* Real    */ ae_vector* y,
                 }
                 else
                 {
-                    sutb.ptr.p_double[i] = 0;
+                    sutb.ptr.p_double[i] = (double)(0);
                 }
             }
         }
         else
         {
-            rep->taskrcond = 0;
+            rep->taskrcond = (double)(0);
             for(i=0; i<=m-1; i++)
             {
-                sutb.ptr.p_double[i] = 0;
+                sutb.ptr.p_double[i] = (double)(0);
             }
         }
         ae_vector_set_length(c, m, _state);
         for(i=0; i<=m-1; i++)
         {
-            c->ptr.p_double[i] = 0;
+            c->ptr.p_double[i] = (double)(0);
         }
         for(i=0; i<=m-1; i++)
         {
@@ -22299,17 +27120,17 @@ static void lsfit_lsfitlinearinternal(/* Real    */ ae_vector* y,
     /*
      * calculate errors
      */
-    rep->rmserror = 0;
-    rep->avgerror = 0;
-    rep->avgrelerror = 0;
-    rep->maxerror = 0;
+    rep->rmserror = (double)(0);
+    rep->avgerror = (double)(0);
+    rep->avgrelerror = (double)(0);
+    rep->maxerror = (double)(0);
     relcnt = 0;
     for(i=0; i<=n-1; i++)
     {
         v = ae_v_dotproduct(&fmatrix->ptr.pp_double[i][0], 1, &c->ptr.p_double[0], 1, ae_v_len(0,m-1));
         rep->rmserror = rep->rmserror+ae_sqr(v-y->ptr.p_double[i], _state);
         rep->avgerror = rep->avgerror+ae_fabs(v-y->ptr.p_double[i], _state);
-        if( ae_fp_neq(y->ptr.p_double[i],0) )
+        if( ae_fp_neq(y->ptr.p_double[i],(double)(0)) )
         {
             rep->avgrelerror = rep->avgrelerror+ae_fabs(v-y->ptr.p_double[i], _state)/ae_fabs(y->ptr.p_double[i], _state);
             relcnt = relcnt+1;
@@ -22322,6 +27143,32 @@ static void lsfit_lsfitlinearinternal(/* Real    */ ae_vector* y,
     {
         rep->avgrelerror = rep->avgrelerror/relcnt;
     }
+    ae_vector_set_length(&nzeros, n, _state);
+    ae_vector_set_length(&s, m, _state);
+    for(i=0; i<=m-1; i++)
+    {
+        s.ptr.p_double[i] = (double)(0);
+    }
+    for(i=0; i<=n-1; i++)
+    {
+        for(j=0; j<=m-1; j++)
+        {
+            s.ptr.p_double[j] = s.ptr.p_double[j]+ae_sqr(fmatrix->ptr.pp_double[i][j], _state);
+        }
+        nzeros.ptr.p_double[i] = (double)(0);
+    }
+    for(i=0; i<=m-1; i++)
+    {
+        if( ae_fp_neq(s.ptr.p_double[i],(double)(0)) )
+        {
+            s.ptr.p_double[i] = ae_sqrt(1/s.ptr.p_double[i], _state);
+        }
+        else
+        {
+            s.ptr.p_double[i] = (double)(1);
+        }
+    }
+    lsfit_estimateerrors(fmatrix, &nzeros, y, w, c, &s, n, m, rep, &r, 1, _state);
     ae_frame_leave(_state);
 }
 
@@ -22366,7 +27213,7 @@ static void lsfit_barycentriccalcbasis(barycentricinterpolant* b,
      */
     if( b->n==1 )
     {
-        y->ptr.p_double[0] = 1;
+        y->ptr.p_double[0] = (double)(1);
         return;
     }
     
@@ -22387,9 +27234,9 @@ static void lsfit_barycentriccalcbasis(barycentricinterpolant* b,
         {
             for(j=0; j<=b->n-1; j++)
             {
-                y->ptr.p_double[j] = 0;
+                y->ptr.p_double[j] = (double)(0);
             }
-            y->ptr.p_double[i] = 1;
+            y->ptr.p_double[i] = (double)(1);
             return;
         }
         v = ae_fabs(t-v, _state);
@@ -22398,7 +27245,7 @@ static void lsfit_barycentriccalcbasis(barycentricinterpolant* b,
             s = v;
         }
     }
-    s2 = 0;
+    s2 = (double)(0);
     for(i=0; i<=b->n-1; i++)
     {
         v = s/(t-b->x.ptr.p_double[i]);
@@ -22492,24 +27339,25 @@ static void lsfit_internalchebyshevfit(/* Real    */ ae_vector* x,
     double decay;
 
     ae_frame_make(_state, &_frame_block);
-    ae_vector_init_copy(&_xc, xc, _state, ae_true);
+    ae_vector_init_copy(&_xc, xc, _state);
     xc = &_xc;
-    ae_vector_init_copy(&_yc, yc, _state, ae_true);
+    ae_vector_init_copy(&_yc, yc, _state);
     yc = &_yc;
     *info = 0;
     ae_vector_clear(c);
     _lsfitreport_clear(rep);
-    ae_vector_init(&y2, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&w2, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&tmp, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&tmp2, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&tmpdiff, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&bx, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&by, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&bw, 0, DT_REAL, _state, ae_true);
-    ae_matrix_init(&fmatrix, 0, 0, DT_REAL, _state, ae_true);
-    ae_matrix_init(&cmatrix, 0, 0, DT_REAL, _state, ae_true);
+    ae_vector_init(&y2, 0, DT_REAL, _state);
+    ae_vector_init(&w2, 0, DT_REAL, _state);
+    ae_vector_init(&tmp, 0, DT_REAL, _state);
+    ae_vector_init(&tmp2, 0, DT_REAL, _state);
+    ae_vector_init(&tmpdiff, 0, DT_REAL, _state);
+    ae_vector_init(&bx, 0, DT_REAL, _state);
+    ae_vector_init(&by, 0, DT_REAL, _state);
+    ae_vector_init(&bw, 0, DT_REAL, _state);
+    ae_matrix_init(&fmatrix, 0, 0, DT_REAL, _state);
+    ae_matrix_init(&cmatrix, 0, 0, DT_REAL, _state);
 
+    lsfit_clearreport(rep, _state);
     
     /*
      * weight decay for correct handling of task which becomes
@@ -22553,7 +27401,7 @@ static void lsfit_internalchebyshevfit(/* Real    */ ae_vector* x,
         {
             if( j==0 )
             {
-                tmp.ptr.p_double[j] = 1;
+                tmp.ptr.p_double[j] = (double)(1);
             }
             else
             {
@@ -22579,13 +27427,13 @@ static void lsfit_internalchebyshevfit(/* Real    */ ae_vector* x,
             }
             else
             {
-                fmatrix.ptr.pp_double[n+i][j] = 0;
+                fmatrix.ptr.pp_double[n+i][j] = (double)(0);
             }
         }
     }
     ae_v_move(&y2.ptr.p_double[0], 1, &y->ptr.p_double[0], 1, ae_v_len(0,n-1));
     ae_v_move(&w2.ptr.p_double[0], 1, &w->ptr.p_double[0], 1, ae_v_len(0,n-1));
-    mx = 0;
+    mx = (double)(0);
     for(i=0; i<=n-1; i++)
     {
         mx = mx+ae_fabs(w->ptr.p_double[i], _state);
@@ -22593,7 +27441,7 @@ static void lsfit_internalchebyshevfit(/* Real    */ ae_vector* x,
     mx = mx/n;
     for(i=0; i<=m-1; i++)
     {
-        y2.ptr.p_double[n+i] = 0;
+        y2.ptr.p_double[n+i] = (double)(0);
         w2.ptr.p_double[n+i] = mx;
     }
     
@@ -22612,15 +27460,15 @@ static void lsfit_internalchebyshevfit(/* Real    */ ae_vector* x,
         {
             if( j==0 )
             {
-                tmp.ptr.p_double[j] = 1;
-                tmpdiff.ptr.p_double[j] = 0;
+                tmp.ptr.p_double[j] = (double)(1);
+                tmpdiff.ptr.p_double[j] = (double)(0);
             }
             else
             {
                 if( j==1 )
                 {
                     tmp.ptr.p_double[j] = xc->ptr.p_double[i];
-                    tmpdiff.ptr.p_double[j] = 1;
+                    tmpdiff.ptr.p_double[j] = (double)(1);
                 }
                 else
                 {
@@ -22717,31 +27565,31 @@ static void lsfit_barycentricfitwcfixedd(/* Real    */ ae_vector* x,
     double decay;
 
     ae_frame_make(_state, &_frame_block);
-    ae_vector_init_copy(&_x, x, _state, ae_true);
+    ae_vector_init_copy(&_x, x, _state);
     x = &_x;
-    ae_vector_init_copy(&_y, y, _state, ae_true);
+    ae_vector_init_copy(&_y, y, _state);
     y = &_y;
-    ae_vector_init_copy(&_w, w, _state, ae_true);
+    ae_vector_init_copy(&_w, w, _state);
     w = &_w;
-    ae_vector_init_copy(&_xc, xc, _state, ae_true);
+    ae_vector_init_copy(&_xc, xc, _state);
     xc = &_xc;
-    ae_vector_init_copy(&_yc, yc, _state, ae_true);
+    ae_vector_init_copy(&_yc, yc, _state);
     yc = &_yc;
     *info = 0;
     _barycentricinterpolant_clear(b);
     _barycentricfitreport_clear(rep);
-    ae_matrix_init(&fmatrix, 0, 0, DT_REAL, _state, ae_true);
-    ae_matrix_init(&cmatrix, 0, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&y2, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&w2, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&sx, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&sy, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&sbf, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&xoriginal, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&yoriginal, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&tmp, 0, DT_REAL, _state, ae_true);
-    _lsfitreport_init(&lrep, _state, ae_true);
-    _barycentricinterpolant_init(&b2, _state, ae_true);
+    ae_matrix_init(&fmatrix, 0, 0, DT_REAL, _state);
+    ae_matrix_init(&cmatrix, 0, 0, DT_REAL, _state);
+    ae_vector_init(&y2, 0, DT_REAL, _state);
+    ae_vector_init(&w2, 0, DT_REAL, _state);
+    ae_vector_init(&sx, 0, DT_REAL, _state);
+    ae_vector_init(&sy, 0, DT_REAL, _state);
+    ae_vector_init(&sbf, 0, DT_REAL, _state);
+    ae_vector_init(&xoriginal, 0, DT_REAL, _state);
+    ae_vector_init(&yoriginal, 0, DT_REAL, _state);
+    ae_vector_init(&tmp, 0, DT_REAL, _state);
+    _lsfitreport_init(&lrep, _state);
+    _barycentricinterpolant_init(&b2, _state);
 
     if( ((n<1||m<2)||k<0)||k>=m )
     {
@@ -22810,10 +27658,10 @@ static void lsfit_barycentricfitwcfixedd(/* Real    */ ae_vector* x,
     }
     for(i=0; i<=m-1; i++)
     {
-        sy.ptr.p_double[i] = 1;
+        sy.ptr.p_double[i] = (double)(1);
     }
     barycentricbuildfloaterhormann(&sx, &sy, m, d, &b2, _state);
-    mx = 0;
+    mx = (double)(0);
     for(i=0; i<=n-1; i++)
     {
         lsfit_barycentriccalcbasis(&b2, x->ptr.p_double[i], &sbf, _state);
@@ -22832,10 +27680,10 @@ static void lsfit_barycentricfitwcfixedd(/* Real    */ ae_vector* x,
             }
             else
             {
-                fmatrix.ptr.pp_double[n+i][j] = 0;
+                fmatrix.ptr.pp_double[n+i][j] = (double)(0);
             }
         }
-        y2.ptr.p_double[n+i] = 0;
+        y2.ptr.p_double[n+i] = (double)(0);
         w2.ptr.p_double[n+i] = mx;
     }
     if( k>0 )
@@ -22844,9 +27692,9 @@ static void lsfit_barycentricfitwcfixedd(/* Real    */ ae_vector* x,
         {
             for(i=0; i<=m-1; i++)
             {
-                sy.ptr.p_double[i] = 0;
+                sy.ptr.p_double[i] = (double)(0);
             }
-            sy.ptr.p_double[j] = 1;
+            sy.ptr.p_double[j] = (double)(1);
             barycentricbuildfloaterhormann(&sx, &sy, m, d, &b2, _state);
             for(i=0; i<=k-1; i++)
             {
@@ -22910,11 +27758,11 @@ static void lsfit_barycentricfitwcfixedd(/* Real    */ ae_vector* x,
     rep->rmserror = lrep.rmserror*(sb-sa);
     rep->avgerror = lrep.avgerror*(sb-sa);
     rep->maxerror = lrep.maxerror*(sb-sa);
-    rep->avgrelerror = 0;
+    rep->avgrelerror = (double)(0);
     relcnt = 0;
     for(i=0; i<=n-1; i++)
     {
-        if( ae_fp_neq(yoriginal.ptr.p_double[i],0) )
+        if( ae_fp_neq(yoriginal.ptr.p_double[i],(double)(0)) )
         {
             rep->avgrelerror = rep->avgrelerror+ae_fabs(barycentriccalc(b, xoriginal.ptr.p_double[i], _state)-yoriginal.ptr.p_double[i], _state)/ae_fabs(yoriginal.ptr.p_double[i], _state);
             relcnt = relcnt+1;
@@ -22928,81 +27776,548 @@ static void lsfit_barycentricfitwcfixedd(/* Real    */ ae_vector* x,
 }
 
 
-ae_bool _polynomialfitreport_init(polynomialfitreport* p, ae_state *_state, ae_bool make_automatic)
+static void lsfit_clearreport(lsfitreport* rep, ae_state *_state)
 {
-    return ae_true;
+
+
+    rep->taskrcond = (double)(0);
+    rep->iterationscount = 0;
+    rep->varidx = -1;
+    rep->rmserror = (double)(0);
+    rep->avgerror = (double)(0);
+    rep->avgrelerror = (double)(0);
+    rep->maxerror = (double)(0);
+    rep->wrmserror = (double)(0);
+    rep->r2 = (double)(0);
+    ae_matrix_set_length(&rep->covpar, 0, 0, _state);
+    ae_vector_set_length(&rep->errpar, 0, _state);
+    ae_vector_set_length(&rep->errcurve, 0, _state);
+    ae_vector_set_length(&rep->noise, 0, _state);
 }
 
 
-ae_bool _polynomialfitreport_init_copy(polynomialfitreport* dst, polynomialfitreport* src, ae_state *_state, ae_bool make_automatic)
+/*************************************************************************
+This internal function estimates covariance matrix and other error-related
+information for linear/nonlinear least squares model.
+
+It has a bit awkward interface, but it can be used  for  both  linear  and
+nonlinear problems.
+
+INPUT PARAMETERS:
+    F1  -   array[0..N-1,0..K-1]:
+            * for linear problems - matrix of function values
+            * for nonlinear problems - Jacobian matrix
+    F0  -   array[0..N-1]:
+            * for linear problems - must be filled with zeros
+            * for nonlinear problems - must store values of function being
+              fitted
+    Y   -   array[0..N-1]:
+            * for linear and nonlinear problems - must store target values
+    W   -   weights, array[0..N-1]:
+            * for linear and nonlinear problems - weights
+    X   -   array[0..K-1]:
+            * for linear and nonlinear problems - current solution
+    S   -   array[0..K-1]:
+            * its components should be strictly positive
+            * squared inverse of this diagonal matrix is used as damping
+              factor for covariance matrix (linear and nonlinear problems)
+            * for nonlinear problems, when scale of the variables is usually
+              explicitly given by user, you may use scale vector for this
+              parameter
+            * for linear problems you may set this parameter to
+              S=sqrt(1/diag(F'*F))
+            * this parameter is automatically rescaled by this function,
+              only relative magnitudes of its components (with respect to
+              each other) matter.
+    N   -   number of points, N>0.
+    K   -   number of dimensions
+    Rep -   structure which is used to store results
+    Z   -   additional matrix which, depending on ZKind, may contain some
+            information used to accelerate calculations - or just can be
+            temporary buffer:
+            * for ZKind=0       Z contains no information, just temporary
+                                buffer which can be resized and used as needed
+            * for ZKind=1       Z contains triangular matrix from QR
+                                decomposition of W*F1. This matrix can be used
+                                to speedup calculation of covariance matrix.
+                                It should not be changed by algorithm.
+    ZKind-  contents of Z
+
+OUTPUT PARAMETERS:
+
+* Rep.CovPar        covariance matrix for parameters, array[K,K].
+* Rep.ErrPar        errors in parameters, array[K],
+                    errpar = sqrt(diag(CovPar))
+* Rep.ErrCurve      vector of fit errors - standard deviations of empirical
+                    best-fit curve from "ideal" best-fit curve built  with
+                    infinite number of samples, array[N].
+                    errcurve = sqrt(diag(J*CovPar*J')),
+                    where J is Jacobian matrix.
+* Rep.Noise         vector of per-point estimates of noise, array[N]
+* Rep.R2            coefficient of determination (non-weighted)
+
+Other fields of Rep are not changed.
+
+IMPORTANT:  errors  in  parameters  are  calculated  without  taking  into
+            account boundary/linear constraints! Presence  of  constraints
+            changes distribution of errors, but there is no  easy  way  to
+            account for constraints when you calculate covariance matrix.
+            
+NOTE:       noise in the data is estimated as follows:
+            * for fitting without user-supplied  weights  all  points  are
+              assumed to have same level of noise, which is estimated from
+              the data
+            * for fitting with user-supplied weights we assume that  noise
+              level in I-th point is inversely proportional to Ith weight.
+              Coefficient of proportionality is estimated from the data.
+            
+NOTE:       we apply small amount of regularization when we invert squared
+            Jacobian and calculate covariance matrix. It  guarantees  that
+            algorithm won't divide by zero  during  inversion,  but  skews
+            error estimates a bit (fractional error is about 10^-9).
+            
+            However, we believe that this difference is insignificant  for
+            all practical purposes except for the situation when you  want
+            to compare ALGLIB results with "reference"  implementation  up
+            to the last significant digit.
+
+  -- ALGLIB PROJECT --
+     Copyright 10.12.2009 by Bochkanov Sergey
+*************************************************************************/
+static void lsfit_estimateerrors(/* Real    */ ae_matrix* f1,
+     /* Real    */ ae_vector* f0,
+     /* Real    */ ae_vector* y,
+     /* Real    */ ae_vector* w,
+     /* Real    */ ae_vector* x,
+     /* Real    */ ae_vector* s,
+     ae_int_t n,
+     ae_int_t k,
+     lsfitreport* rep,
+     /* Real    */ ae_matrix* z,
+     ae_int_t zkind,
+     ae_state *_state)
 {
+    ae_frame _frame_block;
+    ae_vector _s;
+    ae_int_t i;
+    ae_int_t j;
+    ae_int_t j1;
+    double v;
+    double noisec;
+    ae_int_t info;
+    matinvreport invrep;
+    ae_int_t nzcnt;
+    double avg;
+    double rss;
+    double tss;
+    double sz;
+    double ss;
+
+    ae_frame_make(_state, &_frame_block);
+    ae_vector_init_copy(&_s, s, _state);
+    s = &_s;
+    _matinvreport_init(&invrep, _state);
+
+    
+    /*
+     * Compute NZCnt - count of non-zero weights
+     */
+    nzcnt = 0;
+    for(i=0; i<=n-1; i++)
+    {
+        if( ae_fp_neq(w->ptr.p_double[i],(double)(0)) )
+        {
+            nzcnt = nzcnt+1;
+        }
+    }
+    
+    /*
+     * Compute R2
+     */
+    if( nzcnt>0 )
+    {
+        avg = 0.0;
+        for(i=0; i<=n-1; i++)
+        {
+            if( ae_fp_neq(w->ptr.p_double[i],(double)(0)) )
+            {
+                avg = avg+y->ptr.p_double[i];
+            }
+        }
+        avg = avg/nzcnt;
+        rss = 0.0;
+        tss = 0.0;
+        for(i=0; i<=n-1; i++)
+        {
+            if( ae_fp_neq(w->ptr.p_double[i],(double)(0)) )
+            {
+                v = ae_v_dotproduct(&f1->ptr.pp_double[i][0], 1, &x->ptr.p_double[0], 1, ae_v_len(0,k-1));
+                v = v+f0->ptr.p_double[i];
+                rss = rss+ae_sqr(v-y->ptr.p_double[i], _state);
+                tss = tss+ae_sqr(y->ptr.p_double[i]-avg, _state);
+            }
+        }
+        if( ae_fp_neq(tss,(double)(0)) )
+        {
+            rep->r2 = ae_maxreal(1.0-rss/tss, 0.0, _state);
+        }
+        else
+        {
+            rep->r2 = 1.0;
+        }
+    }
+    else
+    {
+        rep->r2 = (double)(0);
+    }
+    
+    /*
+     * Compute estimate of proportionality between noise in the data and weights:
+     *     NoiseC = mean(per-point-noise*per-point-weight)
+     * Noise level (standard deviation) at each point is equal to NoiseC/W[I].
+     */
+    if( nzcnt>k )
+    {
+        noisec = 0.0;
+        for(i=0; i<=n-1; i++)
+        {
+            if( ae_fp_neq(w->ptr.p_double[i],(double)(0)) )
+            {
+                v = ae_v_dotproduct(&f1->ptr.pp_double[i][0], 1, &x->ptr.p_double[0], 1, ae_v_len(0,k-1));
+                v = v+f0->ptr.p_double[i];
+                noisec = noisec+ae_sqr((v-y->ptr.p_double[i])*w->ptr.p_double[i], _state);
+            }
+        }
+        noisec = ae_sqrt(noisec/(nzcnt-k), _state);
+    }
+    else
+    {
+        noisec = 0.0;
+    }
+    
+    /*
+     * Two branches on noise level:
+     * * NoiseC>0   normal situation
+     * * NoiseC=0   degenerate case CovPar is filled by zeros
+     */
+    rmatrixsetlengthatleast(&rep->covpar, k, k, _state);
+    if( ae_fp_greater(noisec,(double)(0)) )
+    {
+        
+        /*
+         * Normal situation: non-zero noise level
+         */
+        ae_assert(zkind==0||zkind==1, "LSFit: internal error in EstimateErrors() function", _state);
+        if( zkind==0 )
+        {
+            
+            /*
+             * Z contains no additional information which can be used to speed up
+             * calculations. We have to calculate covariance matrix on our own:
+             * * Compute scaled Jacobian N*J, where N[i,i]=WCur[I]/NoiseC, store in Z
+             * * Compute Z'*Z, store in CovPar
+             * * Apply moderate regularization to CovPar and compute matrix inverse.
+             *   In case inverse failed, increase regularization parameter and try
+             *   again.
+             */
+            rmatrixsetlengthatleast(z, n, k, _state);
+            for(i=0; i<=n-1; i++)
+            {
+                v = w->ptr.p_double[i]/noisec;
+                ae_v_moved(&z->ptr.pp_double[i][0], 1, &f1->ptr.pp_double[i][0], 1, ae_v_len(0,k-1), v);
+            }
+            
+            /*
+             * Convert S to automatically scaled damped matrix:
+             * * calculate SZ - sum of diagonal elements of Z'*Z
+             * * calculate SS - sum of diagonal elements of S^(-2)
+             * * overwrite S by (SZ/SS)*S^(-2)
+             * * now S has approximately same magnitude as giagonal of Z'*Z
+             */
+            sz = (double)(0);
+            for(i=0; i<=n-1; i++)
+            {
+                for(j=0; j<=k-1; j++)
+                {
+                    sz = sz+z->ptr.pp_double[i][j]*z->ptr.pp_double[i][j];
+                }
+            }
+            if( ae_fp_eq(sz,(double)(0)) )
+            {
+                sz = (double)(1);
+            }
+            ss = (double)(0);
+            for(j=0; j<=k-1; j++)
+            {
+                ss = ss+1/ae_sqr(s->ptr.p_double[j], _state);
+            }
+            for(j=0; j<=k-1; j++)
+            {
+                s->ptr.p_double[j] = sz/ss/ae_sqr(s->ptr.p_double[j], _state);
+            }
+            
+            /*
+             * Calculate damped inverse inv(Z'*Z+S).
+             * We increase damping factor V until Z'*Z become well-conditioned.
+             */
+            v = 1.0E3*ae_machineepsilon;
+            do
+            {
+                rmatrixsyrk(k, n, 1.0, z, 0, 0, 2, 0.0, &rep->covpar, 0, 0, ae_true, _state);
+                for(i=0; i<=k-1; i++)
+                {
+                    rep->covpar.ptr.pp_double[i][i] = rep->covpar.ptr.pp_double[i][i]+v*s->ptr.p_double[i];
+                }
+                spdmatrixinverse(&rep->covpar, k, ae_true, &info, &invrep, _state);
+                v = 10*v;
+            }
+            while(info<=0);
+            for(i=0; i<=k-1; i++)
+            {
+                for(j=i+1; j<=k-1; j++)
+                {
+                    rep->covpar.ptr.pp_double[j][i] = rep->covpar.ptr.pp_double[i][j];
+                }
+            }
+        }
+        if( zkind==1 )
+        {
+            
+            /*
+             * We can reuse additional information:
+             * * Z contains R matrix from QR decomposition of W*F1 
+             * * After multiplication by 1/NoiseC we get Z_mod = N*F1, where diag(N)=w[i]/NoiseC
+             * * Such triangular Z_mod is a Cholesky factor from decomposition of J'*N'*N*J.
+             *   Thus, we can calculate covariance matrix as inverse of the matrix given by
+             *   its Cholesky decomposition. It allow us to avoid time-consuming calculation
+             *   of J'*N'*N*J in CovPar - complexity is reduced from O(N*K^2) to O(K^3), which
+             *   is quite good because K is usually orders of magnitude smaller than N.
+             *
+             * First, convert S to automatically scaled damped matrix:
+             * * calculate SZ - sum of magnitudes of diagonal elements of Z/NoiseC
+             * * calculate SS - sum of diagonal elements of S^(-1)
+             * * overwrite S by (SZ/SS)*S^(-1)
+             * * now S has approximately same magnitude as giagonal of Z'*Z
+             */
+            sz = (double)(0);
+            for(j=0; j<=k-1; j++)
+            {
+                sz = sz+ae_fabs(z->ptr.pp_double[j][j]/noisec, _state);
+            }
+            if( ae_fp_eq(sz,(double)(0)) )
+            {
+                sz = (double)(1);
+            }
+            ss = (double)(0);
+            for(j=0; j<=k-1; j++)
+            {
+                ss = ss+1/s->ptr.p_double[j];
+            }
+            for(j=0; j<=k-1; j++)
+            {
+                s->ptr.p_double[j] = sz/ss/s->ptr.p_double[j];
+            }
+            
+            /*
+             * Calculate damped inverse of inv((Z+v*S)'*(Z+v*S))
+             * We increase damping factor V until matrix become well-conditioned.
+             */
+            v = 1.0E3*ae_machineepsilon;
+            do
+            {
+                for(i=0; i<=k-1; i++)
+                {
+                    for(j=i; j<=k-1; j++)
+                    {
+                        rep->covpar.ptr.pp_double[i][j] = z->ptr.pp_double[i][j]/noisec;
+                    }
+                    rep->covpar.ptr.pp_double[i][i] = rep->covpar.ptr.pp_double[i][i]+v*s->ptr.p_double[i];
+                }
+                spdmatrixcholeskyinverse(&rep->covpar, k, ae_true, &info, &invrep, _state);
+                v = 10*v;
+            }
+            while(info<=0);
+            for(i=0; i<=k-1; i++)
+            {
+                for(j=i+1; j<=k-1; j++)
+                {
+                    rep->covpar.ptr.pp_double[j][i] = rep->covpar.ptr.pp_double[i][j];
+                }
+            }
+        }
+    }
+    else
+    {
+        
+        /*
+         * Degenerate situation: zero noise level, covariance matrix is zero.
+         */
+        for(i=0; i<=k-1; i++)
+        {
+            for(j=0; j<=k-1; j++)
+            {
+                rep->covpar.ptr.pp_double[j][i] = (double)(0);
+            }
+        }
+    }
+    
+    /*
+     * Estimate erorrs in parameters, curve and per-point noise
+     */
+    rvectorsetlengthatleast(&rep->errpar, k, _state);
+    rvectorsetlengthatleast(&rep->errcurve, n, _state);
+    rvectorsetlengthatleast(&rep->noise, n, _state);
+    for(i=0; i<=k-1; i++)
+    {
+        rep->errpar.ptr.p_double[i] = ae_sqrt(rep->covpar.ptr.pp_double[i][i], _state);
+    }
+    for(i=0; i<=n-1; i++)
+    {
+        
+        /*
+         * ErrCurve[I] is sqrt(P[i,i]) where P=J*CovPar*J'
+         */
+        v = 0.0;
+        for(j=0; j<=k-1; j++)
+        {
+            for(j1=0; j1<=k-1; j1++)
+            {
+                v = v+f1->ptr.pp_double[i][j]*rep->covpar.ptr.pp_double[j][j1]*f1->ptr.pp_double[i][j1];
+            }
+        }
+        rep->errcurve.ptr.p_double[i] = ae_sqrt(v, _state);
+        
+        /*
+         * Noise[i] is filled using weights and current estimate of noise level
+         */
+        if( ae_fp_neq(w->ptr.p_double[i],(double)(0)) )
+        {
+            rep->noise.ptr.p_double[i] = noisec/w->ptr.p_double[i];
+        }
+        else
+        {
+            rep->noise.ptr.p_double[i] = (double)(0);
+        }
+    }
+    ae_frame_leave(_state);
+}
+
+
+void _polynomialfitreport_init(void* _p, ae_state *_state)
+{
+    polynomialfitreport *p = (polynomialfitreport*)_p;
+    ae_touch_ptr((void*)p);
+}
+
+
+void _polynomialfitreport_init_copy(void* _dst, void* _src, ae_state *_state)
+{
+    polynomialfitreport *dst = (polynomialfitreport*)_dst;
+    polynomialfitreport *src = (polynomialfitreport*)_src;
     dst->taskrcond = src->taskrcond;
     dst->rmserror = src->rmserror;
     dst->avgerror = src->avgerror;
     dst->avgrelerror = src->avgrelerror;
     dst->maxerror = src->maxerror;
-    return ae_true;
 }
 
 
-void _polynomialfitreport_clear(polynomialfitreport* p)
+void _polynomialfitreport_clear(void* _p)
 {
+    polynomialfitreport *p = (polynomialfitreport*)_p;
+    ae_touch_ptr((void*)p);
 }
 
 
-ae_bool _barycentricfitreport_init(barycentricfitreport* p, ae_state *_state, ae_bool make_automatic)
+void _polynomialfitreport_destroy(void* _p)
 {
-    return ae_true;
+    polynomialfitreport *p = (polynomialfitreport*)_p;
+    ae_touch_ptr((void*)p);
 }
 
 
-ae_bool _barycentricfitreport_init_copy(barycentricfitreport* dst, barycentricfitreport* src, ae_state *_state, ae_bool make_automatic)
+void _barycentricfitreport_init(void* _p, ae_state *_state)
 {
+    barycentricfitreport *p = (barycentricfitreport*)_p;
+    ae_touch_ptr((void*)p);
+}
+
+
+void _barycentricfitreport_init_copy(void* _dst, void* _src, ae_state *_state)
+{
+    barycentricfitreport *dst = (barycentricfitreport*)_dst;
+    barycentricfitreport *src = (barycentricfitreport*)_src;
     dst->taskrcond = src->taskrcond;
     dst->dbest = src->dbest;
     dst->rmserror = src->rmserror;
     dst->avgerror = src->avgerror;
     dst->avgrelerror = src->avgrelerror;
     dst->maxerror = src->maxerror;
-    return ae_true;
 }
 
 
-void _barycentricfitreport_clear(barycentricfitreport* p)
+void _barycentricfitreport_clear(void* _p)
 {
+    barycentricfitreport *p = (barycentricfitreport*)_p;
+    ae_touch_ptr((void*)p);
 }
 
 
-ae_bool _spline1dfitreport_init(spline1dfitreport* p, ae_state *_state, ae_bool make_automatic)
+void _barycentricfitreport_destroy(void* _p)
 {
-    return ae_true;
+    barycentricfitreport *p = (barycentricfitreport*)_p;
+    ae_touch_ptr((void*)p);
 }
 
 
-ae_bool _spline1dfitreport_init_copy(spline1dfitreport* dst, spline1dfitreport* src, ae_state *_state, ae_bool make_automatic)
+void _spline1dfitreport_init(void* _p, ae_state *_state)
 {
+    spline1dfitreport *p = (spline1dfitreport*)_p;
+    ae_touch_ptr((void*)p);
+}
+
+
+void _spline1dfitreport_init_copy(void* _dst, void* _src, ae_state *_state)
+{
+    spline1dfitreport *dst = (spline1dfitreport*)_dst;
+    spline1dfitreport *src = (spline1dfitreport*)_src;
     dst->taskrcond = src->taskrcond;
     dst->rmserror = src->rmserror;
     dst->avgerror = src->avgerror;
     dst->avgrelerror = src->avgrelerror;
     dst->maxerror = src->maxerror;
-    return ae_true;
 }
 
 
-void _spline1dfitreport_clear(spline1dfitreport* p)
+void _spline1dfitreport_clear(void* _p)
 {
+    spline1dfitreport *p = (spline1dfitreport*)_p;
+    ae_touch_ptr((void*)p);
 }
 
 
-ae_bool _lsfitreport_init(lsfitreport* p, ae_state *_state, ae_bool make_automatic)
+void _spline1dfitreport_destroy(void* _p)
 {
-    return ae_true;
+    spline1dfitreport *p = (spline1dfitreport*)_p;
+    ae_touch_ptr((void*)p);
 }
 
 
-ae_bool _lsfitreport_init_copy(lsfitreport* dst, lsfitreport* src, ae_state *_state, ae_bool make_automatic)
+void _lsfitreport_init(void* _p, ae_state *_state)
 {
+    lsfitreport *p = (lsfitreport*)_p;
+    ae_touch_ptr((void*)p);
+    ae_matrix_init(&p->covpar, 0, 0, DT_REAL, _state);
+    ae_vector_init(&p->errpar, 0, DT_REAL, _state);
+    ae_vector_init(&p->errcurve, 0, DT_REAL, _state);
+    ae_vector_init(&p->noise, 0, DT_REAL, _state);
+}
+
+
+void _lsfitreport_init_copy(void* _dst, void* _src, ae_state *_state)
+{
+    lsfitreport *dst = (lsfitreport*)_dst;
+    lsfitreport *src = (lsfitreport*)_src;
     dst->taskrcond = src->taskrcond;
     dst->iterationscount = src->iterationscount;
     dst->varidx = src->varidx;
@@ -23011,51 +28326,67 @@ ae_bool _lsfitreport_init_copy(lsfitreport* dst, lsfitreport* src, ae_state *_st
     dst->avgrelerror = src->avgrelerror;
     dst->maxerror = src->maxerror;
     dst->wrmserror = src->wrmserror;
-    return ae_true;
+    ae_matrix_init_copy(&dst->covpar, &src->covpar, _state);
+    ae_vector_init_copy(&dst->errpar, &src->errpar, _state);
+    ae_vector_init_copy(&dst->errcurve, &src->errcurve, _state);
+    ae_vector_init_copy(&dst->noise, &src->noise, _state);
+    dst->r2 = src->r2;
 }
 
 
-void _lsfitreport_clear(lsfitreport* p)
+void _lsfitreport_clear(void* _p)
 {
+    lsfitreport *p = (lsfitreport*)_p;
+    ae_touch_ptr((void*)p);
+    ae_matrix_clear(&p->covpar);
+    ae_vector_clear(&p->errpar);
+    ae_vector_clear(&p->errcurve);
+    ae_vector_clear(&p->noise);
 }
 
 
-ae_bool _lsfitstate_init(lsfitstate* p, ae_state *_state, ae_bool make_automatic)
+void _lsfitreport_destroy(void* _p)
 {
-    if( !ae_vector_init(&p->s, 0, DT_REAL, _state, make_automatic) )
-        return ae_false;
-    if( !ae_vector_init(&p->bndl, 0, DT_REAL, _state, make_automatic) )
-        return ae_false;
-    if( !ae_vector_init(&p->bndu, 0, DT_REAL, _state, make_automatic) )
-        return ae_false;
-    if( !ae_matrix_init(&p->taskx, 0, 0, DT_REAL, _state, make_automatic) )
-        return ae_false;
-    if( !ae_vector_init(&p->tasky, 0, DT_REAL, _state, make_automatic) )
-        return ae_false;
-    if( !ae_vector_init(&p->w, 0, DT_REAL, _state, make_automatic) )
-        return ae_false;
-    if( !ae_vector_init(&p->x, 0, DT_REAL, _state, make_automatic) )
-        return ae_false;
-    if( !ae_vector_init(&p->c, 0, DT_REAL, _state, make_automatic) )
-        return ae_false;
-    if( !ae_vector_init(&p->g, 0, DT_REAL, _state, make_automatic) )
-        return ae_false;
-    if( !ae_matrix_init(&p->h, 0, 0, DT_REAL, _state, make_automatic) )
-        return ae_false;
-    if( !ae_vector_init(&p->tmp, 0, DT_REAL, _state, make_automatic) )
-        return ae_false;
-    if( !_minlmstate_init(&p->optstate, _state, make_automatic) )
-        return ae_false;
-    if( !_minlmreport_init(&p->optrep, _state, make_automatic) )
-        return ae_false;
-    if( !_rcommstate_init(&p->rstate, _state, make_automatic) )
-        return ae_false;
-    return ae_true;
+    lsfitreport *p = (lsfitreport*)_p;
+    ae_touch_ptr((void*)p);
+    ae_matrix_destroy(&p->covpar);
+    ae_vector_destroy(&p->errpar);
+    ae_vector_destroy(&p->errcurve);
+    ae_vector_destroy(&p->noise);
 }
 
 
-ae_bool _lsfitstate_init_copy(lsfitstate* dst, lsfitstate* src, ae_state *_state, ae_bool make_automatic)
+void _lsfitstate_init(void* _p, ae_state *_state)
 {
+    lsfitstate *p = (lsfitstate*)_p;
+    ae_touch_ptr((void*)p);
+    ae_vector_init(&p->s, 0, DT_REAL, _state);
+    ae_vector_init(&p->bndl, 0, DT_REAL, _state);
+    ae_vector_init(&p->bndu, 0, DT_REAL, _state);
+    ae_matrix_init(&p->taskx, 0, 0, DT_REAL, _state);
+    ae_vector_init(&p->tasky, 0, DT_REAL, _state);
+    ae_vector_init(&p->taskw, 0, DT_REAL, _state);
+    ae_vector_init(&p->x, 0, DT_REAL, _state);
+    ae_vector_init(&p->c, 0, DT_REAL, _state);
+    ae_vector_init(&p->g, 0, DT_REAL, _state);
+    ae_matrix_init(&p->h, 0, 0, DT_REAL, _state);
+    ae_vector_init(&p->wcur, 0, DT_REAL, _state);
+    ae_vector_init(&p->tmp, 0, DT_REAL, _state);
+    ae_vector_init(&p->tmpf, 0, DT_REAL, _state);
+    ae_matrix_init(&p->tmpjac, 0, 0, DT_REAL, _state);
+    ae_matrix_init(&p->tmpjacw, 0, 0, DT_REAL, _state);
+    _matinvreport_init(&p->invrep, _state);
+    _lsfitreport_init(&p->rep, _state);
+    _minlmstate_init(&p->optstate, _state);
+    _minlmreport_init(&p->optrep, _state);
+    _rcommstate_init(&p->rstate, _state);
+}
+
+
+void _lsfitstate_init_copy(void* _dst, void* _src, ae_state *_state)
+{
+    lsfitstate *dst = (lsfitstate*)_dst;
+    lsfitstate *src = (lsfitstate*)_src;
     dst->optalgo = src->optalgo;
     dst->m = src->m;
     dst->k = src->k;
@@ -23064,39 +28395,35 @@ ae_bool _lsfitstate_init_copy(lsfitstate* dst, lsfitstate* src, ae_state *_state
     dst->maxits = src->maxits;
     dst->stpmax = src->stpmax;
     dst->xrep = src->xrep;
-    if( !ae_vector_init_copy(&dst->s, &src->s, _state, make_automatic) )
-        return ae_false;
-    if( !ae_vector_init_copy(&dst->bndl, &src->bndl, _state, make_automatic) )
-        return ae_false;
-    if( !ae_vector_init_copy(&dst->bndu, &src->bndu, _state, make_automatic) )
-        return ae_false;
-    if( !ae_matrix_init_copy(&dst->taskx, &src->taskx, _state, make_automatic) )
-        return ae_false;
-    if( !ae_vector_init_copy(&dst->tasky, &src->tasky, _state, make_automatic) )
-        return ae_false;
+    ae_vector_init_copy(&dst->s, &src->s, _state);
+    ae_vector_init_copy(&dst->bndl, &src->bndl, _state);
+    ae_vector_init_copy(&dst->bndu, &src->bndu, _state);
+    ae_matrix_init_copy(&dst->taskx, &src->taskx, _state);
+    ae_vector_init_copy(&dst->tasky, &src->tasky, _state);
     dst->npoints = src->npoints;
-    if( !ae_vector_init_copy(&dst->w, &src->w, _state, make_automatic) )
-        return ae_false;
+    ae_vector_init_copy(&dst->taskw, &src->taskw, _state);
     dst->nweights = src->nweights;
     dst->wkind = src->wkind;
     dst->wits = src->wits;
+    dst->diffstep = src->diffstep;
     dst->teststep = src->teststep;
     dst->xupdated = src->xupdated;
     dst->needf = src->needf;
     dst->needfg = src->needfg;
     dst->needfgh = src->needfgh;
     dst->pointindex = src->pointindex;
-    if( !ae_vector_init_copy(&dst->x, &src->x, _state, make_automatic) )
-        return ae_false;
-    if( !ae_vector_init_copy(&dst->c, &src->c, _state, make_automatic) )
-        return ae_false;
+    ae_vector_init_copy(&dst->x, &src->x, _state);
+    ae_vector_init_copy(&dst->c, &src->c, _state);
     dst->f = src->f;
-    if( !ae_vector_init_copy(&dst->g, &src->g, _state, make_automatic) )
-        return ae_false;
-    if( !ae_matrix_init_copy(&dst->h, &src->h, _state, make_automatic) )
-        return ae_false;
-    if( !ae_vector_init_copy(&dst->tmp, &src->tmp, _state, make_automatic) )
-        return ae_false;
+    ae_vector_init_copy(&dst->g, &src->g, _state);
+    ae_matrix_init_copy(&dst->h, &src->h, _state);
+    ae_vector_init_copy(&dst->wcur, &src->wcur, _state);
+    ae_vector_init_copy(&dst->tmp, &src->tmp, _state);
+    ae_vector_init_copy(&dst->tmpf, &src->tmpf, _state);
+    ae_matrix_init_copy(&dst->tmpjac, &src->tmpjac, _state);
+    ae_matrix_init_copy(&dst->tmpjacw, &src->tmpjacw, _state);
+    dst->tmpnoise = src->tmpnoise;
+    _matinvreport_init_copy(&dst->invrep, &src->invrep, _state);
     dst->repiterationscount = src->repiterationscount;
     dst->repterminationtype = src->repterminationtype;
     dst->repvaridx = src->repvaridx;
@@ -23105,34 +28432,66 @@ ae_bool _lsfitstate_init_copy(lsfitstate* dst, lsfitstate* src, ae_state *_state
     dst->repavgrelerror = src->repavgrelerror;
     dst->repmaxerror = src->repmaxerror;
     dst->repwrmserror = src->repwrmserror;
-    if( !_minlmstate_init_copy(&dst->optstate, &src->optstate, _state, make_automatic) )
-        return ae_false;
-    if( !_minlmreport_init_copy(&dst->optrep, &src->optrep, _state, make_automatic) )
-        return ae_false;
+    _lsfitreport_init_copy(&dst->rep, &src->rep, _state);
+    _minlmstate_init_copy(&dst->optstate, &src->optstate, _state);
+    _minlmreport_init_copy(&dst->optrep, &src->optrep, _state);
     dst->prevnpt = src->prevnpt;
     dst->prevalgo = src->prevalgo;
-    if( !_rcommstate_init_copy(&dst->rstate, &src->rstate, _state, make_automatic) )
-        return ae_false;
-    return ae_true;
+    _rcommstate_init_copy(&dst->rstate, &src->rstate, _state);
 }
 
 
-void _lsfitstate_clear(lsfitstate* p)
+void _lsfitstate_clear(void* _p)
 {
+    lsfitstate *p = (lsfitstate*)_p;
+    ae_touch_ptr((void*)p);
     ae_vector_clear(&p->s);
     ae_vector_clear(&p->bndl);
     ae_vector_clear(&p->bndu);
     ae_matrix_clear(&p->taskx);
     ae_vector_clear(&p->tasky);
-    ae_vector_clear(&p->w);
+    ae_vector_clear(&p->taskw);
     ae_vector_clear(&p->x);
     ae_vector_clear(&p->c);
     ae_vector_clear(&p->g);
     ae_matrix_clear(&p->h);
+    ae_vector_clear(&p->wcur);
     ae_vector_clear(&p->tmp);
+    ae_vector_clear(&p->tmpf);
+    ae_matrix_clear(&p->tmpjac);
+    ae_matrix_clear(&p->tmpjacw);
+    _matinvreport_clear(&p->invrep);
+    _lsfitreport_clear(&p->rep);
     _minlmstate_clear(&p->optstate);
     _minlmreport_clear(&p->optrep);
     _rcommstate_clear(&p->rstate);
+}
+
+
+void _lsfitstate_destroy(void* _p)
+{
+    lsfitstate *p = (lsfitstate*)_p;
+    ae_touch_ptr((void*)p);
+    ae_vector_destroy(&p->s);
+    ae_vector_destroy(&p->bndl);
+    ae_vector_destroy(&p->bndu);
+    ae_matrix_destroy(&p->taskx);
+    ae_vector_destroy(&p->tasky);
+    ae_vector_destroy(&p->taskw);
+    ae_vector_destroy(&p->x);
+    ae_vector_destroy(&p->c);
+    ae_vector_destroy(&p->g);
+    ae_matrix_destroy(&p->h);
+    ae_vector_destroy(&p->wcur);
+    ae_vector_destroy(&p->tmp);
+    ae_vector_destroy(&p->tmpf);
+    ae_matrix_destroy(&p->tmpjac);
+    ae_matrix_destroy(&p->tmpjacw);
+    _matinvreport_destroy(&p->invrep);
+    _lsfitreport_destroy(&p->rep);
+    _minlmstate_destroy(&p->optstate);
+    _minlmreport_destroy(&p->optrep);
+    _rcommstate_destroy(&p->rstate);
 }
 
 
@@ -23182,10 +28541,10 @@ void pspline2build(/* Real    */ ae_matrix* xy,
     ae_vector tmp;
 
     ae_frame_make(_state, &_frame_block);
-    ae_matrix_init_copy(&_xy, xy, _state, ae_true);
+    ae_matrix_init_copy(&_xy, xy, _state);
     xy = &_xy;
     _pspline2interpolant_clear(p);
-    ae_vector_init(&tmp, 0, DT_REAL, _state, ae_true);
+    ae_vector_init(&tmp, 0, DT_REAL, _state);
 
     ae_assert(st>=0&&st<=2, "PSpline2Build: incorrect spline type!", _state);
     ae_assert(pt>=0&&pt<=2, "PSpline2Build: incorrect parameterization type!", _state);
@@ -23208,7 +28567,7 @@ void pspline2build(/* Real    */ ae_matrix* xy,
     /*
      * Build parameterization, check that all parameters are distinct
      */
-    pspline_pspline2par(xy, n, pt, &p->p, _state);
+    parametric_pspline2par(xy, n, pt, &p->p, _state);
     ae_assert(aredistinct(&p->p, n, _state), "PSpline2Build: consequent points are too close!", _state);
     
     /*
@@ -23261,10 +28620,10 @@ void pspline3build(/* Real    */ ae_matrix* xy,
     ae_vector tmp;
 
     ae_frame_make(_state, &_frame_block);
-    ae_matrix_init_copy(&_xy, xy, _state, ae_true);
+    ae_matrix_init_copy(&_xy, xy, _state);
     xy = &_xy;
     _pspline3interpolant_clear(p);
-    ae_vector_init(&tmp, 0, DT_REAL, _state, ae_true);
+    ae_vector_init(&tmp, 0, DT_REAL, _state);
 
     ae_assert(st>=0&&st<=2, "PSpline3Build: incorrect spline type!", _state);
     ae_assert(pt>=0&&pt<=2, "PSpline3Build: incorrect parameterization type!", _state);
@@ -23287,7 +28646,7 @@ void pspline3build(/* Real    */ ae_matrix* xy,
     /*
      * Build parameterization, check that all parameters are distinct
      */
-    pspline_pspline3par(xy, n, pt, &p->p, _state);
+    parametric_pspline3par(xy, n, pt, &p->p, _state);
     ae_assert(aredistinct(&p->p, n, _state), "PSpline3Build: consequent points are too close!", _state);
     
     /*
@@ -23371,11 +28730,11 @@ void pspline2buildperiodic(/* Real    */ ae_matrix* xy,
     ae_vector tmp;
 
     ae_frame_make(_state, &_frame_block);
-    ae_matrix_init_copy(&_xy, xy, _state, ae_true);
+    ae_matrix_init_copy(&_xy, xy, _state);
     xy = &_xy;
     _pspline2interpolant_clear(p);
-    ae_matrix_init(&xyp, 0, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&tmp, 0, DT_REAL, _state, ae_true);
+    ae_matrix_init(&xyp, 0, 0, DT_REAL, _state);
+    ae_vector_init(&tmp, 0, DT_REAL, _state);
 
     ae_assert(st>=1&&st<=2, "PSpline2BuildPeriodic: incorrect spline type!", _state);
     ae_assert(pt>=0&&pt<=2, "PSpline2BuildPeriodic: incorrect parameterization type!", _state);
@@ -23395,7 +28754,7 @@ void pspline2buildperiodic(/* Real    */ ae_matrix* xy,
     /*
      * Build parameterization, check that all parameters are distinct
      */
-    pspline_pspline2par(&xyp, n+1, pt, &p->p, _state);
+    parametric_pspline2par(&xyp, n+1, pt, &p->p, _state);
     ae_assert(aredistinct(&p->p, n+1, _state), "PSpline2BuildPeriodic: consequent (or first and last) points are too close!", _state);
     
     /*
@@ -23443,11 +28802,11 @@ void pspline3buildperiodic(/* Real    */ ae_matrix* xy,
     ae_vector tmp;
 
     ae_frame_make(_state, &_frame_block);
-    ae_matrix_init_copy(&_xy, xy, _state, ae_true);
+    ae_matrix_init_copy(&_xy, xy, _state);
     xy = &_xy;
     _pspline3interpolant_clear(p);
-    ae_matrix_init(&xyp, 0, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&tmp, 0, DT_REAL, _state, ae_true);
+    ae_matrix_init(&xyp, 0, 0, DT_REAL, _state);
+    ae_vector_init(&tmp, 0, DT_REAL, _state);
 
     ae_assert(st>=1&&st<=2, "PSpline3BuildPeriodic: incorrect spline type!", _state);
     ae_assert(pt>=0&&pt<=2, "PSpline3BuildPeriodic: incorrect parameterization type!", _state);
@@ -23468,7 +28827,7 @@ void pspline3buildperiodic(/* Real    */ ae_matrix* xy,
     /*
      * Build parameterization, check that all parameters are distinct
      */
-    pspline_pspline3par(&xyp, n+1, pt, &p->p, _state);
+    parametric_pspline3par(&xyp, n+1, pt, &p->p, _state);
     ae_assert(aredistinct(&p->p, n+1, _state), "PSplineBuild2Periodic: consequent (or first and last) points are too close!", _state);
     
     /*
@@ -23534,10 +28893,10 @@ void pspline2parametervalues(pspline2interpolant* p,
     *n = p->n;
     ae_vector_set_length(t, *n, _state);
     ae_v_move(&t->ptr.p_double[0], 1, &p->p.ptr.p_double[0], 1, ae_v_len(0,*n-1));
-    t->ptr.p_double[0] = 0;
+    t->ptr.p_double[0] = (double)(0);
     if( !p->periodic )
     {
-        t->ptr.p_double[*n-1] = 1;
+        t->ptr.p_double[*n-1] = (double)(1);
     }
 }
 
@@ -23563,10 +28922,10 @@ void pspline3parametervalues(pspline3interpolant* p,
     *n = p->n;
     ae_vector_set_length(t, *n, _state);
     ae_v_move(&t->ptr.p_double[0], 1, &p->p.ptr.p_double[0], 1, ae_v_len(0,*n-1));
-    t->ptr.p_double[0] = 0;
+    t->ptr.p_double[0] = (double)(0);
     if( !p->periodic )
     {
-        t->ptr.p_double[*n-1] = 1;
+        t->ptr.p_double[*n-1] = (double)(1);
     }
 }
 
@@ -23696,7 +29055,7 @@ void pspline2tangent(pspline2interpolant* p,
         t = t-ae_ifloor(t, _state);
     }
     pspline2diff(p, t, &v0, x, &v1, y, _state);
-    if( ae_fp_neq(*x,0)||ae_fp_neq(*y,0) )
+    if( ae_fp_neq(*x,(double)(0))||ae_fp_neq(*y,(double)(0)) )
     {
         
         /*
@@ -23755,7 +29114,7 @@ void pspline3tangent(pspline3interpolant* p,
         t = t-ae_ifloor(t, _state);
     }
     pspline3diff(p, t, &v0, x, &v1, y, &v2, z, _state);
-    if( (ae_fp_neq(*x,0)||ae_fp_neq(*y,0))||ae_fp_neq(*z,0) )
+    if( (ae_fp_neq(*x,(double)(0))||ae_fp_neq(*y,(double)(0)))||ae_fp_neq(*z,(double)(0)) )
     {
         v = safepythag3(*x, *y, *z, _state);
         *x = *x/v;
@@ -24010,8 +29369,8 @@ double pspline2arclength(pspline2interpolant* p,
     double result;
 
     ae_frame_make(_state, &_frame_block);
-    _autogkstate_init(&state, _state, ae_true);
-    _autogkreport_init(&rep, _state, ae_true);
+    _autogkstate_init(&state, _state);
+    _autogkreport_init(&rep, _state);
 
     autogksmooth(a, b, &state, _state);
     while(autogkiteration(&state, _state))
@@ -24064,8 +29423,8 @@ double pspline3arclength(pspline3interpolant* p,
     double result;
 
     ae_frame_make(_state, &_frame_block);
-    _autogkstate_init(&state, _state, ae_true);
-    _autogkreport_init(&rep, _state, ae_true);
+    _autogkstate_init(&state, _state);
+    _autogkreport_init(&rep, _state);
 
     autogksmooth(a, b, &state, _state);
     while(autogkiteration(&state, _state))
@@ -24083,9 +29442,244 @@ double pspline3arclength(pspline3interpolant* p,
 
 
 /*************************************************************************
+This  subroutine fits piecewise linear curve to points with Ramer-Douglas-
+Peucker algorithm. This  function  performs PARAMETRIC fit, i.e. it can be
+used to fit curves like circles.
+
+On  input  it  accepts dataset which describes parametric multidimensional
+curve X(t), with X being vector, and t taking values in [0,N), where N  is
+a number of points in dataset. As result, it returns reduced  dataset  X2,
+which can be used to build  parametric  curve  X2(t),  which  approximates
+X(t) with desired precision (or has specified number of sections).
+
+
+INPUT PARAMETERS:
+    X       -   array of multidimensional points:
+                * at least N elements, leading N elements are used if more
+                  than N elements were specified
+                * order of points is IMPORTANT because  it  is  parametric
+                  fit
+                * each row of array is one point which has D coordinates
+    N       -   number of elements in X
+    D       -   number of dimensions (elements per row of X)
+    StopM   -   stopping condition - desired number of sections:
+                * at most M sections are generated by this function
+                * less than M sections can be generated if we have N<M
+                  (or some X are non-distinct).
+                * zero StopM means that algorithm does not stop after
+                  achieving some pre-specified section count
+    StopEps -   stopping condition - desired precision:
+                * algorithm stops after error in each section is at most Eps
+                * zero Eps means that algorithm does not stop after
+                  achieving some pre-specified precision
+
+OUTPUT PARAMETERS:
+    X2      -   array of corner points for piecewise approximation,
+                has length NSections+1 or zero (for NSections=0).
+    Idx2    -   array of indexes (parameter values):
+                * has length NSections+1 or zero (for NSections=0).
+                * each element of Idx2 corresponds to same-numbered
+                  element of X2
+                * each element of Idx2 is index of  corresponding  element
+                  of X2 at original array X, i.e. I-th  row  of  X2  is
+                  Idx2[I]-th row of X.
+                * elements of Idx2 can be treated as parameter values
+                  which should be used when building new parametric curve
+                * Idx2[0]=0, Idx2[NSections]=N-1
+    NSections-  number of sections found by algorithm, NSections<=M,
+                NSections can be zero for degenerate datasets
+                (N<=1 or all X[] are non-distinct).
+
+NOTE: algorithm stops after:
+      a) dividing curve into StopM sections 
+      b) achieving required precision StopEps
+      c) dividing curve into N-1 sections
+      If both StopM and StopEps are non-zero, algorithm is stopped by  the
+      FIRST criterion which is satisfied. In case both StopM  and  StopEps
+      are zero, algorithm stops because of (c).
+                
+  -- ALGLIB --
+     Copyright 02.10.2014 by Bochkanov Sergey
+*************************************************************************/
+void parametricrdpfixed(/* Real    */ ae_matrix* x,
+     ae_int_t n,
+     ae_int_t d,
+     ae_int_t stopm,
+     double stopeps,
+     /* Real    */ ae_matrix* x2,
+     /* Integer */ ae_vector* idx2,
+     ae_int_t* nsections,
+     ae_state *_state)
+{
+    ae_frame _frame_block;
+    ae_int_t i;
+    ae_int_t j;
+    ae_int_t k;
+    ae_bool allsame;
+    ae_int_t k0;
+    ae_int_t k1;
+    ae_int_t k2;
+    double e0;
+    double e1;
+    ae_int_t idx0;
+    ae_int_t idx1;
+    ae_int_t worstidx;
+    double worsterror;
+    ae_matrix sections;
+    ae_vector heaperrors;
+    ae_vector heaptags;
+    ae_vector buf0;
+    ae_vector buf1;
+
+    ae_frame_make(_state, &_frame_block);
+    ae_matrix_clear(x2);
+    ae_vector_clear(idx2);
+    *nsections = 0;
+    ae_matrix_init(&sections, 0, 0, DT_REAL, _state);
+    ae_vector_init(&heaperrors, 0, DT_REAL, _state);
+    ae_vector_init(&heaptags, 0, DT_INT, _state);
+    ae_vector_init(&buf0, 0, DT_REAL, _state);
+    ae_vector_init(&buf1, 0, DT_REAL, _state);
+
+    ae_assert(n>=0, "LSTFitPiecewiseLinearParametricRDP: N<0", _state);
+    ae_assert(d>=1, "LSTFitPiecewiseLinearParametricRDP: D<=0", _state);
+    ae_assert(stopm>=0, "LSTFitPiecewiseLinearParametricRDP: StopM<1", _state);
+    ae_assert(ae_isfinite(stopeps, _state)&&ae_fp_greater_eq(stopeps,(double)(0)), "LSTFitPiecewiseLinearParametricRDP: StopEps<0 or is infinite", _state);
+    ae_assert(x->rows>=n, "LSTFitPiecewiseLinearParametricRDP: Rows(X)<N", _state);
+    ae_assert(x->cols>=d, "LSTFitPiecewiseLinearParametricRDP: Cols(X)<D", _state);
+    ae_assert(apservisfinitematrix(x, n, d, _state), "LSTFitPiecewiseLinearParametricRDP: X contains infinite/NAN values", _state);
+    
+    /*
+     * Handle degenerate cases
+     */
+    if( n<=1 )
+    {
+        *nsections = 0;
+        ae_frame_leave(_state);
+        return;
+    }
+    allsame = ae_true;
+    for(i=1; i<=n-1; i++)
+    {
+        for(j=0; j<=d-1; j++)
+        {
+            allsame = allsame&&ae_fp_eq(x->ptr.pp_double[i][j],x->ptr.pp_double[0][j]);
+        }
+    }
+    if( allsame )
+    {
+        *nsections = 0;
+        ae_frame_leave(_state);
+        return;
+    }
+    
+    /*
+     * Prepare first section
+     */
+    parametric_rdpanalyzesectionpar(x, 0, n-1, d, &worstidx, &worsterror, _state);
+    ae_matrix_set_length(&sections, n, 4, _state);
+    ae_vector_set_length(&heaperrors, n, _state);
+    ae_vector_set_length(&heaptags, n, _state);
+    *nsections = 1;
+    sections.ptr.pp_double[0][0] = (double)(0);
+    sections.ptr.pp_double[0][1] = (double)(n-1);
+    sections.ptr.pp_double[0][2] = (double)(worstidx);
+    sections.ptr.pp_double[0][3] = worsterror;
+    heaperrors.ptr.p_double[0] = worsterror;
+    heaptags.ptr.p_int[0] = 0;
+    ae_assert(ae_fp_eq(sections.ptr.pp_double[0][1],(double)(n-1)), "RDP algorithm: integrity check failed", _state);
+    
+    /*
+     * Main loop.
+     * Repeatedly find section with worst error and divide it.
+     * Terminate after M-th section, or because of other reasons (see loop internals).
+     */
+    for(;;)
+    {
+        
+        /*
+         * Break loop if one of the stopping conditions was met.
+         * Store index of worst section to K.
+         */
+        if( ae_fp_eq(heaperrors.ptr.p_double[0],(double)(0)) )
+        {
+            break;
+        }
+        if( ae_fp_greater(stopeps,(double)(0))&&ae_fp_less_eq(heaperrors.ptr.p_double[0],stopeps) )
+        {
+            break;
+        }
+        if( stopm>0&&*nsections>=stopm )
+        {
+            break;
+        }
+        k = heaptags.ptr.p_int[0];
+        
+        /*
+         * K-th section is divided in two:
+         * * first  one spans interval from X[Sections[K,0]] to X[Sections[K,2]]
+         * * second one spans interval from X[Sections[K,2]] to X[Sections[K,1]]
+         *
+         * First section is stored at K-th position, second one is appended to the table.
+         * Then we update heap which stores pairs of (error,section_index)
+         */
+        k0 = ae_round(sections.ptr.pp_double[k][0], _state);
+        k1 = ae_round(sections.ptr.pp_double[k][1], _state);
+        k2 = ae_round(sections.ptr.pp_double[k][2], _state);
+        parametric_rdpanalyzesectionpar(x, k0, k2, d, &idx0, &e0, _state);
+        parametric_rdpanalyzesectionpar(x, k2, k1, d, &idx1, &e1, _state);
+        sections.ptr.pp_double[k][0] = (double)(k0);
+        sections.ptr.pp_double[k][1] = (double)(k2);
+        sections.ptr.pp_double[k][2] = (double)(idx0);
+        sections.ptr.pp_double[k][3] = e0;
+        tagheapreplacetopi(&heaperrors, &heaptags, *nsections, e0, k, _state);
+        sections.ptr.pp_double[*nsections][0] = (double)(k2);
+        sections.ptr.pp_double[*nsections][1] = (double)(k1);
+        sections.ptr.pp_double[*nsections][2] = (double)(idx1);
+        sections.ptr.pp_double[*nsections][3] = e1;
+        tagheappushi(&heaperrors, &heaptags, nsections, e1, *nsections, _state);
+    }
+    
+    /*
+     * Convert from sections to indexes
+     */
+    ae_vector_set_length(&buf0, *nsections+1, _state);
+    for(i=0; i<=*nsections-1; i++)
+    {
+        buf0.ptr.p_double[i] = (double)(ae_round(sections.ptr.pp_double[i][0], _state));
+    }
+    buf0.ptr.p_double[*nsections] = (double)(n-1);
+    tagsortfast(&buf0, &buf1, *nsections+1, _state);
+    ae_vector_set_length(idx2, *nsections+1, _state);
+    for(i=0; i<=*nsections; i++)
+    {
+        idx2->ptr.p_int[i] = ae_round(buf0.ptr.p_double[i], _state);
+    }
+    ae_assert(idx2->ptr.p_int[0]==0, "RDP algorithm: integrity check failed", _state);
+    ae_assert(idx2->ptr.p_int[*nsections]==n-1, "RDP algorithm: integrity check failed", _state);
+    
+    /*
+     * Output sections:
+     * * first NSection elements of X2/Y2 are filled by x/y at left boundaries of sections
+     * * last element of X2/Y2 is filled by right boundary of rightmost section
+     * * X2/Y2 is sorted by ascending of X2
+     */
+    ae_matrix_set_length(x2, *nsections+1, d, _state);
+    for(i=0; i<=*nsections; i++)
+    {
+        for(j=0; j<=d-1; j++)
+        {
+            x2->ptr.pp_double[i][j] = x->ptr.pp_double[idx2->ptr.p_int[i]][j];
+        }
+    }
+    ae_frame_leave(_state);
+}
+
+
+/*************************************************************************
 Builds non-periodic parameterization for 2-dimensional spline
 *************************************************************************/
-static void pspline_pspline2par(/* Real    */ ae_matrix* xy,
+static void parametric_pspline2par(/* Real    */ ae_matrix* xy,
      ae_int_t n,
      ae_int_t pt,
      /* Real    */ ae_vector* p,
@@ -24108,12 +29702,12 @@ static void pspline_pspline2par(/* Real    */ ae_matrix* xy,
     {
         for(i=0; i<=n-1; i++)
         {
-            p->ptr.p_double[i] = i;
+            p->ptr.p_double[i] = (double)(i);
         }
     }
     if( pt==1 )
     {
-        p->ptr.p_double[0] = 0;
+        p->ptr.p_double[0] = (double)(0);
         for(i=1; i<=n-1; i++)
         {
             p->ptr.p_double[i] = p->ptr.p_double[i-1]+safepythag2(xy->ptr.pp_double[i][0]-xy->ptr.pp_double[i-1][0], xy->ptr.pp_double[i][1]-xy->ptr.pp_double[i-1][1], _state);
@@ -24121,7 +29715,7 @@ static void pspline_pspline2par(/* Real    */ ae_matrix* xy,
     }
     if( pt==2 )
     {
-        p->ptr.p_double[0] = 0;
+        p->ptr.p_double[0] = (double)(0);
         for(i=1; i<=n-1; i++)
         {
             p->ptr.p_double[i] = p->ptr.p_double[i-1]+ae_sqrt(safepythag2(xy->ptr.pp_double[i][0]-xy->ptr.pp_double[i-1][0], xy->ptr.pp_double[i][1]-xy->ptr.pp_double[i-1][1], _state), _state);
@@ -24135,7 +29729,7 @@ static void pspline_pspline2par(/* Real    */ ae_matrix* xy,
 /*************************************************************************
 Builds non-periodic parameterization for 3-dimensional spline
 *************************************************************************/
-static void pspline_pspline3par(/* Real    */ ae_matrix* xy,
+static void parametric_pspline3par(/* Real    */ ae_matrix* xy,
      ae_int_t n,
      ae_int_t pt,
      /* Real    */ ae_vector* p,
@@ -24158,12 +29752,12 @@ static void pspline_pspline3par(/* Real    */ ae_matrix* xy,
     {
         for(i=0; i<=n-1; i++)
         {
-            p->ptr.p_double[i] = i;
+            p->ptr.p_double[i] = (double)(i);
         }
     }
     if( pt==1 )
     {
-        p->ptr.p_double[0] = 0;
+        p->ptr.p_double[0] = (double)(0);
         for(i=1; i<=n-1; i++)
         {
             p->ptr.p_double[i] = p->ptr.p_double[i-1]+safepythag3(xy->ptr.pp_double[i][0]-xy->ptr.pp_double[i-1][0], xy->ptr.pp_double[i][1]-xy->ptr.pp_double[i-1][1], xy->ptr.pp_double[i][2]-xy->ptr.pp_double[i-1][2], _state);
@@ -24171,7 +29765,7 @@ static void pspline_pspline3par(/* Real    */ ae_matrix* xy,
     }
     if( pt==2 )
     {
-        p->ptr.p_double[0] = 0;
+        p->ptr.p_double[0] = (double)(0);
         for(i=1; i<=n-1; i++)
         {
             p->ptr.p_double[i] = p->ptr.p_double[i-1]+ae_sqrt(safepythag3(xy->ptr.pp_double[i][0]-xy->ptr.pp_double[i-1][0], xy->ptr.pp_double[i][1]-xy->ptr.pp_double[i-1][1], xy->ptr.pp_double[i][2]-xy->ptr.pp_double[i-1][2], _state), _state);
@@ -24182,76 +29776,215 @@ static void pspline_pspline3par(/* Real    */ ae_matrix* xy,
 }
 
 
-ae_bool _pspline2interpolant_init(pspline2interpolant* p, ae_state *_state, ae_bool make_automatic)
+/*************************************************************************
+This function analyzes section of curve for processing by RDP algorithm:
+given set of points X,Y with indexes [I0,I1] it returns point with
+worst deviation from linear model (PARAMETRIC version which sees curve
+as X(t) with vector X).
+
+Input parameters:
+    XY          -   array
+    I0,I1       -   interval (boundaries included) to process
+    D           -   number of dimensions
+    
+OUTPUT PARAMETERS:
+    WorstIdx    -   index of worst point
+    WorstError  -   error at worst point
+    
+NOTE: this function guarantees that it returns exactly zero for a section
+      with less than 3 points.
+
+  -- ALGLIB PROJECT --
+     Copyright 02.10.2014 by Bochkanov Sergey
+*************************************************************************/
+static void parametric_rdpanalyzesectionpar(/* Real    */ ae_matrix* xy,
+     ae_int_t i0,
+     ae_int_t i1,
+     ae_int_t d,
+     ae_int_t* worstidx,
+     double* worsterror,
+     ae_state *_state)
 {
-    if( !ae_vector_init(&p->p, 0, DT_REAL, _state, make_automatic) )
-        return ae_false;
-    if( !_spline1dinterpolant_init(&p->x, _state, make_automatic) )
-        return ae_false;
-    if( !_spline1dinterpolant_init(&p->y, _state, make_automatic) )
-        return ae_false;
-    return ae_true;
+    ae_int_t i;
+    ae_int_t j;
+    double v;
+    double d2;
+    double ts;
+    double vv;
+
+    *worstidx = 0;
+    *worsterror = 0;
+
+    
+    /*
+     * Quick exit for 0, 1, 2 points
+     */
+    if( i1-i0+1<3 )
+    {
+        *worstidx = i0;
+        *worsterror = 0.0;
+        return;
+    }
+    
+    /*
+     * Estimate D2 - squared distance between XY[I1] and XY[I0].
+     * In case D2=0 handle it as special case.
+     */
+    d2 = 0.0;
+    for(j=0; j<=d-1; j++)
+    {
+        d2 = d2+ae_sqr(xy->ptr.pp_double[i1][j]-xy->ptr.pp_double[i0][j], _state);
+    }
+    if( ae_fp_eq(d2,(double)(0)) )
+    {
+        
+        /*
+         * First and last points are equal, interval evaluation is
+         * trivial - we just calculate distance from all points to
+         * the first/last one.
+         */
+        *worstidx = i0;
+        *worsterror = 0.0;
+        for(i=i0+1; i<=i1-1; i++)
+        {
+            vv = 0.0;
+            for(j=0; j<=d-1; j++)
+            {
+                v = xy->ptr.pp_double[i][j]-xy->ptr.pp_double[i0][j];
+                vv = vv+v*v;
+            }
+            vv = ae_sqrt(vv, _state);
+            if( ae_fp_greater(vv,*worsterror) )
+            {
+                *worsterror = vv;
+                *worstidx = i;
+            }
+        }
+        return;
+    }
+    
+    /*
+     * General case
+     *
+     * Current section of curve is modeled as x(t) = d*t+c, where
+     *     d = XY[I1]-XY[I0]
+     *     c = XY[I0]
+     *     t is in [0,1]
+     */
+    *worstidx = i0;
+    *worsterror = 0.0;
+    for(i=i0+1; i<=i1-1; i++)
+    {
+        
+        /*
+         * Determine t_s - parameter value for projected point.
+         */
+        ts = (double)(i-i0)/(double)(i1-i0);
+        
+        /*
+         * Estimate error norm
+         */
+        vv = 0.0;
+        for(j=0; j<=d-1; j++)
+        {
+            v = (xy->ptr.pp_double[i1][j]-xy->ptr.pp_double[i0][j])*ts-(xy->ptr.pp_double[i][j]-xy->ptr.pp_double[i0][j]);
+            vv = vv+ae_sqr(v, _state);
+        }
+        vv = ae_sqrt(vv, _state);
+        if( ae_fp_greater(vv,*worsterror) )
+        {
+            *worsterror = vv;
+            *worstidx = i;
+        }
+    }
 }
 
 
-ae_bool _pspline2interpolant_init_copy(pspline2interpolant* dst, pspline2interpolant* src, ae_state *_state, ae_bool make_automatic)
+void _pspline2interpolant_init(void* _p, ae_state *_state)
 {
+    pspline2interpolant *p = (pspline2interpolant*)_p;
+    ae_touch_ptr((void*)p);
+    ae_vector_init(&p->p, 0, DT_REAL, _state);
+    _spline1dinterpolant_init(&p->x, _state);
+    _spline1dinterpolant_init(&p->y, _state);
+}
+
+
+void _pspline2interpolant_init_copy(void* _dst, void* _src, ae_state *_state)
+{
+    pspline2interpolant *dst = (pspline2interpolant*)_dst;
+    pspline2interpolant *src = (pspline2interpolant*)_src;
     dst->n = src->n;
     dst->periodic = src->periodic;
-    if( !ae_vector_init_copy(&dst->p, &src->p, _state, make_automatic) )
-        return ae_false;
-    if( !_spline1dinterpolant_init_copy(&dst->x, &src->x, _state, make_automatic) )
-        return ae_false;
-    if( !_spline1dinterpolant_init_copy(&dst->y, &src->y, _state, make_automatic) )
-        return ae_false;
-    return ae_true;
+    ae_vector_init_copy(&dst->p, &src->p, _state);
+    _spline1dinterpolant_init_copy(&dst->x, &src->x, _state);
+    _spline1dinterpolant_init_copy(&dst->y, &src->y, _state);
 }
 
 
-void _pspline2interpolant_clear(pspline2interpolant* p)
+void _pspline2interpolant_clear(void* _p)
 {
+    pspline2interpolant *p = (pspline2interpolant*)_p;
+    ae_touch_ptr((void*)p);
     ae_vector_clear(&p->p);
     _spline1dinterpolant_clear(&p->x);
     _spline1dinterpolant_clear(&p->y);
 }
 
 
-ae_bool _pspline3interpolant_init(pspline3interpolant* p, ae_state *_state, ae_bool make_automatic)
+void _pspline2interpolant_destroy(void* _p)
 {
-    if( !ae_vector_init(&p->p, 0, DT_REAL, _state, make_automatic) )
-        return ae_false;
-    if( !_spline1dinterpolant_init(&p->x, _state, make_automatic) )
-        return ae_false;
-    if( !_spline1dinterpolant_init(&p->y, _state, make_automatic) )
-        return ae_false;
-    if( !_spline1dinterpolant_init(&p->z, _state, make_automatic) )
-        return ae_false;
-    return ae_true;
+    pspline2interpolant *p = (pspline2interpolant*)_p;
+    ae_touch_ptr((void*)p);
+    ae_vector_destroy(&p->p);
+    _spline1dinterpolant_destroy(&p->x);
+    _spline1dinterpolant_destroy(&p->y);
 }
 
 
-ae_bool _pspline3interpolant_init_copy(pspline3interpolant* dst, pspline3interpolant* src, ae_state *_state, ae_bool make_automatic)
+void _pspline3interpolant_init(void* _p, ae_state *_state)
 {
+    pspline3interpolant *p = (pspline3interpolant*)_p;
+    ae_touch_ptr((void*)p);
+    ae_vector_init(&p->p, 0, DT_REAL, _state);
+    _spline1dinterpolant_init(&p->x, _state);
+    _spline1dinterpolant_init(&p->y, _state);
+    _spline1dinterpolant_init(&p->z, _state);
+}
+
+
+void _pspline3interpolant_init_copy(void* _dst, void* _src, ae_state *_state)
+{
+    pspline3interpolant *dst = (pspline3interpolant*)_dst;
+    pspline3interpolant *src = (pspline3interpolant*)_src;
     dst->n = src->n;
     dst->periodic = src->periodic;
-    if( !ae_vector_init_copy(&dst->p, &src->p, _state, make_automatic) )
-        return ae_false;
-    if( !_spline1dinterpolant_init_copy(&dst->x, &src->x, _state, make_automatic) )
-        return ae_false;
-    if( !_spline1dinterpolant_init_copy(&dst->y, &src->y, _state, make_automatic) )
-        return ae_false;
-    if( !_spline1dinterpolant_init_copy(&dst->z, &src->z, _state, make_automatic) )
-        return ae_false;
-    return ae_true;
+    ae_vector_init_copy(&dst->p, &src->p, _state);
+    _spline1dinterpolant_init_copy(&dst->x, &src->x, _state);
+    _spline1dinterpolant_init_copy(&dst->y, &src->y, _state);
+    _spline1dinterpolant_init_copy(&dst->z, &src->z, _state);
 }
 
 
-void _pspline3interpolant_clear(pspline3interpolant* p)
+void _pspline3interpolant_clear(void* _p)
 {
+    pspline3interpolant *p = (pspline3interpolant*)_p;
+    ae_touch_ptr((void*)p);
     ae_vector_clear(&p->p);
     _spline1dinterpolant_clear(&p->x);
     _spline1dinterpolant_clear(&p->y);
     _spline1dinterpolant_clear(&p->z);
+}
+
+
+void _pspline3interpolant_destroy(void* _p)
+{
+    pspline3interpolant *p = (pspline3interpolant*)_p;
+    ae_touch_ptr((void*)p);
+    ae_vector_destroy(&p->p);
+    _spline1dinterpolant_destroy(&p->x);
+    _spline1dinterpolant_destroy(&p->y);
+    _spline1dinterpolant_destroy(&p->z);
 }
 
 
@@ -24324,15 +30057,15 @@ void rbfcreate(ae_int_t nx, ae_int_t ny, rbfmodel* s, ae_state *_state)
     {
         for(j=0; j<=rbf_mxnx; j++)
         {
-            s->v.ptr.pp_double[i][j] = 0;
+            s->v.ptr.pp_double[i][j] = (double)(0);
         }
     }
     s->n = 0;
-    s->rmax = 0;
+    s->rmax = (double)(0);
     s->gridtype = 2;
     s->fixrad = ae_false;
-    s->radvalue = 1;
-    s->radzvalue = 5;
+    s->radvalue = (double)(1);
+    s->radzvalue = (double)(5);
     s->aterm = 1;
     s->algorithmtype = 1;
     
@@ -24390,7 +30123,7 @@ void rbfsetpoints(rbfmodel* s,
     {
         for(j=0; j<=rbf_mxnx-1; j++)
         {
-            s->x.ptr.pp_double[i][j] = 0;
+            s->x.ptr.pp_double[i][j] = (double)(0);
         }
         for(j=0; j<=s->nx-1; j++)
         {
@@ -24462,7 +30195,7 @@ void rbfsetalgoqnn(rbfmodel* s, double q, double z, ae_state *_state)
 
 
     ae_assert(ae_isfinite(q, _state), "RBFSetAlgoQNN: Q is infinite or NAN", _state);
-    ae_assert(ae_fp_greater(q,0), "RBFSetAlgoQNN: Q<=0", _state);
+    ae_assert(ae_fp_greater(q,(double)(0)), "RBFSetAlgoQNN: Q<=0", _state);
     rbf_rbfgridpoints(s, _state);
     rbf_rbfradnn(s, q, z, _state);
     s->algorithmtype = 1;
@@ -24568,10 +30301,10 @@ void rbfsetalgomultilayer(rbfmodel* s,
 
 
     ae_assert(ae_isfinite(rbase, _state), "RBFSetAlgoMultiLayer: RBase is infinite or NaN", _state);
-    ae_assert(ae_fp_greater(rbase,0), "RBFSetAlgoMultiLayer: RBase<=0", _state);
+    ae_assert(ae_fp_greater(rbase,(double)(0)), "RBFSetAlgoMultiLayer: RBase<=0", _state);
     ae_assert(nlayers>=0, "RBFSetAlgoMultiLayer: NLayers<0", _state);
     ae_assert(ae_isfinite(lambdav, _state), "RBFSetAlgoMultiLayer: LambdaV is infinite or NAN", _state);
-    ae_assert(ae_fp_greater_eq(lambdav,0), "RBFSetAlgoMultiLayer: LambdaV<0", _state);
+    ae_assert(ae_fp_greater_eq(lambdav,(double)(0)), "RBFSetAlgoMultiLayer: LambdaV<0", _state);
     s->radvalue = rbase;
     s->nlayers = nlayers;
     s->algorithmtype = 2;
@@ -24694,10 +30427,10 @@ void rbfsetcond(rbfmodel* s,
 {
 
 
-    ae_assert(ae_isfinite(epsort, _state)&&ae_fp_greater_eq(epsort,0), "RBFSetCond: EpsOrt is negative, INF or NAN", _state);
-    ae_assert(ae_isfinite(epserr, _state)&&ae_fp_greater_eq(epserr,0), "RBFSetCond: EpsB is negative, INF or NAN", _state);
+    ae_assert(ae_isfinite(epsort, _state)&&ae_fp_greater_eq(epsort,(double)(0)), "RBFSetCond: EpsOrt is negative, INF or NAN", _state);
+    ae_assert(ae_isfinite(epserr, _state)&&ae_fp_greater_eq(epserr,(double)(0)), "RBFSetCond: EpsB is negative, INF or NAN", _state);
     ae_assert(maxits>=0, "RBFSetCond: MaxIts is negative", _state);
-    if( (ae_fp_eq(epsort,0)&&ae_fp_eq(epserr,0))&&maxits==0 )
+    if( (ae_fp_eq(epsort,(double)(0))&&ae_fp_eq(epserr,(double)(0)))&&maxits==0 )
     {
         s->epsort = rbf_eps;
         s->epserr = rbf_eps;
@@ -24779,25 +30512,25 @@ void rbfbuildmodel(rbfmodel* s, rbfreport* rep, ae_state *_state)
 
     ae_frame_make(_state, &_frame_block);
     _rbfreport_clear(rep);
-    _kdtree_init(&tree, _state, ae_true);
-    _kdtree_init(&ctree, _state, ae_true);
-    ae_vector_init(&dist, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&xcx, 0, DT_REAL, _state, ae_true);
-    ae_matrix_init(&a, 0, 0, DT_REAL, _state, ae_true);
-    ae_matrix_init(&v, 0, 0, DT_REAL, _state, ae_true);
-    ae_matrix_init(&omega, 0, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&y, 0, DT_REAL, _state, ae_true);
-    ae_matrix_init(&residualy, 0, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&radius, 0, DT_REAL, _state, ae_true);
-    ae_matrix_init(&xc, 0, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&mnx, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&mxx, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&edge, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&mxsteps, 0, DT_INT, _state, ae_true);
-    ae_vector_init(&tags, 0, DT_INT, _state, ae_true);
-    ae_vector_init(&ctags, 0, DT_INT, _state, ae_true);
-    ae_vector_init(&tmp0, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&tmp1, 0, DT_REAL, _state, ae_true);
+    _kdtree_init(&tree, _state);
+    _kdtree_init(&ctree, _state);
+    ae_vector_init(&dist, 0, DT_REAL, _state);
+    ae_vector_init(&xcx, 0, DT_REAL, _state);
+    ae_matrix_init(&a, 0, 0, DT_REAL, _state);
+    ae_matrix_init(&v, 0, 0, DT_REAL, _state);
+    ae_matrix_init(&omega, 0, 0, DT_REAL, _state);
+    ae_vector_init(&y, 0, DT_REAL, _state);
+    ae_matrix_init(&residualy, 0, 0, DT_REAL, _state);
+    ae_vector_init(&radius, 0, DT_REAL, _state);
+    ae_matrix_init(&xc, 0, 0, DT_REAL, _state);
+    ae_vector_init(&mnx, 0, DT_REAL, _state);
+    ae_vector_init(&mxx, 0, DT_REAL, _state);
+    ae_vector_init(&edge, 0, DT_REAL, _state);
+    ae_vector_init(&mxsteps, 0, DT_INT, _state);
+    ae_vector_init(&tags, 0, DT_INT, _state);
+    ae_vector_init(&ctags, 0, DT_INT, _state);
+    ae_vector_init(&tmp0, 0, DT_REAL, _state);
+    ae_vector_init(&tmp1, 0, DT_REAL, _state);
 
     ae_assert(s->nx==2||s->nx==3, "RBFBuildModel: S.NX<>2 or S.NX<>3!", _state);
     
@@ -24815,13 +30548,13 @@ void rbfbuildmodel(rbfmodel* s, rbfreport* rep, ae_state *_state)
         ae_matrix_set_length(&s->xc, 0, 0, _state);
         ae_matrix_set_length(&s->wr, 0, 0, _state);
         s->nc = 0;
-        s->rmax = 0;
+        s->rmax = (double)(0);
         ae_matrix_set_length(&s->v, s->ny, rbf_mxnx+1, _state);
         for(i=0; i<=s->ny-1; i++)
         {
             for(j=0; j<=rbf_mxnx; j++)
             {
-                s->v.ptr.pp_double[i][j] = 0;
+                s->v.ptr.pp_double[i][j] = (double)(0);
             }
         }
         ae_frame_leave(_state);
@@ -24871,7 +30604,7 @@ void rbfbuildmodel(rbfmodel* s, rbfreport* rep, ae_state *_state)
         ae_matrix_set_length(&s->xc, 0, 0, _state);
         ae_matrix_set_length(&s->wr, 0, 0, _state);
         s->nc = 0;
-        s->rmax = 0;
+        s->rmax = (double)(0);
         ae_matrix_set_length(&s->v, s->ny, rbf_mxnx+1, _state);
         for(i=0; i<=s->ny-1; i++)
         {
@@ -24891,7 +30624,7 @@ void rbfbuildmodel(rbfmodel* s, rbfreport* rep, ae_state *_state)
      *       MSVC complains about unitialized variables.
      */
     nc = 0;
-    rmax = 0;
+    rmax = (double)(0);
     layerscnt = 0;
     if( s->algorithmtype==1 )
     {
@@ -24945,7 +30678,7 @@ void rbfbuildmodel(rbfmodel* s, rbfreport* rep, ae_state *_state)
                     {
                         for(k2=0; k2<=rbf_mxnx-1; k2++)
                         {
-                            xc.ptr.pp_double[i*mxsteps.ptr.p_int[1]+j][k2] = 0;
+                            xc.ptr.pp_double[i*mxsteps.ptr.p_int[1]+j][k2] = (double)(0);
                         }
                         xc.ptr.pp_double[i*mxsteps.ptr.p_int[1]+j][0] = edge.ptr.p_double[0]+s->h*i;
                         xc.ptr.pp_double[i*mxsteps.ptr.p_int[1]+j][1] = edge.ptr.p_double[1]+s->h*j;
@@ -24962,7 +30695,7 @@ void rbfbuildmodel(rbfmodel* s, rbfreport* rep, ae_state *_state)
                         {
                             for(k2=0; k2<=rbf_mxnx-1; k2++)
                             {
-                                xc.ptr.pp_double[i*mxsteps.ptr.p_int[1]+j][k2] = 0;
+                                xc.ptr.pp_double[i*mxsteps.ptr.p_int[1]+j][k2] = (double)(0);
                             }
                             xc.ptr.pp_double[(i*mxsteps.ptr.p_int[1]+j)*mxsteps.ptr.p_int[2]+k][0] = edge.ptr.p_double[0]+s->h*i;
                             xc.ptr.pp_double[(i*mxsteps.ptr.p_int[1]+j)*mxsteps.ptr.p_int[2]+k][1] = edge.ptr.p_double[1]+s->h*j;
@@ -25006,7 +30739,7 @@ void rbfbuildmodel(rbfmodel* s, rbfreport* rep, ae_state *_state)
                 }
             }
         }
-        rmax = 0;
+        rmax = (double)(0);
         ae_vector_set_length(&radius, nc, _state);
         ae_vector_set_length(&ctags, nc, _state);
         for(i=0; i<=nc-1; i++)
@@ -25034,7 +30767,7 @@ void rbfbuildmodel(rbfmodel* s, rbfreport* rep, ae_state *_state)
              */
             if( nc==0 )
             {
-                rmax = 1;
+                rmax = (double)(1);
             }
             else
             {
@@ -25094,7 +30827,7 @@ void rbfbuildmodel(rbfmodel* s, rbfreport* rep, ae_state *_state)
                     }
                     for(i=0; i<=nc-1; i++)
                     {
-                        if( ae_fp_eq(radius.ptr.p_double[i],0) )
+                        if( ae_fp_eq(radius.ptr.p_double[i],(double)(0)) )
                         {
                             rep->terminationtype = -5;
                             ae_frame_leave(_state);
@@ -25224,7 +30957,7 @@ double rbfcalc2(rbfmodel* s, double x0, double x1, ae_state *_state)
     ae_assert(ae_isfinite(x1, _state), "RBFCalc2: invalid value for X1 (X1 is Inf)!", _state);
     if( s->ny!=1||s->nx!=2 )
     {
-        result = 0;
+        result = (double)(0);
         return result;
     }
     result = s->v.ptr.pp_double[0][0]*x0+s->v.ptr.pp_double[0][1]*x1+s->v.ptr.pp_double[0][rbf_mxnx];
@@ -25306,7 +31039,7 @@ double rbfcalc3(rbfmodel* s,
     ae_assert(ae_isfinite(x2, _state), "RBFCalc3: invalid value for X2 (X2 is Inf or NaN)!", _state);
     if( s->ny!=1||s->nx!=3 )
     {
-        result = 0;
+        result = (double)(0);
         return result;
     }
     result = s->v.ptr.pp_double[0][0]*x0+s->v.ptr.pp_double[0][1]*x1+s->v.ptr.pp_double[0][2]*x2+s->v.ptr.pp_double[0][rbf_mxnx];
@@ -25524,11 +31257,11 @@ void rbfgridcalc2(rbfmodel* s,
 
     ae_frame_make(_state, &_frame_block);
     ae_matrix_clear(y);
-    ae_vector_init(&cpx0, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&cpx1, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&p01, 0, DT_INT, _state, ae_true);
-    ae_vector_init(&p11, 0, DT_INT, _state, ae_true);
-    ae_vector_init(&p2, 0, DT_INT, _state, ae_true);
+    ae_vector_init(&cpx0, 0, DT_REAL, _state);
+    ae_vector_init(&cpx1, 0, DT_REAL, _state);
+    ae_vector_init(&p01, 0, DT_INT, _state);
+    ae_vector_init(&p11, 0, DT_INT, _state);
+    ae_vector_init(&p2, 0, DT_INT, _state);
 
     ae_assert(n0>0, "RBFGridCalc2: invalid value for N0 (N0<=0)!", _state);
     ae_assert(n1>0, "RBFGridCalc2: invalid value for N1 (N1<=0)!", _state);
@@ -25541,7 +31274,7 @@ void rbfgridcalc2(rbfmodel* s,
     {
         for(j=0; j<=n1-1; j++)
         {
-            y->ptr.pp_double[i][j] = 0;
+            y->ptr.pp_double[i][j] = (double)(0);
         }
     }
     if( (s->ny!=1||s->nx!=2)||s->nc==0 )
@@ -25804,38 +31537,6 @@ void rbfunserialize(ae_serializer* s, rbfmodel* model, ae_state *_state)
 
 /*************************************************************************
 This function changes centers allocation algorithm to one which  allocates
-centers on a regular grid with step equal to H  in  all  dimensions.  This
-function won't have effect until next call to RBFBuildModel().
-
-Central  point  of  the  grid  is  located  exactly  in  the middle of the 
-bounding rectangle for our dataset. Grid countinues from the center to the
-bounds of the bounding rectangle, and makes one step beyond  bounds  (i.e. 
-leftmost/rightmost/topmost/... lines of the grid are located just  outside
-of the bounding rectangle).
-
-INPUT PARAMETERS:
-    S       -   RBF model, initialized by RBFCreate() call.
-    H       -   grid step, H>0
-
-NOTE: this   function  has   some   serialization-related  subtleties.  We
-      recommend you to study serialization examples from ALGLIB  Reference
-      Manual if you want to perform serialization of your models.
-
-  -- ALGLIB --
-     Copyright 13.12.2011 by Bochkanov Sergey
-*************************************************************************/
-static void rbf_rbfgridregular(rbfmodel* s, double h, ae_state *_state)
-{
-
-
-    ae_assert(ae_isfinite(h, _state)&&ae_fp_greater(h,0), "RBFGridRegular: H<0, INF or NAN", _state);
-    s->h = h;
-    s->gridtype = 1;
-}
-
-
-/*************************************************************************
-This function changes centers allocation algorithm to one which  allocates
 centers exactly at the dataset points (one input point = one center). This
 function won't have effect until next call to RBFBuildModel().
 
@@ -25854,84 +31555,6 @@ static void rbf_rbfgridpoints(rbfmodel* s, ae_state *_state)
 
 
     s->gridtype = 2;
-}
-
-
-/*************************************************************************
-This function sets centers, defined by user.
-
-This function overrides results of the previous calls, i.e. multiple calls
-of this function will result in only the last set being added.
-
-INPUT PARAMETERS:
-    S      -   RBF model, initialized by RBFCreate() call.
-  CXY      -   centers, array[N,NX]. Centers must be distinct, 
-               non-distinct centers are not supported.
-   NC      -   number of centers
-
-NOTE: this   function  has   some   serialization-related  subtleties.  We
-      recommend you to study serialization examples from ALGLIB  Reference
-      Manual if you want to perform serialization of your models.
-
-  -- ALGLIB --
-     Copyright 13.12.2011 by Bochkanov Sergey
-*************************************************************************/
-static void rbf_rbfgridspecial(rbfmodel* s,
-     /* Real    */ ae_matrix* cxy,
-     ae_int_t nc,
-     ae_state *_state)
-{
-    ae_int_t i;
-    ae_int_t j;
-
-
-    ae_assert(nc>0, "RBFGridSpecial: N<0", _state);
-    ae_assert(nc<=cxy->rows, "RBFGridSpecial: Length(CXY)<NC", _state);
-    s->gridtype = 3;
-    s->nc = nc;
-    ae_matrix_set_length(&s->xc, s->nc, rbf_mxnx, _state);
-    for(i=0; i<=s->nc-1; i++)
-    {
-        for(j=0; j<=rbf_mxnx-1; j++)
-        {
-            s->xc.ptr.pp_double[i][j] = 0;
-        }
-        for(j=0; j<=s->nx-1; j++)
-        {
-            s->xc.ptr.pp_double[i][j] = cxy->ptr.pp_double[i][j];
-        }
-    }
-}
-
-
-/*************************************************************************
-This function changes radii calculation algorithm to one which  makes  all
-radii equal to the same fixed value R. This  function  won't  have  effect
-until next call to RBFBuildModel().
-
-IMPORTANT: you should use this function with caution because too  large  R
-will make model fitting algorithm unstable, while too small  R  will  make
-perfect, but useless fit (it will be non-smooth, with sharp  peaks  around
-dataset points).
-
-INPUT PARAMETERS:
-    S       -   RBF model, initialized by RBFCreate() call
-    R       -   radius, R>0
-
-NOTE: this   function  has   some   serialization-related  subtleties.  We
-      recommend you to study serialization examples from ALGLIB  Reference
-      Manual if you want to perform serialization of your models.
-
-  -- ALGLIB --
-     Copyright 13.12.2011 by Bochkanov Sergey
-*************************************************************************/
-static void rbf_rbfradfixed(rbfmodel* s, double r, ae_state *_state)
-{
-
-
-    ae_assert(ae_isfinite(r, _state)&&ae_fp_greater(r,0), "RBFRadFixed: R<=0, infinite or NAN", _state);
-    s->fixrad = ae_true;
-    s->radvalue = r;
 }
 
 
@@ -25988,8 +31611,8 @@ static void rbf_rbfradnn(rbfmodel* s,
 {
 
 
-    ae_assert(ae_isfinite(q, _state)&&ae_fp_greater(q,0), "RBFRadNN: Q<=0, infinite or NAN", _state);
-    ae_assert(ae_isfinite(z, _state)&&ae_fp_greater(z,0), "RBFRadNN: Z<=0, infinite or NAN", _state);
+    ae_assert(ae_isfinite(q, _state)&&ae_fp_greater(q,(double)(0)), "RBFRadNN: Q<=0, infinite or NAN", _state);
+    ae_assert(ae_isfinite(z, _state)&&ae_fp_greater(z,(double)(0)), "RBFRadNN: Z<=0, infinite or NAN", _state);
     s->fixrad = ae_false;
     s->radvalue = q;
     s->radzvalue = z;
@@ -26021,11 +31644,11 @@ static ae_bool rbf_buildlinearmodel(/* Real    */ ae_matrix* x,
 
     ae_frame_make(_state, &_frame_block);
     ae_matrix_clear(v);
-    ae_vector_init(&tmpy, 0, DT_REAL, _state, ae_true);
-    ae_matrix_init(&a, 0, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&shifting, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&c, 0, DT_REAL, _state, ae_true);
-    _lsfitreport_init(&rep, _state, ae_true);
+    ae_vector_init(&tmpy, 0, DT_REAL, _state);
+    ae_matrix_init(&a, 0, 0, DT_REAL, _state);
+    ae_vector_init(&shifting, 0, DT_REAL, _state);
+    ae_vector_init(&c, 0, DT_REAL, _state);
+    _lsfitreport_init(&rep, _state);
 
     ae_assert(n>=0, "BuildLinearModel: N<0", _state);
     ae_assert(ny>0, "BuildLinearModel: NY<=0", _state);
@@ -26041,7 +31664,7 @@ static ae_bool rbf_buildlinearmodel(/* Real    */ ae_matrix* x,
         {
             for(i=0; i<=ny-1; i++)
             {
-                v->ptr.pp_double[i][j] = 0;
+                v->ptr.pp_double[i][j] = (double)(0);
             }
         }
         ae_frame_leave(_state);
@@ -26064,7 +31687,7 @@ static ae_bool rbf_buildlinearmodel(/* Real    */ ae_matrix* x,
          */
         ae_matrix_set_length(&a, n, rbf_mxnx+1, _state);
         ae_vector_set_length(&shifting, rbf_mxnx, _state);
-        scaling = 0;
+        scaling = (double)(0);
         for(i=0; i<=rbf_mxnx-1; i++)
         {
             mn = x->ptr.pp_double[0][i];
@@ -26083,9 +31706,9 @@ static ae_bool rbf_buildlinearmodel(/* Real    */ ae_matrix* x,
             scaling = ae_maxreal(scaling, mx-mn, _state);
             shifting.ptr.p_double[i] = 0.5*(mx+mn);
         }
-        if( ae_fp_eq(scaling,0) )
+        if( ae_fp_eq(scaling,(double)(0)) )
         {
-            scaling = 1;
+            scaling = (double)(1);
         }
         else
         {
@@ -26100,7 +31723,7 @@ static ae_bool rbf_buildlinearmodel(/* Real    */ ae_matrix* x,
         }
         for(i=0; i<=n-1; i++)
         {
-            a.ptr.pp_double[i][rbf_mxnx] = 1;
+            a.ptr.pp_double[i][rbf_mxnx] = (double)(1);
         }
         
         /*
@@ -26150,7 +31773,7 @@ static ae_bool rbf_buildlinearmodel(/* Real    */ ae_matrix* x,
         {
             for(j=0; j<=rbf_mxnx; j++)
             {
-                v->ptr.pp_double[i][j] = 0;
+                v->ptr.pp_double[i][j] = (double)(0);
             }
             for(j=0; j<=n-1; j++)
             {
@@ -26177,7 +31800,7 @@ static ae_bool rbf_buildlinearmodel(/* Real    */ ae_matrix* x,
     {
         for(j=0; j<=rbf_mxnx; j++)
         {
-            v->ptr.pp_double[i][j] = 0;
+            v->ptr.pp_double[i][j] = (double)(0);
         }
     }
     ae_frame_leave(_state);
@@ -26260,30 +31883,30 @@ static void rbf_buildrbfmodellsqr(/* Real    */ ae_matrix* x,
     *info = 0;
     *iterationscount = 0;
     *nmv = 0;
-    _linlsqrstate_init(&state, _state, ae_true);
-    _linlsqrreport_init(&lsqrrep, _state, ae_true);
-    _sparsematrix_init(&spg, _state, ae_true);
-    _sparsematrix_init(&sps, _state, ae_true);
-    ae_vector_init(&nearcenterscnt, 0, DT_INT, _state, ae_true);
-    ae_vector_init(&nearpointscnt, 0, DT_INT, _state, ae_true);
-    ae_vector_init(&skipnearpointscnt, 0, DT_INT, _state, ae_true);
-    ae_vector_init(&farpointscnt, 0, DT_INT, _state, ae_true);
-    ae_vector_init(&pointstags, 0, DT_INT, _state, ae_true);
-    ae_vector_init(&centerstags, 0, DT_INT, _state, ae_true);
-    ae_matrix_init(&nearpoints, 0, 0, DT_REAL, _state, ae_true);
-    ae_matrix_init(&nearcenters, 0, 0, DT_REAL, _state, ae_true);
-    ae_matrix_init(&farpoints, 0, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&xcx, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&tmpy, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&tc, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&g, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&c, 0, DT_REAL, _state, ae_true);
-    ae_matrix_init(&a, 0, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&tmp0, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&tmp1, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&tmp2, 0, DT_REAL, _state, ae_true);
-    ae_matrix_init(&xx, 0, 0, DT_REAL, _state, ae_true);
-    ae_matrix_init(&cx, 0, 0, DT_REAL, _state, ae_true);
+    _linlsqrstate_init(&state, _state);
+    _linlsqrreport_init(&lsqrrep, _state);
+    _sparsematrix_init(&spg, _state);
+    _sparsematrix_init(&sps, _state);
+    ae_vector_init(&nearcenterscnt, 0, DT_INT, _state);
+    ae_vector_init(&nearpointscnt, 0, DT_INT, _state);
+    ae_vector_init(&skipnearpointscnt, 0, DT_INT, _state);
+    ae_vector_init(&farpointscnt, 0, DT_INT, _state);
+    ae_vector_init(&pointstags, 0, DT_INT, _state);
+    ae_vector_init(&centerstags, 0, DT_INT, _state);
+    ae_matrix_init(&nearpoints, 0, 0, DT_REAL, _state);
+    ae_matrix_init(&nearcenters, 0, 0, DT_REAL, _state);
+    ae_matrix_init(&farpoints, 0, 0, DT_REAL, _state);
+    ae_vector_init(&xcx, 0, DT_REAL, _state);
+    ae_vector_init(&tmpy, 0, DT_REAL, _state);
+    ae_vector_init(&tc, 0, DT_REAL, _state);
+    ae_vector_init(&g, 0, DT_REAL, _state);
+    ae_vector_init(&c, 0, DT_REAL, _state);
+    ae_matrix_init(&a, 0, 0, DT_REAL, _state);
+    ae_vector_init(&tmp0, 0, DT_REAL, _state);
+    ae_vector_init(&tmp1, 0, DT_REAL, _state);
+    ae_vector_init(&tmp2, 0, DT_REAL, _state);
+    ae_matrix_init(&xx, 0, 0, DT_REAL, _state);
+    ae_matrix_init(&cx, 0, 0, DT_REAL, _state);
 
     
     /*
@@ -26341,7 +31964,7 @@ static void rbf_buildrbfmodellsqr(/* Real    */ ae_matrix* x,
          */
         nearcenterscnt.ptr.p_int[i] = kdtreequeryrnn(centerstree, &xcx, r->ptr.p_double[i]*rbf_rbfnearradius, ae_true, _state);
         kdtreequeryresultstags(centerstree, &centerstags, _state);
-        maxrad = 0;
+        maxrad = (double)(0);
         for(j=0; j<=nearcenterscnt.ptr.p_int[i]-1; j++)
         {
             maxrad = ae_maxreal(maxrad, ae_fabs(r->ptr.p_double[centerstags.ptr.p_int[j]], _state), _state);
@@ -26419,7 +32042,7 @@ static void rbf_buildrbfmodellsqr(/* Real    */ ae_matrix* x,
         /*
          * point's tree
          */
-        mrad = 0;
+        mrad = (double)(0);
         for(j=0; j<=centerscnt-1; j++)
         {
             mrad = ae_maxreal(mrad, r->ptr.p_double[centerstags.ptr.p_int[j]], _state);
@@ -26429,7 +32052,7 @@ static void rbf_buildrbfmodellsqr(/* Real    */ ae_matrix* x,
          * we need to be sure that 'CTree' contains
          * at least one side center
          */
-        sparseset(&sps, i, i, 1, _state);
+        sparseset(&sps, i, i, (double)(1), _state);
         c.ptr.p_double[0] = 1.0;
         for(j=1; j<=centerscnt-1; j++)
         {
@@ -26516,7 +32139,7 @@ static void rbf_buildrbfmodellsqr(/* Real    */ ae_matrix* x,
          */
         for(j=0; j<=pointscnt-1; j++)
         {
-            fx = 0;
+            fx = (double)(0);
             vx = xx.ptr.pp_double[j][0];
             vy = xx.ptr.pp_double[j][1];
             vz = xx.ptr.pp_double[j][2];
@@ -26624,14 +32247,14 @@ static void rbf_buildrbfmlayersmodellsqr(/* Real    */ ae_matrix* x,
     *info = 0;
     *iterationscount = 0;
     *nmv = 0;
-    _linlsqrstate_init(&state, _state, ae_true);
-    _linlsqrreport_init(&lsqrrep, _state, ae_true);
-    _sparsematrix_init(&spa, _state, ae_true);
-    ae_vector_init(&omega, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&xx, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&tmpy, 0, DT_REAL, _state, ae_true);
-    ae_matrix_init(&cx, 0, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&centerstags, 0, DT_INT, _state, ae_true);
+    _linlsqrstate_init(&state, _state);
+    _linlsqrreport_init(&lsqrrep, _state);
+    _sparsematrix_init(&spa, _state);
+    ae_vector_init(&omega, 0, DT_REAL, _state);
+    ae_vector_init(&xx, 0, DT_REAL, _state);
+    ae_vector_init(&tmpy, 0, DT_REAL, _state);
+    ae_matrix_init(&cx, 0, 0, DT_REAL, _state);
+    ae_vector_init(&centerstags, 0, DT_INT, _state);
 
     ae_assert(nlayers>=0, "BuildRBFMLayersModelLSQR: invalid argument(NLayers<0)", _state);
     ae_assert(n>=0, "BuildRBFMLayersModelLSQR: invalid argument(N<0)", _state);
@@ -26659,7 +32282,7 @@ static void rbf_buildrbfmlayersmodellsqr(/* Real    */ ae_matrix* x,
     }
     for(i=0; i<=*nc-1; i++)
     {
-        r->ptr.p_double[i] = rval/ae_pow(2, i/n, _state);
+        r->ptr.p_double[i] = rval/ae_pow((double)(2), (double)(i/n), _state);
     }
     for(i=0; i<=n-1; i++)
     {
@@ -26755,7 +32378,7 @@ static void rbf_buildrbfmlayersmodellsqr(/* Real    */ ae_matrix* x,
              */
             for(j=0; j<=n-1; j++)
             {
-                yval = 0;
+                yval = (double)(0);
                 for(k=0; k<=rbf_mxnx-1; k++)
                 {
                     xx.ptr.p_double[k] = x->ptr.pp_double[j][k];
@@ -26799,45 +32422,35 @@ static void rbf_buildrbfmlayersmodellsqr(/* Real    */ ae_matrix* x,
 }
 
 
-ae_bool _rbfmodel_init(rbfmodel* p, ae_state *_state, ae_bool make_automatic)
+void _rbfmodel_init(void* _p, ae_state *_state)
 {
-    if( !_kdtree_init(&p->tree, _state, make_automatic) )
-        return ae_false;
-    if( !ae_matrix_init(&p->xc, 0, 0, DT_REAL, _state, make_automatic) )
-        return ae_false;
-    if( !ae_matrix_init(&p->wr, 0, 0, DT_REAL, _state, make_automatic) )
-        return ae_false;
-    if( !ae_matrix_init(&p->v, 0, 0, DT_REAL, _state, make_automatic) )
-        return ae_false;
-    if( !ae_matrix_init(&p->x, 0, 0, DT_REAL, _state, make_automatic) )
-        return ae_false;
-    if( !ae_matrix_init(&p->y, 0, 0, DT_REAL, _state, make_automatic) )
-        return ae_false;
-    if( !ae_vector_init(&p->calcbufxcx, 0, DT_REAL, _state, make_automatic) )
-        return ae_false;
-    if( !ae_matrix_init(&p->calcbufx, 0, 0, DT_REAL, _state, make_automatic) )
-        return ae_false;
-    if( !ae_vector_init(&p->calcbuftags, 0, DT_INT, _state, make_automatic) )
-        return ae_false;
-    return ae_true;
+    rbfmodel *p = (rbfmodel*)_p;
+    ae_touch_ptr((void*)p);
+    _kdtree_init(&p->tree, _state);
+    ae_matrix_init(&p->xc, 0, 0, DT_REAL, _state);
+    ae_matrix_init(&p->wr, 0, 0, DT_REAL, _state);
+    ae_matrix_init(&p->v, 0, 0, DT_REAL, _state);
+    ae_matrix_init(&p->x, 0, 0, DT_REAL, _state);
+    ae_matrix_init(&p->y, 0, 0, DT_REAL, _state);
+    ae_vector_init(&p->calcbufxcx, 0, DT_REAL, _state);
+    ae_matrix_init(&p->calcbufx, 0, 0, DT_REAL, _state);
+    ae_vector_init(&p->calcbuftags, 0, DT_INT, _state);
 }
 
 
-ae_bool _rbfmodel_init_copy(rbfmodel* dst, rbfmodel* src, ae_state *_state, ae_bool make_automatic)
+void _rbfmodel_init_copy(void* _dst, void* _src, ae_state *_state)
 {
+    rbfmodel *dst = (rbfmodel*)_dst;
+    rbfmodel *src = (rbfmodel*)_src;
     dst->ny = src->ny;
     dst->nx = src->nx;
     dst->nc = src->nc;
     dst->nl = src->nl;
-    if( !_kdtree_init_copy(&dst->tree, &src->tree, _state, make_automatic) )
-        return ae_false;
-    if( !ae_matrix_init_copy(&dst->xc, &src->xc, _state, make_automatic) )
-        return ae_false;
-    if( !ae_matrix_init_copy(&dst->wr, &src->wr, _state, make_automatic) )
-        return ae_false;
+    _kdtree_init_copy(&dst->tree, &src->tree, _state);
+    ae_matrix_init_copy(&dst->xc, &src->xc, _state);
+    ae_matrix_init_copy(&dst->wr, &src->wr, _state);
     dst->rmax = src->rmax;
-    if( !ae_matrix_init_copy(&dst->v, &src->v, _state, make_automatic) )
-        return ae_false;
+    ae_matrix_init_copy(&dst->v, &src->v, _state);
     dst->gridtype = src->gridtype;
     dst->fixrad = src->fixrad;
     dst->lambdav = src->lambdav;
@@ -26851,22 +32464,18 @@ ae_bool _rbfmodel_init_copy(rbfmodel* dst, rbfmodel* src, ae_state *_state, ae_b
     dst->maxits = src->maxits;
     dst->h = src->h;
     dst->n = src->n;
-    if( !ae_matrix_init_copy(&dst->x, &src->x, _state, make_automatic) )
-        return ae_false;
-    if( !ae_matrix_init_copy(&dst->y, &src->y, _state, make_automatic) )
-        return ae_false;
-    if( !ae_vector_init_copy(&dst->calcbufxcx, &src->calcbufxcx, _state, make_automatic) )
-        return ae_false;
-    if( !ae_matrix_init_copy(&dst->calcbufx, &src->calcbufx, _state, make_automatic) )
-        return ae_false;
-    if( !ae_vector_init_copy(&dst->calcbuftags, &src->calcbuftags, _state, make_automatic) )
-        return ae_false;
-    return ae_true;
+    ae_matrix_init_copy(&dst->x, &src->x, _state);
+    ae_matrix_init_copy(&dst->y, &src->y, _state);
+    ae_vector_init_copy(&dst->calcbufxcx, &src->calcbufxcx, _state);
+    ae_matrix_init_copy(&dst->calcbufx, &src->calcbufx, _state);
+    ae_vector_init_copy(&dst->calcbuftags, &src->calcbuftags, _state);
 }
 
 
-void _rbfmodel_clear(rbfmodel* p)
+void _rbfmodel_clear(void* _p)
 {
+    rbfmodel *p = (rbfmodel*)_p;
+    ae_touch_ptr((void*)p);
     _kdtree_clear(&p->tree);
     ae_matrix_clear(&p->xc);
     ae_matrix_clear(&p->wr);
@@ -26879,26 +32488,53 @@ void _rbfmodel_clear(rbfmodel* p)
 }
 
 
-ae_bool _rbfreport_init(rbfreport* p, ae_state *_state, ae_bool make_automatic)
+void _rbfmodel_destroy(void* _p)
 {
-    return ae_true;
+    rbfmodel *p = (rbfmodel*)_p;
+    ae_touch_ptr((void*)p);
+    _kdtree_destroy(&p->tree);
+    ae_matrix_destroy(&p->xc);
+    ae_matrix_destroy(&p->wr);
+    ae_matrix_destroy(&p->v);
+    ae_matrix_destroy(&p->x);
+    ae_matrix_destroy(&p->y);
+    ae_vector_destroy(&p->calcbufxcx);
+    ae_matrix_destroy(&p->calcbufx);
+    ae_vector_destroy(&p->calcbuftags);
 }
 
 
-ae_bool _rbfreport_init_copy(rbfreport* dst, rbfreport* src, ae_state *_state, ae_bool make_automatic)
+void _rbfreport_init(void* _p, ae_state *_state)
 {
+    rbfreport *p = (rbfreport*)_p;
+    ae_touch_ptr((void*)p);
+}
+
+
+void _rbfreport_init_copy(void* _dst, void* _src, ae_state *_state)
+{
+    rbfreport *dst = (rbfreport*)_dst;
+    rbfreport *src = (rbfreport*)_src;
     dst->arows = src->arows;
     dst->acols = src->acols;
     dst->annz = src->annz;
     dst->iterationscount = src->iterationscount;
     dst->nmv = src->nmv;
     dst->terminationtype = src->terminationtype;
-    return ae_true;
 }
 
 
-void _rbfreport_clear(rbfreport* p)
+void _rbfreport_clear(void* _p)
 {
+    rbfreport *p = (rbfreport*)_p;
+    ae_touch_ptr((void*)p);
+}
+
+
+void _rbfreport_destroy(void* _p)
+{
+    rbfreport *p = (rbfreport*)_p;
+    ae_touch_ptr((void*)p);
 }
 
 
@@ -26935,7 +32571,7 @@ double spline2dcalc(spline2dinterpolant* c,
     ae_assert(ae_isfinite(x, _state)&&ae_isfinite(y, _state), "Spline2DCalc: X or Y contains NaN or Infinite value", _state);
     if( c->d!=1 )
     {
-        result = 0;
+        result = (double)(0);
         return result;
     }
     spline2ddiff(c, x, y, &v, &vx, &vy, &vxy, _state);
@@ -27011,10 +32647,10 @@ void spline2ddiff(spline2dinterpolant* c,
     /*
      * Prepare F, dF/dX, dF/dY, d2F/dXdY
      */
-    *f = 0;
-    *fx = 0;
-    *fy = 0;
-    *fxy = 0;
+    *f = (double)(0);
+    *fx = (double)(0);
+    *fy = (double)(0);
+    *fxy = (double)(0);
     if( c->d!=1 )
     {
         return;
@@ -27087,11 +32723,11 @@ void spline2ddiff(spline2dinterpolant* c,
         /*
          * Prepare info
          */
-        t0 = 1;
+        t0 = (double)(1);
         t1 = t;
         t2 = ae_sqr(t, _state);
         t3 = t*t2;
-        u0 = 1;
+        u0 = (double)(1);
         u1 = u;
         u2 = ae_sqr(u, _state);
         u3 = u*u2;
@@ -27206,10 +32842,10 @@ void spline2dlintransxy(spline2dinterpolant* c,
     ae_int_t k;
 
     ae_frame_make(_state, &_frame_block);
-    ae_vector_init(&x, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&y, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&f, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&v, 0, DT_REAL, _state, ae_true);
+    ae_vector_init(&x, 0, DT_REAL, _state);
+    ae_vector_init(&y, 0, DT_REAL, _state);
+    ae_vector_init(&f, 0, DT_REAL, _state);
+    ae_vector_init(&v, 0, DT_REAL, _state);
 
     ae_assert(c->stype==-3||c->stype==-1, "Spline2DLinTransXY: incorrect C (incorrect parameter C.SType)", _state);
     ae_assert(ae_isfinite(ax, _state), "Spline2DLinTransXY: AX is infinite or NaN", _state);
@@ -27241,7 +32877,7 @@ void spline2dlintransxy(spline2dinterpolant* c,
     /*
      * Handle different combinations of AX/AY
      */
-    if( ae_fp_eq(ax,0)&&ae_fp_neq(ay,0) )
+    if( ae_fp_eq(ax,(double)(0))&&ae_fp_neq(ay,(double)(0)) )
     {
         for(i=0; i<=c->m-1; i++)
         {
@@ -27256,7 +32892,7 @@ void spline2dlintransxy(spline2dinterpolant* c,
             }
         }
     }
-    if( ae_fp_neq(ax,0)&&ae_fp_eq(ay,0) )
+    if( ae_fp_neq(ax,(double)(0))&&ae_fp_eq(ay,(double)(0)) )
     {
         for(j=0; j<=c->n-1; j++)
         {
@@ -27271,7 +32907,7 @@ void spline2dlintransxy(spline2dinterpolant* c,
             }
         }
     }
-    if( ae_fp_neq(ax,0)&&ae_fp_neq(ay,0) )
+    if( ae_fp_neq(ax,(double)(0))&&ae_fp_neq(ay,(double)(0)) )
     {
         for(j=0; j<=c->n-1; j++)
         {
@@ -27282,7 +32918,7 @@ void spline2dlintransxy(spline2dinterpolant* c,
             y.ptr.p_double[i] = (y.ptr.p_double[i]-by)/ay;
         }
     }
-    if( ae_fp_eq(ax,0)&&ae_fp_eq(ay,0) )
+    if( ae_fp_eq(ax,(double)(0))&&ae_fp_eq(ay,(double)(0)) )
     {
         spline2dcalcvbuf(c, bx, by, &v, _state);
         for(i=0; i<=c->m-1; i++)
@@ -27336,12 +32972,11 @@ void spline2dlintransf(spline2dinterpolant* c,
     ae_vector f;
     ae_int_t i;
     ae_int_t j;
-    ae_int_t k;
 
     ae_frame_make(_state, &_frame_block);
-    ae_vector_init(&x, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&y, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&f, 0, DT_REAL, _state, ae_true);
+    ae_vector_init(&x, 0, DT_REAL, _state);
+    ae_vector_init(&y, 0, DT_REAL, _state);
+    ae_vector_init(&f, 0, DT_REAL, _state);
 
     ae_assert(c->stype==-3||c->stype==-1, "Spline2DLinTransF: incorrect C (incorrect parameter C.SType)", _state);
     ae_vector_set_length(&x, c->n, _state);
@@ -27397,6 +33032,7 @@ void spline2dcopy(spline2dinterpolant* c,
     cc->m = c->m;
     cc->d = c->d;
     cc->stype = c->stype;
+    tblsize = -1;
     if( c->stype==-3 )
     {
         tblsize = 4*c->n*c->m*c->d;
@@ -27405,6 +33041,7 @@ void spline2dcopy(spline2dinterpolant* c,
     {
         tblsize = c->n*c->m*c->d;
     }
+    ae_assert(tblsize>0, "Spline2DCopy: internal error", _state);
     ae_vector_set_length(&cc->x, cc->n, _state);
     ae_vector_set_length(&cc->y, cc->m, _state);
     ae_vector_set_length(&cc->f, tblsize, _state);
@@ -27453,10 +33090,10 @@ void spline2dresamplebicubic(/* Real    */ ae_matrix* a,
 
     ae_frame_make(_state, &_frame_block);
     ae_matrix_clear(b);
-    ae_matrix_init(&buf, 0, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&x, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&y, 0, DT_REAL, _state, ae_true);
-    _spline1dinterpolant_init(&c, _state, ae_true);
+    ae_matrix_init(&buf, 0, 0, DT_REAL, _state);
+    ae_vector_init(&x, 0, DT_REAL, _state);
+    ae_vector_init(&y, 0, DT_REAL, _state);
+    _spline1dinterpolant_init(&c, _state);
 
     ae_assert(oldwidth>1&&oldheight>1, "Spline2DResampleBicubic: width/height less than 1", _state);
     ae_assert(newwidth>1&&newheight>1, "Spline2DResampleBicubic: width/height less than 1", _state);
@@ -27755,13 +33392,13 @@ void spline2dbuildbicubicv(/* Real    */ ae_vector* x,
     ae_int_t di;
 
     ae_frame_make(_state, &_frame_block);
-    ae_vector_init_copy(&_f, f, _state, ae_true);
+    ae_vector_init_copy(&_f, f, _state);
     f = &_f;
     _spline2dinterpolant_clear(c);
-    ae_matrix_init(&tf, 0, 0, DT_REAL, _state, ae_true);
-    ae_matrix_init(&dx, 0, 0, DT_REAL, _state, ae_true);
-    ae_matrix_init(&dy, 0, 0, DT_REAL, _state, ae_true);
-    ae_matrix_init(&dxy, 0, 0, DT_REAL, _state, ae_true);
+    ae_matrix_init(&tf, 0, 0, DT_REAL, _state);
+    ae_matrix_init(&dx, 0, 0, DT_REAL, _state);
+    ae_matrix_init(&dy, 0, 0, DT_REAL, _state);
+    ae_matrix_init(&dxy, 0, 0, DT_REAL, _state);
 
     ae_assert(n>=2, "Spline2DBuildBicubicV: N is less than 2", _state);
     ae_assert(m>=2, "Spline2DBuildBicubicV: M is less than 2", _state);
@@ -28009,11 +33646,11 @@ void spline2dcalcvbuf(spline2dinterpolant* c,
         /*
          * Prepare info
          */
-        t0 = 1;
+        t0 = (double)(1);
         t1 = t;
         t2 = ae_sqr(t, _state);
         t3 = t*t2;
-        u0 = 1;
+        u0 = (double)(1);
         u1 = u;
         u2 = ae_sqr(u, _state);
         u3 = u*u2;
@@ -28026,7 +33663,7 @@ void spline2dcalcvbuf(spline2dinterpolant* c,
             /*
              * Prepare F, dF/dX, dF/dY, d2F/dXdY
              */
-            f->ptr.p_double[i] = 0;
+            f->ptr.p_double[i] = (double)(0);
             s1 = c->d*(c->n*iy+ix)+i;
             s2 = c->d*(c->n*iy+(ix+1))+i;
             s3 = c->d*(c->n*(iy+1)+(ix+1))+i;
@@ -28207,7 +33844,7 @@ void spline2dunpackv(spline2dinterpolant* c,
                 {
                     for(k0=4; k0<=19; k0++)
                     {
-                        tbl->ptr.pp_double[p][k0] = 0;
+                        tbl->ptr.pp_double[p][k0] = (double)(0);
                     }
                     y1 = c->f.ptr.p_double[*d*(*n*i+j)+k];
                     y2 = c->f.ptr.p_double[*d*(*n*i+(j+1))+k];
@@ -28253,7 +33890,7 @@ void spline2dunpackv(spline2dinterpolant* c,
                 {
                     for(cj=0; cj<=3; cj++)
                     {
-                        tbl->ptr.pp_double[p][4+ci*4+cj] = tbl->ptr.pp_double[p][4+ci*4+cj]*ae_pow(dt, ci, _state)*ae_pow(du, cj, _state);
+                        tbl->ptr.pp_double[p][4+ci*4+cj] = tbl->ptr.pp_double[p][4+ci*4+cj]*ae_pow(dt, (double)(ci), _state)*ae_pow(du, (double)(cj), _state);
                     }
                 }
             }
@@ -28403,12 +34040,12 @@ void spline2dbuildbicubic(/* Real    */ ae_vector* x,
     ae_int_t k;
 
     ae_frame_make(_state, &_frame_block);
-    ae_matrix_init_copy(&_f, f, _state, ae_true);
+    ae_matrix_init_copy(&_f, f, _state);
     f = &_f;
     _spline2dinterpolant_clear(c);
-    ae_matrix_init(&dx, 0, 0, DT_REAL, _state, ae_true);
-    ae_matrix_init(&dy, 0, 0, DT_REAL, _state, ae_true);
-    ae_matrix_init(&dxy, 0, 0, DT_REAL, _state, ae_true);
+    ae_matrix_init(&dx, 0, 0, DT_REAL, _state);
+    ae_matrix_init(&dy, 0, 0, DT_REAL, _state);
+    ae_matrix_init(&dxy, 0, 0, DT_REAL, _state);
 
     ae_assert(n>=2, "Spline2DBuildBicubicSpline: N<2", _state);
     ae_assert(m>=2, "Spline2DBuildBicubicSpline: M<2", _state);
@@ -28588,7 +34225,7 @@ void spline2dunpack(spline2dinterpolant* c,
             {
                 for(k=4; k<=19; k++)
                 {
-                    tbl->ptr.pp_double[p][k] = 0;
+                    tbl->ptr.pp_double[p][k] = (double)(0);
                 }
                 y1 = c->f.ptr.p_double[*n*i+j];
                 y2 = c->f.ptr.p_double[*n*i+(j+1)];
@@ -28634,7 +34271,7 @@ void spline2dunpack(spline2dinterpolant* c,
             {
                 for(cj=0; cj<=3; cj++)
                 {
-                    tbl->ptr.pp_double[p][4+ci*4+cj] = tbl->ptr.pp_double[p][4+ci*4+cj]*ae_pow(dt, ci, _state)*ae_pow(du, cj, _state);
+                    tbl->ptr.pp_double[p][4+ci*4+cj] = tbl->ptr.pp_double[p][4+ci*4+cj]*ae_pow(dt, (double)(ci), _state)*ae_pow(du, (double)(cj), _state);
                 }
             }
         }
@@ -28670,9 +34307,9 @@ static void spline2d_bicubiccalcderivatives(/* Real    */ ae_matrix* a,
     ae_matrix_clear(dx);
     ae_matrix_clear(dy);
     ae_matrix_clear(dxy);
-    ae_vector_init(&xt, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&ft, 0, DT_REAL, _state, ae_true);
-    _spline1dinterpolant_init(&c, _state, ae_true);
+    ae_vector_init(&xt, 0, DT_REAL, _state);
+    ae_vector_init(&ft, 0, DT_REAL, _state);
+    _spline1dinterpolant_init(&c, _state);
 
     ae_matrix_set_length(dx, m, n, _state);
     ae_matrix_set_length(dy, m, n, _state);
@@ -28741,40 +34378,48 @@ static void spline2d_bicubiccalcderivatives(/* Real    */ ae_matrix* a,
 }
 
 
-ae_bool _spline2dinterpolant_init(spline2dinterpolant* p, ae_state *_state, ae_bool make_automatic)
+void _spline2dinterpolant_init(void* _p, ae_state *_state)
 {
-    if( !ae_vector_init(&p->x, 0, DT_REAL, _state, make_automatic) )
-        return ae_false;
-    if( !ae_vector_init(&p->y, 0, DT_REAL, _state, make_automatic) )
-        return ae_false;
-    if( !ae_vector_init(&p->f, 0, DT_REAL, _state, make_automatic) )
-        return ae_false;
-    return ae_true;
+    spline2dinterpolant *p = (spline2dinterpolant*)_p;
+    ae_touch_ptr((void*)p);
+    ae_vector_init(&p->x, 0, DT_REAL, _state);
+    ae_vector_init(&p->y, 0, DT_REAL, _state);
+    ae_vector_init(&p->f, 0, DT_REAL, _state);
 }
 
 
-ae_bool _spline2dinterpolant_init_copy(spline2dinterpolant* dst, spline2dinterpolant* src, ae_state *_state, ae_bool make_automatic)
+void _spline2dinterpolant_init_copy(void* _dst, void* _src, ae_state *_state)
 {
+    spline2dinterpolant *dst = (spline2dinterpolant*)_dst;
+    spline2dinterpolant *src = (spline2dinterpolant*)_src;
     dst->k = src->k;
     dst->stype = src->stype;
     dst->n = src->n;
     dst->m = src->m;
     dst->d = src->d;
-    if( !ae_vector_init_copy(&dst->x, &src->x, _state, make_automatic) )
-        return ae_false;
-    if( !ae_vector_init_copy(&dst->y, &src->y, _state, make_automatic) )
-        return ae_false;
-    if( !ae_vector_init_copy(&dst->f, &src->f, _state, make_automatic) )
-        return ae_false;
-    return ae_true;
+    ae_vector_init_copy(&dst->x, &src->x, _state);
+    ae_vector_init_copy(&dst->y, &src->y, _state);
+    ae_vector_init_copy(&dst->f, &src->f, _state);
 }
 
 
-void _spline2dinterpolant_clear(spline2dinterpolant* p)
+void _spline2dinterpolant_clear(void* _p)
 {
+    spline2dinterpolant *p = (spline2dinterpolant*)_p;
+    ae_touch_ptr((void*)p);
     ae_vector_clear(&p->x);
     ae_vector_clear(&p->y);
     ae_vector_clear(&p->f);
+}
+
+
+void _spline2dinterpolant_destroy(void* _p)
+{
+    spline2dinterpolant *p = (spline2dinterpolant*)_p;
+    ae_touch_ptr((void*)p);
+    ae_vector_destroy(&p->x);
+    ae_vector_destroy(&p->y);
+    ae_vector_destroy(&p->f);
 }
 
 
@@ -28813,7 +34458,7 @@ double spline3dcalc(spline3dinterpolant* c,
     ae_assert((ae_isfinite(x, _state)&&ae_isfinite(y, _state))&&ae_isfinite(z, _state), "Spline3DCalc: X=NaN/Infinite, Y=NaN/Infinite or Z=NaN/Infinite", _state);
     if( c->d!=1 )
     {
-        result = 0;
+        result = (double)(0);
         return result;
     }
     spline3d_spline3ddiff(c, x, y, z, &v, &vx, &vy, &vxy, _state);
@@ -28858,11 +34503,11 @@ void spline3dlintransxyz(spline3dinterpolant* c,
     ae_int_t di;
 
     ae_frame_make(_state, &_frame_block);
-    ae_vector_init(&x, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&y, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&z, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&f, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&v, 0, DT_REAL, _state, ae_true);
+    ae_vector_init(&x, 0, DT_REAL, _state);
+    ae_vector_init(&y, 0, DT_REAL, _state);
+    ae_vector_init(&z, 0, DT_REAL, _state);
+    ae_vector_init(&f, 0, DT_REAL, _state);
+    ae_vector_init(&v, 0, DT_REAL, _state);
 
     ae_assert(c->stype==-3||c->stype==-1, "Spline3DLinTransXYZ: incorrect C (incorrect parameter C.SType)", _state);
     ae_vector_set_length(&x, c->n, _state);
@@ -28885,11 +34530,11 @@ void spline3dlintransxyz(spline3dinterpolant* c,
     /*
      * Handle different combinations of zero/nonzero AX/AY/AZ
      */
-    if( (ae_fp_neq(ax,0)&&ae_fp_neq(ay,0))&&ae_fp_neq(az,0) )
+    if( (ae_fp_neq(ax,(double)(0))&&ae_fp_neq(ay,(double)(0)))&&ae_fp_neq(az,(double)(0)) )
     {
         ae_v_move(&f.ptr.p_double[0], 1, &c->f.ptr.p_double[0], 1, ae_v_len(0,c->m*c->n*c->l*c->d-1));
     }
-    if( (ae_fp_eq(ax,0)&&ae_fp_neq(ay,0))&&ae_fp_neq(az,0) )
+    if( (ae_fp_eq(ax,(double)(0))&&ae_fp_neq(ay,(double)(0)))&&ae_fp_neq(az,(double)(0)) )
     {
         for(i=0; i<=c->m-1; i++)
         {
@@ -28905,10 +34550,10 @@ void spline3dlintransxyz(spline3dinterpolant* c,
                 }
             }
         }
-        ax = 1;
-        bx = 0;
+        ax = (double)(1);
+        bx = (double)(0);
     }
-    if( (ae_fp_neq(ax,0)&&ae_fp_eq(ay,0))&&ae_fp_neq(az,0) )
+    if( (ae_fp_neq(ax,(double)(0))&&ae_fp_eq(ay,(double)(0)))&&ae_fp_neq(az,(double)(0)) )
     {
         for(i=0; i<=c->n-1; i++)
         {
@@ -28924,10 +34569,10 @@ void spline3dlintransxyz(spline3dinterpolant* c,
                 }
             }
         }
-        ay = 1;
-        by = 0;
+        ay = (double)(1);
+        by = (double)(0);
     }
-    if( (ae_fp_neq(ax,0)&&ae_fp_neq(ay,0))&&ae_fp_eq(az,0) )
+    if( (ae_fp_neq(ax,(double)(0))&&ae_fp_neq(ay,(double)(0)))&&ae_fp_eq(az,(double)(0)) )
     {
         for(i=0; i<=c->n-1; i++)
         {
@@ -28943,10 +34588,10 @@ void spline3dlintransxyz(spline3dinterpolant* c,
                 }
             }
         }
-        az = 1;
-        bz = 0;
+        az = (double)(1);
+        bz = (double)(0);
     }
-    if( (ae_fp_eq(ax,0)&&ae_fp_eq(ay,0))&&ae_fp_neq(az,0) )
+    if( (ae_fp_eq(ax,(double)(0))&&ae_fp_eq(ay,(double)(0)))&&ae_fp_neq(az,(double)(0)) )
     {
         for(i=0; i<=c->l-1; i++)
         {
@@ -28962,12 +34607,12 @@ void spline3dlintransxyz(spline3dinterpolant* c,
                 }
             }
         }
-        ax = 1;
-        bx = 0;
-        ay = 1;
-        by = 0;
+        ax = (double)(1);
+        bx = (double)(0);
+        ay = (double)(1);
+        by = (double)(0);
     }
-    if( (ae_fp_eq(ax,0)&&ae_fp_neq(ay,0))&&ae_fp_eq(az,0) )
+    if( (ae_fp_eq(ax,(double)(0))&&ae_fp_neq(ay,(double)(0)))&&ae_fp_eq(az,(double)(0)) )
     {
         for(i=0; i<=c->m-1; i++)
         {
@@ -28983,12 +34628,12 @@ void spline3dlintransxyz(spline3dinterpolant* c,
                 }
             }
         }
-        ax = 1;
-        bx = 0;
-        az = 1;
-        bz = 0;
+        ax = (double)(1);
+        bx = (double)(0);
+        az = (double)(1);
+        bz = (double)(0);
     }
-    if( (ae_fp_neq(ax,0)&&ae_fp_eq(ay,0))&&ae_fp_eq(az,0) )
+    if( (ae_fp_neq(ax,(double)(0))&&ae_fp_eq(ay,(double)(0)))&&ae_fp_eq(az,(double)(0)) )
     {
         for(i=0; i<=c->n-1; i++)
         {
@@ -29004,12 +34649,12 @@ void spline3dlintransxyz(spline3dinterpolant* c,
                 }
             }
         }
-        ay = 1;
-        by = 0;
-        az = 1;
-        bz = 0;
+        ay = (double)(1);
+        by = (double)(0);
+        az = (double)(1);
+        bz = (double)(0);
     }
-    if( (ae_fp_eq(ax,0)&&ae_fp_eq(ay,0))&&ae_fp_eq(az,0) )
+    if( (ae_fp_eq(ax,(double)(0))&&ae_fp_eq(ay,(double)(0)))&&ae_fp_eq(az,(double)(0)) )
     {
         spline3dcalcv(c, bx, by, bz, &v, _state);
         for(k=0; k<=c->l-1; k++)
@@ -29025,12 +34670,12 @@ void spline3dlintransxyz(spline3dinterpolant* c,
                 }
             }
         }
-        ax = 1;
-        bx = 0;
-        ay = 1;
-        by = 0;
-        az = 1;
-        bz = 0;
+        ax = (double)(1);
+        bx = (double)(0);
+        ay = (double)(1);
+        by = (double)(0);
+        az = (double)(1);
+        bz = (double)(0);
     }
     
     /*
@@ -29082,14 +34727,12 @@ void spline3dlintransf(spline3dinterpolant* c,
     ae_vector f;
     ae_int_t i;
     ae_int_t j;
-    ae_int_t k;
-    ae_int_t di;
 
     ae_frame_make(_state, &_frame_block);
-    ae_vector_init(&x, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&y, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&z, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&f, 0, DT_REAL, _state, ae_true);
+    ae_vector_init(&x, 0, DT_REAL, _state);
+    ae_vector_init(&y, 0, DT_REAL, _state);
+    ae_vector_init(&z, 0, DT_REAL, _state);
+    ae_vector_init(&f, 0, DT_REAL, _state);
 
     ae_assert(c->stype==-3||c->stype==-1, "Spline3DLinTransF: incorrect C (incorrect parameter C.SType)", _state);
     ae_vector_set_length(&x, c->n, _state);
@@ -29725,7 +35368,7 @@ void spline3dunpackv(spline3dinterpolant* c,
                     {
                         for(i0=6; i0<=13; i0++)
                         {
-                            tbl->ptr.pp_double[p][i0] = 0;
+                            tbl->ptr.pp_double[p][i0] = (double)(0);
                         }
                         tbl->ptr.pp_double[p][6+2*(2*0+0)+0] = c->f.ptr.p_double[*d*(*n*(*m*k+j)+i)+di];
                         tbl->ptr.pp_double[p][6+2*(2*0+0)+1] = c->f.ptr.p_double[*d*(*n*(*m*k+j)+(i+1))+di]-c->f.ptr.p_double[*d*(*n*(*m*k+j)+i)+di];
@@ -29746,7 +35389,7 @@ void spline3dunpackv(spline3dinterpolant* c,
                         {
                             for(ck=0; ck<=1; ck++)
                             {
-                                tbl->ptr.pp_double[p][6+2*(2*ck+cj)+ci] = tbl->ptr.pp_double[p][6+2*(2*ck+cj)+ci]*ae_pow(du, ci, _state)*ae_pow(dv, cj, _state)*ae_pow(dw, ck, _state);
+                                tbl->ptr.pp_double[p][6+2*(2*ck+cj)+ci] = tbl->ptr.pp_double[p][6+2*(2*ck+cj)+ci]*ae_pow(du, (double)(ci), _state)*ae_pow(dv, (double)(cj), _state)*ae_pow(dw, (double)(ck), _state);
                             }
                         }
                     }
@@ -29810,10 +35453,10 @@ static void spline3d_spline3ddiff(spline3dinterpolant* c,
     /*
      * Prepare F, dF/dX, dF/dY, d2F/dXdY
      */
-    *f = 0;
-    *fx = 0;
-    *fy = 0;
-    *fxy = 0;
+    *f = (double)(0);
+    *fx = (double)(0);
+    *fy = (double)(0);
+    *fxy = (double)(0);
     if( c->d!=1 )
     {
         return;
@@ -29895,46 +35538,53 @@ static void spline3d_spline3ddiff(spline3dinterpolant* c,
 }
 
 
-ae_bool _spline3dinterpolant_init(spline3dinterpolant* p, ae_state *_state, ae_bool make_automatic)
+void _spline3dinterpolant_init(void* _p, ae_state *_state)
 {
-    if( !ae_vector_init(&p->x, 0, DT_REAL, _state, make_automatic) )
-        return ae_false;
-    if( !ae_vector_init(&p->y, 0, DT_REAL, _state, make_automatic) )
-        return ae_false;
-    if( !ae_vector_init(&p->z, 0, DT_REAL, _state, make_automatic) )
-        return ae_false;
-    if( !ae_vector_init(&p->f, 0, DT_REAL, _state, make_automatic) )
-        return ae_false;
-    return ae_true;
+    spline3dinterpolant *p = (spline3dinterpolant*)_p;
+    ae_touch_ptr((void*)p);
+    ae_vector_init(&p->x, 0, DT_REAL, _state);
+    ae_vector_init(&p->y, 0, DT_REAL, _state);
+    ae_vector_init(&p->z, 0, DT_REAL, _state);
+    ae_vector_init(&p->f, 0, DT_REAL, _state);
 }
 
 
-ae_bool _spline3dinterpolant_init_copy(spline3dinterpolant* dst, spline3dinterpolant* src, ae_state *_state, ae_bool make_automatic)
+void _spline3dinterpolant_init_copy(void* _dst, void* _src, ae_state *_state)
 {
+    spline3dinterpolant *dst = (spline3dinterpolant*)_dst;
+    spline3dinterpolant *src = (spline3dinterpolant*)_src;
     dst->k = src->k;
     dst->stype = src->stype;
     dst->n = src->n;
     dst->m = src->m;
     dst->l = src->l;
     dst->d = src->d;
-    if( !ae_vector_init_copy(&dst->x, &src->x, _state, make_automatic) )
-        return ae_false;
-    if( !ae_vector_init_copy(&dst->y, &src->y, _state, make_automatic) )
-        return ae_false;
-    if( !ae_vector_init_copy(&dst->z, &src->z, _state, make_automatic) )
-        return ae_false;
-    if( !ae_vector_init_copy(&dst->f, &src->f, _state, make_automatic) )
-        return ae_false;
-    return ae_true;
+    ae_vector_init_copy(&dst->x, &src->x, _state);
+    ae_vector_init_copy(&dst->y, &src->y, _state);
+    ae_vector_init_copy(&dst->z, &src->z, _state);
+    ae_vector_init_copy(&dst->f, &src->f, _state);
 }
 
 
-void _spline3dinterpolant_clear(spline3dinterpolant* p)
+void _spline3dinterpolant_clear(void* _p)
 {
+    spline3dinterpolant *p = (spline3dinterpolant*)_p;
+    ae_touch_ptr((void*)p);
     ae_vector_clear(&p->x);
     ae_vector_clear(&p->y);
     ae_vector_clear(&p->z);
     ae_vector_clear(&p->f);
+}
+
+
+void _spline3dinterpolant_destroy(void* _p)
+{
+    spline3dinterpolant *p = (spline3dinterpolant*)_p;
+    ae_touch_ptr((void*)p);
+    ae_vector_destroy(&p->x);
+    ae_vector_destroy(&p->y);
+    ae_vector_destroy(&p->z);
+    ae_vector_destroy(&p->f);
 }
 
 

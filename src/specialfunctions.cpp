@@ -1,10 +1,11 @@
 /*************************************************************************
+ALGLIB 3.9.0 (source code generated 2014-12-11)
 Copyright (c) Sergey Bochkanov (ALGLIB project).
 
 >>> SOURCE LICENSE >>>
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
-the Free Software Foundation (www.fsf.org); either version 2 of the
+the Free Software Foundation (www.fsf.org); either version 2 of the 
 License, or (at your option) any later version.
 
 This program is distributed in the hope that it will be useful,
@@ -71,10 +72,6 @@ double gammafunction(const double x)
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
-    {
-        throw;
-    }
 }
 
 /*************************************************************************
@@ -123,10 +120,6 @@ double lngamma(const double x, double &sgngam)
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
-    {
-        throw;
-    }
 }
 
 /*************************************************************************
@@ -168,10 +161,6 @@ double errorfunction(const double x)
     catch(alglib_impl::ae_error_type)
     {
         throw ap_error(_alglib_env_state.error_msg);
-    }
-    catch(...)
-    {
-        throw;
     }
 }
 
@@ -215,10 +204,6 @@ double errorfunctionc(const double x)
     catch(alglib_impl::ae_error_type)
     {
         throw ap_error(_alglib_env_state.error_msg);
-    }
-    catch(...)
-    {
-        throw;
     }
 }
 
@@ -266,10 +251,6 @@ double normaldistribution(const double x)
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
-    {
-        throw;
-    }
 }
 
 /*************************************************************************
@@ -291,10 +272,6 @@ double inverf(const double e)
     catch(alglib_impl::ae_error_type)
     {
         throw ap_error(_alglib_env_state.error_msg);
-    }
-    catch(...)
-    {
-        throw;
     }
 }
 
@@ -336,10 +313,6 @@ double invnormaldistribution(const double y0)
     catch(alglib_impl::ae_error_type)
     {
         throw ap_error(_alglib_env_state.error_msg);
-    }
-    catch(...)
-    {
-        throw;
     }
 }
 
@@ -385,10 +358,6 @@ double incompletegamma(const double a, const double x)
     catch(alglib_impl::ae_error_type)
     {
         throw ap_error(_alglib_env_state.error_msg);
-    }
-    catch(...)
-    {
-        throw;
     }
 }
 
@@ -438,10 +407,6 @@ double incompletegammac(const double a, const double x)
     catch(alglib_impl::ae_error_type)
     {
         throw ap_error(_alglib_env_state.error_msg);
-    }
-    catch(...)
-    {
-        throw;
     }
 }
 
@@ -495,10 +460,6 @@ double invincompletegammac(const double a, const double y0)
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
-    {
-        throw;
-    }
 }
 
 /*************************************************************************
@@ -547,10 +508,6 @@ void airy(const double x, double &ai, double &aip, double &bi, double &bip)
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
-    {
-        throw;
-    }
 }
 
 /*************************************************************************
@@ -597,10 +554,6 @@ double besselj0(const double x)
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
-    {
-        throw;
-    }
 }
 
 /*************************************************************************
@@ -636,10 +589,6 @@ double besselj1(const double x)
     catch(alglib_impl::ae_error_type)
     {
         throw ap_error(_alglib_env_state.error_msg);
-    }
-    catch(...)
-    {
-        throw;
     }
 }
 
@@ -683,10 +632,6 @@ double besseljn(const ae_int_t n, const double x)
     catch(alglib_impl::ae_error_type)
     {
         throw ap_error(_alglib_env_state.error_msg);
-    }
-    catch(...)
-    {
-        throw;
     }
 }
 
@@ -732,10 +677,6 @@ double bessely0(const double x)
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
-    {
-        throw;
-    }
 }
 
 /*************************************************************************
@@ -772,10 +713,6 @@ double bessely1(const double x)
     catch(alglib_impl::ae_error_type)
     {
         throw ap_error(_alglib_env_state.error_msg);
-    }
-    catch(...)
-    {
-        throw;
     }
 }
 
@@ -815,10 +752,6 @@ double besselyn(const ae_int_t n, const double x)
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
-    {
-        throw;
-    }
 }
 
 /*************************************************************************
@@ -855,10 +788,6 @@ double besseli0(const double x)
     catch(alglib_impl::ae_error_type)
     {
         throw ap_error(_alglib_env_state.error_msg);
-    }
-    catch(...)
-    {
-        throw;
     }
 }
 
@@ -897,10 +826,6 @@ double besseli1(const double x)
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
-    {
-        throw;
-    }
 }
 
 /*************************************************************************
@@ -938,10 +863,6 @@ double besselk0(const double x)
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
-    {
-        throw;
-    }
 }
 
 /*************************************************************************
@@ -976,10 +897,6 @@ double besselk1(const double x)
     catch(alglib_impl::ae_error_type)
     {
         throw ap_error(_alglib_env_state.error_msg);
-    }
-    catch(...)
-    {
-        throw;
     }
 }
 
@@ -1019,10 +936,6 @@ double besselkn(const ae_int_t nn, const double x)
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
-    {
-        throw;
-    }
 }
 
 /*************************************************************************
@@ -1060,10 +973,6 @@ double beta(const double a, const double b)
     catch(alglib_impl::ae_error_type)
     {
         throw ap_error(_alglib_env_state.error_msg);
-    }
-    catch(...)
-    {
-        throw;
     }
 }
 
@@ -1122,10 +1031,6 @@ double incompletebeta(const double a, const double b, const double x)
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
-    {
-        throw;
-    }
 }
 
 /*************************************************************************
@@ -1169,10 +1074,6 @@ double invincompletebeta(const double a, const double b, const double y)
     catch(alglib_impl::ae_error_type)
     {
         throw ap_error(_alglib_env_state.error_msg);
-    }
-    catch(...)
-    {
-        throw;
     }
 }
 
@@ -1220,10 +1121,6 @@ double binomialdistribution(const ae_int_t k, const ae_int_t n, const double p)
     catch(alglib_impl::ae_error_type)
     {
         throw ap_error(_alglib_env_state.error_msg);
-    }
-    catch(...)
-    {
-        throw;
     }
 }
 
@@ -1274,10 +1171,6 @@ double binomialcdistribution(const ae_int_t k, const ae_int_t n, const double p)
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
-    {
-        throw;
-    }
 }
 
 /*************************************************************************
@@ -1322,10 +1215,6 @@ double invbinomialdistribution(const ae_int_t k, const ae_int_t n, const double 
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
-    {
-        throw;
-    }
 }
 
 /*************************************************************************
@@ -1353,10 +1242,6 @@ double chebyshevcalculate(const ae_int_t r, const ae_int_t n, const double x)
     catch(alglib_impl::ae_error_type)
     {
         throw ap_error(_alglib_env_state.error_msg);
-    }
-    catch(...)
-    {
-        throw;
     }
 }
 
@@ -1391,10 +1276,6 @@ double chebyshevsum(const real_1d_array &c, const ae_int_t r, const ae_int_t n, 
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
-    {
-        throw;
-    }
 }
 
 /*************************************************************************
@@ -1419,10 +1300,6 @@ void chebyshevcoefficients(const ae_int_t n, real_1d_array &c)
     catch(alglib_impl::ae_error_type)
     {
         throw ap_error(_alglib_env_state.error_msg);
-    }
-    catch(...)
-    {
-        throw;
     }
 }
 
@@ -1452,10 +1329,6 @@ void fromchebyshev(const real_1d_array &a, const ae_int_t n, real_1d_array &b)
     catch(alglib_impl::ae_error_type)
     {
         throw ap_error(_alglib_env_state.error_msg);
-    }
-    catch(...)
-    {
-        throw;
     }
 }
 
@@ -1506,10 +1379,6 @@ double chisquaredistribution(const double v, const double x)
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
-    {
-        throw;
-    }
 }
 
 /*************************************************************************
@@ -1557,10 +1426,6 @@ double chisquarecdistribution(const double v, const double x)
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
-    {
-        throw;
-    }
 }
 
 /*************************************************************************
@@ -1596,10 +1461,6 @@ double invchisquaredistribution(const double v, const double y)
     catch(alglib_impl::ae_error_type)
     {
         throw ap_error(_alglib_env_state.error_msg);
-    }
-    catch(...)
-    {
-        throw;
     }
 }
 
@@ -1641,10 +1502,6 @@ double dawsonintegral(const double x)
     catch(alglib_impl::ae_error_type)
     {
         throw ap_error(_alglib_env_state.error_msg);
-    }
-    catch(...)
-    {
-        throw;
     }
 }
 
@@ -1692,10 +1549,6 @@ double ellipticintegralk(const double m)
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
-    {
-        throw;
-    }
 }
 
 /*************************************************************************
@@ -1731,7 +1584,8 @@ ACCURACY:
 arithmetic   domain     # trials      peak         rms
    IEEE       0,1        30000       2.5e-16     6.8e-17
 
-Алгоритм взят из библиотеки Cephes
+Cephes Math Library, Release 2.8:  June, 2000
+Copyright 1984, 1987, 2000 by Stephen L. Moshier
 *************************************************************************/
 double ellipticintegralkhighprecision(const double m1)
 {
@@ -1746,10 +1600,6 @@ double ellipticintegralkhighprecision(const double m1)
     catch(alglib_impl::ae_error_type)
     {
         throw ap_error(_alglib_env_state.error_msg);
-    }
-    catch(...)
-    {
-        throw;
     }
 }
 
@@ -1801,10 +1651,6 @@ double incompleteellipticintegralk(const double phi, const double m)
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
-    {
-        throw;
-    }
 }
 
 /*************************************************************************
@@ -1847,10 +1693,6 @@ double ellipticintegrale(const double m)
     catch(alglib_impl::ae_error_type)
     {
         throw ap_error(_alglib_env_state.error_msg);
-    }
-    catch(...)
-    {
-        throw;
     }
 }
 
@@ -1898,10 +1740,6 @@ double incompleteellipticintegrale(const double phi, const double m)
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
-    {
-        throw;
-    }
 }
 
 /*************************************************************************
@@ -1942,10 +1780,6 @@ double exponentialintegralei(const double x)
     catch(alglib_impl::ae_error_type)
     {
         throw ap_error(_alglib_env_state.error_msg);
-    }
-    catch(...)
-    {
-        throw;
     }
 }
 
@@ -1994,10 +1828,6 @@ double exponentialintegralen(const double x, const ae_int_t n)
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
-    {
-        throw;
-    }
 }
 
 /*************************************************************************
@@ -2045,10 +1875,6 @@ double fdistribution(const ae_int_t a, const ae_int_t b, const double x)
     catch(alglib_impl::ae_error_type)
     {
         throw ap_error(_alglib_env_state.error_msg);
-    }
-    catch(...)
-    {
-        throw;
     }
 }
 
@@ -2102,10 +1928,6 @@ double fcdistribution(const ae_int_t a, const ae_int_t b, const double x)
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
-    {
-        throw;
-    }
 }
 
 /*************************************************************************
@@ -2156,10 +1978,6 @@ double invfdistribution(const ae_int_t a, const ae_int_t b, const double y)
     catch(alglib_impl::ae_error_type)
     {
         throw ap_error(_alglib_env_state.error_msg);
-    }
-    catch(...)
-    {
-        throw;
     }
 }
 
@@ -2219,10 +2037,6 @@ void fresnelintegral(const double x, double &c, double &s)
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
-    {
-        throw;
-    }
 }
 
 /*************************************************************************
@@ -2248,10 +2062,6 @@ double hermitecalculate(const ae_int_t n, const double x)
     catch(alglib_impl::ae_error_type)
     {
         throw ap_error(_alglib_env_state.error_msg);
-    }
-    catch(...)
-    {
-        throw;
     }
 }
 
@@ -2282,10 +2092,6 @@ double hermitesum(const real_1d_array &c, const ae_int_t n, const double x)
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
-    {
-        throw;
-    }
 }
 
 /*************************************************************************
@@ -2310,10 +2116,6 @@ void hermitecoefficients(const ae_int_t n, real_1d_array &c)
     catch(alglib_impl::ae_error_type)
     {
         throw ap_error(_alglib_env_state.error_msg);
-    }
-    catch(...)
-    {
-        throw;
     }
 }
 
@@ -2371,10 +2173,6 @@ void jacobianellipticfunctions(const double u, const double m, double &sn, doubl
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
-    {
-        throw;
-    }
 }
 
 /*************************************************************************
@@ -2400,10 +2198,6 @@ double laguerrecalculate(const ae_int_t n, const double x)
     catch(alglib_impl::ae_error_type)
     {
         throw ap_error(_alglib_env_state.error_msg);
-    }
-    catch(...)
-    {
-        throw;
     }
 }
 
@@ -2433,10 +2227,6 @@ double laguerresum(const real_1d_array &c, const ae_int_t n, const double x)
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
-    {
-        throw;
-    }
 }
 
 /*************************************************************************
@@ -2461,10 +2251,6 @@ void laguerrecoefficients(const ae_int_t n, real_1d_array &c)
     catch(alglib_impl::ae_error_type)
     {
         throw ap_error(_alglib_env_state.error_msg);
-    }
-    catch(...)
-    {
-        throw;
     }
 }
 
@@ -2491,10 +2277,6 @@ double legendrecalculate(const ae_int_t n, const double x)
     catch(alglib_impl::ae_error_type)
     {
         throw ap_error(_alglib_env_state.error_msg);
-    }
-    catch(...)
-    {
-        throw;
     }
 }
 
@@ -2525,10 +2307,6 @@ double legendresum(const real_1d_array &c, const ae_int_t n, const double x)
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
-    {
-        throw;
-    }
 }
 
 /*************************************************************************
@@ -2553,10 +2331,6 @@ void legendrecoefficients(const ae_int_t n, real_1d_array &c)
     catch(alglib_impl::ae_error_type)
     {
         throw ap_error(_alglib_env_state.error_msg);
-    }
-    catch(...)
-    {
-        throw;
     }
 }
 
@@ -2598,10 +2372,6 @@ double poissondistribution(const ae_int_t k, const double m)
     catch(alglib_impl::ae_error_type)
     {
         throw ap_error(_alglib_env_state.error_msg);
-    }
-    catch(...)
-    {
-        throw;
     }
 }
 
@@ -2645,10 +2415,6 @@ double poissoncdistribution(const ae_int_t k, const double m)
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
-    {
-        throw;
-    }
 }
 
 /*************************************************************************
@@ -2683,10 +2449,6 @@ double invpoissondistribution(const ae_int_t k, const double y)
     catch(alglib_impl::ae_error_type)
     {
         throw ap_error(_alglib_env_state.error_msg);
-    }
-    catch(...)
-    {
-        throw;
     }
 }
 
@@ -2742,10 +2504,6 @@ double psi(const double x)
     catch(alglib_impl::ae_error_type)
     {
         throw ap_error(_alglib_env_state.error_msg);
-    }
-    catch(...)
-    {
-        throw;
     }
 }
 
@@ -2804,10 +2562,6 @@ double studenttdistribution(const ae_int_t k, const double t)
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
-    {
-        throw;
-    }
 }
 
 /*************************************************************************
@@ -2840,10 +2594,6 @@ double invstudenttdistribution(const ae_int_t k, const double p)
     catch(alglib_impl::ae_error_type)
     {
         throw ap_error(_alglib_env_state.error_msg);
-    }
-    catch(...)
-    {
-        throw;
     }
 }
 
@@ -2900,10 +2650,6 @@ void sinecosineintegrals(const double x, double &si, double &ci)
     {
         throw ap_error(_alglib_env_state.error_msg);
     }
-    catch(...)
-    {
-        throw;
-    }
 }
 
 /*************************************************************************
@@ -2959,10 +2705,6 @@ void hyperbolicsinecosineintegrals(const double x, double &shi, double &chi)
     catch(alglib_impl::ae_error_type)
     {
         throw ap_error(_alglib_env_state.error_msg);
-    }
-    catch(...)
-    {
-        throw;
     }
 }
 }
@@ -3110,17 +2852,17 @@ double gammafunction(double x, ae_state *_state)
     double result;
 
 
-    sgngam = 1;
+    sgngam = (double)(1);
     q = ae_fabs(x, _state);
     if( ae_fp_greater(q,33.0) )
     {
         if( ae_fp_less(x,0.0) )
         {
-            p = ae_ifloor(q, _state);
+            p = (double)(ae_ifloor(q, _state));
             i = ae_round(p, _state);
             if( i%2==0 )
             {
-                sgngam = -1;
+                sgngam = (double)(-1);
             }
             z = q-p;
             if( ae_fp_greater(z,0.5) )
@@ -3139,13 +2881,13 @@ double gammafunction(double x, ae_state *_state)
         result = sgngam*z;
         return result;
     }
-    z = 1;
-    while(ae_fp_greater_eq(x,3))
+    z = (double)(1);
+    while(ae_fp_greater_eq(x,(double)(3)))
     {
         x = x-1;
         z = z*x;
     }
-    while(ae_fp_less(x,0))
+    while(ae_fp_less(x,(double)(0)))
     {
         if( ae_fp_greater(x,-0.000000001) )
         {
@@ -3155,7 +2897,7 @@ double gammafunction(double x, ae_state *_state)
         z = z/x;
         x = x+1;
     }
-    while(ae_fp_less(x,2))
+    while(ae_fp_less(x,(double)(2)))
     {
         if( ae_fp_less(x,0.000000001) )
         {
@@ -3165,7 +2907,7 @@ double gammafunction(double x, ae_state *_state)
         z = z/x;
         x = x+1.0;
     }
-    if( ae_fp_eq(x,2) )
+    if( ae_fp_eq(x,(double)(2)) )
     {
         result = z;
         return result;
@@ -3245,22 +2987,22 @@ double lngamma(double x, double* sgngam, ae_state *_state)
 
     *sgngam = 0;
 
-    *sgngam = 1;
+    *sgngam = (double)(1);
     logpi = 1.14472988584940017414;
     ls2pi = 0.91893853320467274178;
     if( ae_fp_less(x,-34.0) )
     {
         q = -x;
         w = lngamma(q, &tmp, _state);
-        p = ae_ifloor(q, _state);
+        p = (double)(ae_ifloor(q, _state));
         i = ae_round(p, _state);
         if( i%2==0 )
         {
-            *sgngam = -1;
+            *sgngam = (double)(-1);
         }
         else
         {
-            *sgngam = 1;
+            *sgngam = (double)(1);
         }
         z = q-p;
         if( ae_fp_greater(z,0.5) )
@@ -3272,33 +3014,33 @@ double lngamma(double x, double* sgngam, ae_state *_state)
         result = logpi-ae_log(z, _state)-w;
         return result;
     }
-    if( ae_fp_less(x,13) )
+    if( ae_fp_less(x,(double)(13)) )
     {
-        z = 1;
-        p = 0;
+        z = (double)(1);
+        p = (double)(0);
         u = x;
-        while(ae_fp_greater_eq(u,3))
+        while(ae_fp_greater_eq(u,(double)(3)))
         {
             p = p-1;
             u = x+p;
             z = z*u;
         }
-        while(ae_fp_less(u,2))
+        while(ae_fp_less(u,(double)(2)))
         {
             z = z/u;
             p = p+1;
             u = x+p;
         }
-        if( ae_fp_less(z,0) )
+        if( ae_fp_less(z,(double)(0)) )
         {
-            *sgngam = -1;
+            *sgngam = (double)(-1);
             z = -z;
         }
         else
         {
-            *sgngam = 1;
+            *sgngam = (double)(1);
         }
-        if( ae_fp_eq(u,2) )
+        if( ae_fp_eq(u,(double)(2)) )
         {
             result = ae_log(z, _state);
             return result;
@@ -3311,7 +3053,7 @@ double lngamma(double x, double* sgngam, ae_state *_state)
         b = -1162370.97492762307383+x*b;
         b = -1721737.00820839662146+x*b;
         b = -853555.664245765465627+x*b;
-        c = 1;
+        c = (double)(1);
         c = -351.815701436523470549+x*c;
         c = -17064.2106651881159223+x*c;
         c = -220528.590553854454839+x*c;
@@ -3323,7 +3065,7 @@ double lngamma(double x, double* sgngam, ae_state *_state)
         return result;
     }
     q = (x-0.5)*ae_log(x, _state)-x+ls2pi;
-    if( ae_fp_greater(x,100000000) )
+    if( ae_fp_greater(x,(double)(100000000)) )
     {
         result = q;
         return result;
@@ -3418,7 +3160,7 @@ double errorfunction(double x, ae_state *_state)
     double result;
 
 
-    s = ae_sign(x, _state);
+    s = (double)(ae_sign(x, _state));
     x = ae_fabs(x, _state);
     if( ae_fp_less(x,0.5) )
     {
@@ -3440,7 +3182,7 @@ double errorfunction(double x, ae_state *_state)
         result = s*1.1283791670955125738961589031*x*p/q;
         return result;
     }
-    if( ae_fp_greater_eq(x,10) )
+    if( ae_fp_greater_eq(x,(double)(10)) )
     {
         result = s;
         return result;
@@ -3484,7 +3226,7 @@ double errorfunctionc(double x, ae_state *_state)
     double result;
 
 
-    if( ae_fp_less(x,0) )
+    if( ae_fp_less(x,(double)(0)) )
     {
         result = 2-errorfunctionc(-x, _state);
         return result;
@@ -3494,9 +3236,9 @@ double errorfunctionc(double x, ae_state *_state)
         result = 1.0-errorfunction(x, _state);
         return result;
     }
-    if( ae_fp_greater_eq(x,10) )
+    if( ae_fp_greater_eq(x,(double)(10)) )
     {
-        result = 0;
+        result = (double)(0);
         return result;
     }
     p = 0.0;
@@ -3573,7 +3315,7 @@ double inverf(double e, ae_state *_state)
     double result;
 
 
-    result = invnormaldistribution(0.5*(e+1), _state)/ae_sqrt(2, _state);
+    result = invnormaldistribution(0.5*(e+1), _state)/ae_sqrt((double)(2), _state);
     return result;
 }
 
@@ -3625,12 +3367,12 @@ double invnormaldistribution(double y0, ae_state *_state)
 
     expm2 = 0.13533528323661269189;
     s2pi = 2.50662827463100050242;
-    if( ae_fp_less_eq(y0,0) )
+    if( ae_fp_less_eq(y0,(double)(0)) )
     {
         result = -ae_maxrealnumber;
         return result;
     }
-    if( ae_fp_greater_eq(y0,1) )
+    if( ae_fp_greater_eq(y0,(double)(1)) )
     {
         result = ae_maxrealnumber;
         return result;
@@ -3651,7 +3393,7 @@ double invnormaldistribution(double y0, ae_state *_state)
         p0 = -56.6762857469070293439+y2*p0;
         p0 = 13.9312609387279679503+y2*p0;
         p0 = -1.23916583867381258016+y2*p0;
-        q0 = 1;
+        q0 = (double)(1);
         q0 = 1.95448858338141759834+y2*q0;
         q0 = 4.67627912898881538453+y2*q0;
         q0 = 86.3602421390890590575+y2*q0;
@@ -3679,7 +3421,7 @@ double invnormaldistribution(double y0, ae_state *_state)
         p1 = -1.40256079171354495875*0.1+z*p1;
         p1 = -3.50424626827848203418*0.01+z*p1;
         p1 = -8.57456785154685413611*0.0001+z*p1;
-        q1 = 1;
+        q1 = (double)(1);
         q1 = 15.7799883256466749731+z*q1;
         q1 = 45.3907635128879210584+z*q1;
         q1 = 41.3172038254672030440+z*q1;
@@ -3701,7 +3443,7 @@ double invnormaldistribution(double y0, ae_state *_state)
         p2 = 3.01581553508235416007*0.0001+z*p2;
         p2 = 2.65806974686737550832*0.000001+z*p2;
         p2 = 6.23974539184983293730*0.000000001+z*p2;
-        q2 = 1;
+        q2 = (double)(1);
         q2 = 6.02427039364742014255+z*q2;
         q2 = 3.67983563856160859403+z*q2;
         q2 = 1.37702099489081330271+z*q2;
@@ -3765,12 +3507,12 @@ double incompletegamma(double a, double x, ae_state *_state)
 
 
     igammaepsilon = 0.000000000000001;
-    if( ae_fp_less_eq(x,0)||ae_fp_less_eq(a,0) )
+    if( ae_fp_less_eq(x,(double)(0))||ae_fp_less_eq(a,(double)(0)) )
     {
-        result = 0;
+        result = (double)(0);
         return result;
     }
-    if( ae_fp_greater(x,1)&&ae_fp_greater(x,a) )
+    if( ae_fp_greater(x,(double)(1))&&ae_fp_greater(x,a) )
     {
         result = 1-incompletegammac(a, x, _state);
         return result;
@@ -3778,13 +3520,13 @@ double incompletegamma(double a, double x, ae_state *_state)
     ax = a*ae_log(x, _state)-x-lngamma(a, &tmp, _state);
     if( ae_fp_less(ax,-709.78271289338399) )
     {
-        result = 0;
+        result = (double)(0);
         return result;
     }
     ax = ae_exp(ax, _state);
     r = a;
-    c = 1;
-    ans = 1;
+    c = (double)(1);
+    ans = (double)(1);
     do
     {
         r = r+1;
@@ -3856,12 +3598,12 @@ double incompletegammac(double a, double x, ae_state *_state)
     igammaepsilon = 0.000000000000001;
     igammabignumber = 4503599627370496.0;
     igammabignumberinv = 2.22044604925031308085*0.0000000000000001;
-    if( ae_fp_less_eq(x,0)||ae_fp_less_eq(a,0) )
+    if( ae_fp_less_eq(x,(double)(0))||ae_fp_less_eq(a,(double)(0)) )
     {
-        result = 1;
+        result = (double)(1);
         return result;
     }
-    if( ae_fp_less(x,1)||ae_fp_less(x,a) )
+    if( ae_fp_less(x,(double)(1))||ae_fp_less(x,a) )
     {
         result = 1-incompletegamma(a, x, _state);
         return result;
@@ -3869,14 +3611,14 @@ double incompletegammac(double a, double x, ae_state *_state)
     ax = a*ae_log(x, _state)-x-lngamma(a, &tmp, _state);
     if( ae_fp_less(ax,-709.78271289338399) )
     {
-        result = 0;
+        result = (double)(0);
         return result;
     }
     ax = ae_exp(ax, _state);
     y = 1-a;
     z = x+y+1;
-    c = 0;
-    pkm2 = 1;
+    c = (double)(0);
+    pkm2 = (double)(1);
     qkm2 = x;
     pkm1 = x+1;
     qkm1 = z*x;
@@ -3889,7 +3631,7 @@ double incompletegammac(double a, double x, ae_state *_state)
         yc = y*c;
         pk = pkm1*z-pkm2*yc;
         qk = qkm1*z-qkm2*yc;
-        if( ae_fp_neq(qk,0) )
+        if( ae_fp_neq(qk,(double)(0)) )
         {
             r = pk/qk;
             t = ae_fabs((ans-r)/r, _state);
@@ -3897,7 +3639,7 @@ double incompletegammac(double a, double x, ae_state *_state)
         }
         else
         {
-            t = 1;
+            t = (double)(1);
         }
         pkm2 = pkm1;
         pkm1 = pk;
@@ -3975,9 +3717,9 @@ double invincompletegammac(double a, double y0, ae_state *_state)
     igammaepsilon = 0.000000000000001;
     iinvgammabignumber = 4503599627370496.0;
     x0 = iinvgammabignumber;
-    yl = 0;
-    x1 = 0;
-    yh = 1;
+    yl = (double)(0);
+    x1 = (double)(0);
+    yh = (double)(1);
     dithresh = 5*igammaepsilon;
     d = 1/(9*a);
     y = 1-d-invnormaldistribution(y0, _state)*ae_sqrt(d, _state);
@@ -4025,9 +3767,9 @@ double invincompletegammac(double a, double y0, ae_state *_state)
     }
     if( ae_fp_eq(x0,iinvgammabignumber) )
     {
-        if( ae_fp_less_eq(x,0) )
+        if( ae_fp_less_eq(x,(double)(0)) )
         {
-            x = 1;
+            x = (double)(1);
         }
         while(ae_fp_eq(x0,iinvgammabignumber))
         {
@@ -4199,8 +3941,8 @@ void airy(double x,
     domflg = 0;
     if( ae_fp_greater(x,25.77) )
     {
-        *ai = 0;
-        *aip = 0;
+        *ai = (double)(0);
+        *aip = (double)(0);
         *bi = ae_maxrealnumber;
         *bip = ae_maxrealnumber;
         return;
@@ -4498,7 +4240,7 @@ double besselj0(double x, ae_state *_state)
     double result;
 
 
-    if( ae_fp_less(x,0) )
+    if( ae_fp_less(x,(double)(0)) )
     {
         x = -x;
     }
@@ -4565,8 +4307,8 @@ double besselj1(double x, ae_state *_state)
     double result;
 
 
-    s = ae_sign(x, _state);
-    if( ae_fp_less(x,0) )
+    s = (double)(ae_sign(x, _state));
+    if( ae_fp_less(x,(double)(0)) )
     {
         x = -x;
     }
@@ -4575,7 +4317,7 @@ double besselj1(double x, ae_state *_state)
         bessel_besselasympt1(x, &pzero, &qzero, _state);
         nn = x-3*ae_pi/4;
         result = ae_sqrt(2/ae_pi/x, _state)*(pzero*ae_cos(nn, _state)-qzero*ae_sin(nn, _state));
-        if( ae_fp_less(s,0) )
+        if( ae_fp_less(s,(double)(0)) )
         {
             result = -result;
         }
@@ -4661,7 +4403,7 @@ double besseljn(ae_int_t n, double x, ae_state *_state)
     {
         sg = 1;
     }
-    if( ae_fp_less(x,0) )
+    if( ae_fp_less(x,(double)(0)) )
     {
         if( n%2!=0 )
         {
@@ -4681,9 +4423,9 @@ double besseljn(ae_int_t n, double x, ae_state *_state)
     }
     if( n==2 )
     {
-        if( ae_fp_eq(x,0) )
+        if( ae_fp_eq(x,(double)(0)) )
         {
-            result = 0;
+            result = (double)(0);
         }
         else
         {
@@ -4693,11 +4435,11 @@ double besseljn(ae_int_t n, double x, ae_state *_state)
     }
     if( ae_fp_less(x,ae_machineepsilon) )
     {
-        result = 0;
+        result = (double)(0);
         return result;
     }
     k = 53;
-    pk = 2*(n+k);
+    pk = (double)(2*(n+k));
     ans = pk;
     xk = x*x;
     do
@@ -4711,7 +4453,7 @@ double besseljn(ae_int_t n, double x, ae_state *_state)
     pk = 1.0;
     pkm1 = 1.0/ans;
     k = n-1;
-    r = 2*k;
+    r = (double)(2*k);
     do
     {
         pkm2 = (pkm1*r-pk*x)/x;
@@ -4900,13 +4642,13 @@ double besselyn(ae_int_t n, double x, ae_state *_state)
     double result;
 
 
-    s = 1;
+    s = (double)(1);
     if( n<0 )
     {
         n = -n;
         if( n%2!=0 )
         {
-            s = -1;
+            s = (double)(-1);
         }
     }
     if( n==0 )
@@ -4964,7 +4706,7 @@ double besseli0(double x, ae_state *_state)
     double result;
 
 
-    if( ae_fp_less(x,0) )
+    if( ae_fp_less(x,(double)(0)) )
     {
         x = -x;
     }
@@ -5136,7 +4878,7 @@ double besseli1(double x, ae_state *_state)
         v = 0.5*(b0-b2);
         z = v*ae_exp(z, _state)/ae_sqrt(z, _state);
     }
-    if( ae_fp_less(x,0) )
+    if( ae_fp_less(x,(double)(0)) )
     {
         z = -z;
     }
@@ -5177,8 +4919,8 @@ double besselk0(double x, ae_state *_state)
     double result;
 
 
-    ae_assert(ae_fp_greater(x,0), "Domain error in BesselK0: x<=0", _state);
-    if( ae_fp_less_eq(x,2) )
+    ae_assert(ae_fp_greater(x,(double)(0)), "Domain error in BesselK0: x<=0", _state);
+    if( ae_fp_less_eq(x,(double)(2)) )
     {
         y = x*x-2.0;
         bessel_besselmfirstcheb(1.37446543561352307156E-16, &b0, &b1, &b2, _state);
@@ -5261,8 +5003,8 @@ double besselk1(double x, ae_state *_state)
 
 
     z = 0.5*x;
-    ae_assert(ae_fp_greater(z,0), "Domain error in K1", _state);
-    if( ae_fp_less_eq(x,2) )
+    ae_assert(ae_fp_greater(z,(double)(0)), "Domain error in K1", _state);
+    if( ae_fp_less_eq(x,(double)(2)) )
     {
         y = x*x-2.0;
         bessel_besselm1firstcheb(-7.02386347938628759343E-18, &b0, &b1, &b2, _state);
@@ -5370,7 +5112,7 @@ double besselkn(ae_int_t nn, double x, ae_state *_state)
         n = nn;
     }
     ae_assert(n<=31, "Overflow in BesselKN", _state);
-    ae_assert(ae_fp_greater(x,0), "Domain error in BesselKN", _state);
+    ae_assert(ae_fp_greater(x,(double)(0)), "Domain error in BesselKN", _state);
     if( ae_fp_less_eq(x,9.55) )
     {
         ans = 0.0;
@@ -5453,10 +5195,10 @@ double besselkn(ae_int_t nn, double x, ae_state *_state)
     }
     if( ae_fp_greater(x,ae_log(ae_maxrealnumber, _state)) )
     {
-        result = 0;
+        result = (double)(0);
         return result;
     }
-    k = n;
+    k = (double)(n);
     pn = 4.0*k*k;
     pk = 1.0;
     z0 = 8.0*x;
@@ -5694,9 +5436,9 @@ double beta(double a, double b, ae_state *_state)
     double result;
 
 
-    sg = 1;
-    ae_assert(ae_fp_greater(a,0)||ae_fp_neq(a,ae_ifloor(a, _state)), "Overflow in Beta", _state);
-    ae_assert(ae_fp_greater(b,0)||ae_fp_neq(b,ae_ifloor(b, _state)), "Overflow in Beta", _state);
+    sg = (double)(1);
+    ae_assert(ae_fp_greater(a,(double)(0))||ae_fp_neq(a,(double)(ae_ifloor(a, _state))), "Overflow in Beta", _state);
+    ae_assert(ae_fp_greater(b,(double)(0))||ae_fp_neq(b,(double)(ae_ifloor(b, _state))), "Overflow in Beta", _state);
     y = a+b;
     if( ae_fp_greater(ae_fabs(y, _state),171.624376956302725) )
     {
@@ -5711,7 +5453,7 @@ double beta(double a, double b, ae_state *_state)
         return result;
     }
     y = gammafunction(y, _state);
-    ae_assert(ae_fp_neq(y,0), "Overflow in Beta", _state);
+    ae_assert(ae_fp_neq(y,(double)(0)), "Overflow in Beta", _state);
     if( ae_fp_greater(a,b) )
     {
         y = gammafunction(a, _state)/y;
@@ -5791,16 +5533,16 @@ double incompletebeta(double a, double b, double x, ae_state *_state)
     maxgam = 171.624376956302725;
     minlog = ae_log(ae_minrealnumber, _state);
     maxlog = ae_log(ae_maxrealnumber, _state);
-    ae_assert(ae_fp_greater(a,0)&&ae_fp_greater(b,0), "Domain error in IncompleteBeta", _state);
-    ae_assert(ae_fp_greater_eq(x,0)&&ae_fp_less_eq(x,1), "Domain error in IncompleteBeta", _state);
-    if( ae_fp_eq(x,0) )
+    ae_assert(ae_fp_greater(a,(double)(0))&&ae_fp_greater(b,(double)(0)), "Domain error in IncompleteBeta", _state);
+    ae_assert(ae_fp_greater_eq(x,(double)(0))&&ae_fp_less_eq(x,(double)(1)), "Domain error in IncompleteBeta", _state);
+    if( ae_fp_eq(x,(double)(0)) )
     {
-        result = 0;
+        result = (double)(0);
         return result;
     }
-    if( ae_fp_eq(x,1) )
+    if( ae_fp_eq(x,(double)(1)) )
     {
-        result = 1;
+        result = (double)(1);
         return result;
     }
     flag = 0;
@@ -5958,19 +5700,19 @@ double invincompletebeta(double a, double b, double y, ae_state *_state)
 
 
     i = 0;
-    ae_assert(ae_fp_greater_eq(y,0)&&ae_fp_less_eq(y,1), "Domain error in InvIncompleteBeta", _state);
+    ae_assert(ae_fp_greater_eq(y,(double)(0))&&ae_fp_less_eq(y,(double)(1)), "Domain error in InvIncompleteBeta", _state);
     
     /*
      * special cases
      */
-    if( ae_fp_eq(y,0) )
+    if( ae_fp_eq(y,(double)(0)) )
     {
-        result = 0;
+        result = (double)(0);
         return result;
     }
     if( ae_fp_eq(y,1.0) )
     {
-        result = 1;
+        result = (double)(1);
         return result;
     }
     
@@ -5978,16 +5720,16 @@ double invincompletebeta(double a, double b, double y, ae_state *_state)
      * these initializations are not really necessary,
      * but without them compiler complains about 'possibly uninitialized variables'.
      */
-    dithresh = 0;
+    dithresh = (double)(0);
     rflg = 0;
-    aaa = 0;
-    bbb = 0;
-    y0 = 0;
-    x = 0;
-    yyy = 0;
-    lgm = 0;
+    aaa = (double)(0);
+    bbb = (double)(0);
+    y0 = (double)(0);
+    x = (double)(0);
+    yyy = (double)(0);
+    lgm = (double)(0);
     dir = 0;
-    di = 0;
+    di = (double)(0);
     
     /*
      * normal initializations
@@ -6054,7 +5796,7 @@ double invincompletebeta(double a, double b, double y, ae_state *_state)
             d = 2.0*d;
             if( ae_fp_less(d,ae_log(ae_minrealnumber, _state)) )
             {
-                x = 0;
+                x = (double)(0);
                 break;
             }
             x = aaa/(aaa+bbb*ae_exp(d, _state));
@@ -6441,11 +6183,11 @@ static double ibetaf_incompletebetafe(double a,
         pkm1 = pk;
         qkm2 = qkm1;
         qkm1 = qk;
-        if( ae_fp_neq(qk,0) )
+        if( ae_fp_neq(qk,(double)(0)) )
         {
             r = pk/qk;
         }
-        if( ae_fp_neq(r,0) )
+        if( ae_fp_neq(r,(double)(0)) )
         {
             t = ae_fabs((ans-r)/r, _state);
             ans = r;
@@ -6559,11 +6301,11 @@ static double ibetaf_incompletebetafe2(double a,
         pkm1 = pk;
         qkm2 = qkm1;
         qkm1 = qk;
-        if( ae_fp_neq(qk,0) )
+        if( ae_fp_neq(qk,(double)(0)) )
         {
             r = pk/qk;
         }
-        if( ae_fp_neq(r,0) )
+        if( ae_fp_neq(r,(double)(0)) )
         {
             t = ae_fabs((ans-r)/r, _state);
             ans = r;
@@ -6715,26 +6457,26 @@ double binomialdistribution(ae_int_t k,
     double result;
 
 
-    ae_assert(ae_fp_greater_eq(p,0)&&ae_fp_less_eq(p,1), "Domain error in BinomialDistribution", _state);
+    ae_assert(ae_fp_greater_eq(p,(double)(0))&&ae_fp_less_eq(p,(double)(1)), "Domain error in BinomialDistribution", _state);
     ae_assert(k>=-1&&k<=n, "Domain error in BinomialDistribution", _state);
     if( k==-1 )
     {
-        result = 0;
+        result = (double)(0);
         return result;
     }
     if( k==n )
     {
-        result = 1;
+        result = (double)(1);
         return result;
     }
-    dn = n-k;
+    dn = (double)(n-k);
     if( k==0 )
     {
         dk = ae_pow(1.0-p, dn, _state);
     }
     else
     {
-        dk = k+1;
+        dk = (double)(k+1);
         dk = incompletebeta(dn, dk, 1.0-p, _state);
     }
     result = dk;
@@ -6785,19 +6527,19 @@ double binomialcdistribution(ae_int_t k,
     double result;
 
 
-    ae_assert(ae_fp_greater_eq(p,0)&&ae_fp_less_eq(p,1), "Domain error in BinomialDistributionC", _state);
+    ae_assert(ae_fp_greater_eq(p,(double)(0))&&ae_fp_less_eq(p,(double)(1)), "Domain error in BinomialDistributionC", _state);
     ae_assert(k>=-1&&k<=n, "Domain error in BinomialDistributionC", _state);
     if( k==-1 )
     {
-        result = 1;
+        result = (double)(1);
         return result;
     }
     if( k==n )
     {
-        result = 0;
+        result = (double)(0);
         return result;
     }
-    dn = n-k;
+    dn = (double)(n-k);
     if( k==0 )
     {
         if( ae_fp_less(p,0.01) )
@@ -6811,7 +6553,7 @@ double binomialcdistribution(ae_int_t k,
     }
     else
     {
-        dk = k+1;
+        dk = (double)(k+1);
         dk = incompletebeta(dk, dn, p, _state);
     }
     result = dk;
@@ -6859,7 +6601,7 @@ double invbinomialdistribution(ae_int_t k,
 
 
     ae_assert(k>=0&&k<n, "Domain error in InvBinomialDistribution", _state);
-    dn = n-k;
+    dn = (double)(n-k);
     if( k==0 )
     {
         if( ae_fp_greater(y,0.8) )
@@ -6873,7 +6615,7 @@ double invbinomialdistribution(ae_int_t k,
     }
     else
     {
-        dk = k+1;
+        dk = (double)(k+1);
         p = incompletebeta(dn, dk, 0.5, _state);
         if( ae_fp_greater(p,0.5) )
         {
@@ -6914,19 +6656,19 @@ double chebyshevcalculate(ae_int_t r,
     double result;
 
 
-    result = 0;
+    result = (double)(0);
     
     /*
      * Prepare A and B
      */
     if( r==1 )
     {
-        a = 1;
+        a = (double)(1);
         b = x;
     }
     else
     {
-        a = 1;
+        a = (double)(1);
         b = 2*x;
     }
     
@@ -6986,8 +6728,8 @@ double chebyshevsum(/* Real    */ ae_vector* c,
     double result;
 
 
-    b1 = 0;
-    b2 = 0;
+    b1 = (double)(0);
+    b2 = (double)(0);
     for(i=n; i>=1; i--)
     {
         result = 2*x*b1-b2+c->ptr.p_double[i];
@@ -7026,15 +6768,15 @@ void chebyshevcoefficients(ae_int_t n,
     ae_vector_set_length(c, n+1, _state);
     for(i=0; i<=n; i++)
     {
-        c->ptr.p_double[i] = 0;
+        c->ptr.p_double[i] = (double)(0);
     }
     if( n==0||n==1 )
     {
-        c->ptr.p_double[n] = 1;
+        c->ptr.p_double[n] = (double)(1);
     }
     else
     {
-        c->ptr.p_double[n] = ae_exp((n-1)*ae_log(2, _state), _state);
+        c->ptr.p_double[n] = ae_exp((n-1)*ae_log((double)(2), _state), _state);
         for(i=0; i<=n/2-1; i++)
         {
             c->ptr.p_double[n-2*(i+1)] = -c->ptr.p_double[n-2*i]*(n-2*i)*(n-2*i-1)/4/(i+1)/(n-i-1);
@@ -7071,9 +6813,9 @@ void fromchebyshev(/* Real    */ ae_vector* a,
     ae_vector_set_length(b, n+1, _state);
     for(i=0; i<=n; i++)
     {
-        b->ptr.p_double[i] = 0;
+        b->ptr.p_double[i] = (double)(0);
     }
-    d = 0;
+    d = (double)(0);
     i = 0;
     do
     {
@@ -7081,10 +6823,10 @@ void fromchebyshev(/* Real    */ ae_vector* a,
         do
         {
             e = b->ptr.p_double[k];
-            b->ptr.p_double[k] = 0;
+            b->ptr.p_double[k] = (double)(0);
             if( i<=1&&k==i )
             {
-                b->ptr.p_double[k] = 1;
+                b->ptr.p_double[k] = (double)(1);
             }
             else
             {
@@ -7102,7 +6844,7 @@ void fromchebyshev(/* Real    */ ae_vector* a,
         }
         while(k<=n);
         d = b->ptr.p_double[i];
-        e = 0;
+        e = (double)(0);
         k = i;
         while(k<=n)
         {
@@ -7156,7 +6898,7 @@ double chisquaredistribution(double v, double x, ae_state *_state)
     double result;
 
 
-    ae_assert(ae_fp_greater_eq(x,0)&&ae_fp_greater_eq(v,1), "Domain error in ChiSquareDistribution", _state);
+    ae_assert(ae_fp_greater_eq(x,(double)(0))&&ae_fp_greater_eq(v,(double)(1)), "Domain error in ChiSquareDistribution", _state);
     result = incompletegamma(v/2.0, x/2.0, _state);
     return result;
 }
@@ -7198,7 +6940,7 @@ double chisquarecdistribution(double v, double x, ae_state *_state)
     double result;
 
 
-    ae_assert(ae_fp_greater_eq(x,0)&&ae_fp_greater_eq(v,1), "Domain error in ChiSquareDistributionC", _state);
+    ae_assert(ae_fp_greater_eq(x,(double)(0))&&ae_fp_greater_eq(v,(double)(1)), "Domain error in ChiSquareDistributionC", _state);
     result = incompletegammac(v/2.0, x/2.0, _state);
     return result;
 }
@@ -7229,7 +6971,7 @@ double invchisquaredistribution(double v, double y, ae_state *_state)
     double result;
 
 
-    ae_assert((ae_fp_greater_eq(y,0)&&ae_fp_less_eq(y,1))&&ae_fp_greater_eq(v,1), "Domain error in InvChiSquareDistribution", _state);
+    ae_assert((ae_fp_greater_eq(y,(double)(0))&&ae_fp_less_eq(y,(double)(1)))&&ae_fp_greater_eq(v,(double)(1)), "Domain error in InvChiSquareDistribution", _state);
     result = 2*invincompletegammac(0.5*v, y, _state);
     return result;
 }
@@ -7277,7 +7019,7 @@ double dawsonintegral(double x, ae_state *_state)
 
 
     sg = 1;
-    if( ae_fp_less(x,0) )
+    if( ae_fp_less(x,(double)(0)) )
     {
         sg = -1;
         x = -x;
@@ -7436,7 +7178,8 @@ ACCURACY:
 arithmetic   domain     # trials      peak         rms
    IEEE       0,1        30000       2.5e-16     6.8e-17
 
-Алгоритм взят из библиотеки Cephes
+Cephes Math Library, Release 2.8:  June, 2000
+Copyright 1984, 1987, 2000 by Stephen L. Moshier
 *************************************************************************/
 double ellipticintegralkhighprecision(double m1, ae_state *_state)
 {
@@ -7531,13 +7274,13 @@ double incompleteellipticintegralk(double phi, double m, ae_state *_state)
 
 
     pio2 = 1.57079632679489661923;
-    if( ae_fp_eq(m,0) )
+    if( ae_fp_eq(m,(double)(0)) )
     {
         result = phi;
         return result;
     }
     a = 1-m;
-    if( ae_fp_eq(a,0) )
+    if( ae_fp_eq(a,(double)(0)) )
     {
         result = ae_log(ae_tan(0.5*(pio2+phi), _state), _state);
         return result;
@@ -7554,9 +7297,9 @@ double incompleteellipticintegralk(double phi, double m, ae_state *_state)
     }
     else
     {
-        k = 0;
+        k = (double)(0);
     }
-    if( ae_fp_less(phi,0) )
+    if( ae_fp_less(phi,(double)(0)) )
     {
         phi = -phi;
         s = -1;
@@ -7567,10 +7310,10 @@ double incompleteellipticintegralk(double phi, double m, ae_state *_state)
     }
     b = ae_sqrt(a, _state);
     t = ae_tan(phi, _state);
-    if( ae_fp_greater(ae_fabs(t, _state),10) )
+    if( ae_fp_greater(ae_fabs(t, _state),(double)(10)) )
     {
         e = 1.0/(b*t);
-        if( ae_fp_less(ae_fabs(e, _state),10) )
+        if( ae_fp_less(ae_fabs(e, _state),(double)(10)) )
         {
             e = ae_atan(e, _state);
             if( npio2==0 )
@@ -7646,11 +7389,11 @@ double ellipticintegrale(double m, ae_state *_state)
     double result;
 
 
-    ae_assert(ae_fp_greater_eq(m,0)&&ae_fp_less_eq(m,1), "Domain error in EllipticIntegralE: m<0 or m>1", _state);
+    ae_assert(ae_fp_greater_eq(m,(double)(0))&&ae_fp_less_eq(m,(double)(1)), "Domain error in EllipticIntegralE: m<0 or m>1", _state);
     m = 1-m;
-    if( ae_fp_eq(m,0) )
+    if( ae_fp_eq(m,(double)(0)) )
     {
-        result = 1;
+        result = (double)(1);
         return result;
     }
     p = 1.53552577301013293365E-4;
@@ -7728,7 +7471,7 @@ double incompleteellipticintegrale(double phi, double m, ae_state *_state)
 
 
     pio2 = 1.57079632679489661923;
-    if( ae_fp_eq(m,0) )
+    if( ae_fp_eq(m,(double)(0)) )
     {
         result = phi;
         return result;
@@ -7740,7 +7483,7 @@ double incompleteellipticintegrale(double phi, double m, ae_state *_state)
         npio2 = npio2+1;
     }
     lphi = lphi-npio2*pio2;
-    if( ae_fp_less(lphi,0) )
+    if( ae_fp_less(lphi,(double)(0)) )
     {
         lphi = -lphi;
         s = -1;
@@ -7751,7 +7494,7 @@ double incompleteellipticintegrale(double phi, double m, ae_state *_state)
     }
     a = 1.0-m;
     ebig = ellipticintegrale(m, _state);
-    if( ae_fp_eq(a,0) )
+    if( ae_fp_eq(a,(double)(0)) )
     {
         temp = ae_sin(lphi, _state);
         if( s<0 )
@@ -7768,7 +7511,7 @@ double incompleteellipticintegrale(double phi, double m, ae_state *_state)
      * Thanks to Brian Fitzgerald <fitzgb@mml0.meche.rpi.edu>
      * for pointing out an instability near odd multiples of pi/2
      */
-    if( ae_fp_greater(ae_fabs(t, _state),10) )
+    if( ae_fp_greater(ae_fabs(t, _state),(double)(10)) )
     {
         
         /*
@@ -7779,7 +7522,7 @@ double incompleteellipticintegrale(double phi, double m, ae_state *_state)
         /*
          * ... but avoid multiple recursions.
          */
-        if( ae_fp_less(ae_fabs(e, _state),10) )
+        if( ae_fp_less(ae_fabs(e, _state),(double)(10)) )
         {
             e = ae_atan(e, _state);
             temp = ebig+m*ae_sin(lphi, _state)*ae_sin(e, _state)-incompleteellipticintegrale(e, m, _state);
@@ -7859,12 +7602,12 @@ double exponentialintegralei(double x, ae_state *_state)
 
 
     eul = 0.5772156649015328606065;
-    if( ae_fp_less_eq(x,0) )
+    if( ae_fp_less_eq(x,(double)(0)) )
     {
-        result = 0;
+        result = (double)(0);
         return result;
     }
-    if( ae_fp_less(x,2) )
+    if( ae_fp_less(x,(double)(2)) )
     {
         f1 = -5.350447357812542947283;
         f1 = f1*x+218.5049168816613393830;
@@ -7883,7 +7626,7 @@ double exponentialintegralei(double x, ae_state *_state)
         result = eul+ae_log(x, _state)+x*f;
         return result;
     }
-    if( ae_fp_less(x,4) )
+    if( ae_fp_less(x,(double)(4)) )
     {
         w = 1/x;
         f1 = 1.981808503259689673238E-2;
@@ -7906,7 +7649,7 @@ double exponentialintegralei(double x, ae_state *_state)
         result = ae_exp(x, _state)*w*(1+w*f);
         return result;
     }
-    if( ae_fp_less(x,8) )
+    if( ae_fp_less(x,(double)(8)) )
     {
         w = 1/x;
         f1 = -1.373215375871208729803;
@@ -7930,7 +7673,7 @@ double exponentialintegralei(double x, ae_state *_state)
         result = ae_exp(x, _state)*w*(1+w*f);
         return result;
     }
-    if( ae_fp_less(x,16) )
+    if( ae_fp_less(x,(double)(16)) )
     {
         w = 1/x;
         f1 = -2.106934601691916512584;
@@ -7957,7 +7700,7 @@ double exponentialintegralei(double x, ae_state *_state)
         result = ae_exp(x, _state)*w*(1+w*f);
         return result;
     }
-    if( ae_fp_less(x,32) )
+    if( ae_fp_less(x,(double)(32)) )
     {
         w = 1/x;
         f1 = -2.458119367674020323359E-1;
@@ -7981,7 +7724,7 @@ double exponentialintegralei(double x, ae_state *_state)
         result = ae_exp(x, _state)*w*(1+w*f);
         return result;
     }
-    if( ae_fp_less(x,64) )
+    if( ae_fp_less(x,(double)(64)) )
     {
         w = 1/x;
         f1 = 1.212561118105456670844E-1;
@@ -8079,13 +7822,13 @@ double exponentialintegralen(double x, ae_int_t n, ae_state *_state)
 
 
     eul = 0.57721566490153286060;
-    big = 1.44115188075855872*ae_pow(10, 17, _state);
-    if( ((n<0||ae_fp_less(x,0))||ae_fp_greater(x,170))||(ae_fp_eq(x,0)&&n<2) )
+    big = 1.44115188075855872*ae_pow((double)(10), (double)(17), _state);
+    if( ((n<0||ae_fp_less(x,(double)(0)))||ae_fp_greater(x,(double)(170)))||(ae_fp_eq(x,(double)(0))&&n<2) )
     {
-        result = -1;
+        result = (double)(-1);
         return result;
     }
-    if( ae_fp_eq(x,0) )
+    if( ae_fp_eq(x,(double)(0)) )
     {
         result = (double)1/(double)(n-1);
         return result;
@@ -8099,14 +7842,14 @@ double exponentialintegralen(double x, ae_int_t n, ae_state *_state)
     {
         xk = x+n;
         yk = 1/(xk*xk);
-        t = n;
+        t = (double)(n);
         result = yk*t*(6*x*x-8*t*x+t*t);
         result = yk*(result+t*(t-2.0*x));
         result = yk*(result+t);
         result = (result+1)*ae_exp(-x, _state)/xk;
         return result;
     }
-    if( ae_fp_less_eq(x,1) )
+    if( ae_fp_less_eq(x,(double)(1)) )
     {
         psi = -eul-ae_log(x, _state);
         for(i=1; i<=n-1; i++)
@@ -8114,9 +7857,9 @@ double exponentialintegralen(double x, ae_int_t n, ae_state *_state)
             psi = psi+(double)1/(double)i;
         }
         z = -x;
-        xk = 0;
-        yk = 1;
-        pk = 1-n;
+        xk = (double)(0);
+        yk = (double)(1);
+        pk = (double)(1-n);
         if( n==1 )
         {
             result = 0.0;
@@ -8130,21 +7873,21 @@ double exponentialintegralen(double x, ae_int_t n, ae_state *_state)
             xk = xk+1;
             yk = yk*z/xk;
             pk = pk+1;
-            if( ae_fp_neq(pk,0) )
+            if( ae_fp_neq(pk,(double)(0)) )
             {
                 result = result+yk/pk;
             }
-            if( ae_fp_neq(result,0) )
+            if( ae_fp_neq(result,(double)(0)) )
             {
                 t = ae_fabs(yk/result, _state);
             }
             else
             {
-                t = 1;
+                t = (double)(1);
             }
         }
         while(ae_fp_greater_eq(t,ae_machineepsilon));
-        t = 1;
+        t = (double)(1);
         for(i=1; i<=n-1; i++)
         {
             t = t*z/i;
@@ -8155,7 +7898,7 @@ double exponentialintegralen(double x, ae_int_t n, ae_state *_state)
     else
     {
         k = 1;
-        pkm2 = 1;
+        pkm2 = (double)(1);
         qkm2 = x;
         pkm1 = 1.0;
         qkm1 = x+n;
@@ -8165,7 +7908,7 @@ double exponentialintegralen(double x, ae_int_t n, ae_state *_state)
             k = k+1;
             if( k%2==1 )
             {
-                yk = 1;
+                yk = (double)(1);
                 xk = n+(double)(k-1)/(double)2;
             }
             else
@@ -8175,7 +7918,7 @@ double exponentialintegralen(double x, ae_int_t n, ae_state *_state)
             }
             pk = pkm1*yk+pkm2*xk;
             qk = qkm1*yk+qkm2*xk;
-            if( ae_fp_neq(qk,0) )
+            if( ae_fp_neq(qk,(double)(0)) )
             {
                 r = pk/qk;
                 t = ae_fabs((result-r)/r, _state);
@@ -8183,7 +7926,7 @@ double exponentialintegralen(double x, ae_int_t n, ae_state *_state)
             }
             else
             {
-                t = 1;
+                t = (double)(1);
             }
             pkm2 = pkm1;
             pkm1 = pk;
@@ -8244,7 +7987,7 @@ double fdistribution(ae_int_t a, ae_int_t b, double x, ae_state *_state)
     double result;
 
 
-    ae_assert((a>=1&&b>=1)&&ae_fp_greater_eq(x,0), "Domain error in FDistribution", _state);
+    ae_assert((a>=1&&b>=1)&&ae_fp_greater_eq(x,(double)(0)), "Domain error in FDistribution", _state);
     w = a*x;
     w = w/(b+w);
     result = incompletebeta(0.5*a, 0.5*b, w, _state);
@@ -8294,7 +8037,7 @@ double fcdistribution(ae_int_t a, ae_int_t b, double x, ae_state *_state)
     double result;
 
 
-    ae_assert((a>=1&&b>=1)&&ae_fp_greater_eq(x,0), "Domain error in FCDistribution", _state);
+    ae_assert((a>=1&&b>=1)&&ae_fp_greater_eq(x,(double)(0)), "Domain error in FCDistribution", _state);
     w = b/(b+a*x);
     result = incompletebeta(0.5*b, 0.5*a, w, _state);
     return result;
@@ -8345,7 +8088,7 @@ double invfdistribution(ae_int_t a,
     double result;
 
 
-    ae_assert(((a>=1&&b>=1)&&ae_fp_greater(y,0))&&ae_fp_less_eq(y,1), "Domain error in InvFDistribution", _state);
+    ae_assert(((a>=1&&b>=1)&&ae_fp_greater(y,(double)(0)))&&ae_fp_less_eq(y,(double)(1)), "Domain error in InvFDistribution", _state);
     
     /*
      * Compute probability for x = 0.5
@@ -8561,12 +8304,12 @@ double hermitecalculate(ae_int_t n, double x, ae_state *_state)
     double result;
 
 
-    result = 0;
+    result = (double)(0);
     
     /*
      * Prepare A and B
      */
-    a = 1;
+    a = (double)(1);
     b = 2*x;
     
     /*
@@ -8620,9 +8363,9 @@ double hermitesum(/* Real    */ ae_vector* c,
     double result;
 
 
-    b1 = 0;
-    b2 = 0;
-    result = 0;
+    b1 = (double)(0);
+    b2 = (double)(0);
+    result = (double)(0);
     for(i=n; i>=0; i--)
     {
         result = 2*(x*b1-(i+1)*b2)+c->ptr.p_double[i];
@@ -8653,9 +8396,9 @@ void hermitecoefficients(ae_int_t n,
     ae_vector_set_length(c, n+1, _state);
     for(i=0; i<=n; i++)
     {
-        c->ptr.p_double[i] = 0;
+        c->ptr.p_double[i] = (double)(0);
     }
-    c->ptr.p_double[n] = ae_exp(n*ae_log(2, _state), _state);
+    c->ptr.p_double[n] = ae_exp(n*ae_log((double)(2), _state), _state);
     for(i=0; i<=n/2-1; i++)
     {
         c->ptr.p_double[n-2*(i+1)] = -c->ptr.p_double[n-2*i]*(n-2*i)*(n-2*i-1)/4/(i+1);
@@ -8728,10 +8471,10 @@ void jacobianellipticfunctions(double u,
     *cn = 0;
     *dn = 0;
     *ph = 0;
-    ae_vector_init(&a, 0, DT_REAL, _state, ae_true);
-    ae_vector_init(&c, 0, DT_REAL, _state, ae_true);
+    ae_vector_init(&a, 0, DT_REAL, _state);
+    ae_vector_init(&c, 0, DT_REAL, _state);
 
-    ae_assert(ae_fp_greater_eq(m,0)&&ae_fp_less_eq(m,1), "Domain error in JacobianEllipticFunctions: m<0 or m>1", _state);
+    ae_assert(ae_fp_greater_eq(m,(double)(0))&&ae_fp_less_eq(m,(double)(1)), "Domain error in JacobianEllipticFunctions: m<0 or m>1", _state);
     ae_vector_set_length(&a, 8+1, _state);
     ae_vector_set_length(&c, 8+1, _state);
     if( ae_fp_less(m,1.0e-9) )
@@ -8819,15 +8562,15 @@ double laguerrecalculate(ae_int_t n, double x, ae_state *_state)
     double result;
 
 
-    result = 1;
-    a = 1;
+    result = (double)(1);
+    a = (double)(1);
     b = 1-x;
     if( n==1 )
     {
         result = b;
     }
-    i = 2;
-    while(ae_fp_less_eq(i,n))
+    i = (double)(2);
+    while(ae_fp_less_eq(i,(double)(n)))
     {
         result = ((2*i-1-x)*b-(i-1)*a)/i;
         a = b;
@@ -8861,9 +8604,9 @@ double laguerresum(/* Real    */ ae_vector* c,
     double result;
 
 
-    b1 = 0;
-    b2 = 0;
-    result = 0;
+    b1 = (double)(0);
+    b2 = (double)(0);
+    result = (double)(0);
     for(i=n; i>=0; i--)
     {
         result = (2*i+1-x)*b1/(i+1)-(i+1)*b2/(i+2)+c->ptr.p_double[i];
@@ -8892,7 +8635,7 @@ void laguerrecoefficients(ae_int_t n,
     ae_vector_clear(c);
 
     ae_vector_set_length(c, n+1, _state);
-    c->ptr.p_double[0] = 1;
+    c->ptr.p_double[0] = (double)(1);
     for(i=0; i<=n-1; i++)
     {
         c->ptr.p_double[i+1] = -c->ptr.p_double[i]*(n-i)/(i+1)/(i+1);
@@ -8920,8 +8663,8 @@ double legendrecalculate(ae_int_t n, double x, ae_state *_state)
     double result;
 
 
-    result = 1;
-    a = 1;
+    result = (double)(1);
+    a = (double)(1);
     b = x;
     if( n==0 )
     {
@@ -8967,9 +8710,9 @@ double legendresum(/* Real    */ ae_vector* c,
     double result;
 
 
-    b1 = 0;
-    b2 = 0;
-    result = 0;
+    b1 = (double)(0);
+    b2 = (double)(0);
+    result = (double)(0);
     for(i=n; i>=0; i--)
     {
         result = (2*i+1)*x*b1/(i+1)-(i+1)*b2/(i+2)+c->ptr.p_double[i];
@@ -9000,9 +8743,9 @@ void legendrecoefficients(ae_int_t n,
     ae_vector_set_length(c, n+1, _state);
     for(i=0; i<=n; i++)
     {
-        c->ptr.p_double[i] = 0;
+        c->ptr.p_double[i] = (double)(0);
     }
-    c->ptr.p_double[n] = 1;
+    c->ptr.p_double[n] = (double)(1);
     for(i=1; i<=n; i++)
     {
         c->ptr.p_double[n] = c->ptr.p_double[n]*(n+i)/2/i;
@@ -9046,8 +8789,8 @@ double poissondistribution(ae_int_t k, double m, ae_state *_state)
     double result;
 
 
-    ae_assert(k>=0&&ae_fp_greater(m,0), "Domain error in PoissonDistribution", _state);
-    result = incompletegammac(k+1, m, _state);
+    ae_assert(k>=0&&ae_fp_greater(m,(double)(0)), "Domain error in PoissonDistribution", _state);
+    result = incompletegammac((double)(k+1), m, _state);
     return result;
 }
 
@@ -9083,8 +8826,8 @@ double poissoncdistribution(ae_int_t k, double m, ae_state *_state)
     double result;
 
 
-    ae_assert(k>=0&&ae_fp_greater(m,0), "Domain error in PoissonDistributionC", _state);
-    result = incompletegamma(k+1, m, _state);
+    ae_assert(k>=0&&ae_fp_greater(m,(double)(0)), "Domain error in PoissonDistributionC", _state);
+    result = incompletegamma((double)(k+1), m, _state);
     return result;
 }
 
@@ -9113,8 +8856,8 @@ double invpoissondistribution(ae_int_t k, double y, ae_state *_state)
     double result;
 
 
-    ae_assert((k>=0&&ae_fp_greater_eq(y,0))&&ae_fp_less(y,1), "Domain error in InvPoissonDistribution", _state);
-    result = invincompletegammac(k+1, y, _state);
+    ae_assert((k>=0&&ae_fp_greater_eq(y,(double)(0)))&&ae_fp_less(y,(double)(1)), "Domain error in InvPoissonDistribution", _state);
+    result = invincompletegammac((double)(k+1), y, _state);
     return result;
 }
 
@@ -9178,11 +8921,11 @@ double psi(double x, ae_state *_state)
 
     negative = 0;
     nz = 0.0;
-    if( ae_fp_less_eq(x,0) )
+    if( ae_fp_less_eq(x,(double)(0)) )
     {
         negative = 1;
         q = x;
-        p = ae_ifloor(q, _state);
+        p = (double)(ae_ifloor(q, _state));
         if( ae_fp_eq(p,q) )
         {
             ae_assert(ae_false, "Singularity in Psi(x)", _state);
@@ -9205,13 +8948,13 @@ double psi(double x, ae_state *_state)
         }
         x = 1.0-x;
     }
-    if( ae_fp_less_eq(x,10.0)&&ae_fp_eq(x,ae_ifloor(x, _state)) )
+    if( ae_fp_less_eq(x,10.0)&&ae_fp_eq(x,(double)(ae_ifloor(x, _state))) )
     {
         y = 0.0;
         n = ae_ifloor(x, _state);
         for(i=1; i<=n-1; i++)
         {
-            w = i;
+            w = (double)(i);
             y = y+1.0/w;
         }
         y = y-0.57721566490153286061;
@@ -9309,19 +9052,19 @@ double studenttdistribution(ae_int_t k, double t, ae_state *_state)
 
 
     ae_assert(k>0, "Domain error in StudentTDistribution", _state);
-    if( ae_fp_eq(t,0) )
+    if( ae_fp_eq(t,(double)(0)) )
     {
         result = 0.5;
         return result;
     }
     if( ae_fp_less(t,-2.0) )
     {
-        rk = k;
+        rk = (double)(k);
         z = rk/(rk+t*t);
         result = 0.5*incompletebeta(0.5*rk, 0.5, z, _state);
         return result;
     }
-    if( ae_fp_less(t,0) )
+    if( ae_fp_less(t,(double)(0)) )
     {
         x = -t;
     }
@@ -9329,7 +9072,7 @@ double studenttdistribution(ae_int_t k, double t, ae_state *_state)
     {
         x = t;
     }
-    rk = k;
+    rk = (double)(k);
     z = 1.0+x*x/rk;
     if( k%2!=0 )
     {
@@ -9363,7 +9106,7 @@ double studenttdistribution(ae_int_t k, double t, ae_state *_state)
         }
         p = f*x/ae_sqrt(z*rk, _state);
     }
-    if( ae_fp_less(t,0) )
+    if( ae_fp_less(t,(double)(0)) )
     {
         p = -p;
     }
@@ -9398,13 +9141,13 @@ double invstudenttdistribution(ae_int_t k, double p, ae_state *_state)
     double result;
 
 
-    ae_assert((k>0&&ae_fp_greater(p,0))&&ae_fp_less(p,1), "Domain error in InvStudentTDistribution", _state);
-    rk = k;
+    ae_assert((k>0&&ae_fp_greater(p,(double)(0)))&&ae_fp_less(p,(double)(1)), "Domain error in InvStudentTDistribution", _state);
+    rk = (double)(k);
     if( ae_fp_greater(p,0.25)&&ae_fp_less(p,0.75) )
     {
         if( ae_fp_eq(p,0.5) )
         {
-            result = 0;
+            result = (double)(0);
             return result;
         }
         z = 1.0-2.0*p;
@@ -9499,7 +9242,7 @@ void sinecosineintegrals(double x,
     *si = 0;
     *ci = 0;
 
-    if( ae_fp_less(x,0) )
+    if( ae_fp_less(x,(double)(0)) )
     {
         sg = -1;
         x = -x;
@@ -9508,9 +9251,9 @@ void sinecosineintegrals(double x,
     {
         sg = 0;
     }
-    if( ae_fp_eq(x,0) )
+    if( ae_fp_eq(x,(double)(0)) )
     {
-        *si = 0;
+        *si = (double)(0);
         *ci = -ae_maxrealnumber;
         return;
     }
@@ -9520,7 +9263,7 @@ void sinecosineintegrals(double x,
         *ci = ae_sin(x, _state)/x;
         return;
     }
-    if( ae_fp_less_eq(x,4) )
+    if( ae_fp_less_eq(x,(double)(4)) )
     {
         z = x*x;
         sn = -8.39167827910303881427E-11;
@@ -9560,7 +9303,7 @@ void sinecosineintegrals(double x,
     s = ae_sin(x, _state);
     c = ae_cos(x, _state);
     z = 1.0/(x*x);
-    if( ae_fp_less(x,8) )
+    if( ae_fp_less(x,(double)(8)) )
     {
         fn = 4.23612862892216586994E0;
         fn = fn*z+5.45937717161812843388E0;
@@ -9705,7 +9448,7 @@ void hyperbolicsinecosineintegrals(double x,
     *shi = 0;
     *chi = 0;
 
-    if( ae_fp_less(x,0) )
+    if( ae_fp_less(x,(double)(0)) )
     {
         sg = -1;
         x = -x;
@@ -9714,9 +9457,9 @@ void hyperbolicsinecosineintegrals(double x,
     {
         sg = 0;
     }
-    if( ae_fp_eq(x,0) )
+    if( ae_fp_eq(x,(double)(0)) )
     {
-        *shi = 0;
+        *shi = (double)(0);
         *chi = -ae_maxrealnumber;
         return;
     }
