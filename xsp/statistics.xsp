@@ -42,6 +42,20 @@ double pearsoncorr2(real_1d_array x, real_1d_array y)
 double spearmancorr2(real_1d_array x, real_1d_array y)
   %catch{ApError};
 
+SV *
+rankdata(real_2d_array xy)
+  %code{%
+    alglib::rankdata(xy);
+    RETVAL = sv_2mortal( (SV *)real_2d_array_to_av(aTHX_ xy) );
+  %};
+
+SV *
+rankdatacentered(real_2d_array xy)
+  %code{%
+    alglib::rankdatacentered(xy);
+    RETVAL = sv_2mortal( (SV *)real_2d_array_to_av(aTHX_ xy) );
+  %};
+
 real_2d_array covm(real_2d_array x)
   %code{% alglib::covm(x, RETVAL); %};
 

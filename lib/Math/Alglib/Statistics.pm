@@ -20,7 +20,7 @@ this documentation, please file a bug and refer to the header file.
 
 =head1 VERSION
 
-This module wraps Alglib version 3.6.0.
+This module wraps Alglib version 3.9.0.
 
 =head1 FUNCTIONS
 
@@ -291,6 +291,7 @@ the same.
 
   void covm(const real_2d_array &x, real_2d_array &c);
 
+  
   INPUT PARAMETERS:
       X   -   array[N,M], sample matrix:
               * J-th column corresponds to J-th variable
@@ -312,6 +313,7 @@ the same.
 
   void pearsoncorrm(const real_2d_array &x, real_2d_array &c);
 
+  
   INPUT PARAMETERS:
       X   -   array[N,M], sample matrix:
               * J-th column corresponds to J-th variable
@@ -333,6 +335,7 @@ the same.
 
   void spearmancorrm(const real_2d_array &x, real_2d_array &c);
 
+  
   INPUT PARAMETERS:
       X   -   array[N,M], sample matrix:
               * J-th column corresponds to J-th variable
@@ -354,6 +357,7 @@ the same.
 
   void covm2(const real_2d_array &x, const real_2d_array &y, real_2d_array &c);
 
+  
   INPUT PARAMETERS:
       X   -   array[N,M1], sample matrix:
               * J-th column corresponds to J-th variable
@@ -381,6 +385,7 @@ the same.
 
   void pearsoncorrm2(const real_2d_array &x, const real_2d_array &y, real_2d_array &c);
 
+  
   INPUT PARAMETERS:
       X   -   array[N,M1], sample matrix:
               * J-th column corresponds to J-th variable
@@ -408,6 +413,7 @@ the same.
 
   void spearmancorrm2(const real_2d_array &x, const real_2d_array &y, real_2d_array &c);
 
+  
   INPUT PARAMETERS:
       X   -   array[N,M1], sample matrix:
               * J-th column corresponds to J-th variable
@@ -430,6 +436,60 @@ the same.
   
     -- ALGLIB --
        Copyright 28.10.2010 by Bochkanov Sergey
+
+=head2 This function replaces data in XY by their ranks:
+
+Note on the Perl wrapper:
+Returns modified data structure as a copy rather than modifying in-place like in C++.
+
+  void rankdata(real_2d_array &xy);
+
+  * XY is processed row-by-row
+  * rows are processed separately
+  * tied data are correctly handled (tied ranks are calculated)
+  * ranking starts from 0, ends at NFeatures-1
+  * sum of within-row values is equal to (NFeatures-1)*NFeatures/2
+  
+  
+  INPUT PARAMETERS:
+      XY      -   array[NPoints,NFeatures], dataset
+      NPoints -   number of points
+      NFeatures-  number of features
+  
+  OUTPUT PARAMETERS:
+      XY      -   data are replaced by their within-row ranks;
+                  ranking starts from 0, ends at NFeatures-1
+  
+    -- ALGLIB --
+       Copyright 18.04.2013 by Bochkanov Sergey
+
+=head2 This function replaces data in XY by their CENTERED ranks:
+
+Note on the Perl wrapper:
+Returns modified data structure as a copy rather than modifying in-place like in C++.
+
+  void rankdatacentered(real_2d_array &xy);
+
+  * XY is processed row-by-row
+  * rows are processed separately
+  * tied data are correctly handled (tied ranks are calculated)
+  * centered ranks are just usual ranks, but centered in such way  that  sum
+    of within-row values is equal to 0.0.
+  * centering is performed by subtracting mean from each row, i.e it changes
+    mean value, but does NOT change higher moments
+  
+  
+  INPUT PARAMETERS:
+      XY      -   array[NPoints,NFeatures], dataset
+      NPoints -   number of points
+      NFeatures-  number of features
+  
+  OUTPUT PARAMETERS:
+      XY      -   data are replaced by their within-row ranks;
+                  ranking starts from 0, ends at NFeatures-1
+  
+    -- ALGLIB --
+       Copyright 18.04.2013 by Bochkanov Sergey
 
 =head2 Obsolete function, we recommend to use PearsonCorr2().
 
@@ -683,12 +743,12 @@ the same.
   distribution and  an  unknown  dispersion.  If  the  distribution  sharply
   differs from normal, the test will work incorrectly.
   
-  Input parameters:
+  INPUT PARAMETERS:
       X       -   sample. Array whose index goes from 0 to N-1.
-      N       -   size of sample.
+      N       -   size of sample, N>=0
       Mean    -   assumed value of the mean.
   
-  Output parameters:
+  OUTPUT PARAMETERS:
       BothTails   -   p-value for two-tailed test.
                       If BothTails is less than the given significance level
                       the null hypothesis is rejected.
@@ -698,6 +758,13 @@ the same.
       RightTail   -   p-value for right-tailed test.
                       If RightTail is less than the given significance level
                       the null hypothesis is rejected.
+  
+  NOTE: this function correctly handles degenerate cases:
+        * when N=0, all p-values are set to 1.0
+        * when variance of X[] is exactly zero, p-values are set
+          to 1.0 or 0.0, depending on difference between sample mean and
+          value of mean being tested.
+  
   
     -- ALGLIB --
        Copyright 08.09.2006 by Bochkanov Sergey
@@ -736,6 +803,11 @@ the same.
                       If RightTail is less than the given significance level
                       the null hypothesis is rejected.
   
+  NOTE: this function correctly handles degenerate cases:
+        * when N=0 or M=0, all p-values are set to 1.0
+        * when both samples has exactly zero variance, p-values are set
+          to 1.0 or 0.0, depending on difference between means.
+  
     -- ALGLIB --
        Copyright 18.09.2006 by Bochkanov Sergey
 
@@ -754,7 +826,7 @@ the same.
   Test is based on the following assumptions:
       * given samples have normal distributions
       * samples are independent.
-  Dispersion equality is not required
+  Equality of variances is NOT required.
   
   Input parameters:
       X - sample 1. Array whose index goes from 0 to N-1.
@@ -772,6 +844,13 @@ the same.
       RightTail   -   p-value for right-tailed test.
                       If RightTail is less than the given significance level
                       the null hypothesis is rejected.
+  
+  NOTE: this function correctly handles degenerate cases:
+        * when N=0 or M=0, all p-values are set to 1.0
+        * when both samples has zero variance, p-values are set
+          to 1.0 or 0.0, depending on difference between means.
+        * when only one sample has zero variance, test reduces to 1-sample
+          version.
   
     -- ALGLIB --
        Copyright 18.09.2006 by Bochkanov Sergey
@@ -922,7 +1001,7 @@ for details on its author(s).
 The Math::Alglib module is distributed under the same license as the
 underlying ALGLIB C++ library. The wrapper code is:
 
-  Copyright (C) 2011, 2012, 2013 by Steffen Mueller
+  Copyright (C) 2011, 2012, 2013, 2015 by Steffen Mueller
   
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by

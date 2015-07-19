@@ -20,7 +20,7 @@ this documentation, please file a bug and refer to the header file.
 
 =head1 VERSION
 
-This module wraps Alglib version 3.6.0.
+This module wraps Alglib version 3.9.0.
 
 =head1 FUNCTIONS
 
@@ -458,6 +458,7 @@ the same.
 =head2 Conversion from barycentric representation to power basis.
 
   void polynomialbar2pow(const barycentricinterpolant &p, const double c, const double s, real_1d_array &a);
+
   This function has O(N^2) complexity.
   
   INPUT PARAMETERS:
@@ -499,6 +500,7 @@ the same.
 =head2 Conversion from power basis to barycentric representation.
 
   void polynomialpow2bar(const real_1d_array &a, const ae_int_t n, const double c, const double s, barycentricinterpolant &p);
+
   This function has O(N^2) complexity.
   
   INPUT PARAMETERS:
@@ -725,6 +727,7 @@ the same.
 =head2 This subroutine builds cubic spline interpolant.
 
   spline1dinterpolant* spline1dbuildcubic(alglib::real_1d_array x, alglib::real_1d_array y, ae_int_t n, ae_int_t boundltype = 0, double boundl = 0, ae_int_t boundrtype = 0, double boundr = 0);
+
   INPUT PARAMETERS:
       X           -   spline nodes, array[0..N-1].
       Y           -   function values, array[0..N-1].
@@ -778,6 +781,7 @@ the same.
 =head2 This function solves following problem: given table y[] of function values
 
   alglib::real_1d_array spline1dgriddiffcubic(alglib::real_1d_array x, alglib::real_1d_array y, ae_int_t n, ae_int_t boundltype = 0, double boundl = 0, ae_int_t boundrtype = 0, double boundr = 0);
+
   at nodes x[], it calculates and returns table of function derivatives  d[]
   (calculated at the same nodes x[]).
   
@@ -904,6 +908,7 @@ the same.
 =head2 This function solves following problem: given table y[] of function values
 
   alglib::real_1d_array spline1dconvcubic(alglib::real_1d_array x, alglib::real_1d_array y, ae_int_t n, ae_int_t boundltype, double boundl, ae_int_t boundrtype, double boundr, alglib::real_1d_array x2, const ae_int_t n2);
+
   at old nodes x[]  and new nodes  x2[],  it calculates and returns table of
   function values y2[] (calculated at x2[]).
   
@@ -971,6 +976,7 @@ the same.
 =head2 This function solves following problem: given table y[] of function values
 
   void spline1dconvdiffcubic(const real_1d_array &x, const real_1d_array &y, const ae_int_t n, const ae_int_t boundltype, const double boundl, const ae_int_t boundrtype, const double boundr, const real_1d_array &x2, const ae_int_t n2, real_1d_array &y2, real_1d_array &d2);
+
   at old nodes x[]  and new nodes  x2[],  it calculates and returns table of
   function values y2[] and derivatives d2[] (calculated at x2[]).
   
@@ -1039,6 +1045,7 @@ the same.
 =head2 This function solves following problem: given table y[] of function values
 
   void spline1dconvdiff2cubic(const real_1d_array &x, const real_1d_array &y, const ae_int_t n, const ae_int_t boundltype, const double boundl, const ae_int_t boundrtype, const double boundr, const real_1d_array &x2, const ae_int_t n2, real_1d_array &y2, real_1d_array &d2, real_1d_array &dd2);
+
   at old nodes x[]  and new nodes  x2[],  it calculates and returns table of
   function  values  y2[],  first  and  second  derivatives  d2[]  and  dd2[]
   (calculated at x2[]).
@@ -1109,6 +1116,7 @@ the same.
 =head2 This subroutine builds Catmull-Rom spline interpolant.
 
   spline1dinterpolant* spline1dbuildcatmullrom(alglib::real_1d_array x, alglib::real_1d_array y, ae_int_t n, ae_int_t boundtype = 0, double tension = 0)
+
   INPUT PARAMETERS:
       X           -   spline nodes, array[0..N-1].
       Y           -   function values, array[0..N-1].
@@ -1179,7 +1187,7 @@ the same.
       X           -   spline nodes, array[0..N-1]
       Y           -   function values, array[0..N-1]
       N           -   points count (optional):
-                      * N>=5
+                      * N>=2
                       * if given, only first N points are used to build spline
                       * if not given, automatically detected from X/Y sizes
                         (len(X) must be equal to len(Y))
@@ -1316,6 +1324,105 @@ the same.
    -- ALGLIB PROJECT --
        Copyright 21.06.2012 by Bochkanov Sergey
 
+=head2 This  subroutine fits piecewise linear curve to points with Ramer-Douglas-
+
+Note on the Perl wrapper:
+Returns reference to an array three elements: real_1d_array x2, real_1d_array y2, int  nsections
+
+  void lstfitpiecewiselinearrdpfixed(const real_1d_array &x, const real_1d_array &y, const ae_int_t n, const ae_int_t m)
+
+  Peucker algorithm, which stops after generating specified number of linear
+  sections.
+  
+  IMPORTANT:
+  * it does NOT perform least-squares fitting; it  builds  curve,  but  this
+    curve does not minimize some least squares metric.  See  description  of
+    RDP algorithm (say, in Wikipedia) for more details on WHAT is performed.
+  * this function does NOT work with parametric curves  (i.e.  curves  which
+    can be represented as {X(t),Y(t)}. It works with curves   which  can  be
+    represented as Y(X). Thus,  it  is  impossible  to  model  figures  like
+    circles  with  this  functions.
+    If  you  want  to  work  with  parametric   curves,   you   should   use
+    ParametricRDPFixed() function provided  by  "Parametric"  subpackage  of
+    "Interpolation" package.
+  
+  INPUT PARAMETERS:
+      X       -   array of X-coordinates:
+                  * at least N elements
+                  * can be unordered (points are automatically sorted)
+                  * this function may accept non-distinct X (see below for
+                    more information on handling of such inputs)
+      Y       -   array of Y-coordinates:
+                  * at least N elements
+      N       -   number of elements in X/Y
+      M       -   desired number of sections:
+                  * at most M sections are generated by this function
+                  * less than M sections can be generated if we have N<M
+                    (or some X are non-distinct).
+  
+  OUTPUT PARAMETERS:
+      X2      -   X-values of corner points for piecewise approximation,
+                  has length NSections+1 or zero (for NSections=0).
+      Y2      -   Y-values of corner points,
+                  has length NSections+1 or zero (for NSections=0).
+      NSections-  number of sections found by algorithm, NSections<=M,
+                  NSections can be zero for degenerate datasets
+                  (N<=1 or all X[] are non-distinct).
+  
+  NOTE: X2/Y2 are ordered arrays, i.e. (X2[0],Y2[0]) is  a  first  point  of
+        curve, (X2[NSection-1],Y2[NSection-1]) is the last point.
+  
+    -- ALGLIB --
+       Copyright 02.10.2014 by Bochkanov Sergey
+
+=head2 This  subroutine fits piecewise linear curve to points with Ramer-Douglas-
+
+Note on the Perl wrapper:
+Returns reference to an array three elements: real_1d_array x2, real_1d_array y2, int  nsections
+
+  void lstfitpiecewiselinearrdp(const real_1d_array &x, const real_1d_array &y, const ae_int_t n, const double eps)
+
+  Peucker algorithm, which stops after achieving desired precision.
+  
+  IMPORTANT:
+  * it performs non-least-squares fitting; it builds curve, but  this  curve
+    does not minimize some least squares  metric.  See  description  of  RDP
+    algorithm (say, in Wikipedia) for more details on WHAT is performed.
+  * this function does NOT work with parametric curves  (i.e.  curves  which
+    can be represented as {X(t),Y(t)}. It works with curves   which  can  be
+    represented as Y(X). Thus, it is impossible to model figures like circles
+    with this functions.
+    If  you  want  to  work  with  parametric   curves,   you   should   use
+    ParametricRDPFixed() function provided  by  "Parametric"  subpackage  of
+    "Interpolation" package.
+  
+  INPUT PARAMETERS:
+      X       -   array of X-coordinates:
+                  * at least N elements
+                  * can be unordered (points are automatically sorted)
+                  * this function may accept non-distinct X (see below for
+                    more information on handling of such inputs)
+      Y       -   array of Y-coordinates:
+                  * at least N elements
+      N       -   number of elements in X/Y
+      Eps     -   positive number, desired precision.
+  
+  
+  OUTPUT PARAMETERS:
+      X2      -   X-values of corner points for piecewise approximation,
+                  has length NSections+1 or zero (for NSections=0).
+      Y2      -   Y-values of corner points,
+                  has length NSections+1 or zero (for NSections=0).
+      NSections-  number of sections found by algorithm,
+                  NSections can be zero for degenerate datasets
+                  (N<=1 or all X[] are non-distinct).
+  
+  NOTE: X2/Y2 are ordered arrays, i.e. (X2[0],Y2[0]) is  a  first  point  of
+        curve, (X2[NSection-1],Y2[NSection-1]) is the last point.
+  
+    -- ALGLIB --
+       Copyright 02.10.2014 by Bochkanov Sergey
+
 =head2 Fitting by polynomials in barycentric form. This function provides  simple
 
 Note on the Perl wrapper:
@@ -1331,6 +1438,7 @@ Returns array ref of three elements: info, barycentricinterpolant object, hashre
   
   SEE ALSO:
       PolynomialFitWC()
+  
   
   INPUT PARAMETERS:
       X   -   points, array[0..N-1].
@@ -1379,6 +1487,7 @@ Returns array ref of three elements: info, barycentricinterpolant object, hashre
   
   SEE ALSO:
       PolynomialFit()
+  
   
   INPUT PARAMETERS:
       X   -   points, array[0..N-1].
@@ -1446,6 +1555,568 @@ Returns array ref of three elements: info, barycentricinterpolant object, hashre
     -- ALGLIB PROJECT --
        Copyright 10.12.2009 by Bochkanov Sergey
 
+=head2 This function calculates value of four-parameter logistic (4PL)  model  at
+
+  double logisticcalc4(const double x, const double a, const double b, const double c, const double d);
+
+  specified point X. 4PL model has following form:
+  
+      F(x|A,B,C,D) = D+(A-D)/(1+Power(x/C,B))
+  
+  INPUT PARAMETERS:
+      X       -   current point, X>=0:
+                  * zero X is correctly handled even for B<=0
+                  * negative X results in exception.
+      A, B, C, D- parameters of 4PL model:
+                  * A is unconstrained
+                  * B is unconstrained; zero or negative values are handled
+                    correctly.
+                  * C>0, non-positive value results in exception
+                  * D is unconstrained
+  
+  RESULT:
+      model value at X
+  
+  NOTE: if B=0, denominator is assumed to be equal to 2.0 even  for  zero  X
+        (strictly speaking, 0^0 is undefined).
+  
+  NOTE: this function also throws exception  if  all  input  parameters  are
+        correct, but overflow was detected during calculations.
+  
+  NOTE: this function performs a lot of checks;  if  you  need  really  high
+        performance, consider evaluating model  yourself,  without  checking
+        for degenerate cases.
+  
+  
+    -- ALGLIB PROJECT --
+       Copyright 14.05.2014 by Bochkanov Sergey
+
+=head2 This function calculates value of five-parameter logistic (5PL)  model  at
+
+  double logisticcalc5(const double x, const double a, const double b, const double c, const double d, const double g);
+
+  specified point X. 5PL model has following form:
+  
+      F(x|A,B,C,D,G) = D+(A-D)/Power(1+Power(x/C,B),G)
+  
+  INPUT PARAMETERS:
+      X       -   current point, X>=0:
+                  * zero X is correctly handled even for B<=0
+                  * negative X results in exception.
+      A, B, C, D, G- parameters of 5PL model:
+                  * A is unconstrained
+                  * B is unconstrained; zero or negative values are handled
+                    correctly.
+                  * C>0, non-positive value results in exception
+                  * D is unconstrained
+                  * G>0, non-positive value results in exception
+  
+  RESULT:
+      model value at X
+  
+  NOTE: if B=0, denominator is assumed to be equal to Power(2.0,G) even  for
+        zero X (strictly speaking, 0^0 is undefined).
+  
+  NOTE: this function also throws exception  if  all  input  parameters  are
+        correct, but overflow was detected during calculations.
+  
+  NOTE: this function performs a lot of checks;  if  you  need  really  high
+        performance, consider evaluating model  yourself,  without  checking
+        for degenerate cases.
+  
+  
+    -- ALGLIB PROJECT --
+       Copyright 14.05.2014 by Bochkanov Sergey
+
+=head2 This function fits four-parameter logistic (4PL) model  to  data  provided
+
+Note on the Perl wrapper:
+Returns reference to an array of five elements: doubles a, b, c, d, and lsfitreport (hash ref).
+
+  void logisticfit4(const real_1d_array &x, const real_1d_array &y, const ae_int_t n)
+
+  by user. 4PL model has following form:
+  
+      F(x|A,B,C,D) = D+(A-D)/(1+Power(x/C,B))
+  
+  Here:
+      * A, D - unconstrained (see LogisticFit4EC() for constrained 4PL)
+      * B>=0
+      * C>0
+  
+  IMPORTANT: output of this function is constrained in  such  way that  B>0.
+             Because 4PL model is symmetric with respect to B, there  is  no
+             need to explore  B<0.  Constraining  B  makes  algorithm easier
+             to stabilize and debug.
+             Users  who  for  some  reason  prefer to work with negative B's
+             should transform output themselves (swap A and D, replace B  by
+             -B).
+  
+  4PL fitting is implemented as follows:
+  * we perform small number of restarts from random locations which helps to
+    solve problem of bad local extrema. Locations are only partially  random
+    - we use input data to determine good  initial  guess,  but  we  include
+    controlled amount of randomness.
+  * we perform Levenberg-Marquardt fitting with very  tight  constraints  on
+    parameters B and C - it allows us to find good  initial  guess  for  the
+    second stage without risk of running into "flat spot".
+  * second  Levenberg-Marquardt  round  is   performed   without   excessive
+    constraints. Results from the previous round are used as initial guess.
+  * after fitting is done, we compare results with best values found so far,
+    rewrite "best solution" if needed, and move to next random location.
+  
+  Overall algorithm is very stable and is not prone to  bad  local  extrema.
+  Furthermore, it automatically scales when input data have  very  large  or
+  very small range.
+  
+  INPUT PARAMETERS:
+      X       -   array[N], stores X-values.
+                  MUST include only non-negative numbers  (but  may  include
+                  zero values). Can be unsorted.
+      Y       -   array[N], values to fit.
+      N       -   number of points. If N is less than  length  of  X/Y, only
+                  leading N elements are used.
+  
+  OUTPUT PARAMETERS:
+      A, B, C, D- parameters of 4PL model
+      Rep     -   fitting report. This structure has many fields,  but  ONLY
+                  ONES LISTED BELOW ARE SET:
+                  * Rep.IterationsCount - number of iterations performed
+                  * Rep.RMSError - root-mean-square error
+                  * Rep.AvgError - average absolute error
+                  * Rep.AvgRelError - average relative error (calculated for
+                    non-zero Y-values)
+                  * Rep.MaxError - maximum absolute error
+                  * Rep.R2 - coefficient of determination,  R-squared.  This
+                    coefficient   is  calculated  as  R2=1-RSS/TSS  (in case
+                    of nonlinear  regression  there  are  multiple  ways  to
+                    define R2, each of them giving different results).
+  
+  NOTE: after  you  obtained  coefficients,  you  can  evaluate  model  with
+        LogisticCalc4() function.
+  
+  NOTE: if you need better control over fitting process than provided by this
+        function, you may use LogisticFit45X().
+  
+  NOTE: step is automatically scaled according to scale of parameters  being
+        fitted before we compare its length with EpsX. Thus,  this  function
+        can be used to fit data with very small or very large values without
+        changing EpsX.
+  
+  
+    -- ALGLIB PROJECT --
+       Copyright 14.02.2014 by Bochkanov Sergey
+
+=head2 This function fits four-parameter logistic (4PL) model  to  data  provided
+
+Note on the Perl wrapper:
+Returns reference to an array of five elements: doubles a, b, c, d, and lsfitreport (hash ref).
+
+  void logisticfit4ec(const real_1d_array &x, const real_1d_array &y, const ae_int_t n, const double cnstrleft, const double cnstrright)
+
+  by user, with optional constraints on parameters A and D.  4PL  model  has
+  following form:
+  
+      F(x|A,B,C,D) = D+(A-D)/(1+Power(x/C,B))
+  
+  Here:
+      * A, D - with optional equality constraints
+      * B>=0
+      * C>0
+  
+  IMPORTANT: output of this function is constrained in  such  way that  B>0.
+             Because 4PL model is symmetric with respect to B, there  is  no
+             need to explore  B<0.  Constraining  B  makes  algorithm easier
+             to stabilize and debug.
+             Users  who  for  some  reason  prefer to work with negative B's
+             should transform output themselves (swap A and D, replace B  by
+             -B).
+  
+  4PL fitting is implemented as follows:
+  * we perform small number of restarts from random locations which helps to
+    solve problem of bad local extrema. Locations are only partially  random
+    - we use input data to determine good  initial  guess,  but  we  include
+    controlled amount of randomness.
+  * we perform Levenberg-Marquardt fitting with very  tight  constraints  on
+    parameters B and C - it allows us to find good  initial  guess  for  the
+    second stage without risk of running into "flat spot".
+  * second  Levenberg-Marquardt  round  is   performed   without   excessive
+    constraints. Results from the previous round are used as initial guess.
+  * after fitting is done, we compare results with best values found so far,
+    rewrite "best solution" if needed, and move to next random location.
+  
+  Overall algorithm is very stable and is not prone to  bad  local  extrema.
+  Furthermore, it automatically scales when input data have  very  large  or
+  very small range.
+  
+  INPUT PARAMETERS:
+      X       -   array[N], stores X-values.
+                  MUST include only non-negative numbers  (but  may  include
+                  zero values). Can be unsorted.
+      Y       -   array[N], values to fit.
+      N       -   number of points. If N is less than  length  of  X/Y, only
+                  leading N elements are used.
+      CnstrLeft-  optional equality constraint for model value at the   left
+                  boundary (at X=0). Specify NAN (Not-a-Number)  if  you  do
+                  not need constraint on the model value at X=0 (in C++  you
+                  can pass alglib::fp_nan as parameter, in  C#  it  will  be
+                  Double.NaN).
+                  See  below,  section  "EQUALITY  CONSTRAINTS"   for   more
+                  information about constraints.
+      CnstrRight- optional equality constraint for model value at X=infinity.
+                  Specify NAN (Not-a-Number) if you do not  need  constraint
+                  on the model value (in C++  you can pass alglib::fp_nan as
+                  parameter, in  C# it will  be Double.NaN).
+                  See  below,  section  "EQUALITY  CONSTRAINTS"   for   more
+                  information about constraints.
+  
+  OUTPUT PARAMETERS:
+      A, B, C, D- parameters of 4PL model
+      Rep     -   fitting report. This structure has many fields,  but  ONLY
+                  ONES LISTED BELOW ARE SET:
+                  * Rep.IterationsCount - number of iterations performed
+                  * Rep.RMSError - root-mean-square error
+                  * Rep.AvgError - average absolute error
+                  * Rep.AvgRelError - average relative error (calculated for
+                    non-zero Y-values)
+                  * Rep.MaxError - maximum absolute error
+                  * Rep.R2 - coefficient of determination,  R-squared.  This
+                    coefficient   is  calculated  as  R2=1-RSS/TSS  (in case
+                    of nonlinear  regression  there  are  multiple  ways  to
+                    define R2, each of them giving different results).
+  
+  NOTE: after  you  obtained  coefficients,  you  can  evaluate  model  with
+        LogisticCalc4() function.
+  
+  NOTE: if you need better control over fitting process than provided by this
+        function, you may use LogisticFit45X().
+  
+  NOTE: step is automatically scaled according to scale of parameters  being
+        fitted before we compare its length with EpsX. Thus,  this  function
+        can be used to fit data with very small or very large values without
+        changing EpsX.
+  
+  EQUALITY CONSTRAINTS ON PARAMETERS
+  
+  4PL/5PL solver supports equality constraints on model values at  the  left
+  boundary (X=0) and right  boundary  (X=infinity).  These  constraints  are
+  completely optional and you can specify both of them, only  one  -  or  no
+  constraints at all.
+  
+  Parameter  CnstrLeft  contains  left  constraint (or NAN for unconstrained
+  fitting), and CnstrRight contains right  one.  For  4PL,  left  constraint
+  ALWAYS corresponds to parameter A, and right one is ALWAYS  constraint  on
+  D. That's because 4PL model is normalized in such way that B>=0.
+  
+  
+    -- ALGLIB PROJECT --
+       Copyright 14.02.2014 by Bochkanov Sergey
+
+=head2 This function fits five-parameter logistic (5PL) model  to  data  provided
+
+Note on the Perl wrapper:
+Returns reference to an array of six elements: doubles a, b, c, d, g, and lsfitreport (hash ref).
+
+  void logisticfit5(const real_1d_array &x, const real_1d_array &y, const ae_int_t n)
+
+  by user. 5PL model has following form:
+  
+      F(x|A,B,C,D,G) = D+(A-D)/Power(1+Power(x/C,B),G)
+  
+  Here:
+      * A, D - unconstrained
+      * B - unconstrained
+      * C>0
+      * G>0
+  
+  IMPORTANT: unlike in  4PL  fitting,  output  of  this  function   is   NOT
+             constrained in  such  way that B is guaranteed to be  positive.
+             Furthermore,  unlike  4PL,  5PL  model  is  NOT  symmetric with
+             respect to B, so you can NOT transform model to equivalent one,
+             with B having desired sign (>0 or <0).
+  
+  5PL fitting is implemented as follows:
+  * we perform small number of restarts from random locations which helps to
+    solve problem of bad local extrema. Locations are only partially  random
+    - we use input data to determine good  initial  guess,  but  we  include
+    controlled amount of randomness.
+  * we perform Levenberg-Marquardt fitting with very  tight  constraints  on
+    parameters B and C - it allows us to find good  initial  guess  for  the
+    second stage without risk of running into "flat spot".  Parameter  G  is
+    fixed at G=1.
+  * second  Levenberg-Marquardt  round  is   performed   without   excessive
+    constraints on B and C, but with G still equal to 1.  Results  from  the
+    previous round are used as initial guess.
+  * third Levenberg-Marquardt round relaxes constraints on G  and  tries  two
+    different models - one with B>0 and one with B<0.
+  * after fitting is done, we compare results with best values found so far,
+    rewrite "best solution" if needed, and move to next random location.
+  
+  Overall algorithm is very stable and is not prone to  bad  local  extrema.
+  Furthermore, it automatically scales when input data have  very  large  or
+  very small range.
+  
+  INPUT PARAMETERS:
+      X       -   array[N], stores X-values.
+                  MUST include only non-negative numbers  (but  may  include
+                  zero values). Can be unsorted.
+      Y       -   array[N], values to fit.
+      N       -   number of points. If N is less than  length  of  X/Y, only
+                  leading N elements are used.
+  
+  OUTPUT PARAMETERS:
+      A,B,C,D,G-  parameters of 5PL model
+      Rep     -   fitting report. This structure has many fields,  but  ONLY
+                  ONES LISTED BELOW ARE SET:
+                  * Rep.IterationsCount - number of iterations performed
+                  * Rep.RMSError - root-mean-square error
+                  * Rep.AvgError - average absolute error
+                  * Rep.AvgRelError - average relative error (calculated for
+                    non-zero Y-values)
+                  * Rep.MaxError - maximum absolute error
+                  * Rep.R2 - coefficient of determination,  R-squared.  This
+                    coefficient   is  calculated  as  R2=1-RSS/TSS  (in case
+                    of nonlinear  regression  there  are  multiple  ways  to
+                    define R2, each of them giving different results).
+  
+  NOTE: after  you  obtained  coefficients,  you  can  evaluate  model  with
+        LogisticCalc5() function.
+  
+  NOTE: if you need better control over fitting process than provided by this
+        function, you may use LogisticFit45X().
+  
+  NOTE: step is automatically scaled according to scale of parameters  being
+        fitted before we compare its length with EpsX. Thus,  this  function
+        can be used to fit data with very small or very large values without
+        changing EpsX.
+  
+  
+    -- ALGLIB PROJECT --
+       Copyright 14.02.2014 by Bochkanov Sergey
+
+=head2 This function fits five-parameter logistic (5PL) model  to  data  provided
+
+Note on the Perl wrapper:
+Returns reference to an array of six elements: doubles a, b, c, d, g, and lsfitreport (hash ref).
+
+  void logisticfit5ec(const real_1d_array &x, const real_1d_array &y, const ae_int_t n, const double cnstrleft, const double cnstrright)
+
+  by user, subject to optional equality constraints on parameters A  and  D.
+  5PL model has following form:
+  
+      F(x|A,B,C,D,G) = D+(A-D)/Power(1+Power(x/C,B),G)
+  
+  Here:
+      * A, D - with optional equality constraints
+      * B - unconstrained
+      * C>0
+      * G>0
+  
+  IMPORTANT: unlike in  4PL  fitting,  output  of  this  function   is   NOT
+             constrained in  such  way that B is guaranteed to be  positive.
+             Furthermore,  unlike  4PL,  5PL  model  is  NOT  symmetric with
+             respect to B, so you can NOT transform model to equivalent one,
+             with B having desired sign (>0 or <0).
+  
+  5PL fitting is implemented as follows:
+  * we perform small number of restarts from random locations which helps to
+    solve problem of bad local extrema. Locations are only partially  random
+    - we use input data to determine good  initial  guess,  but  we  include
+    controlled amount of randomness.
+  * we perform Levenberg-Marquardt fitting with very  tight  constraints  on
+    parameters B and C - it allows us to find good  initial  guess  for  the
+    second stage without risk of running into "flat spot".  Parameter  G  is
+    fixed at G=1.
+  * second  Levenberg-Marquardt  round  is   performed   without   excessive
+    constraints on B and C, but with G still equal to 1.  Results  from  the
+    previous round are used as initial guess.
+  * third Levenberg-Marquardt round relaxes constraints on G  and  tries  two
+    different models - one with B>0 and one with B<0.
+  * after fitting is done, we compare results with best values found so far,
+    rewrite "best solution" if needed, and move to next random location.
+  
+  Overall algorithm is very stable and is not prone to  bad  local  extrema.
+  Furthermore, it automatically scales when input data have  very  large  or
+  very small range.
+  
+  INPUT PARAMETERS:
+      X       -   array[N], stores X-values.
+                  MUST include only non-negative numbers  (but  may  include
+                  zero values). Can be unsorted.
+      Y       -   array[N], values to fit.
+      N       -   number of points. If N is less than  length  of  X/Y, only
+                  leading N elements are used.
+      CnstrLeft-  optional equality constraint for model value at the   left
+                  boundary (at X=0). Specify NAN (Not-a-Number)  if  you  do
+                  not need constraint on the model value at X=0 (in C++  you
+                  can pass alglib::fp_nan as parameter, in  C#  it  will  be
+                  Double.NaN).
+                  See  below,  section  "EQUALITY  CONSTRAINTS"   for   more
+                  information about constraints.
+      CnstrRight- optional equality constraint for model value at X=infinity.
+                  Specify NAN (Not-a-Number) if you do not  need  constraint
+                  on the model value (in C++  you can pass alglib::fp_nan as
+                  parameter, in  C# it will  be Double.NaN).
+                  See  below,  section  "EQUALITY  CONSTRAINTS"   for   more
+                  information about constraints.
+  
+  OUTPUT PARAMETERS:
+      A,B,C,D,G-  parameters of 5PL model
+      Rep     -   fitting report. This structure has many fields,  but  ONLY
+                  ONES LISTED BELOW ARE SET:
+                  * Rep.IterationsCount - number of iterations performed
+                  * Rep.RMSError - root-mean-square error
+                  * Rep.AvgError - average absolute error
+                  * Rep.AvgRelError - average relative error (calculated for
+                    non-zero Y-values)
+                  * Rep.MaxError - maximum absolute error
+                  * Rep.R2 - coefficient of determination,  R-squared.  This
+                    coefficient   is  calculated  as  R2=1-RSS/TSS  (in case
+                    of nonlinear  regression  there  are  multiple  ways  to
+                    define R2, each of them giving different results).
+  
+  NOTE: after  you  obtained  coefficients,  you  can  evaluate  model  with
+        LogisticCalc5() function.
+  
+  NOTE: if you need better control over fitting process than provided by this
+        function, you may use LogisticFit45X().
+  
+  NOTE: step is automatically scaled according to scale of parameters  being
+        fitted before we compare its length with EpsX. Thus,  this  function
+        can be used to fit data with very small or very large values without
+        changing EpsX.
+  
+  EQUALITY CONSTRAINTS ON PARAMETERS
+  
+  5PL solver supports equality constraints on model  values  at   the   left
+  boundary (X=0) and right  boundary  (X=infinity).  These  constraints  are
+  completely optional and you can specify both of them, only  one  -  or  no
+  constraints at all.
+  
+  Parameter  CnstrLeft  contains  left  constraint (or NAN for unconstrained
+  fitting), and CnstrRight contains right  one.
+  
+  Unlike 4PL one, 5PL model is NOT symmetric with respect to  change in sign
+  of B. Thus, negative B's are possible, and left constraint  may  constrain
+  parameter A (for positive B's)  -  or  parameter  D  (for  negative  B's).
+  Similarly changes meaning of right constraint.
+  
+  You do not have to decide what parameter to  constrain  -  algorithm  will
+  automatically determine correct parameters as fitting progresses. However,
+  question highlighted above is important when you interpret fitting results.
+  
+  
+    -- ALGLIB PROJECT --
+       Copyright 14.02.2014 by Bochkanov Sergey
+
+=head2 This is "expert" 4PL/5PL fitting function, which can be used if  you  need
+
+Note on the Perl wrapper:
+Returns reference to an array of six elements: doubles a, b, c, d, g, and lsfitreport (hash ref).
+
+  void logisticfit45x(const real_1d_array &x, const real_1d_array &y, const ae_int_t n, const double cnstrleft, const double cnstrright, const bool is4pl, const double lambdav, const double epsx, const ae_int_t rscnt)
+
+  better control over fitting process than provided  by  LogisticFit4()  or
+  LogisticFit5().
+  
+  This function fits model of the form
+  
+      F(x|A,B,C,D)   = D+(A-D)/(1+Power(x/C,B))           (4PL model)
+  
+  or
+  
+      F(x|A,B,C,D,G) = D+(A-D)/Power(1+Power(x/C,B),G)    (5PL model)
+  
+  Here:
+      * A, D - unconstrained
+      * B>=0 for 4PL, unconstrained for 5PL
+      * C>0
+      * G>0 (if present)
+  
+  INPUT PARAMETERS:
+      X       -   array[N], stores X-values.
+                  MUST include only non-negative numbers  (but  may  include
+                  zero values). Can be unsorted.
+      Y       -   array[N], values to fit.
+      N       -   number of points. If N is less than  length  of  X/Y, only
+                  leading N elements are used.
+      CnstrLeft-  optional equality constraint for model value at the   left
+                  boundary (at X=0). Specify NAN (Not-a-Number)  if  you  do
+                  not need constraint on the model value at X=0 (in C++  you
+                  can pass alglib::fp_nan as parameter, in  C#  it  will  be
+                  Double.NaN).
+                  See  below,  section  "EQUALITY  CONSTRAINTS"   for   more
+                  information about constraints.
+      CnstrRight- optional equality constraint for model value at X=infinity.
+                  Specify NAN (Not-a-Number) if you do not  need  constraint
+                  on the model value (in C++  you can pass alglib::fp_nan as
+                  parameter, in  C# it will  be Double.NaN).
+                  See  below,  section  "EQUALITY  CONSTRAINTS"   for   more
+                  information about constraints.
+      Is4PL   -   whether 4PL or 5PL models are fitted
+      LambdaV -   regularization coefficient, LambdaV>=0.
+                  Set it to zero unless you know what you are doing.
+      EpsX    -   stopping condition (step size), EpsX>=0.
+                  Zero value means that small step is automatically chosen.
+                  See notes below for more information.
+      RsCnt   -   number of repeated restarts from  random  points.  4PL/5PL
+                  models are prone to problem of bad local extrema. Utilizing
+                  multiple random restarts allows  us  to  improve algorithm
+                  convergence.
+                  RsCnt>=0.
+                  Zero value means that function automatically choose  small
+                  amount of restarts (recommended).
+  
+  OUTPUT PARAMETERS:
+      A, B, C, D- parameters of 4PL model
+      G       -   parameter of 5PL model; for Is4PL=True, G=1 is returned.
+      Rep     -   fitting report. This structure has many fields,  but  ONLY
+                  ONES LISTED BELOW ARE SET:
+                  * Rep.IterationsCount - number of iterations performed
+                  * Rep.RMSError - root-mean-square error
+                  * Rep.AvgError - average absolute error
+                  * Rep.AvgRelError - average relative error (calculated for
+                    non-zero Y-values)
+                  * Rep.MaxError - maximum absolute error
+                  * Rep.R2 - coefficient of determination,  R-squared.  This
+                    coefficient   is  calculated  as  R2=1-RSS/TSS  (in case
+                    of nonlinear  regression  there  are  multiple  ways  to
+                    define R2, each of them giving different results).
+  
+  NOTE: after  you  obtained  coefficients,  you  can  evaluate  model  with
+        LogisticCalc5() function.
+  
+  NOTE: step is automatically scaled according to scale of parameters  being
+        fitted before we compare its length with EpsX. Thus,  this  function
+        can be used to fit data with very small or very large values without
+        changing EpsX.
+  
+  EQUALITY CONSTRAINTS ON PARAMETERS
+  
+  4PL/5PL solver supports equality constraints on model values at  the  left
+  boundary (X=0) and right  boundary  (X=infinity).  These  constraints  are
+  completely optional and you can specify both of them, only  one  -  or  no
+  constraints at all.
+  
+  Parameter  CnstrLeft  contains  left  constraint (or NAN for unconstrained
+  fitting), and CnstrRight contains right  one.  For  4PL,  left  constraint
+  ALWAYS corresponds to parameter A, and right one is ALWAYS  constraint  on
+  D. That's because 4PL model is normalized in such way that B>=0.
+  
+  For 5PL model things are different. Unlike  4PL  one,  5PL  model  is  NOT
+  symmetric with respect to  change  in  sign  of  B. Thus, negative B's are
+  possible, and left constraint may constrain parameter A (for positive B's)
+  - or parameter D (for negative B's). Similarly changes  meaning  of  right
+  constraint.
+  
+  You do not have to decide what parameter to  constrain  -  algorithm  will
+  automatically determine correct parameters as fitting progresses. However,
+  question highlighted above is important when you interpret fitting results.
+  
+  
+    -- ALGLIB PROJECT --
+       Copyright 14.02.2014 by Bochkanov Sergey
+
 =head2 Weghted rational least  squares  fitting  using  Floater-Hormann  rational
 
 Note on the Perl wrapper:
@@ -1465,6 +2136,7 @@ Returns array ref of three elements: info, barycentricinterpolant object, hashre
   SEE ALSO
   * BarycentricFitFloaterHormann(), "lightweight" fitting without invididual
     weights and constraints.
+  
   
   INPUT PARAMETERS:
       X   -   points, array[0..N-1].
@@ -1550,6 +2222,7 @@ Returns array ref of three elements: info, barycentricinterpolant object, hashre
   is used. Complexity  of  this  computational  scheme is  O(N*M^2)  (mostly
   dominated by the least squares solver).
   
+  
   INPUT PARAMETERS:
       X   -   points, array[0..N-1].
       Y   -   function values, array[0..N-1].
@@ -1575,42 +2248,68 @@ Returns array ref of three elements: info, barycentricinterpolant object, hashre
     -- ALGLIB PROJECT --
        Copyright 18.08.2009 by Bochkanov Sergey
 
-=head2 Rational least squares fitting using  Floater-Hormann  rational  functions
+=head2 Fitting by penalized cubic spline.
 
 Note on the Perl wrapper:
 Returns array ref of three elements: info, spline1dinterpolant object, hashref of spline1dfitreport data
 
   void spline1dfitpenalized(const real_1d_array &x, const real_1d_array &y, const ae_int_t m, const double rho, ae_int_t &info, spline1dinterpolant &s, spline1dfitreport &rep);
 
-  with optimal D chosen from [0,9].
+  Equidistant grid with M nodes on [min(x,xc),max(x,xc)] is  used  to  build
+  basis functions. Basis functions are cubic splines with  natural  boundary
+  conditions. Problem is regularized by  adding non-linearity penalty to the
+  usual least squares penalty function:
   
-  Equidistant  grid  with M node on [min(x),max(x)]  is  used to build basis
-  functions. Different values of D are tried, optimal  D  (least  root  mean
-  square error) is chosen.  Task  is  linear, so linear least squares solver
-  is used. Complexity  of  this  computational  scheme is  O(N*M^2)  (mostly
-  dominated by the least squares solver).
+      S(x) = arg min { LS + P }, where
+      LS   = SUM { w[i]^2*(y[i] - S(x[i]))^2 } - least squares penalty
+      P    = C*10^rho*integral{ S''(x)^2*dx } - non-linearity penalty
+      rho  - tunable constant given by user
+      C    - automatically determined scale parameter,
+             makes penalty invariant with respect to scaling of X, Y, W.
+  
   
   INPUT PARAMETERS:
       X   -   points, array[0..N-1].
       Y   -   function values, array[0..N-1].
-      N   -   number of points, N>0.
-      M   -   number of basis functions ( = number_of_nodes), M>=2.
+      N   -   number of points (optional):
+              * N>0
+              * if given, only first N elements of X/Y are processed
+              * if not given, automatically determined from X/Y sizes
+      M   -   number of basis functions ( = number_of_nodes), M>=4.
+      Rho -   regularization  constant  passed   by   user.   It   penalizes
+              nonlinearity in the regression spline. It  is  logarithmically
+              scaled,  i.e.  actual  value  of  regularization  constant  is
+              calculated as 10^Rho. It is automatically scaled so that:
+              * Rho=2.0 corresponds to moderate amount of nonlinearity
+              * generally, it should be somewhere in the [-8.0,+8.0]
+              If you do not want to penalize nonlineary,
+              pass small Rho. Values as low as -15 should work.
   
   OUTPUT PARAMETERS:
       Info-   same format as in LSFitLinearWC() subroutine.
               * Info>0    task is solved
               * Info<=0   an error occured:
-                          -4 means inconvergence of internal SVD
-                          -3 means inconsistent constraints
-      B   -   barycentric interpolant.
-      Rep -   report, same format as in LSFitLinearWC() subroutine.
-              Following fields are set:
-              * DBest         best value of the D parameter
+                          -4 means inconvergence of internal SVD or
+                             Cholesky decomposition; problem may be
+                             too ill-conditioned (very rare)
+      S   -   spline interpolant.
+      Rep -   Following fields are set:
               * RMSError      rms error on the (X,Y).
               * AvgError      average error on the (X,Y).
               * AvgRelError   average relative error on the non-zero Y
               * MaxError      maximum error
                               NON-WEIGHTED ERRORS ARE CALCULATED
+  
+  IMPORTANT:
+      this subroitine doesn't calculate task's condition number for K<>0.
+  
+  NOTE 1: additional nodes are added to the spline outside  of  the  fitting
+  interval to force linearity when x<min(x,xc) or x>max(x,xc).  It  is  done
+  for consistency - we penalize non-linearity  at [min(x,xc),max(x,xc)],  so
+  it is natural to force linearity outside of this interval.
+  
+  NOTE 2: function automatically sorts points,  so  caller may pass unsorted
+  array.
   
     -- ALGLIB PROJECT --
        Copyright 18.08.2009 by Bochkanov Sergey
@@ -1633,6 +2332,7 @@ Returns array ref of three elements: info, spline1dinterpolant object, hashref o
       rho  - tunable constant given by user
       C    - automatically determined scale parameter,
              makes penalty invariant with respect to scaling of X, Y, W.
+  
   
   INPUT PARAMETERS:
       X   -   points, array[0..N-1].
@@ -1708,6 +2408,7 @@ Returns array ref of three elements: info, spline1dinterpolant object, hashref o
                                   less smooth)
       Spline1DFitCubic()      -   "lightweight" fitting  by  cubic  splines,
                                   without invididual weights and constraints
+  
   
   INPUT PARAMETERS:
       X   -   points, array[0..N-1].
@@ -1811,6 +2512,7 @@ Returns array ref of three elements: info, spline1dinterpolant object, hashref o
       Spline1DFitHermite()    -   "lightweight" Hermite fitting, without
                                   invididual weights and constraints
   
+  
   INPUT PARAMETERS:
       X   -   points, array[0..N-1].
       Y   -   function values, array[0..N-1].
@@ -1909,6 +2611,7 @@ Returns array ref of three elements: info, spline1dinterpolant object, hashref o
   rich Spline1DFitCubicWC().  See  Spline1DFitCubicWC() for more information
   about subroutine parameters (we don't duplicate it here because of length)
   
+  
     -- ALGLIB PROJECT --
        Copyright 18.08.2009 by Bochkanov Sergey
 
@@ -1924,6 +2627,7 @@ Returns array ref of three elements: info, spline1dinterpolant object, hashref o
   more information about subroutine parameters (we don't duplicate  it  here
   because of length).
   
+  
     -- ALGLIB PROJECT --
        Copyright 18.08.2009 by Bochkanov Sergey
 
@@ -1937,6 +2641,13 @@ Returns array ref of three elements: info, array ref of decomposition coefficien
   QR decomposition is used to reduce task to MxM, then triangular solver  or
   SVD-based solver is used depending on condition number of the  system.  It
   allows to maximize speed and retain decent accuracy.
+  
+  IMPORTANT: if you want to perform  polynomial  fitting,  it  may  be  more
+             convenient to use PolynomialFit() function. This function gives
+             best  results  on  polynomial  problems  and  solves  numerical
+             stability  issues  which  arise  when   you   fit   high-degree
+             polynomials to your data.
+  
   
   INPUT PARAMETERS:
       Y       -   array[0..N-1] Function values in  N  points.
@@ -1958,11 +2669,49 @@ Returns array ref of three elements: info, array ref of decomposition coefficien
       C       -   decomposition coefficients, array[0..M-1]
       Rep     -   fitting report. Following fields are set:
                   * Rep.TaskRCond     reciprocal of condition number
+                  * R2                non-adjusted coefficient of determination
+                                      (non-weighted)
                   * RMSError          rms error on the (X,Y).
                   * AvgError          average error on the (X,Y).
                   * AvgRelError       average relative error on the non-zero Y
                   * MaxError          maximum error
                                       NON-WEIGHTED ERRORS ARE CALCULATED
+  
+  ERRORS IN PARAMETERS
+  
+  This  solver  also  calculates different kinds of errors in parameters and
+  fills corresponding fields of report:
+  * Rep.CovPar        covariance matrix for parameters, array[K,K].
+  * Rep.ErrPar        errors in parameters, array[K],
+                      errpar = sqrt(diag(CovPar))
+  * Rep.ErrCurve      vector of fit errors - standard deviations of empirical
+                      best-fit curve from "ideal" best-fit curve built  with
+                      infinite number of samples, array[N].
+                      errcurve = sqrt(diag(F*CovPar*F')),
+                      where F is functions matrix.
+  * Rep.Noise         vector of per-point estimates of noise, array[N]
+  
+  NOTE:       noise in the data is estimated as follows:
+              * for fitting without user-supplied  weights  all  points  are
+                assumed to have same level of noise, which is estimated from
+                the data
+              * for fitting with user-supplied weights we assume that  noise
+                level in I-th point is inversely proportional to Ith weight.
+                Coefficient of proportionality is estimated from the data.
+  
+  NOTE:       we apply small amount of regularization when we invert squared
+              Jacobian and calculate covariance matrix. It  guarantees  that
+              algorithm won't divide by zero  during  inversion,  but  skews
+              error estimates a bit (fractional error is about 10^-9).
+  
+              However, we believe that this difference is insignificant  for
+              all practical purposes except for the situation when you  want
+              to compare ALGLIB results with "reference"  implementation  up
+              to the last significant digit.
+  
+  NOTE:       covariance matrix is estimated using  correction  for  degrees
+              of freedom (covariances are divided by N-M instead of dividing
+              by N).
   
     -- ALGLIB --
        Copyright 17.08.2009 by Bochkanov Sergey
@@ -1978,6 +2727,13 @@ Returns array ref of three elements: info, array ref of decomposition coefficien
   that  K  additional  constaints  C*x=bc are satisfied. It reduces original
   task to modified one: min|B*y-d| WITHOUT constraints,  then LSFitLinearW()
   is called.
+  
+  IMPORTANT: if you want to perform  polynomial  fitting,  it  may  be  more
+             convenient to use PolynomialFit() function. This function gives
+             best  results  on  polynomial  problems  and  solves  numerical
+             stability  issues  which  arise  when   you   fit   high-degree
+             polynomials to your data.
+  
   
   INPUT PARAMETERS:
       Y       -   array[0..N-1] Function values in  N  points.
@@ -2006,6 +2762,8 @@ Returns array ref of three elements: info, array ref of decomposition coefficien
                   *  1    task is solved
       C       -   decomposition coefficients, array[0..M-1]
       Rep     -   fitting report. Following fields are set:
+                  * R2                non-adjusted coefficient of determination
+                                      (non-weighted)
                   * RMSError          rms error on the (X,Y).
                   * AvgError          average error on the (X,Y).
                   * AvgRelError       average relative error on the non-zero Y
@@ -2014,6 +2772,47 @@ Returns array ref of three elements: info, array ref of decomposition coefficien
   
   IMPORTANT:
       this subroitine doesn't calculate task's condition number for K<>0.
+  
+  ERRORS IN PARAMETERS
+  
+  This  solver  also  calculates different kinds of errors in parameters and
+  fills corresponding fields of report:
+  * Rep.CovPar        covariance matrix for parameters, array[K,K].
+  * Rep.ErrPar        errors in parameters, array[K],
+                      errpar = sqrt(diag(CovPar))
+  * Rep.ErrCurve      vector of fit errors - standard deviations of empirical
+                      best-fit curve from "ideal" best-fit curve built  with
+                      infinite number of samples, array[N].
+                      errcurve = sqrt(diag(F*CovPar*F')),
+                      where F is functions matrix.
+  * Rep.Noise         vector of per-point estimates of noise, array[N]
+  
+  IMPORTANT:  errors  in  parameters  are  calculated  without  taking  into
+              account boundary/linear constraints! Presence  of  constraints
+              changes distribution of errors, but there is no  easy  way  to
+              account for constraints when you calculate covariance matrix.
+  
+  NOTE:       noise in the data is estimated as follows:
+              * for fitting without user-supplied  weights  all  points  are
+                assumed to have same level of noise, which is estimated from
+                the data
+              * for fitting with user-supplied weights we assume that  noise
+                level in I-th point is inversely proportional to Ith weight.
+                Coefficient of proportionality is estimated from the data.
+  
+  NOTE:       we apply small amount of regularization when we invert squared
+              Jacobian and calculate covariance matrix. It  guarantees  that
+              algorithm won't divide by zero  during  inversion,  but  skews
+              error estimates a bit (fractional error is about 10^-9).
+  
+              However, we believe that this difference is insignificant  for
+              all practical purposes except for the situation when you  want
+              to compare ALGLIB results with "reference"  implementation  up
+              to the last significant digit.
+  
+  NOTE:       covariance matrix is estimated using  correction  for  degrees
+              of freedom (covariances are divided by N-M instead of dividing
+              by N).
   
     -- ALGLIB --
        Copyright 07.09.2009 by Bochkanov Sergey
@@ -2028,6 +2827,13 @@ Returns array ref of three elements: info, array ref of decomposition coefficien
   QR decomposition is used to reduce task to MxM, then triangular solver  or
   SVD-based solver is used depending on condition number of the  system.  It
   allows to maximize speed and retain decent accuracy.
+  
+  IMPORTANT: if you want to perform  polynomial  fitting,  it  may  be  more
+             convenient to use PolynomialFit() function. This function gives
+             best  results  on  polynomial  problems  and  solves  numerical
+             stability  issues  which  arise  when   you   fit   high-degree
+             polynomials to your data.
+  
   
   INPUT PARAMETERS:
       Y       -   array[0..N-1] Function values in  N  points.
@@ -2044,11 +2850,49 @@ Returns array ref of three elements: info, array ref of decomposition coefficien
       C       -   decomposition coefficients, array[0..M-1]
       Rep     -   fitting report. Following fields are set:
                   * Rep.TaskRCond     reciprocal of condition number
+                  * R2                non-adjusted coefficient of determination
+                                      (non-weighted)
                   * RMSError          rms error on the (X,Y).
                   * AvgError          average error on the (X,Y).
                   * AvgRelError       average relative error on the non-zero Y
                   * MaxError          maximum error
                                       NON-WEIGHTED ERRORS ARE CALCULATED
+  
+  ERRORS IN PARAMETERS
+  
+  This  solver  also  calculates different kinds of errors in parameters and
+  fills corresponding fields of report:
+  * Rep.CovPar        covariance matrix for parameters, array[K,K].
+  * Rep.ErrPar        errors in parameters, array[K],
+                      errpar = sqrt(diag(CovPar))
+  * Rep.ErrCurve      vector of fit errors - standard deviations of empirical
+                      best-fit curve from "ideal" best-fit curve built  with
+                      infinite number of samples, array[N].
+                      errcurve = sqrt(diag(F*CovPar*F')),
+                      where F is functions matrix.
+  * Rep.Noise         vector of per-point estimates of noise, array[N]
+  
+  NOTE:       noise in the data is estimated as follows:
+              * for fitting without user-supplied  weights  all  points  are
+                assumed to have same level of noise, which is estimated from
+                the data
+              * for fitting with user-supplied weights we assume that  noise
+                level in I-th point is inversely proportional to Ith weight.
+                Coefficient of proportionality is estimated from the data.
+  
+  NOTE:       we apply small amount of regularization when we invert squared
+              Jacobian and calculate covariance matrix. It  guarantees  that
+              algorithm won't divide by zero  during  inversion,  but  skews
+              error estimates a bit (fractional error is about 10^-9).
+  
+              However, we believe that this difference is insignificant  for
+              all practical purposes except for the situation when you  want
+              to compare ALGLIB results with "reference"  implementation  up
+              to the last significant digit.
+  
+  NOTE:       covariance matrix is estimated using  correction  for  degrees
+              of freedom (covariances are divided by N-M instead of dividing
+              by N).
   
     -- ALGLIB --
        Copyright 17.08.2009 by Bochkanov Sergey
@@ -2064,6 +2908,13 @@ Returns array ref of three elements: info, array ref of decomposition coefficien
   that  K  additional  constaints  C*x=bc are satisfied. It reduces original
   task to modified one: min|B*y-d| WITHOUT constraints,  then  LSFitLinear()
   is called.
+  
+  IMPORTANT: if you want to perform  polynomial  fitting,  it  may  be  more
+             convenient to use PolynomialFit() function. This function gives
+             best  results  on  polynomial  problems  and  solves  numerical
+             stability  issues  which  arise  when   you   fit   high-degree
+             polynomials to your data.
+  
   
   INPUT PARAMETERS:
       Y       -   array[0..N-1] Function values in  N  points.
@@ -2088,6 +2939,8 @@ Returns array ref of three elements: info, array ref of decomposition coefficien
                   *  1    task is solved
       C       -   decomposition coefficients, array[0..M-1]
       Rep     -   fitting report. Following fields are set:
+                  * R2                non-adjusted coefficient of determination
+                                      (non-weighted)
                   * RMSError          rms error on the (X,Y).
                   * AvgError          average error on the (X,Y).
                   * AvgRelError       average relative error on the non-zero Y
@@ -2096,6 +2949,47 @@ Returns array ref of three elements: info, array ref of decomposition coefficien
   
   IMPORTANT:
       this subroitine doesn't calculate task's condition number for K<>0.
+  
+  ERRORS IN PARAMETERS
+  
+  This  solver  also  calculates different kinds of errors in parameters and
+  fills corresponding fields of report:
+  * Rep.CovPar        covariance matrix for parameters, array[K,K].
+  * Rep.ErrPar        errors in parameters, array[K],
+                      errpar = sqrt(diag(CovPar))
+  * Rep.ErrCurve      vector of fit errors - standard deviations of empirical
+                      best-fit curve from "ideal" best-fit curve built  with
+                      infinite number of samples, array[N].
+                      errcurve = sqrt(diag(F*CovPar*F')),
+                      where F is functions matrix.
+  * Rep.Noise         vector of per-point estimates of noise, array[N]
+  
+  IMPORTANT:  errors  in  parameters  are  calculated  without  taking  into
+              account boundary/linear constraints! Presence  of  constraints
+              changes distribution of errors, but there is no  easy  way  to
+              account for constraints when you calculate covariance matrix.
+  
+  NOTE:       noise in the data is estimated as follows:
+              * for fitting without user-supplied  weights  all  points  are
+                assumed to have same level of noise, which is estimated from
+                the data
+              * for fitting with user-supplied weights we assume that  noise
+                level in I-th point is inversely proportional to Ith weight.
+                Coefficient of proportionality is estimated from the data.
+  
+  NOTE:       we apply small amount of regularization when we invert squared
+              Jacobian and calculate covariance matrix. It  guarantees  that
+              algorithm won't divide by zero  during  inversion,  but  skews
+              error estimates a bit (fractional error is about 10^-9).
+  
+              However, we believe that this difference is insignificant  for
+              all practical purposes except for the situation when you  want
+              to compare ALGLIB results with "reference"  implementation  up
+              to the last significant digit.
+  
+  NOTE:       covariance matrix is estimated using  correction  for  degrees
+              of freedom (covariances are divided by N-M instead of dividing
+              by N).
   
     -- ALGLIB --
        Copyright 07.09.2009 by Bochkanov Sergey
@@ -2465,7 +3359,7 @@ Returns reference to an array of two elements: info, c (real_1d_array), lsfitrep
       State   -   algorithm state
   
   OUTPUT PARAMETERS:
-      Info    -   completetion code:
+      Info    -   completion code:
                       * -7    gradient verification failed.
                               See LSFitSetGradientCheck() for more information.
                       *  1    relative function improvement is no more than
@@ -2476,8 +3370,9 @@ Returns reference to an array of two elements: info, c (real_1d_array), lsfitrep
                       *  7    stopping conditions are too stringent,
                               further improvement is impossible
       C       -   array[0..K-1], solution
-      Rep     -   optimization report. Following fields are set:
-                  * Rep.TerminationType completetion code:
+      Rep     -   optimization report. On success following fields are set:
+                  * R2                non-adjusted coefficient of determination
+                                      (non-weighted)
                   * RMSError          rms error on the (X,Y).
                   * AvgError          average error on the (X,Y).
                   * AvgRelError       average relative error on the non-zero Y
@@ -2485,6 +3380,46 @@ Returns reference to an array of two elements: info, c (real_1d_array), lsfitrep
                                       NON-WEIGHTED ERRORS ARE CALCULATED
                   * WRMSError         weighted rms error on the (X,Y).
   
+  ERRORS IN PARAMETERS
+  
+  This  solver  also  calculates different kinds of errors in parameters and
+  fills corresponding fields of report:
+  * Rep.CovPar        covariance matrix for parameters, array[K,K].
+  * Rep.ErrPar        errors in parameters, array[K],
+                      errpar = sqrt(diag(CovPar))
+  * Rep.ErrCurve      vector of fit errors - standard deviations of empirical
+                      best-fit curve from "ideal" best-fit curve built  with
+                      infinite number of samples, array[N].
+                      errcurve = sqrt(diag(J*CovPar*J')),
+                      where J is Jacobian matrix.
+  * Rep.Noise         vector of per-point estimates of noise, array[N]
+  
+  IMPORTANT:  errors  in  parameters  are  calculated  without  taking  into
+              account boundary/linear constraints! Presence  of  constraints
+              changes distribution of errors, but there is no  easy  way  to
+              account for constraints when you calculate covariance matrix.
+  
+  NOTE:       noise in the data is estimated as follows:
+              * for fitting without user-supplied  weights  all  points  are
+                assumed to have same level of noise, which is estimated from
+                the data
+              * for fitting with user-supplied weights we assume that  noise
+                level in I-th point is inversely proportional to Ith weight.
+                Coefficient of proportionality is estimated from the data.
+  
+  NOTE:       we apply small amount of regularization when we invert squared
+              Jacobian and calculate covariance matrix. It  guarantees  that
+              algorithm won't divide by zero  during  inversion,  but  skews
+              error estimates a bit (fractional error is about 10^-9).
+  
+              However, we believe that this difference is insignificant  for
+              all practical purposes except for the situation when you  want
+              to compare ALGLIB results with "reference"  implementation  up
+              to the last significant digit.
+  
+  NOTE:       covariance matrix is estimated using  correction  for  degrees
+              of freedom (covariances are divided by N-M instead of dividing
+              by N).
   
     -- ALGLIB --
        Copyright 17.08.2009 by Bochkanov Sergey
@@ -2937,6 +3872,71 @@ Also aliased to not include the "pspline\d" method name prefix.
     -- ALGLIB PROJECT --
        Copyright 30.05.2010 by Bochkanov Sergey
 
+=head2 This  subroutine fits piecewise linear curve to points with Ramer-Douglas-
+
+Note on the Perl wrapper:
+Returns reference to and array of three elements: real_2d_array x2, integer_1d_array idx2, int nsections.
+
+  void parametricrdpfixed(const real_2d_array &x, const ae_int_t n, const ae_int_t d, const ae_int_t stopm, const double stopeps)
+
+  Peucker algorithm. This  function  performs PARAMETRIC fit, i.e. it can be
+  used to fit curves like circles.
+  
+  On  input  it  accepts dataset which describes parametric multidimensional
+  curve X(t), with X being vector, and t taking values in [0,N), where N  is
+  a number of points in dataset. As result, it returns reduced  dataset  X2,
+  which can be used to build  parametric  curve  X2(t),  which  approximates
+  X(t) with desired precision (or has specified number of sections).
+  
+  
+  INPUT PARAMETERS:
+      X       -   array of multidimensional points:
+                  * at least N elements, leading N elements are used if more
+                    than N elements were specified
+                  * order of points is IMPORTANT because  it  is  parametric
+                    fit
+                  * each row of array is one point which has D coordinates
+      N       -   number of elements in X
+      D       -   number of dimensions (elements per row of X)
+      StopM   -   stopping condition - desired number of sections:
+                  * at most M sections are generated by this function
+                  * less than M sections can be generated if we have N<M
+                    (or some X are non-distinct).
+                  * zero StopM means that algorithm does not stop after
+                    achieving some pre-specified section count
+      StopEps -   stopping condition - desired precision:
+                  * algorithm stops after error in each section is at most Eps
+                  * zero Eps means that algorithm does not stop after
+                    achieving some pre-specified precision
+  
+  OUTPUT PARAMETERS:
+      X2      -   array of corner points for piecewise approximation,
+                  has length NSections+1 or zero (for NSections=0).
+      Idx2    -   array of indexes (parameter values):
+                  * has length NSections+1 or zero (for NSections=0).
+                  * each element of Idx2 corresponds to same-numbered
+                    element of X2
+                  * each element of Idx2 is index of  corresponding  element
+                    of X2 at original array X, i.e. I-th  row  of  X2  is
+                    Idx2[I]-th row of X.
+                  * elements of Idx2 can be treated as parameter values
+                    which should be used when building new parametric curve
+                  * Idx2[0]=0, Idx2[NSections]=N-1
+      NSections-  number of sections found by algorithm, NSections<=M,
+                  NSections can be zero for degenerate datasets
+                  (N<=1 or all X[] are non-distinct).
+  
+  NOTE: algorithm stops after:
+        a) dividing curve into StopM sections
+        b) achieving required precision StopEps
+        c) dividing curve into N-1 sections
+        If both StopM and StopEps are non-zero, algorithm is stopped by  the
+        FIRST criterion which is satisfied. In case both StopM  and  StopEps
+        are zero, algorithm stops because of (c).
+  
+    -- ALGLIB --
+       Copyright 02.10.2014 by Bochkanov Sergey
+
 =head2 This function serializes data structure to string.
 
   void rbfserialize(rbfmodel &obj, std::string &s_out);
@@ -3044,6 +4044,7 @@ Also aliased to not include the "pspline\d" method name prefix.
 =head2 This  function  sets  RBF interpolation algorithm. ALGLIB supports several
 
   void rbfsetalgoqnn(const rbfmodel &s, const double q, const double z);
+
   RBF algorithms with different properties.
   
   This algorithm is called RBF-QNN and  it  is  good  for  point  sets  with
@@ -3098,6 +4099,7 @@ Also aliased to not include the "pspline\d" method name prefix.
 =head2 This  function  sets  RBF interpolation algorithm. ALGLIB supports several
 
   void rbfsetalgomultilayer(const rbfmodel &s, const double rbase, const ae_int_t nlayers, const double lambdav);
+
   RBF algorithms with different properties.
   
   This  algorithm is called RBF-ML. It builds  multilayer  RBF  model,  i.e.
@@ -3496,6 +4498,7 @@ In Perl, this really just returns an integer indicating the termination type, no
 =head2 Bicubic spline resampling
 
   real_2d_array spline2dresamplebicubic(real_2d_array a, const ae_int_t oldheight, const ae_int_t oldwidth, const ae_int_t newheight, const ae_int_t newwidth)
+
   Input parameters:
       A           -   function values at the old grid,
                       array[0..OldHeight-1, 0..OldWidth-1]
@@ -3914,7 +4917,7 @@ for details on its author(s).
 The Math::Alglib module is distributed under the same license as the
 underlying ALGLIB C++ library. The wrapper code is:
 
-  Copyright (C) 2011, 2012, 2013 by Steffen Mueller
+  Copyright (C) 2011, 2012, 2013, 2015 by Steffen Mueller
   
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by

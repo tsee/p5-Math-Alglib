@@ -20,7 +20,7 @@ this documentation, please file a bug and refer to the header file.
 
 =head1 VERSION
 
-This module wraps Alglib version 3.6.0.
+This module wraps Alglib version 3.9.0.
 
 =head1 FUNCTIONS
 
@@ -1049,7 +1049,8 @@ the same.
   arithmetic   domain     # trials      peak         rms
      IEEE       0,1        30000       2.5e-16     6.8e-17
   
-  Алгоритм взят из библиотеки Cephes
+  Cephes Math Library, Release 2.8:  June, 2000
+  Copyright 1984, 1987, 2000 by Stephen L. Moshier
 
 =head2 Incomplete elliptic integral of the first kind F(phi|m)
 
@@ -1775,7 +1776,7 @@ for details on its author(s).
 The Math::Alglib module is distributed under the same license as the
 underlying ALGLIB C++ library. The wrapper code is:
 
-  Copyright (C) 2011, 2012, 2013 by Steffen Mueller
+  Copyright (C) 2011, 2012, 2013, 2015 by Steffen Mueller
   
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by

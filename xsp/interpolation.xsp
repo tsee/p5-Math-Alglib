@@ -376,3 +376,137 @@ lsfitlinearc(real_1d_array y, real_2d_array fmatrix, real_2d_array cmatrix)
     av_push(RETVAL, newRV_noinc((SV *)real_1d_array_to_av(aTHX_ c)));
     av_push(RETVAL, lsfitreport_to_hvref(aTHX_ rep));
   %};
+
+AV *
+lstfitpiecewiselinearrdpfixed(real_1d_array x, real_1d_array y, ae_int_t n, ae_int_t m)
+  %code{%
+    RETVAL = NEW_MORTAL_AV();
+    real_1d_array x2;
+    real_1d_array y2;
+    ae_int_t nsections;
+
+    alglib::lstfitpiecewiselinearrdpfixed(x, y, n, m, x2, y2, nsections);
+
+    av_push(RETVAL, newRV_noinc((SV *)real_1d_array_to_av(aTHX_ x2)));
+    av_push(RETVAL, newRV_noinc((SV *)real_1d_array_to_av(aTHX_ y2)));
+    av_push(RETVAL, newSViv(nsections));
+  %};
+
+AV *
+lstfitpiecewiselinearrdp(real_1d_array x, real_1d_array y, ae_int_t n, double eps)
+  %code{%
+    RETVAL = NEW_MORTAL_AV();
+    real_1d_array x2;
+    real_1d_array y2;
+    ae_int_t nsections;
+
+    alglib::lstfitpiecewiselinearrdp(x, y, n, eps, x2, y2, nsections);
+
+    av_push(RETVAL, newRV_noinc((SV *)real_1d_array_to_av(aTHX_ x2)));
+    av_push(RETVAL, newRV_noinc((SV *)real_1d_array_to_av(aTHX_ y2)));
+    av_push(RETVAL, newSViv(nsections));
+  %};
+
+
+double logisticcalc4(double x, double a, double b, double c, double d);
+
+double logisticcalc5(double x, double a, double b, double c, double d, double g);
+
+AV *
+logisticfit4(real_1d_array x, real_1d_array y, ae_int_t n)
+  %code{%
+    RETVAL = NEW_MORTAL_AV();
+    alglib::lsfitreport rep;
+    double a, b, c, d;
+
+    alglib::logisticfit4(x, y, n, a, b, c, d, rep);
+
+    av_push(RETVAL, newSVnv(a));
+    av_push(RETVAL, newSVnv(b));
+    av_push(RETVAL, newSVnv(c));
+    av_push(RETVAL, newSVnv(d));
+    av_push(RETVAL, lsfitreport_to_hvref(aTHX_ rep));
+  %};
+
+AV *
+logisticfit4ec(real_1d_array x, real_1d_array y, ae_int_t n, double cnstrleft, double cnstrright)
+  %code{%
+    RETVAL = NEW_MORTAL_AV();
+    alglib::lsfitreport rep;
+    double a, b, c, d;
+
+    alglib::logisticfit4ec(x, y, n, cnstrleft, cnstrright, a, b, c, d, rep);
+
+    av_push(RETVAL, newSVnv(a));
+    av_push(RETVAL, newSVnv(b));
+    av_push(RETVAL, newSVnv(c));
+    av_push(RETVAL, newSVnv(d));
+    av_push(RETVAL, lsfitreport_to_hvref(aTHX_ rep));
+  %};
+
+AV *
+logisticfit5(real_1d_array x, real_1d_array y, ae_int_t n)
+  %code{%
+    RETVAL = NEW_MORTAL_AV();
+    alglib::lsfitreport rep;
+    double a, b, c, d, g;
+
+    alglib::logisticfit5(x, y, n, a, b, c, d, g, rep);
+
+    av_push(RETVAL, newSVnv(a));
+    av_push(RETVAL, newSVnv(b));
+    av_push(RETVAL, newSVnv(c));
+    av_push(RETVAL, newSVnv(d));
+    av_push(RETVAL, newSVnv(g));
+    av_push(RETVAL, lsfitreport_to_hvref(aTHX_ rep));
+  %};
+
+AV *
+logisticfit5ec(real_1d_array x, real_1d_array y, ae_int_t n, double cnstrleft, double cnstrright)
+  %code{%
+    RETVAL = NEW_MORTAL_AV();
+    alglib::lsfitreport rep;
+    double a, b, c, d, g;
+
+    alglib::logisticfit5ec(x, y, n, cnstrleft, cnstrright, a, b, c, d, g, rep);
+
+    av_push(RETVAL, newSVnv(a));
+    av_push(RETVAL, newSVnv(b));
+    av_push(RETVAL, newSVnv(c));
+    av_push(RETVAL, newSVnv(d));
+    av_push(RETVAL, newSVnv(g));
+    av_push(RETVAL, lsfitreport_to_hvref(aTHX_ rep));
+  %};
+
+AV *
+logisticfit45x(real_1d_array x, real_1d_array y, ae_int_t n, double cnstrleft, double cnstrright, bool is4pl, double lambdav, double epsx, ae_int_t rscnt)
+  %code{%
+    RETVAL = NEW_MORTAL_AV();
+    alglib::lsfitreport rep;
+    double a, b, c, d, g;
+
+    alglib::logisticfit45x(x, y, n, cnstrleft, cnstrright, is4pl, lambdav, epsx, rscnt, a, b, c, d, g, rep);
+
+    av_push(RETVAL, newSVnv(a));
+    av_push(RETVAL, newSVnv(b));
+    av_push(RETVAL, newSVnv(c));
+    av_push(RETVAL, newSVnv(d));
+    av_push(RETVAL, newSVnv(g));
+    av_push(RETVAL, lsfitreport_to_hvref(aTHX_ rep));
+  %};
+
+
+AV *
+parametricrdpfixed(real_2d_array x, ae_int_t n, ae_int_t d, ae_int_t stopm, double stopeps)
+  %code{%
+    RETVAL = NEW_MORTAL_AV();
+    real_2d_array x2;
+    integer_1d_array idx2;
+    ae_int_t nsections;
+
+    alglib::parametricrdpfixed(x, n, d, stopm, stopeps, x2, idx2, nsections);
+
+    //av_push(RETVAL, newSVnv(a));
+    //av_push(RETVAL, 
+    av_push(RETVAL, newSViv(nsections));
+  %};

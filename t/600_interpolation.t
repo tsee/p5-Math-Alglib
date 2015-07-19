@@ -207,6 +207,16 @@ TODO: {
     lsfitcreatefgh
     lsfitresults
     lsfitsetgradientcheck
+    lstfitpiecewiselinearrdpfixed
+    lstfitpiecewiselinearrdp
+    logisticcalc4
+    logisticcalc5
+    logisticfit4
+    logisticfit4ec
+    logisticfit5
+    logisticfit5ec
+    logisticfit45x
+    parametricrdpfixed
   );
 }
 

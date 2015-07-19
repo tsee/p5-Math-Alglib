@@ -138,6 +138,44 @@ spline1dfitreport_to_hvref(pTHX_ const alglib::spline1dfitreport &rep)
   return rv;
 }
 
+SV *
+ae_vector_to_perl(pTHX_ const alglib_impl::ae_vector &vec)
+{
+  AV *av = newAV();
+  SV *rv = newRV_noinc((SV*)av);
+
+  size_t n = (size_t)vec.cnt;
+  size_t i;
+
+  av_fill(av, n-1);
+  if (vec.datatype == alglib_impl::DT_BOOL) {
+    ae_bool *v = vec.ptr.p_bool;
+    for (i = 0; i < n; ++i)
+      av_store(av, i, v[i] ? &PL_sv_yes : &PL_sv_no);
+  }
+  else if (vec.datatype == alglib_impl::DT_INT) {
+    alglib_impl::ae_int_t *v = vec.ptr.p_int;
+    for (i = 0; i < n; ++i)
+      av_store(av, i, newSViv((IV)v[i]));
+  }
+  else if (vec.datatype == alglib_impl::DT_REAL) {
+    double *v = vec.ptr.p_double;
+    for (i = 0; i < n; ++i)
+      av_store(av, i, newSVnv((NV)v[i]));
+  }
+  else if (vec.datatype == alglib_impl::DT_COMPLEX) {
+    alglib_impl::ae_complex *v = vec.ptr.p_complex;
+    for (i = 0; i < n; ++i) {
+      AV *a = newAV();
+      av_store(av, i, (SV *)a);
+      av_push(a, newSVnv(v[i].x));
+      av_push(a, newSVnv(v[i].y));
+    }
+  }
+
+  return rv;
+}
+
 /* turns lsfitreport into a hashref for output */
 SV *
 lsfitreport_to_hvref(pTHX_ const alglib::lsfitreport &rep)
@@ -152,6 +190,14 @@ lsfitreport_to_hvref(pTHX_ const alglib::lsfitreport &rep)
   hv_stores(hv, "avgrelerror", newSVnv(rep.avgrelerror));
   hv_stores(hv, "maxerror", newSVnv(rep.maxerror));
   hv_stores(hv, "wrmserror", newSVnv(rep.wrmserror));
+  hv_stores(hv, "r2", newSVnv(rep.r2));
+
+  // The following params seem to be unitialized?
+  //hv_stores(hv, "covpar", a ...
+  //  ae_matrix covpar;
+  //hv_stores(hv, "errpar", ae_vector_to_perl(aTHX_ (const alglib_impl::ae_vector &)rep.errpar));
+  //hv_stores(hv, "errcurve", ae_vector_to_perl(aTHX_ (const alglib_impl::ae_vector &)rep.errcurve));
+  //hv_stores(hv, "noise", ae_vector_to_perl(aTHX_ (const alglib_impl::ae_vector &)rep.noise));
   return rv;
 }
 

@@ -22,6 +22,10 @@ my $docs = [
   {
     src_file => 'src/statistics.h',
     mod_name => 'Math::Alglib::Statistics',
+    notes => {
+      rankdata => 'Returns modified data structure as a copy rather than modifying in-place like in C++.',
+      rankdatacentered => 'Returns modified data structure as a copy rather than modifying in-place like in C++.',
+    },
   },
   {
     src_file => 'src/fasttransforms.h',
@@ -113,6 +117,14 @@ my $docs = [
       rbfsetalgoqnn => 'void rbfsetalgoqnn(const rbfmodel &s, const double q, const double z);',
       rbfsetalgomultilayer => 'void rbfsetalgomultilayer(const rbfmodel &s, const double rbase, const ae_int_t nlayers, const double lambdav);',      
       spline2dresamplebicubic => 'real_2d_array spline2dresamplebicubic(real_2d_array a, const ae_int_t oldheight, const ae_int_t oldwidth, const ae_int_t newheight, const ae_int_t newwidth)',
+      lstfitpiecewiselinearrdpfixed => 'void lstfitpiecewiselinearrdpfixed(const real_1d_array &x, const real_1d_array &y, const ae_int_t n, const ae_int_t m)',
+      lstfitpiecewiselinearrdp => 'void lstfitpiecewiselinearrdp(const real_1d_array &x, const real_1d_array &y, const ae_int_t n, const double eps)',
+      logisticfit4 => 'void logisticfit4(const real_1d_array &x, const real_1d_array &y, const ae_int_t n)',
+      logisticfit4ec => 'void logisticfit4ec(const real_1d_array &x, const real_1d_array &y, const ae_int_t n, const double cnstrleft, const double cnstrright)',
+      logisticfit5 => 'void logisticfit5(const real_1d_array &x, const real_1d_array &y, const ae_int_t n)',
+      logisticfit5ec => 'void logisticfit5ec(const real_1d_array &x, const real_1d_array &y, const ae_int_t n, const double cnstrleft, const double cnstrright)',
+      logisticfit45x => 'void logisticfit45x(const real_1d_array &x, const real_1d_array &y, const ae_int_t n, const double cnstrleft, const double cnstrright, const bool is4pl, const double lambdav, const double epsx, const ae_int_t rscnt)',
+      parametricrdpfixed => 'void parametricrdpfixed(const real_2d_array &x, const ae_int_t n, const ae_int_t d, const ae_int_t stopm, const double stopeps)',
     },
     notes => {
       polynomialfit => 'Returns array ref of three elements: info, barycentricinterpolant object, hashref of polynomialfitreport data',
@@ -132,6 +144,14 @@ my $docs = [
       ),
       rbfbuildmodel => 'In Perl, this really just returns an integer indicating the termination type, not a whole struct. This is subject to change.',
       lsfitresults => 'Returns reference to an array of two elements: info, c (real_1d_array), lsfitreport. lsfitreport is a hash ref.',
+      lstfitpiecewiselinearrdpfixed => 'Returns reference to an array three elements: real_1d_array x2, real_1d_array y2, int  nsections',
+      lstfitpiecewiselinearrdp => 'Returns reference to an array three elements: real_1d_array x2, real_1d_array y2, int  nsections',
+      logisticfit4 => 'Returns reference to an array of five elements: doubles a, b, c, d, and lsfitreport (hash ref).',
+      logisticfit4ec => 'Returns reference to an array of five elements: doubles a, b, c, d, and lsfitreport (hash ref).',
+      logisticfit5 => 'Returns reference to an array of six elements: doubles a, b, c, d, g, and lsfitreport (hash ref).',
+      logisticfit5ec => 'Returns reference to an array of six elements: doubles a, b, c, d, g, and lsfitreport (hash ref).',
+      logisticfit45x => 'Returns reference to an array of six elements: doubles a, b, c, d, g, and lsfitreport (hash ref).',
+      parametricrdpfixed => 'Returns reference to and array of three elements: real_2d_array x2, integer_1d_array idx2, int nsections.',
     },
   },
 ];
@@ -164,6 +184,20 @@ sub emit_function_docs {
 
   my @lines = map {s/[\012\015]+/\n/; $_} <$fh>;
   close $fh;
+
+  # Blocks of the form /^COMMERCIAL EDITION OF ALGLIB:\n\n(?:  ![^\n]+\n)+/s
+  # and /^\s*SMP EDITION OF ALGLIB: ...../ # are skipped.
+  my $i = 0;
+  while ($i < @lines) {
+    if ($lines[$i] =~ /^\s*(?:COMMERCIAL|SMP) EDITION OF ALGLIB:$/) {
+      do { splice(@lines, $i, 1); } while ($i < @lines and $lines[$i] =~ /^\s*$/);
+      while ($i < @lines and $lines[$i] =~ /^\s+!\s+/) {
+        splice(@lines, $i, 1);
+      }
+      next;
+    }
+    ++$i;
+  }
 
   my @out;
   # Go through file, search for end-of-function-doc line which
@@ -214,6 +248,8 @@ sub emit_function_docs {
     next if exists $unimpl{$funcname}; # skip blacklisted
     $sigline = $doc->{sig_override}{$funcname}
       if exists $doc->{sig_override}{$funcname};
+    chomp $sigline;
+    $sigline .= "\n";
 
     # Generate title
     push @out, "=head2 " . $lines[$j+1] . "\n";
@@ -260,7 +296,7 @@ for details on its author(s).
 The Math::Alglib module is distributed under the same license as the
 underlying ALGLIB C++ library. The wrapper code is:
 
-  Copyright (C) 2011, 2012, 2013 by Steffen Mueller
+  Copyright (C) 2011, 2012, 2013, 2015 by Steffen Mueller
   
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by

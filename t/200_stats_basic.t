@@ -105,6 +105,8 @@ TODO: {
     covm2
     pearsoncorrm2
     spearmancorrm2
+    rankdata
+    rankdatacentered
   );
 }
 
