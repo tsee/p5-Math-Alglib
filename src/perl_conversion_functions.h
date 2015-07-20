@@ -12,6 +12,107 @@
 #include <ap.h>
 #include <interpolation.h>
 
+SV *
+ae_vector_to_perl(pTHX_ const alglib_impl::ae_vector &vec)
+{
+  AV *av = newAV();
+  SV *rv = newRV_noinc((SV*)av);
+
+  size_t n = (size_t)vec.cnt;
+  size_t i;
+
+  av_fill(av, n-1);
+  if (vec.datatype == alglib_impl::DT_BOOL) {
+    ae_bool *v = vec.ptr.p_bool;
+    for (i = 0; i < n; ++i)
+      av_store(av, i, v[i] ? &PL_sv_yes : &PL_sv_no);
+  }
+  else if (vec.datatype == alglib_impl::DT_INT) {
+    alglib_impl::ae_int_t *v = vec.ptr.p_int;
+    for (i = 0; i < n; ++i)
+      av_store(av, i, newSViv((IV)v[i]));
+  }
+  else if (vec.datatype == alglib_impl::DT_REAL) {
+    double *v = vec.ptr.p_double;
+    for (i = 0; i < n; ++i)
+      av_store(av, i, newSVnv((NV)v[i]));
+  }
+  else if (vec.datatype == alglib_impl::DT_COMPLEX) {
+    alglib_impl::ae_complex *v = vec.ptr.p_complex;
+    for (i = 0; i < n; ++i) {
+      AV *a = newAV();
+      av_store(av, i, newRV_noinc((SV *)a));
+      av_push(a, newSVnv(v[i].x));
+      av_push(a, newSVnv(v[i].y));
+    }
+  }
+
+  return rv;
+}
+
+SV *
+ae_matrix_to_perl(pTHX_ const alglib_impl::ae_matrix &mat)
+{
+  // TODO: This does row major. Maybe alglib does column major? Verify.
+
+  const size_t rows = mat.rows;
+  const size_t cols = mat.cols;
+
+  AV *av = newAV();
+  SV *rv = newRV_noinc((SV*)av);
+
+  size_t i, j;
+
+  av_fill(av, rows-1);
+  if (mat.datatype == alglib_impl::DT_BOOL) {
+    ae_bool **v = mat.ptr.pp_bool;
+    for (i = 0; i < rows; ++i) {
+      ae_bool *vr = v[i];
+      AV *row = newAV();
+      av_store(av, i, newRV_noinc((SV *)row));
+      for (j = 0; j < rows; ++j)
+        av_store(row, j, vr[j] ? &PL_sv_yes : &PL_sv_no);
+    }
+  }
+  else if (mat.datatype == alglib_impl::DT_INT) {
+    alglib_impl::ae_int_t **v = mat.ptr.pp_int;
+    for (i = 0; i < rows; ++i) {
+      alglib_impl::ae_int_t *vr = v[i];
+      AV *row = newAV();
+      av_store(av, i, newRV_noinc((SV *)row));
+      for (j = 0; j < rows; ++j)
+        av_store(row, j, newSViv((IV)vr[j]));
+    }
+  }
+  else if (mat.datatype == alglib_impl::DT_REAL) {
+    double **v = mat.ptr.pp_double;
+    for (i = 0; i < rows; ++i) {
+      double *vr = v[i];
+      AV *row = newAV();
+      av_store(av, i, newRV_noinc((SV *)row));
+      for (j = 0; j < rows; ++j)
+        av_store(row, j, newSVnv((NV)vr[j]));
+    }
+  }
+  else if (mat.datatype == alglib_impl::DT_COMPLEX) {
+    alglib_impl::ae_complex **v = mat.ptr.pp_complex;
+    for (i = 0; i < rows; ++i) {
+      alglib_impl::ae_complex *vr = v[i];
+      AV *row = newAV();
+      av_store(av, i, newRV_noinc((SV *)row));
+      for (j = 0; j < rows; ++j) {
+        AV *a = newAV();
+        av_store(row, i, newRV_noinc((SV *)a));
+        const alglib_impl::ae_complex &c = vr[j];
+        av_push(a, newSVnv(c.x));
+        av_push(a, newSVnv(c.y));
+      }
+    }
+  }
+
+  return rv;
+}
+
 /* used by the real_1d_array typemap, but also usable separately */
 AV *
 real_1d_array_to_av(pTHX_ const alglib::real_1d_array &x)
@@ -135,44 +236,6 @@ spline1dfitreport_to_hvref(pTHX_ const alglib::spline1dfitreport &rep)
   hv_stores(hv, "avgerror", newSVnv(rep.avgerror));
   hv_stores(hv, "avgrelerror", newSVnv(rep.avgrelerror));
   hv_stores(hv, "maxerror", newSVnv(rep.maxerror));
-  return rv;
-}
-
-SV *
-ae_vector_to_perl(pTHX_ const alglib_impl::ae_vector &vec)
-{
-  AV *av = newAV();
-  SV *rv = newRV_noinc((SV*)av);
-
-  size_t n = (size_t)vec.cnt;
-  size_t i;
-
-  av_fill(av, n-1);
-  if (vec.datatype == alglib_impl::DT_BOOL) {
-    ae_bool *v = vec.ptr.p_bool;
-    for (i = 0; i < n; ++i)
-      av_store(av, i, v[i] ? &PL_sv_yes : &PL_sv_no);
-  }
-  else if (vec.datatype == alglib_impl::DT_INT) {
-    alglib_impl::ae_int_t *v = vec.ptr.p_int;
-    for (i = 0; i < n; ++i)
-      av_store(av, i, newSViv((IV)v[i]));
-  }
-  else if (vec.datatype == alglib_impl::DT_REAL) {
-    double *v = vec.ptr.p_double;
-    for (i = 0; i < n; ++i)
-      av_store(av, i, newSVnv((NV)v[i]));
-  }
-  else if (vec.datatype == alglib_impl::DT_COMPLEX) {
-    alglib_impl::ae_complex *v = vec.ptr.p_complex;
-    for (i = 0; i < n; ++i) {
-      AV *a = newAV();
-      av_store(av, i, (SV *)a);
-      av_push(a, newSVnv(v[i].x));
-      av_push(a, newSVnv(v[i].y));
-    }
-  }
-
   return rv;
 }
 
