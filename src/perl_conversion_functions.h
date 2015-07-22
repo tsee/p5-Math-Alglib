@@ -13,7 +13,7 @@
 #include <interpolation.h>
 
 SV *
-ae_vector_to_perl(pTHX_ const alglib_impl::ae_vector &vec)
+ae_vector_to_perl(pTHX_ const alglib_impl::ae_vector &vec, alglib_impl::ae_datatype datatype = 0)
 {
   AV *av = newAV();
   SV *rv = newRV_noinc((SV*)av);
@@ -21,23 +21,26 @@ ae_vector_to_perl(pTHX_ const alglib_impl::ae_vector &vec)
   size_t n = (size_t)vec.cnt;
   size_t i;
 
+  if (datatype == 0)
+    datatype = vec.datatype;
+
   av_fill(av, n-1);
-  if (vec.datatype == alglib_impl::DT_BOOL) {
+  if (datatype == alglib_impl::DT_BOOL) {
     ae_bool *v = vec.ptr.p_bool;
     for (i = 0; i < n; ++i)
       av_store(av, i, v[i] ? &PL_sv_yes : &PL_sv_no);
   }
-  else if (vec.datatype == alglib_impl::DT_INT) {
+  else if (datatype == alglib_impl::DT_INT) {
     alglib_impl::ae_int_t *v = vec.ptr.p_int;
     for (i = 0; i < n; ++i)
       av_store(av, i, newSViv((IV)v[i]));
   }
-  else if (vec.datatype == alglib_impl::DT_REAL) {
+  else if (datatype == alglib_impl::DT_REAL) {
     double *v = vec.ptr.p_double;
     for (i = 0; i < n; ++i)
       av_store(av, i, newSVnv((NV)v[i]));
   }
-  else if (vec.datatype == alglib_impl::DT_COMPLEX) {
+  else if (datatype == alglib_impl::DT_COMPLEX) {
     alglib_impl::ae_complex *v = vec.ptr.p_complex;
     for (i = 0; i < n; ++i) {
       AV *a = newAV();
@@ -51,9 +54,12 @@ ae_vector_to_perl(pTHX_ const alglib_impl::ae_vector &vec)
 }
 
 SV *
-ae_matrix_to_perl(pTHX_ const alglib_impl::ae_matrix &mat)
+ae_matrix_to_perl(pTHX_ const alglib_impl::ae_matrix &mat, alglib_impl::ae_datatype datatype = 0)
 {
   // TODO: This does row major. Maybe alglib does column major? Verify.
+
+  if (datatype == 0)
+    datatype = mat.datatype;
 
   const size_t rows = mat.rows;
   const size_t cols = mat.cols;
