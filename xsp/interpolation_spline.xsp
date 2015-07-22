@@ -516,7 +516,7 @@ spline1dfitpenalized(real_1d_array x, real_1d_array y, const ae_int_t m, const d
 
     av_push(RETVAL, newSViv(info));
     av_push(RETVAL, ptr_to_perl_obj(aTHX_ spl, "Math::Alglib::Interpolation::Spline1dInterpolant"));
-    av_push(RETVAL, spline1dfitreport_to_hvref(aTHX_ rep));
+    av_push(RETVAL, spline1dfitreport_to_perl_hash(aTHX_ rep));
   OUTPUT: RETVAL
 %}
 
@@ -533,7 +533,7 @@ spline1dfitpenalizedw(real_1d_array x, real_1d_array y, real_1d_array w, const a
 
     av_push(RETVAL, newSViv(info));
     av_push(RETVAL, ptr_to_perl_obj(aTHX_ spl, "Math::Alglib::Interpolation::Spline1dInterpolant"));
-    av_push(RETVAL, spline1dfitreport_to_hvref(aTHX_ rep));
+    av_push(RETVAL, spline1dfitreport_to_perl_hash(aTHX_ rep));
   OUTPUT: RETVAL
 %}
 
@@ -554,7 +554,7 @@ spline1dfitcubicwc(real_1d_array x, real_1d_array y, real_1d_array w, real_1d_ar
 
     av_push(RETVAL, newSViv(info));
     av_push(RETVAL, ptr_to_perl_obj(aTHX_ spl, "Math::Alglib::Interpolation::Spline1dInterpolant"));
-    av_push(RETVAL, spline1dfitreport_to_hvref(aTHX_ rep));
+    av_push(RETVAL, spline1dfitreport_to_perl_hash(aTHX_ rep));
   %};
 
 AV *
@@ -573,6 +573,6 @@ spline1dfitcubic(real_1d_array x, real_1d_array y, const ae_int_t m)
 
     av_push(RETVAL, newSViv(info));
     av_push(RETVAL, ptr_to_perl_obj(aTHX_ spl, "Math::Alglib::Interpolation::Spline1dInterpolant"));
-    av_push(RETVAL, spline1dfitreport_to_hvref(aTHX_ rep));
+    av_push(RETVAL, spline1dfitreport_to_perl_hash(aTHX_ rep));
   %};
 

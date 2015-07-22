@@ -262,7 +262,7 @@ polynomialfit(real_1d_array x, real_1d_array y, const ae_int_t m)
 
     av_push(RETVAL, newSViv(info));
     av_push(RETVAL, ptr_to_perl_obj(aTHX_ bary, "Math::Alglib::Interpolation::BarycentricInterpolant"));
-    av_push(RETVAL, polynomialfitreport_to_hvref(aTHX_ rep));
+    av_push(RETVAL, polynomialfitreport_to_perl_hash(aTHX_ rep));
   OUTPUT: RETVAL
 %}
 
@@ -279,7 +279,7 @@ polynomialfitwc(real_1d_array x, real_1d_array y, real_1d_array w, real_1d_array
 
     av_push(RETVAL, newSViv(info));
     av_push(RETVAL, ptr_to_perl_obj(aTHX_ bary, "Math::Alglib::Interpolation::BarycentricInterpolant"));
-    av_push(RETVAL, polynomialfitreport_to_hvref(aTHX_ rep));
+    av_push(RETVAL, polynomialfitreport_to_perl_hash(aTHX_ rep));
   OUTPUT: RETVAL
 %}
 
@@ -296,7 +296,7 @@ barycentricfitfloaterhormannwc(real_1d_array x, real_1d_array y, real_1d_array w
 
     av_push(RETVAL, newSViv(info));
     av_push(RETVAL, ptr_to_perl_obj(aTHX_ bary, "Math::Alglib::Interpolation::BarycentricInterpolant"));
-    av_push(RETVAL, barycentricfitreport_to_hvref(aTHX_ rep));
+    av_push(RETVAL, barycentricfitreport_to_perl_hash(aTHX_ rep));
   OUTPUT: RETVAL
 %}
 
@@ -313,7 +313,7 @@ barycentricfitfloaterhormann(real_1d_array x, real_1d_array y, const ae_int_t n,
 
     av_push(RETVAL, newSViv(info));
     av_push(RETVAL, ptr_to_perl_obj(aTHX_ bary, "Math::Alglib::Interpolation::BarycentricInterpolant"));
-    av_push(RETVAL, barycentricfitreport_to_hvref(aTHX_ rep));
+    av_push(RETVAL, barycentricfitreport_to_perl_hash(aTHX_ rep));
   OUTPUT: RETVAL
 %}
 

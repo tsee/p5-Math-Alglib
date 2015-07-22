@@ -202,49 +202,6 @@ integration_return_status_ary_ary(pTHX_ IV info,
   return retval;
 }
 
-/* turns polynomialfitreport into a hashref for output */
-SV *
-polynomialfitreport_to_hvref(pTHX_ const alglib::polynomialfitreport &rep)
-{
-  HV* hv = newHV();
-  SV *rv = newRV_noinc((SV*)hv);
-  hv_stores(hv, "taskrcond", newSVnv(rep.taskrcond));
-  hv_stores(hv, "rmserror", newSVnv(rep.rmserror));
-  hv_stores(hv, "avgerror", newSVnv(rep.avgerror));
-  hv_stores(hv, "avgrelerror", newSVnv(rep.avgrelerror));
-  hv_stores(hv, "maxerror", newSVnv(rep.maxerror));
-  return rv;
-}
-
-/* turns barycentricfitreport into a hashref for output */
-SV *
-barycentricfitreport_to_hvref(pTHX_ const alglib::barycentricfitreport &rep)
-{
-  HV* hv = newHV();
-  SV *rv = newRV_noinc((SV*)hv);
-  hv_stores(hv, "taskrcond", newSVnv(rep.taskrcond));
-  hv_stores(hv, "rmserror", newSVnv(rep.rmserror));
-  hv_stores(hv, "avgerror", newSVnv(rep.avgerror));
-  hv_stores(hv, "avgrelerror", newSVnv(rep.avgrelerror));
-  hv_stores(hv, "maxerror", newSVnv(rep.maxerror));
-  hv_stores(hv, "dbest", newSViv(rep.dbest));
-  return rv;
-}
-
-/* turns spline1dfitreport into a hashref for output */
-SV *
-spline1dfitreport_to_hvref(pTHX_ const alglib::spline1dfitreport &rep)
-{
-  HV* hv = newHV();
-  SV *rv = newRV_noinc((SV*)hv);
-  hv_stores(hv, "taskrcond", newSVnv(rep.taskrcond));
-  hv_stores(hv, "rmserror", newSVnv(rep.rmserror));
-  hv_stores(hv, "avgerror", newSVnv(rep.avgerror));
-  hv_stores(hv, "avgrelerror", newSVnv(rep.avgrelerror));
-  hv_stores(hv, "maxerror", newSVnv(rep.maxerror));
-  return rv;
-}
-
 /* turns lsfitreport into a hashref for output */
 SV *
 lsfitreport_to_hvref(pTHX_ const alglib::lsfitreport &rep)
@@ -281,8 +238,127 @@ ptr_to_perl_obj(pTHX_ void *ptr, const char *CLASS)
   return obj;
 }
 
+#include <interpolation.h>
+#include <interpolation.h>
+#include <interpolation.h>
 
 using namespace alglib; /* FIXME hack */
 
+SV *
+barycentricfitreport_to_perl_hash(pTHX_ const alglib::barycentricfitreport &strct)
+{
+  SV *retval;
+  HV *hv;
+  SV **elem;
+  SV *sv;
+  hv = newHV();
+  retval = newRV_noinc((SV *)hv);
+
+  elem = hv_fetchs(hv, "taskrcond", 1); /* 1 => lvalue, O_RDWR|O_CREAT mode, so to speak */
+  assert(elem);
+  sv = *elem;
+  sv_setnv(sv, (double)strct.taskrcond);
+
+  elem = hv_fetchs(hv, "dbest", 1); /* 1 => lvalue, O_RDWR|O_CREAT mode, so to speak */
+  assert(elem);
+  sv = *elem;
+  sv_setiv(sv, (IV)strct.dbest);
+
+  elem = hv_fetchs(hv, "rmserror", 1); /* 1 => lvalue, O_RDWR|O_CREAT mode, so to speak */
+  assert(elem);
+  sv = *elem;
+  sv_setnv(sv, (double)strct.rmserror);
+
+  elem = hv_fetchs(hv, "avgerror", 1); /* 1 => lvalue, O_RDWR|O_CREAT mode, so to speak */
+  assert(elem);
+  sv = *elem;
+  sv_setnv(sv, (double)strct.avgerror);
+
+  elem = hv_fetchs(hv, "avgrelerror", 1); /* 1 => lvalue, O_RDWR|O_CREAT mode, so to speak */
+  assert(elem);
+  sv = *elem;
+  sv_setnv(sv, (double)strct.avgrelerror);
+
+  elem = hv_fetchs(hv, "maxerror", 1); /* 1 => lvalue, O_RDWR|O_CREAT mode, so to speak */
+  assert(elem);
+  sv = *elem;
+  sv_setnv(sv, (double)strct.maxerror);
+
+  return retval;
+} /* end of barycentricfitreport_to_perl_hash */
+SV *
+polynomialfitreport_to_perl_hash(pTHX_ const alglib::polynomialfitreport &strct)
+{
+  SV *retval;
+  HV *hv;
+  SV **elem;
+  SV *sv;
+  hv = newHV();
+  retval = newRV_noinc((SV *)hv);
+
+  elem = hv_fetchs(hv, "taskrcond", 1); /* 1 => lvalue, O_RDWR|O_CREAT mode, so to speak */
+  assert(elem);
+  sv = *elem;
+  sv_setnv(sv, (double)strct.taskrcond);
+
+  elem = hv_fetchs(hv, "rmserror", 1); /* 1 => lvalue, O_RDWR|O_CREAT mode, so to speak */
+  assert(elem);
+  sv = *elem;
+  sv_setnv(sv, (double)strct.rmserror);
+
+  elem = hv_fetchs(hv, "avgerror", 1); /* 1 => lvalue, O_RDWR|O_CREAT mode, so to speak */
+  assert(elem);
+  sv = *elem;
+  sv_setnv(sv, (double)strct.avgerror);
+
+  elem = hv_fetchs(hv, "avgrelerror", 1); /* 1 => lvalue, O_RDWR|O_CREAT mode, so to speak */
+  assert(elem);
+  sv = *elem;
+  sv_setnv(sv, (double)strct.avgrelerror);
+
+  elem = hv_fetchs(hv, "maxerror", 1); /* 1 => lvalue, O_RDWR|O_CREAT mode, so to speak */
+  assert(elem);
+  sv = *elem;
+  sv_setnv(sv, (double)strct.maxerror);
+
+  return retval;
+} /* end of polynomialfitreport_to_perl_hash */
+SV *
+spline1dfitreport_to_perl_hash(pTHX_ const alglib::spline1dfitreport &strct)
+{
+  SV *retval;
+  HV *hv;
+  SV **elem;
+  SV *sv;
+  hv = newHV();
+  retval = newRV_noinc((SV *)hv);
+
+  elem = hv_fetchs(hv, "taskrcond", 1); /* 1 => lvalue, O_RDWR|O_CREAT mode, so to speak */
+  assert(elem);
+  sv = *elem;
+  sv_setnv(sv, (double)strct.taskrcond);
+
+  elem = hv_fetchs(hv, "rmserror", 1); /* 1 => lvalue, O_RDWR|O_CREAT mode, so to speak */
+  assert(elem);
+  sv = *elem;
+  sv_setnv(sv, (double)strct.rmserror);
+
+  elem = hv_fetchs(hv, "avgerror", 1); /* 1 => lvalue, O_RDWR|O_CREAT mode, so to speak */
+  assert(elem);
+  sv = *elem;
+  sv_setnv(sv, (double)strct.avgerror);
+
+  elem = hv_fetchs(hv, "avgrelerror", 1); /* 1 => lvalue, O_RDWR|O_CREAT mode, so to speak */
+  assert(elem);
+  sv = *elem;
+  sv_setnv(sv, (double)strct.avgrelerror);
+
+  elem = hv_fetchs(hv, "maxerror", 1); /* 1 => lvalue, O_RDWR|O_CREAT mode, so to speak */
+  assert(elem);
+  sv = *elem;
+  sv_setnv(sv, (double)strct.maxerror);
+
+  return retval;
+} /* end of spline1dfitreport_to_perl_hash */
 
 #endif

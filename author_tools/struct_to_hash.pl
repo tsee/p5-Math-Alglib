@@ -31,11 +31,17 @@ $struct_fq_name = $struct if not defined $struct_fq_name;
 
 my $c = slurp($infile);
 
-if (not $c =~ /typedef\s+struct\s*\{(.*?)\}\s*\Q$struct\E/s) { # FIXME obviously super limited
+# FIXME obviously super limited
+if (not $c =~ / typedef\s+struct\s*\{
+                    ([^{}]*?)
+                \} \s* \Q$struct\E
+              /sx)
+{
   die "Cannot find struct in header file";
 }
 my $content = $1;
 $content =~ s/\n/ /g;
+
 
 my @elems = map {/^(.*)\s+(\S+)/ or die; [$1, $2]}
             map {s/\s+$//; s/^\s+//; $_}
@@ -55,18 +61,17 @@ exit();
 
 sub generate_c_to_perl_function_code {
   my ($funcname, $structname, $typemap, $elems) = @_;
+  my $const_struct = const_ref_type($structname);
 
   my $out = "";
   $out .= <<"HERE";
 SV *
-$funcname(pTHX_ $structname *strct)
+$funcname(pTHX_ ${const_struct}strct)
 {
   SV *retval;
   HV *hv;
   SV **elem;
   SV *sv;
-  if (strct == NULL)
-    return &PL_sv_undef;
   hv = newHV();
   retval = newRV_noinc((SV *)hv);
 
@@ -87,7 +92,7 @@ HERE
       next;
     }
     my $outputmap = $typemap->get_outputmap(xstype => $tm->xstype);
-    my $o = gen_outputmap_code($outputmap, $type, "sv", "strct->$name", );
+    my $o = gen_outputmap_code($outputmap, $type, "sv", "strct.$name", );
     if ($o =~ /\A([ \t]+)/) {
       my $w = $1;
       $o =~ s/^\Q$w\E//gm;
@@ -145,4 +150,10 @@ sub core_typemap_locations {
     push @tm, $file if -e $file;
   }
   return @tm;
+}
+
+#################################################3
+sub const_ref_type {
+  my $struct_type = shift;
+  return "const $struct_type \&";
 }

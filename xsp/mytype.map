@@ -5,12 +5,14 @@ const ae_bool			T_BOOL
 ptrdiff_t			T_IV
 const ptrdiff_t			T_IV
 
+alglib_impl::ae_vector		AL_GENERIC_ARRAY
 alglib::real_1d_array		AL_NV_ARRAY
 alglib::real_2d_array		AL_NV_2DARRAY
 alglib::complex_1d_array	AL_CPLXNV_ARRAY
 alglib::complex_1d_array*	AL_CPLXNV_ARRAY_PTR
 alglib::integer_1d_array	AL_IV_ARRAY
 
+ae_vector			AL_GENERIC_ARRAY
 real_1d_array			AL_NV_ARRAY
 real_2d_array			AL_NV_2DARRAY
 complex_1d_array		AL_CPLXNV_ARRAY
@@ -31,6 +33,7 @@ lsfitstate*			O_OBJECT
 lsfitstate_tmp*			O_OBJECT
 
 polynomialfitreport		T_HV_POLYNOMIALFITREPORT
+barycentricfitreport		T_HV_BARYCENTRICFITREPORT
 alglib_impl::odesolverstate*    T_HV_ODESOLVERSTATE
 
 
@@ -176,6 +179,9 @@ AL_CPLXNV_ARRAY_PTR
         }
 
 
+AL_GENERIC_ARRAY
+        $arg = ae_vector_to_perl(aTHX_ $var));
+
 AL_NV_2DARRAY
         $arg = newRV_noinc((SV *)real_2d_array_to_av(aTHX_ $var));
 
@@ -183,5 +189,7 @@ T_HV_ODESOLVERSTATE
         $arg = odesolverstate_to_perl_hash(aTHX_ $var);
 
 T_HV_POLYNOMIALFITREPORT
-        $arg = polynomialfitreport_to_hvref(aTHX_ $var);
+        $arg = polynomialfitreport_to_perl_hash(aTHX_ $var);
 
+T_HV_BARYCENTRICFITREPORT
+        $arg = barycentricfitreport_to_perl_hash(aTHX_ $var);
